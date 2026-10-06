@@ -1,0 +1,122 @@
+---
+// The brand board: one 1920x1080 page that shows the kit at a glance, for the
+// user to confirm before any deck is composed. Not part of the published deck.
+import '../brand/fonts';
+import '../brand/brand.css';
+import '../styles/deck.css';
+import kit from '../../brand/brand.json';
+import { brandName, imagery, logos } from '../brand/assets';
+
+const roles = [
+  ['paper', '--paper'], ['surface', '--surface'], ['ink', '--ink'], ['ink_muted', '--ink-muted'],
+  ['accent', '--accent'], ['accent_dark', '--accent-dark'], ['accent_secondary', '--accent-2'],
+  ['on_accent', '--on-accent'], ['highlight', '--highlight'], ['positive', '--positive'],
+] as const;
+const palette = kit.palette as Record<string, unknown>;
+const type = kit.typography as Record<string, { family: string; license?: string; stand_in_for?: string | null; weight?: number }>;
+const style = kit.style as Record<string, unknown>;
+const typeNote = (role: string) => {
+  const t = type[role];
+  if (!t) return '';
+  return t.license === 'stand-in' ? `${t.family} · stand-in for ${t.stand_in_for ?? 'the brand face'}` : `${t.family} · ${t.license ?? ''}`;
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{brandName}: brand board</title>
+  </head>
+  <body>
+    <main class="slide board">
+      <header>
+        <div class="identity">
+          {logos.primary ? <img class="logo" src={logos.primary} alt={`${brandName} logo`} /> : <span class="wordmark display">{kit.identity.wordmark}</span>}
+          <p class="eyebrow">Brand board · {kit.identity.domain ?? 'no domain'}</p>
+        </div>
+        <p class="fine">Confirm before composing. Every slide reads these tokens.</p>
+      </header>
+
+      <section class="type">
+        <p class="display specimen">The quick headline<br /><span class="hl">lands here.</span></p>
+        <p class="lede">Body copy sits in the brand's text face, at the deck's reading size, with its own spacing.</p>
+        <ul class="type-notes fine">
+          <li>Display: {typeNote('display')}</li>
+          <li>Body: {typeNote('body')}</li>
+          <li>Mono: {typeNote('mono')}</li>
+        </ul>
+      </section>
+
+      <section class="swatches">
+        {roles.filter(([key]) => palette[key] || ['surface', 'ink_muted', 'accent_dark', 'on_accent'].includes(key)).map(([key, token]) => (
+          <figure>
+            <i style={`background: var(${token})`}></i>
+            <figcaption><b>{key}</b><span>{(palette[key] as string) ?? 'derived'}</span></figcaption>
+          </figure>
+        ))}
+      </section>
+
+      <section class="components">
+        <span class="button">Primary action</span>
+        <div class="card sample">
+          <p class="eyebrow">Card</p>
+          <p class="h">Radius {String(style.radius)}px · border {String(style.border_width)}px · {String(style.shadow)} shadow</p>
+          <p>Motion: {String(style.motion)} · density: {String(style.density)} · tilt: {String(style.tilt)}</p>
+        </div>
+        <div class="card focal">
+          <p class="eyebrow">Focal</p>
+          <p class="h display">42%</p>
+        </div>
+      </section>
+
+      <section class="imagery">
+        {imagery.slice(0, 4).map((img) => <img src={img.url} alt={img.alt} />)}
+        {!imagery.length && <p class="fine">No imagery in the kit yet.</p>}
+        <p class="fine notes">{String(style.illustration_style ?? 'Illustration style: not set')}</p>
+      </section>
+    </main>
+
+    <style>
+      body { background: var(--letterbox); }
+      .board {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto 1fr auto;
+        grid-template-areas: 'head head' 'type swatches' 'type components' 'imagery imagery';
+        gap: 40px 80px;
+        margin: 0 auto;
+      }
+      .type { grid-area: type; }
+      .swatches { grid-area: swatches; }
+      .components { grid-area: components; }
+      .imagery { grid-area: imagery; }
+      header { grid-area: head; display: flex; justify-content: space-between; align-items: flex-start; }
+      .identity { display: flex; align-items: center; gap: 32px; }
+      .logo { height: 72px; width: auto; max-width: 420px; object-fit: contain; }
+      .wordmark { font-size: 64px; }
+      .eyebrow { color: var(--accent-dark); }
+      .specimen { font-size: var(--t-title); margin-bottom: 28px; }
+      .lede { color: var(--ink-muted); max-width: 26ch; margin-bottom: 24px; }
+      .type-notes { display: grid; gap: 6px; }
+      .swatches { display: grid; grid-template-columns: repeat(5, 1fr); gap: 18px; align-content: start; }
+      .swatches i { display: block; aspect-ratio: 1.3; border-radius: calc(var(--radius) * 0.5); border: 1px solid var(--tint-3); }
+      .swatches figcaption { display: grid; gap: 2px; padding-top: 8px; font: 500 15px/1.3 var(--font-mono); }
+      .swatches figcaption span { color: var(--ink-faint); }
+      .components { display: flex; gap: 28px; align-items: center; align-self: start; }
+      .button {
+        padding: 22px 36px; border-radius: var(--radius-button); background: var(--accent); color: var(--on-accent);
+        white-space: nowrap; font: 600 24px/1 var(--font-body); box-shadow: var(--shadow-card); border: var(--border-w) solid var(--border-color);
+      }
+      .sample { padding: 24px 28px; max-width: 380px; display: grid; gap: 8px; }
+      .sample .h { font: 600 22px/1.25 var(--font-body); }
+      .sample p:last-child { font-size: 18px; color: var(--ink-muted); }
+      .focal { padding: 20px 32px; box-shadow: var(--shadow-focal); }
+      .focal .h { font-size: 80px; color: var(--accent); }
+      .imagery { display: flex; gap: 16px; align-items: flex-end; flex-wrap: wrap; }
+      .imagery img { height: 170px; width: auto; max-width: 260px; object-fit: cover; border-radius: calc(var(--radius) * 0.5); }
+      .notes { flex-basis: 100%; text-transform: none; letter-spacing: 0; }
+    </style>
+  </body>
+</html>

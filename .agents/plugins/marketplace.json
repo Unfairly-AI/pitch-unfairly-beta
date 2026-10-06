@@ -1,0 +1,20 @@
+{
+  "name": "pitch-unfairly",
+  "interface": {
+    "displayName": "Pitch Unfairly"
+  },
+  "plugins": [
+    {
+      "name": "pitch-unfairly",
+      "source": {
+        "source": "local",
+        "path": "./plugins/pitch-unfairly"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Creativity"
+    }
+  ]
+}

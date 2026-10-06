@@ -1,0 +1,7 @@
+interface:
+  display_name: "Pitch Unfairly"
+  short_description: "Pitch decks built as websites, published to a link"
+  icon_small: "./assets/icons/icon-small.svg"
+  icon_large: "./assets/icons/icon-large.png"
+  brand_color: "#C92A89"
+  default_prompt: "Use $pitch-unfairly to turn my notes into a pitch deck I can send as a link."

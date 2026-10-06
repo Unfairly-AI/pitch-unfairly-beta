@@ -1,0 +1,68 @@
+---
+/**
+ * A number that counts up when its slide comes on screen. The markup holds the
+ * final value, so the PDF, reduced motion, and no-JS all show the real number.
+ *
+ *   <CountUp to={18} suffix="%" />
+ *   <CountUp to={2.5} decimals={1} prefix="$" suffix="M" />
+ */
+interface Props {
+  to: number;
+  from?: number;
+  decimals?: number;
+  prefix?: string;
+  suffix?: string;
+  /** Milliseconds. Keep it under ~1.4s: the point is the number, not the wait. */
+  duration?: number;
+  /** Delay after the slide enters, in milliseconds. */
+  delay?: number;
+}
+
+const { to, from = 0, decimals = 0, prefix = '', suffix = '', duration = 1100, delay = 150 } = Astro.props;
+const final = `${prefix}${to.toFixed(decimals)}${suffix}`;
+---
+
+<span
+  class="count-up"
+  data-to={to}
+  data-from={from}
+  data-decimals={decimals}
+  data-prefix={prefix}
+  data-suffix={suffix}
+  data-duration={duration}
+  data-delay={delay}>{final}</span>
+
+<script>
+  // ease-out-quart, matching --ease
+  const ease = (t: number) => 1 - Math.pow(1 - t, 4);
+
+  for (const el of document.querySelectorAll<HTMLElement>('.count-up')) {
+    const slide = el.closest('.slide');
+    if (!slide) continue;
+    const d = el.dataset;
+    const to = Number(d.to);
+    const from = Number(d.from);
+    const decimals = Number(d.decimals);
+    const format = (n: number) => `${d.prefix}${n.toFixed(decimals)}${d.suffix}`;
+    let frame = 0;
+    slide.addEventListener('deck:enter', () => {
+      if ((window as any).deckStill?.()) return;
+      cancelAnimationFrame(frame);
+      el.textContent = format(from);
+      const start = performance.now() + Number(d.delay);
+      const duration = Number(d.duration);
+      const tick = (now: number) => {
+        const t = Math.min(1, Math.max(0, (now - start) / duration));
+        el.textContent = format(from + (to - from) * ease(t));
+        if (t < 1) frame = requestAnimationFrame(tick);
+      };
+      frame = requestAnimationFrame(tick);
+    });
+  }
+</script>
+
+<style>
+  .count-up {
+    font-variant-numeric: tabular-nums;
+  }
+</style>

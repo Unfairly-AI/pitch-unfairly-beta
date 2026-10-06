@@ -1,0 +1,133 @@
+---
+import Slide from '../components/Slide.astro';
+
+// Nine identical thumbnails; the one that mattered is index 4.
+const thumbs = Array.from({ length: 9 }, (_, i) => i);
+---
+
+<Slide
+  id="problem"
+  label="The problem"
+  notes="The point: when every slide has the same shape, the important one can't stand out. Let the grid do the talking."
+>
+  <div class="problem">
+    <div class="copy">
+      <p class="eyebrow rise">01 / The problem</p>
+      <h2 class="display h-display rise" style="--d: 80ms">Every slide looks <span class="hl">the same.</span></h2>
+      <p class="lede rise" style="--d: 160ms">So the one that matters gets lost in the middle.</p>
+    </div>
+
+    <div class="grid" aria-hidden="true">
+      {thumbs.map((i) => (
+        <div class:list={['thumb', { key: i === 4 }]} style={`--d: ${200 + i * 50}ms`}>
+          <i class="t"></i><i></i><i></i><i class="short"></i>
+          {i === 4 && (
+            <>
+              <svg class="ring" viewBox="0 0 100 56" preserveAspectRatio="none">
+                <rect class="draw" x="1" y="1" width="98" height="54" rx="6" pathLength="1" style="--d: 760ms" />
+              </svg>
+              <span class="tag pop" style="--r: -2deg; --d: 1500ms">the slide that mattered</span>
+            </>
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+</Slide>
+
+<style>
+  .problem {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 5fr 6fr;
+    align-items: center;
+    gap: calc(var(--gap) * 1.6);
+  }
+
+  .eyebrow { margin-bottom: 36px; color: var(--accent-dark); }
+  .h-display { margin-bottom: 40px; }
+  .lede { color: var(--ink-muted); max-width: 20ch; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+
+  .thumb {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    padding: 26px 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+    border: 3px solid var(--tint-3);
+    border-radius: 16px;
+    background: var(--tint-1);
+  }
+
+  :global(.is-active) .thumb {
+    animation: rise 0.7s var(--ease) var(--d) both;
+  }
+
+  .thumb i {
+    display: block;
+    height: 10px;
+    border-radius: 5px;
+    background: var(--tint-3);
+  }
+
+  .thumb i.t { height: 18px; width: 70%; background: var(--tint-4); margin-bottom: 6px; }
+  .thumb i.short { width: 55%; }
+
+  .ring {
+    position: absolute;
+    inset: -12px;
+    width: calc(100% + 24px);
+    height: calc(100% + 24px);
+    overflow: visible;
+  }
+
+  .ring rect {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 4px;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .tag {
+    position: absolute;
+    left: 50%;
+    bottom: -24px;
+    translate: -50% 0;
+    transform: rotate(calc(var(--r) * var(--tilt)));
+    white-space: nowrap;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--ink);
+    font: 600 var(--t-fine) var(--font-mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 799px) {
+    .problem {
+      grid-template-columns: 1fr;
+      align-content: center;
+      gap: 34px;
+    }
+
+    .eyebrow { margin-bottom: 16px; }
+    .h-display { margin-bottom: 16px; }
+
+    .grid { gap: 10px; }
+    .thumb { padding: 10px; gap: 5px; border-width: 2px; border-radius: 8px; }
+    .thumb i { height: 4px; }
+    .thumb i.t { height: 7px; margin-bottom: 2px; }
+    .ring { inset: -6px; width: calc(100% + 12px); height: calc(100% + 12px); }
+    .ring rect { stroke-width: 2.5px; }
+    .tag { bottom: -15px; padding: 4px 9px; letter-spacing: 0.02em; }
+  }
+</style>

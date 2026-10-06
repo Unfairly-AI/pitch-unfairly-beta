@@ -1,0 +1,390 @@
+---
+// Fonts and tokens come from the brand kit (brand/brand.json via npm run brand:apply).
+import '../brand/fonts';
+import '../brand/brand.css';
+import '../styles/deck.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = '' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <script is:inline>
+      // Before first paint: ?pdf=1 renders every slide 1:1 for the PDF and the
+      // audits; inside a host frame (pitchunfairly.com) the deck reports its
+      // slide and asks the frame for fullscreen.
+      if (/[?&]pdf=1(&|$)/.test(location.search)) document.documentElement.classList.add('is-pdf', 'is-static');
+      if (window.parent !== window) document.documentElement.classList.add('is-framed');
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+  </head>
+  <body>
+    <div class="viewport">
+      <main class="stage" id="stage">
+        <slot />
+      </main>
+    </div>
+
+    <nav class="deck-nav" aria-label="Deck controls">
+      <button type="button" data-go="prev" aria-label="Previous slide">‹</button>
+      <span class="deck-count" aria-live="polite"><b id="deck-current">1</b> / <span id="deck-total">1</span></span>
+      <button type="button" data-go="next" aria-label="Next slide">›</button>
+      <button type="button" data-go="notes" class="deck-text-btn" aria-pressed="false">Notes</button>
+      <a class="deck-text-btn" href="deck.pdf" download>PDF</a>
+    </nav>
+    <aside class="deck-notes" id="deck-notes" hidden></aside>
+
+    <script>
+      const html = document.documentElement;
+      const stage = document.getElementById('stage') as HTMLElement;
+      const slides = [...document.querySelectorAll<HTMLElement>('.slide')];
+      const pdf = html.classList.contains('is-pdf');
+      const framed = html.classList.contains('is-framed');
+      // Tell a host frame (pitchunfairly.com) where we are. Its badge and
+      // fullscreen live outside this sandboxed document.
+      const toFrame = (message: Record<string, unknown>) => {
+        if (framed) window.parent.postMessage(message, '*');
+      };
+      const phone = matchMedia('(max-width: 799px)');
+      const notesEl = document.getElementById('deck-notes');
+      const notesBtn = document.querySelector<HTMLButtonElement>('[data-go="notes"]');
+      let current = 0;
+
+      // Effects driven by JS (counters, typing) should check this and render
+      // their finished state instead of animating.
+      (window as any).deckStill = () => pdf || matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const fit = () => {
+        stage.style.setProperty('--s', String(Math.min(innerWidth / 1920, innerHeight / 1080)));
+      };
+
+      const activate = (index: number) => {
+        slides.forEach((slide, i) => {
+          const on = i === index;
+          const entering = on && !slide.classList.contains('is-active');
+          if (entering) {
+            // Force a reflow so entrance animations replay on every visit.
+            void slide.offsetWidth;
+          }
+          slide.classList.toggle('is-active', on);
+          // Script-driven motion (CountUp) listens for this.
+          if (entering) slide.dispatchEvent(new CustomEvent('deck:enter'));
+          slide.setAttribute('aria-hidden', String(!on && !phone.matches));
+        });
+      };
+
+      const show = (index: number, { scroll = true } = {}) => {
+        current = Math.max(0, Math.min(slides.length - 1, index));
+        activate(current);
+        history.replaceState(null, '', `#${current + 1}`);
+        const count = document.getElementById('deck-current');
+        if (count) count.textContent = String(current + 1);
+        if (notesEl) notesEl.textContent = slides[current].dataset.notes || 'No notes for this slide.';
+        toFrame({ type: 'deck:slide', index: current, total: slides.length });
+        if (phone.matches && scroll) slides[current].scrollIntoView({ behavior: 'smooth' });
+      };
+
+      const fromHash = () => {
+        const n = parseInt(location.hash.slice(1), 10);
+        return Number.isFinite(n) ? n - 1 : 0;
+      };
+
+      if (!pdf) {
+        const total = document.getElementById('deck-total');
+        if (total) total.textContent = String(slides.length);
+        history.scrollRestoration = 'manual';
+        fit();
+        addEventListener('resize', fit);
+        show(fromHash());
+        addEventListener('hashchange', () => {
+          if (fromHash() !== current) show(fromHash());
+        });
+
+        document.querySelector('[data-go="prev"]')?.addEventListener('click', () => show(current - 1));
+        document.querySelector('[data-go="next"]')?.addEventListener('click', () => show(current + 1));
+
+        const toggleNotes = () => {
+          if (!notesEl || !notesBtn) return;
+          notesEl.hidden = !notesEl.hidden;
+          notesBtn.setAttribute('aria-pressed', String(!notesEl.hidden));
+        };
+        notesBtn?.addEventListener('click', toggleNotes);
+
+        addEventListener('keydown', (event) => {
+          const target = event.target as HTMLElement;
+          if (event.metaKey || event.ctrlKey || event.altKey) return;
+          if (target.closest('input, textarea, select, [contenteditable="true"]')) return;
+          const key = event.key;
+          if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(key)) show(current + 1);
+          else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(key)) show(current - 1);
+          else if (key === 'Home') show(0);
+          else if (key === 'End') show(slides.length - 1);
+          else if (key === 'f') {
+            if (framed) toFrame({ type: 'deck:fullscreen' });
+            else if (document.fullscreenElement) document.exitFullscreen();
+            else html.requestFullscreen?.();
+          } else if (key === 'n') toggleNotes();
+          else return;
+          event.preventDefault();
+        });
+
+        // Horizontal swipe on tablets; phones scroll vertically instead.
+        let touchX = 0;
+        let touchY = 0;
+        addEventListener('touchstart', (e) => {
+          touchX = e.touches[0].clientX;
+          touchY = e.touches[0].clientY;
+        }, { passive: true });
+        addEventListener('touchend', (e) => {
+          if (phone.matches) return;
+          const dx = e.changedTouches[0].clientX - touchX;
+          const dy = e.changedTouches[0].clientY - touchY;
+          if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) show(current + (dx < 0 ? 1 : -1));
+        }, { passive: true });
+
+        // On phones every slide is on the page; activate whichever is in view.
+        // Crossing the breakpoint (resizing, rotating a tablet) restacks the
+        // slides, so ignore the observer until the current slide is back in place.
+        let switching = false;
+        const observer = new IntersectionObserver((entries) => {
+          if (!phone.matches || switching) return;
+          for (const entry of entries) {
+            if (entry.isIntersecting) show(slides.indexOf(entry.target as HTMLElement), { scroll: false });
+          }
+        }, { threshold: 0.6 });
+        slides.forEach((slide) => observer.observe(slide));
+        phone.addEventListener('change', () => {
+          switching = true;
+          requestAnimationFrame(() => {
+            if (phone.matches) slides[current].scrollIntoView();
+            show(current, { scroll: false });
+            setTimeout(() => { switching = false; }, 400);
+          });
+        });
+
+        // Hide the controls while presenting with a still mouse.
+        let idle: number | undefined;
+        const wake = () => {
+          html.classList.remove('is-idle');
+          clearTimeout(idle);
+          idle = window.setTimeout(() => html.classList.add('is-idle'), 2200);
+        };
+        addEventListener('mousemove', wake);
+        wake();
+      }
+
+      addEventListener('beforeprint', () => html.classList.add('is-static'));
+      addEventListener('afterprint', () => !pdf && html.classList.remove('is-static'));
+
+      // The PDF exporter waits for fonts and every image before printing.
+      Promise.all([
+        document.fonts.ready,
+        ...[...document.images].map((img) => (img.complete ? null : img.decode().catch(() => null))),
+      ]).then(() => {
+        (window as any).__deckReady = true;
+      });
+    </script>
+
+    <style is:global>
+      /* Desktop: one slide at a time on a scaled 1920x1080 stage. */
+      .viewport {
+        position: fixed;
+        inset: 0;
+        overflow: hidden;
+        background: var(--letterbox);
+      }
+
+      .stage {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 1920px;
+        height: 1080px;
+        transform: translate(-50%, -50%) scale(var(--s, 1));
+        counter-reset: slide;
+      }
+
+      .stage > .slide {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.45s var(--ease), visibility 0s linear 0.45s;
+      }
+
+      .stage > .slide.is-active {
+        opacity: 1;
+        visibility: visible;
+        transition: opacity 0.45s var(--ease), visibility 0s;
+      }
+
+      /* PDF: every slide 1:1, one per page. */
+      @page {
+        size: 1920px 1080px;
+        margin: 0;
+      }
+
+      html.is-pdf,
+      html.is-pdf body {
+        width: 1920px;
+        overflow: visible;
+        background: var(--paper);
+      }
+
+      html.is-pdf .viewport,
+      html.is-pdf .stage {
+        position: static;
+        width: 1920px;
+        height: auto;
+        transform: none;
+        overflow: visible;
+      }
+
+      html.is-pdf .stage > .slide {
+        position: relative;
+        inset: auto;
+        opacity: 1;
+        visibility: visible;
+        break-after: page;
+      }
+
+      html.is-pdf .stage > .slide:last-child {
+        break-after: auto;
+      }
+
+      html.is-pdf .deck-nav,
+      html.is-pdf .deck-notes {
+        display: none !important;
+      }
+
+      /* Phone: the stage unwraps into one full-height slide per screen. */
+      @media (max-width: 799px) {
+        html:not(.is-pdf) {
+          scroll-snap-type: y mandatory;
+        }
+
+        html:not(.is-pdf) .viewport,
+        html:not(.is-pdf) .stage {
+          position: static;
+          width: auto;
+          height: auto;
+          transform: none;
+          overflow: visible;
+        }
+
+        html:not(.is-pdf) .stage > .slide {
+          position: relative;
+          inset: auto;
+          width: 100%;
+          height: 100svh;
+          opacity: 1;
+          visibility: visible;
+          scroll-snap-align: start;
+          transition: none;
+        }
+      }
+
+      /* Controls */
+      .deck-nav {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        z-index: 20;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 6px;
+        border: 2px solid var(--border-color);
+        border-radius: 999px;
+        background: var(--paper);
+        box-shadow: 3px 3px 0 var(--ink);
+        font: 600 13px/1 var(--font-mono);
+        color: var(--ink);
+        transition: opacity 0.3s var(--ease);
+      }
+
+      html.is-idle .deck-nav:not(:hover):not(:focus-within) {
+        opacity: 0;
+      }
+
+      .deck-nav button,
+      .deck-nav a {
+        min-width: 32px;
+        height: 32px;
+        padding: 0 10px;
+        border: 0;
+        border-radius: 999px;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+
+      .deck-nav button:hover,
+      .deck-nav a:hover,
+      .deck-nav [aria-pressed='true'] {
+        background: var(--surface);
+      }
+
+      .deck-nav :focus-visible {
+        outline: 2px solid var(--accent-2);
+        outline-offset: 2px;
+      }
+
+      .deck-count {
+        padding: 0 6px;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .deck-notes {
+        position: fixed;
+        left: 20px;
+        bottom: 20px;
+        z-index: 20;
+        width: min(520px, calc(100vw - 40px));
+        max-height: 40vh;
+        overflow: auto;
+        padding: 18px 20px;
+        border: 2px solid var(--border-color);
+        border-radius: 14px;
+        background: var(--paper);
+        color: var(--ink);
+        box-shadow: 3px 3px 0 var(--ink);
+        font: 15px/1.5 var(--font-body);
+        white-space: pre-line;
+      }
+
+      /* Keep notes clear of the host frame's badge (bottom left). */
+      html.is-framed .deck-notes {
+        bottom: 64px;
+      }
+
+      @media (max-width: 799px) {
+        .deck-nav {
+          top: 12px;
+          right: 12px;
+          bottom: auto;
+          padding: 3px;
+        }
+
+        .deck-nav button,
+        .deck-count {
+          display: none;
+        }
+      }
+    </style>
+  </body>
+</html>

@@ -1,0 +1,4122 @@
+{
+  "schema": "pitch-unfairly-templates@1",
+  "note": "Generated from the pitchunfairly.com templates (unfairly-app apps/decks/src/arcade). Do not edit by hand.",
+  "categories": [
+    {
+      "id": "pitch",
+      "name": "Pitch decks",
+      "useWhen": "Raising money from investors, from pre-seed to growth rounds.",
+      "length": "Pre-seed 8 to 12, seed 12 to 15, Series A 15 to 20, growth 18 to 25 plus a data appendix.",
+      "format": "Sent first, then presented. It must make sense without the founder in the room.",
+      "rules": [
+        "Investors skim: DocSend measured about 3.7 minutes per deck, and decks that fail are dropped in about 2. The first two slides decide whether the rest gets read.",
+        "Every headline is a full-sentence claim, and each beat gets one slide, three at most (Y Combinator).",
+        "Lead with your strongest proof, traction or team, whichever is stronger.",
+        "Size the market bottoms-up (customers × price), with the math visible.",
+        "The ask names an amount, the milestone it buys, and when."
+      ],
+      "failures": [
+        "Topic-label headlines (\"Market\", \"Team\")",
+        "A top-down TAM with no path to it",
+        "Traction buried after the product tour",
+        "An ask with no milestone"
+      ],
+      "templates": [
+        "airbnb",
+        "uber",
+        "linkedin",
+        "front",
+        "columbus"
+      ]
+    },
+    {
+      "id": "sales",
+      "name": "Sales",
+      "useWhen": "Winning a deal: first calls, champion decks forwarded internally, business cases, customer reviews.",
+      "length": "First call 3 to 5 plus discovery questions; narrative 8 to 12; champion deck 8 to 10.",
+      "format": "Presented in conversation; champion decks are sent and must stand alone.",
+      "rules": [
+        "Open on a big shift in the buyer's world, not on your company (Raskin's strategic narrative).",
+        "On discovery calls, slides cost follow-ups: Gong found reps who used them were 17% less likely to book the next meeting. Ask, then show.",
+        "Winners spend less time on the deck (9.1 vs 11.4 minutes in intro calls) and 39% less on features (Gong).",
+        "Use proof from customers like the buyer; generic logos and ROI claims hurt (Gong).",
+        "End on a mutual action plan with dates and owners on both sides, never \"Thank you\"."
+      ],
+      "failures": [
+        "Starting with the company history",
+        "A feature tour",
+        "Logos from the wrong industry",
+        "No next step with a date"
+      ],
+      "templates": [
+        "zuora",
+        "tom-sawyer",
+        "paul-revere",
+        "moneyball",
+        "lewis-clark",
+        "spanx",
+        "darcy",
+        "clueless",
+        "da-vinci",
+        "broad-street"
+      ]
+    },
+    {
+      "id": "board",
+      "name": "Board and investor updates",
+      "useWhen": "Board meetings, monthly or quarterly investor updates, crisis plans.",
+      "length": "Board deck 10 to 12 plus appendix; investor update one screen to 8 slides.",
+      "format": "A pre-read sent 1 to 7 days ahead; the meeting is for discussion and decisions.",
+      "rules": [
+        "Open with a TL;DR and the asks; investors and boards read the top first.",
+        "Score last period's priorities red, yellow, or green before anything new.",
+        "Every metric against plan and against trend, never alone.",
+        "Lowlights before highlights; the board finds them anyway.",
+        "Close on the decisions you need from the board, then next period's priorities with one owner each. Detail goes in the appendix."
+      ],
+      "failures": [
+        "A product demo instead of a review",
+        "Numbers without plan or trend",
+        "Misses hidden at the end",
+        "No decision asked of the board"
+      ],
+      "templates": [
+        "sequoia",
+        "jurassic-park",
+        "wright",
+        "berkshire"
+      ]
+    },
+    {
+      "id": "work",
+      "name": "Everyday work",
+      "useWhen": "Project status updates, executive briefings, roadmaps and the other recurring decks a team reads every week.",
+      "length": "Status update one screen to 6 slides; briefing 1 to 3 plus appendix; roadmap 5 to 8.",
+      "format": "Mostly read, not presented. Each slide has to work without a speaker.",
+      "rules": [
+        "Answer first: lead with the conclusion, then the evidence (Minto). In a controlled study, sentence headlines with visual evidence beat topic titles with bullets on comprehension (Garner, Alley et al. 2013).",
+        "Status has fixed meanings: green is on track, amber means a risk with a fix in hand, red means we need help (Atlassian).",
+        "Show progress as movement since last time, not a list of activity.",
+        "Every risk has an owner and a date; every ask names who must decide.",
+        "Roadmaps show confidence by horizon (Now, Next, Later), with dates only where they are real."
+      ],
+      "failures": [
+        "Activity instead of outcomes",
+        "Everything green until it is suddenly red",
+        "The conclusion on the last slide",
+        "A roadmap of promised dates nobody believes"
+      ],
+      "templates": [
+        "brooklyn-bridge",
+        "churchill-brevity",
+        "tesla-master-plan",
+        "panama-canal"
+      ]
+    },
+    {
+      "id": "launch",
+      "name": "Launches and keynotes",
+      "useWhen": "Launching a product or campaign, keynotes, big internal or external reveals.",
+      "length": "8 to 12.",
+      "format": "Presented live, with a demo; shared afterwards as a link.",
+      "rules": [
+        "Name the moment: why this matters today.",
+        "Show what is broken about today's options before the reveal.",
+        "One reveal, then no more than three things it does.",
+        "Demo moments over feature lists; each slide shows one thing working.",
+        "Close on price, availability, and a date."
+      ],
+      "failures": [
+        "Revealing in the first slide",
+        "Ten features with equal weight",
+        "No date or price"
+      ],
+      "templates": [
+        "trojan-horse",
+        "wonka",
+        "iphone",
+        "chanel-no5",
+        "gettysburg",
+        "nasa-worm",
+        "rosling",
+        "julia-child"
+      ]
+    },
+    {
+      "id": "proposal",
+      "name": "Proposals and business cases",
+      "useWhen": "Client proposals, RFP responses, budget requests, internal business cases.",
+      "length": "10 to 12.",
+      "format": "Sent to be read and compared, then presented to decide.",
+      "rules": [
+        "Start with their goal in their words, not your company.",
+        "Check off every requirement in the brief, visibly.",
+        "Put the decision on the first slide: what you are asking them to approve.",
+        "Show the options you considered and why this one wins.",
+        "Cost, phasing, and terms in one place; risks each with an owner; next steps with a date."
+      ],
+      "failures": [
+        "A credentials deck instead of an answer",
+        "Missing a requirement from the brief",
+        "Price hidden or vague",
+        "No decision asked for"
+      ],
+      "templates": [
+        "hamilton",
+        "romeo-juliet",
+        "moonshot",
+        "eiffel",
+        "barbie",
+        "nightingale",
+        "taylors-version",
+        "baskervilles"
+      ]
+    },
+    {
+      "id": "team",
+      "name": "Team and culture",
+      "useWhen": "All-hands and policy announcements, culture decks, recruiting and hiring pitches.",
+      "length": "All-hands 10 to 12; culture 12 to 20; recruiting 10 to 11.",
+      "format": "Presented to the team, then sent; recruiting decks are sent to candidates.",
+      "rules": [
+        "All-hands: what happened, the number that matters, the decision, what changes for you, why, what is not changing, an FAQ, what is next.",
+        "Say what changes for each person before why it is good for the company.",
+        "Culture decks describe behaviors, not words: who you hire, promote, and let go for.",
+        "Recruiting decks put the hard parts up front; the right people self-select."
+      ],
+      "failures": [
+        "Burying what changes for people",
+        "Values as adjectives",
+        "Selling a job without its hard parts"
+      ],
+      "templates": [
+        "netflix",
+        "shackleton",
+        "ford",
+        "madam-walker",
+        "miyagi"
+      ]
+    },
+    {
+      "id": "review",
+      "name": "Reviews and post-mortems",
+      "useWhen": "Incident reviews, project post-mortems, retros, case studies.",
+      "length": "10 to 12.",
+      "format": "Sent as a written record; presented to decide on action items.",
+      "rules": [
+        "Blameless: systems and decisions, not people.",
+        "Summary and impact first, then a timeline logged to the minute.",
+        "Separate detection, response, and root cause; ask why five times.",
+        "Name what went well, what went wrong, and where you got lucky.",
+        "Every action item has an owner and a date."
+      ],
+      "failures": [
+        "Blaming a person",
+        "A root cause that stops at the first why",
+        "Action items with no owner"
+      ],
+      "templates": [
+        "apollo-13",
+        "eras-tour",
+        "fetch",
+        "tylenol"
+      ]
+    },
+    {
+      "id": "strategy",
+      "name": "Strategy and planning",
+      "useWhen": "Annual plans, strategy offsites, OKRs, big bets.",
+      "length": "10 to 15.",
+      "format": "A pre-read for leadership, then presented to align.",
+      "rules": [
+        "Score last year before planning the next.",
+        "Name the few bets and, just as clearly, what you will stop doing.",
+        "Targets with owners and dates; resources follow the bets."
+      ],
+      "failures": [
+        "A list of everything",
+        "Bets without owners",
+        "Nothing stopped"
+      ],
+      "templates": [
+        "overlord",
+        "wrigley",
+        "blockbuster",
+        "marshall-plan",
+        "prada",
+        "ben-jerrys",
+        "apollo-11",
+        "new-coke",
+        "tupperware"
+      ]
+    },
+    {
+      "id": "fun",
+      "name": "Just for fun",
+      "useWhen": "Party pitches, persuading friends or family, celebrations.",
+      "length": "8 to 12.",
+      "format": "Presented live to a room that is in on the joke.",
+      "rules": [
+        "Use a serious business format for personal stakes; the deadpan is the joke.",
+        "Real details beat generic ones: names, prices, dates.",
+        "End with a vote or an ask the room can answer on the spot."
+      ],
+      "failures": [
+        "Jokes that need the format explained",
+        "No ask at the end"
+      ],
+      "templates": [
+        "elle-woods",
+        "nellie-bly",
+        "darwin-marry",
+        "dog"
+      ]
+    }
+  ],
+  "templates": [
+    {
+      "id": "airbnb",
+      "category": "pitch",
+      "template": "Seed pitch deck",
+      "name": "Airbnb: Seed deck",
+      "year": 2009,
+      "modelName": "Airbnb's 2009 seed deck structure",
+      "hook": "Air mattresses to $2.1B of math.",
+      "example": "https://pitchunfairly.com/templates/airbnb/",
+      "deck": "https://pitchunfairly.com/templates/airbnb/deck/",
+      "original": "https://www.alexanderjarvis.com/airbnb-seed-pitch-deck/",
+      "whatMakesItWork": [
+        "The market math is live: Drag your share of trips and watch the circle and the revenue recalculate. The pitch is the formula.",
+        "The product plays itself: Search, listing, booked: the three-step flow animates on a phone instead of sitting in three screenshots.",
+        "One receipt replaces three bullets: The problem slide is a hotel bill: $282, locals met 0, real city seen 0.",
+        "Press and testimonials cut: Fourteen slides became ten. Investors skim for about three minutes, so the low-weight slides went."
+      ],
+      "beats": [
+        {
+          "beat": "One-line promise",
+          "job": "Say the product in a sentence a friend could repeat."
+        },
+        {
+          "beat": "Problem",
+          "job": "Make the pain concrete: a price, a moment, a receipt."
+        },
+        {
+          "beat": "Solution",
+          "job": "Show who wins, one card per side of the market."
+        },
+        {
+          "beat": "Proof of behavior",
+          "job": "Point at people already doing it the hard way."
+        },
+        {
+          "beat": "Market and model",
+          "job": "Bottoms-up: trips × share × fee, with the math visible."
+        },
+        {
+          "beat": "Product",
+          "job": "Show the flow in three steps."
+        },
+        {
+          "beat": "Growth plan",
+          "job": "Name the channels you will actually use."
+        },
+        {
+          "beat": "Competition",
+          "job": "A 2×2 where you are alone in the corner that matters."
+        },
+        {
+          "beat": "Team",
+          "job": "Why these people, in one line each."
+        },
+        {
+          "beat": "The ask",
+          "job": "An amount tied to one milestone and a date."
+        }
+      ]
+    },
+    {
+      "id": "uber",
+      "category": "pitch",
+      "template": "Pre-product pitch deck",
+      "name": "Uber: UberCab concept deck",
+      "year": 2008,
+      "modelName": "Uber's 2008 concept deck structure",
+      "hook": "Push a button, get a car. In 2008.",
+      "example": "https://pitchunfairly.com/templates/uber/",
+      "deck": "https://pitchunfairly.com/templates/uber/deck/",
+      "original": "https://speakerdeck.com/fbrunel/uber-pitch-deck-2008",
+      "whatMakesItWork": [
+        "The product drives itself: Press \"Request UberCab\" and a car drives the streets of SF to your pin while the ETA counts down from 5. The original described it in bullets.",
+        "The market slide has a twist: The 2008 headline stays $4.2B. Then drag \"what if hailing becomes a habit\" toward the dashed square: $65B of 2019 gross bookings.",
+        "One dispatch call replaces a bullet list: \"Cabs in 2008\" is a call screen counting to 45 minutes: radio dispatch, no GPS, no ETA, cash.",
+        "Twenty-five slides became eleven: Use cases, benefits, marketing ideas, and the LBS roadmap folded into the beats that carry the story."
+      ],
+      "beats": [
+        {
+          "beat": "One-line promise",
+          "job": "Say the whole product in four words and show the button."
+        },
+        {
+          "beat": "Problem",
+          "job": "Put the audience in the old experience: the call, the wait, the cash."
+        },
+        {
+          "beat": "Broken system",
+          "job": "One ratio that shows why incumbents won't fix it."
+        },
+        {
+          "beat": "Why now",
+          "job": "The technology shift that just made the idea possible."
+        },
+        {
+          "beat": "Concept",
+          "job": "An analogy investors already understand: the NetJets of X."
+        },
+        {
+          "beat": "Product",
+          "job": "Play the core action, start to finish."
+        },
+        {
+          "beat": "Principles",
+          "job": "How you will run it, ending on the business model."
+        },
+        {
+          "beat": "Unfair detail",
+          "job": "One concrete edge, charted: here, the fleet."
+        },
+        {
+          "beat": "Market",
+          "job": "The number, who holds it, and how it grows."
+        },
+        {
+          "beat": "Scenarios",
+          "job": "Worst, realistic, best: show the floor is fine."
+        },
+        {
+          "beat": "Progress and next",
+          "job": "What is done, and the next milestone with a date."
+        }
+      ]
+    },
+    {
+      "id": "linkedin",
+      "category": "pitch",
+      "template": "Series B pitch deck",
+      "name": "LinkedIn: Series B deck",
+      "year": 2004,
+      "modelName": "LinkedIn's 2004 Series B structure",
+      "hook": "Promised. Delivered. Repeat.",
+      "example": "https://pitchunfairly.com/templates/linkedin/",
+      "deck": "https://pitchunfairly.com/templates/linkedin/deck/",
+      "original": "https://reidhoffman.org/linkedin-pitch-to-greylock/",
+      "whatMakesItWork": [
+        "Promised flips to delivered: Four Series A promises sit on cards that turn over to the result with a stamp: about 400K members promised, 930K+ delivered.",
+        "The tagline becomes a graph: \"Your network is bigger than you think\" grows ring by ring, counting each degree, and a toggle adds Network Plus's fourth.",
+        "Three revenue streams light up: Ads, listings, and subscriptions light one by one over the free network. Tap one to isolate its price and launch date.",
+        "Thesis first, thesis last: Reid's own advice, applied: the thesis moves from slide 36 to slide 2, and the close merges the ask with the cover line."
+      ],
+      "beats": [
+        {
+          "beat": "Cover",
+          "job": "The thesis as one sentence a stranger could repeat."
+        },
+        {
+          "beat": "Investment thesis",
+          "job": "What investors must believe, in three lines."
+        },
+        {
+          "beat": "Steer into the objection",
+          "job": "Answer the scariest question (no revenue) before the product."
+        },
+        {
+          "beat": "Problem",
+          "job": "Name how it is done today and why each way fails."
+        },
+        {
+          "beat": "Pitch by analogy",
+          "job": "Line up winners investors already understand, ending on you."
+        },
+        {
+          "beat": "The insight",
+          "job": "Show the mechanism that makes it big, not a claim."
+        },
+        {
+          "beat": "Why now, why first",
+          "job": "One precedent that proves the order of operations."
+        },
+        {
+          "beat": "Promised vs delivered",
+          "job": "Last round's promises next to the results."
+        },
+        {
+          "beat": "Market position",
+          "job": "Your share of the category, with the field named."
+        },
+        {
+          "beat": "Path to profit",
+          "job": "Projections conservative enough to pass the blink test."
+        },
+        {
+          "beat": "Team and backers",
+          "job": "Who executes, and who already bet on them."
+        },
+        {
+          "beat": "Ask and thesis",
+          "job": "The amount, what it unlocks, and the thesis left on screen."
+        }
+      ]
+    },
+    {
+      "id": "front",
+      "category": "pitch",
+      "template": "Series A pitch deck",
+      "name": "Front: Series A deck",
+      "year": 2016,
+      "modelName": "Front's 2016 Series A structure",
+      "hook": "The founder graded her own slides. We fixed the weak ones.",
+      "example": "https://pitchunfairly.com/templates/front/",
+      "deck": "https://pitchunfairly.com/templates/front/deck/",
+      "original": "https://medium.com/@collinmathilde/front-series-a-deck-f2e2775a419b",
+      "whatMakesItWork": [
+        "The weak channels slide became a machine: Her verdict was \"scalability unclear.\" Now investors drag a sales-pod slider and watch 40 demos, 28% close, and $36K a month turn into ARR.",
+        "Projections got a model and a choice: Toggle default alive (profitable in 5 months) against the plan ($3M, then $10M ARR, 15 to 53 people). The round reads as a choice.",
+        "The product plays itself: An email lands in support@, gets assigned, picks up a comment, and resolves. Three adjectives became one conversation.",
+        "The ask moved next to the market: The $10M sat at slide 15 and the Slack analogy at 19. Now they close the deck together, and 21 slides became 12."
+      ],
+      "beats": [
+        {
+          "beat": "Promise",
+          "job": "The product in one line, with the thing it replaces in view."
+        },
+        {
+          "beat": "Problem",
+          "job": "One poster-size number and the reason the old tool fails teams."
+        },
+        {
+          "beat": "Product",
+          "job": "Play one real workflow from start to finish."
+        },
+        {
+          "beat": "Wedge",
+          "job": "Why this entry point: small commitment, big pain, willingness to pay."
+        },
+        {
+          "beat": "Customer love",
+          "job": "Short quotes with seat counts, one hero quote."
+        },
+        {
+          "beat": "Growth",
+          "job": "One multiple over twelve months, with churn beside it."
+        },
+        {
+          "beat": "Net retention",
+          "job": "Show the cohort spending more a year later."
+        },
+        {
+          "beat": "Efficiency",
+          "job": "Money spent against ARR earned, side by side."
+        },
+        {
+          "beat": "Go-to-market engine",
+          "job": "The repeatable channel as a model investors can turn."
+        },
+        {
+          "beat": "Plan and use of funds",
+          "job": "Default alive against the plan, tied to hires."
+        },
+        {
+          "beat": "Team",
+          "job": "Who builds and who sells, and the unfair advantage."
+        },
+        {
+          "beat": "Market and ask",
+          "job": "The analogy that sizes the prize, then the number."
+        }
+      ]
+    },
+    {
+      "id": "zuora",
+      "category": "sales",
+      "template": "Sales narrative",
+      "name": "Zuora: The greatest sales deck",
+      "year": 2016,
+      "modelName": "the Zuora strategic narrative (big shift, winners and losers, promised land)",
+      "hook": "Name the shift. Pick the winners.",
+      "example": "https://pitchunfairly.com/templates/zuora/",
+      "deck": "https://pitchunfairly.com/templates/zuora/deck/",
+      "original": "https://medium.com/the-mission/the-greatest-sales-deck-ive-ever-seen-4f4ef3391ba0",
+      "whatMakesItWork": [
+        "The shift plays itself: Six things you used to own flip into Spotify, Box, Uber and friends as a timeline runs from the 1970s to today. Drag the scrubber to replay it.",
+        "The extinction splits on screen: A hundred dots, one per 1% of the Fortune 500, break into 48% survived and 52% gone. Toggle back to before and watch it happen again.",
+        "The Promised Land asks a question: The five criteria become buttons. The buyer taps the ones that matter to their customers, and the pitch turns into discovery.",
+        "\"The End\" became a plan: The last slide is a mutual action plan with owners on both sides and steps you tick off together, because next steps are where deals speed up."
+      ],
+      "beats": [
+        {
+          "beat": "Name the shift",
+          "job": "Open with an undeniable change in the world, not the buyer's problem."
+        },
+        {
+          "beat": "Why it's happening",
+          "job": "Show how buyers behave differently now, old next to new."
+        },
+        {
+          "beat": "Losers",
+          "job": "One hard number for what happens to those who ignore the shift."
+        },
+        {
+          "beat": "Winners",
+          "job": "The companies that adapted, grouped so the common thread is obvious."
+        },
+        {
+          "beat": "The Promised Land",
+          "job": "The future state, as criteria the buyer picks from. Not your product."
+        },
+        {
+          "beat": "A new way of thinking",
+          "job": "The mental model that has to change to get there."
+        },
+        {
+          "beat": "The obstacle",
+          "job": "Why the old tools cannot reach the Promised Land."
+        },
+        {
+          "beat": "Magic gift",
+          "job": "Your product, introduced as the thing that gets the hero past that obstacle."
+        },
+        {
+          "beat": "Evidence",
+          "job": "Customers like this buyer who already made the shift."
+        },
+        {
+          "beat": "Mutual action plan",
+          "job": "Dated steps with owners on both sides. Never \"Thank you.\""
+        }
+      ]
+    },
+    {
+      "id": "netflix",
+      "category": "team",
+      "template": "Culture deck",
+      "name": "Netflix: Culture deck",
+      "year": 2009,
+      "modelName": "the Netflix culture deck structure",
+      "hook": "125 slides that rewired Silicon Valley.",
+      "example": "https://pitchunfairly.com/templates/netflix/",
+      "deck": "https://pitchunfairly.com/templates/netflix/deck/",
+      "original": "https://www.slideshare.net/slideshow/culture-1798664/1798664",
+      "whatMakesItWork": [
+        "The Keeper Test is a game: Pick a teammate from a \"Who's on your team?\" profile screen and get the deck's own verdict, from Keep to a generous severance.",
+        "Context and control, one toggle: The same org flips between a boss approving every call and a team running on shared context. It plays control first, then lands on context.",
+        "The vacation policy deletes itself: Four lines of typical HR policy backspace away until one sentence is left: there is no policy or tracking.",
+        "125 slides became 11: Every one of the seven aspects survives, one idea per screen, dressed as a streaming title instead of a wall of text."
+      ],
+      "beats": [
+        {
+          "beat": "Title screen",
+          "job": "Name the culture in two words people will repeat."
+        },
+        {
+          "beat": "Real values",
+          "job": "Define values by who gets hired, promoted, and let go, not by the lobby poster."
+        },
+        {
+          "beat": "Behaviors",
+          "job": "List the few behaviors you actually hire and fire on, one line each."
+        },
+        {
+          "beat": "The bar",
+          "job": "Give managers one test they can run on anyone today."
+        },
+        {
+          "beat": "The hard truth",
+          "job": "Say the line most culture decks won't, in full screen."
+        },
+        {
+          "beat": "Why fewer rules",
+          "job": "Show what happens to rules when talent density falls, and your answer."
+        },
+        {
+          "beat": "Proof by policy",
+          "job": "Kill one real policy on stage to show you mean it."
+        },
+        {
+          "beat": "How we lead",
+          "job": "Contrast the managing style you reject with the one you expect."
+        },
+        {
+          "beat": "How teams work",
+          "job": "Agree on the what, free the how."
+        },
+        {
+          "beat": "How we pay",
+          "job": "Tie pay to the value of the best people, with the math."
+        },
+        {
+          "beat": "End card",
+          "job": "Close on the promise and what comes next."
+        }
+      ]
+    },
+    {
+      "id": "sequoia",
+      "category": "board",
+      "template": "Crisis board deck",
+      "name": "Sequoia: R.I.P. Good Times",
+      "year": 2008,
+      "modelName": "Sequoia's R.I.P. Good Times structure (a hard-times board deck)",
+      "hook": "The downturn deck every CEO saved.",
+      "example": "https://pitchunfairly.com/templates/sequoia/",
+      "deck": "https://pitchunfairly.com/templates/sequoia/deck/",
+      "original": "https://articles.sequoiacap.com/rip-good-times",
+      "whatMakesItWork": [
+        "The headstone is carved, not clip art: It rises out of the ground at dusk and the letters are cut in once. Grave, not goofy.",
+        "Runway you can cut your way out of: Drag cash, spend, and the cut. The months count live and the line either finds profit or a headstone.",
+        "Before and after cuts, line by line: Each function shrinks from its old budget to its new one, and $900K a month counts down to $675K.",
+        "Fifty-six slides became eleven: Twenty macro charts collapse into two: home prices and the consumer. The vicious cycle plays as a loop."
+      ],
+      "beats": [
+        {
+          "beat": "The title moment",
+          "job": "Name the new reality in three words people will repeat."
+        },
+        {
+          "beat": "The agenda",
+          "job": "Three acts: how we got here, where we are, what you do now."
+        },
+        {
+          "beat": "The cause",
+          "job": "One chart that shows what was unsustainable."
+        },
+        {
+          "beat": "The exposure",
+          "job": "Show who is overextended and why demand will fall."
+        },
+        {
+          "beat": "The mechanism",
+          "job": "Draw how the damage compounds, so nobody waits it out."
+        },
+        {
+          "beat": "The comparison",
+          "job": "Say how this differs from the last downturn, and how long it lasts."
+        },
+        {
+          "beat": "New realities",
+          "job": "Strike through every assumption the old plan rested on."
+        },
+        {
+          "beat": "Runway",
+          "job": "Cash, burn, cuts, and the month you reach profit or run out."
+        },
+        {
+          "beat": "The cuts",
+          "job": "Before and after, function by function, with the total."
+        },
+        {
+          "beat": "Speed",
+          "job": "Show the cost of cutting late against cutting now."
+        },
+        {
+          "beat": "The order",
+          "job": "One line to leave the room with."
+        }
+      ]
+    },
+    {
+      "id": "columbus",
+      "category": "pitch",
+      "template": "Seed pitch deck",
+      "name": "Christopher Columbus: The Atlantic seed round",
+      "year": 1492,
+      "modelName": "Columbus's 1492 pitch structure",
+      "hook": "Asia is just west. Probably.",
+      "example": "https://pitchunfairly.com/templates/columbus/",
+      "deck": "https://pitchunfairly.com/templates/columbus/deck/",
+      "original": "https://en.wikipedia.org/wiki/Capitulations_of_Santa_Fe",
+      "whatMakesItWork": [
+        "The math is a slider: Drag the Earth from Columbus's 75% to its real size and watch Japan slide off to 10,600 miles, uncovering a continent nobody budgeted for.",
+        "The roadmap sails itself: Seventy days, Palos to the Bahamas, drawn day by day with a counter and the real log: the second logbook, the birds, the near mutiny.",
+        "The cap table flips: Who pays (the Crown, a borrowed eighth, and a town paying off a fine) turns into who gets paid: 90% and 10%, tax free, forever.",
+        "A risk slide that misses one: Edge of the world, crew morale, Portugal, the committee: all handled. A continent in the way: not considered."
+      ],
+      "beats": [
+        {
+          "beat": "One-line promise",
+          "job": "Say the whole plan in five words."
+        },
+        {
+          "beat": "Problem",
+          "job": "Show the toll everyone already pays, stop by stop."
+        },
+        {
+          "beat": "Solution",
+          "job": "One picture of the shortcut."
+        },
+        {
+          "beat": "Why now",
+          "job": "The event that just freed the buyer's budget."
+        },
+        {
+          "beat": "Market",
+          "job": "Size it with the best source in the room."
+        },
+        {
+          "beat": "The math",
+          "job": "Put the key estimate on a slider and let them check it."
+        },
+        {
+          "beat": "Traction",
+          "job": "Be honest about the number; sell the persistence."
+        },
+        {
+          "beat": "Team",
+          "job": "One line each, and why this crew will sign on."
+        },
+        {
+          "beat": "Competition",
+          "job": "A map of their long way round and your straight line."
+        },
+        {
+          "beat": "Roadmap",
+          "job": "Dated milestones you can scrub through."
+        },
+        {
+          "beat": "Risks",
+          "job": "Name every objection before the room does."
+        },
+        {
+          "beat": "The ask",
+          "job": "Who pays, who gets paid, and the titles on the door."
+        }
+      ]
+    },
+    {
+      "id": "trojan-horse",
+      "category": "launch",
+      "template": "Product launch",
+      "name": "The Trojan Horse: Trojan Horse launch",
+      "year": "c. 1184 BC",
+      "modelName": "the Trojan Horse product launch structure",
+      "hook": "A gift they can't refuse.",
+      "example": "https://pitchunfairly.com/templates/trojan-horse/",
+      "deck": "https://pitchunfairly.com/templates/trojan-horse/deck/",
+      "original": "https://en.wikipedia.org/wiki/Trojan_Horse",
+      "whatMakesItWork": [
+        "The capacity fills up: A black-figure cross-section of the horse boards thirty soldiers, seat by seat, as the count climbs to \"At capacity\".",
+        "Trust is a live metric: Click through the gift, the retreat, Sinon, Laocoön and the serpents and watch Troy's trust climb, dip, and max out.",
+        "Launch night counts down: A clock runs to nightfall, the sky goes from ochre to moonlight, and the gates swing open from the inside.",
+        "The risk register is real: Laocoön, Cassandra, and Helen doing your wives' voices: every risk happened, every mitigation worked, all straight from Virgil and Homer."
+      ],
+      "beats": [
+        {
+          "beat": "One-line promise",
+          "job": "Name the product and the outcome in five words."
+        },
+        {
+          "beat": "Problem",
+          "job": "One brutal scoreboard: how long you have tried, and the zero."
+        },
+        {
+          "beat": "Insight",
+          "job": "The reframe: what the buyer refuses, next to what they welcome."
+        },
+        {
+          "beat": "Product",
+          "job": "Specs and capacity, shown filling up."
+        },
+        {
+          "beat": "Go to market",
+          "job": "The route, drawn on a map, including the part nobody sees."
+        },
+        {
+          "beat": "PR",
+          "job": "The story the market will repeat, written as the release."
+        },
+        {
+          "beat": "Positioning",
+          "job": "What the buyer reads on the label versus what it is."
+        },
+        {
+          "beat": "Leading indicator",
+          "job": "One metric across the story beats, dips included."
+        },
+        {
+          "beat": "Risks",
+          "job": "A register with an owner and a mitigation for each."
+        },
+        {
+          "beat": "Launch timeline",
+          "job": "A countdown to the moment it goes live."
+        },
+        {
+          "beat": "The ask",
+          "job": "Three line items and the return."
+        }
+      ]
+    },
+    {
+      "id": "hamilton",
+      "category": "proposal",
+      "template": "Business case",
+      "name": "Alexander Hamilton: National bank pitch",
+      "year": 1790,
+      "modelName": "Hamilton's 1790 Report on Public Credit structure",
+      "hook": "A broke country, one dinner, and a credit score.",
+      "example": "https://pitchunfairly.com/templates/hamilton/",
+      "deck": "https://pitchunfairly.com/templates/hamilton/deck/",
+      "original": "https://en.wikipedia.org/wiki/First_Report_on_the_Public_Credit",
+      "whatMakesItWork": [
+        "Thirteen debts roll into one: A live dashboard rolls every state’s debt into one federal number. Click Massachusetts out and watch the total drop.",
+        "The speculator math, on a slider: Drag what a veteran sold his $1,000 certificate for, then flip between Hamilton’s plan and Madison’s. 6.7x is why Madison was furious.",
+        "The dinner deal plays out: Two chits cross Jefferson’s table: the capital on the Potomac one way, votes for assumption the other, and a gold seal lands on it.",
+        "40,000 words, twelve slides: A Treasury report the length of a novella becomes a Series A(ssumption) deck with traction, a team, and reluctant board observers."
+      ],
+      "beats": [
+        {
+          "beat": "Cover",
+          "job": "The whole plan in four words: pay the debt, buy the trust."
+        },
+        {
+          "beat": "Problem",
+          "job": "One artifact that shows the pain: a $100 certificate that sold for $10."
+        },
+        {
+          "beat": "Insight",
+          "job": "The idea that makes the plan obvious, drawn as a loop."
+        },
+        {
+          "beat": "The plan",
+          "job": "Four moves, each with a date, one in focus."
+        },
+        {
+          "beat": "The numbers",
+          "job": "Let the audience build the total themselves."
+        },
+        {
+          "beat": "Hardest objection",
+          "job": "Model the critic’s case honestly, then show the vote."
+        },
+        {
+          "beat": "Objections, answered",
+          "job": "Name who objects and answer in one line each."
+        },
+        {
+          "beat": "The deal",
+          "job": "Show what you trade away to get what you need."
+        },
+        {
+          "beat": "The engine",
+          "job": "How the bank makes the plan self-reinforcing."
+        },
+        {
+          "beat": "Traction",
+          "job": "One number with its time frame; the rest in a quiet row."
+        },
+        {
+          "beat": "Team",
+          "job": "Who executes, plus the skeptics you brought along."
+        },
+        {
+          "beat": "The ask",
+          "job": "The vote you need, said once, loud."
+        }
+      ]
+    },
+    {
+      "id": "romeo-juliet",
+      "category": "proposal",
+      "template": "Proposal deck",
+      "name": "Romeo and Juliet: Why we should elope",
+      "year": 1597,
+      "modelName": "the Romeo and Juliet proposal structure",
+      "hook": "One secret wedding ends the feud. Every risk is low.",
+      "example": "https://pitchunfairly.com/templates/romeo-juliet/",
+      "deck": "https://pitchunfairly.com/templates/romeo-juliet/deck/",
+      "original": "https://www.gutenberg.org/ebooks/1513",
+      "whatMakesItWork": [
+        "The feud has a meter: A gauge swings from \"ancient grudge\" to \"pure love\" the moment the wedding happens. Projected, obviously.",
+        "The week plays itself: Sunday to Thursday, scene by scene, each one lighting up in order. Every card is true. None of them are reassuring.",
+        "A risk register you can check: Six risks, all rated Low. Click one to flip it and see the act and scene where it happens.",
+        "The advisor gets his own thesis back: The Friar's real motive, \"turn your households' rancour to pure love\", is the solution slide."
+      ],
+      "beats": [
+        {
+          "beat": "One-line promise",
+          "job": "Say the ask and the outcome in one sentence."
+        },
+        {
+          "beat": "Problem",
+          "job": "Make the stakes concrete: a count, a decree, a deadline."
+        },
+        {
+          "beat": "Solution",
+          "job": "Show the one move that changes the number, in the investor's own words."
+        },
+        {
+          "beat": "Why now",
+          "job": "Prove the moment: what changed in the last 24 hours."
+        },
+        {
+          "beat": "Market",
+          "job": "Size it honestly, even when the answer is two people."
+        },
+        {
+          "beat": "Traction",
+          "job": "Count the signals you already have, however early."
+        },
+        {
+          "beat": "Plan",
+          "job": "Lay the milestones on a timeline the room can watch."
+        },
+        {
+          "beat": "Risks",
+          "job": "Name every risk before they do, with a mitigation each."
+        },
+        {
+          "beat": "Team",
+          "job": "One line per person, and give the advisor a seat."
+        },
+        {
+          "beat": "The ask",
+          "job": "A term sheet: what, where, when, and the cover story."
+        }
+      ]
+    },
+    {
+      "id": "wonka",
+      "category": "launch",
+      "template": "Marketing campaign plan",
+      "name": "Willy Wonka: Golden Ticket launch",
+      "year": 1964,
+      "modelName": "the Golden Ticket launch structure",
+      "hook": "Five tickets. One factory. Zero leaks.",
+      "example": "https://pitchunfairly.com/templates/wonka/",
+      "deck": "https://pitchunfairly.com/templates/wonka/deck/",
+      "original": "https://en.wikipedia.org/wiki/Charlie_and_the_Chocolate_Factory",
+      "whatMakesItWork": [
+        "You can tear open a bar: Click a wrapper and it rips. Usually it is chocolate. Once in a while it is a Golden Ticket, with the odds printed beside it.",
+        "The frenzy fills itself: Dots spread across a globe while five ticket slots fill in order, from Augustus to Charlie. Replay the hunt any time.",
+        "The tour is a route that counts down: The path draws room by room and \"children remaining\" drops from five to one as each guest finds their exit.",
+        "The twist is a job posting: The heir reveal arrives late, as an open role with four disqualifiers struck out one by one, followed by a risk register rated low across the board."
+      ],
+      "beats": [
+        {
+          "beat": "Launch promise",
+          "job": "The campaign in one line, with the hero object on screen."
+        },
+        {
+          "beat": "Why we went dark",
+          "job": "The backstory as a story with villains, not a timeline."
+        },
+        {
+          "beat": "Insight",
+          "job": "The demand you already have: the question everyone keeps asking."
+        },
+        {
+          "beat": "Mechanic",
+          "job": "The campaign in one sentence, and let the room try it."
+        },
+        {
+          "beat": "Funnel",
+          "job": "Top to bottom, with the scarcity made visible."
+        },
+        {
+          "beat": "Earned media",
+          "job": "Show the buzz filling up, not a list of outlets."
+        },
+        {
+          "beat": "Experience",
+          "job": "Play the customer journey step by step."
+        },
+        {
+          "beat": "The real goal",
+          "job": "Name the business outcome the campaign was built for."
+        },
+        {
+          "beat": "Risks",
+          "job": "List them plainly, with likelihood and a mitigation each."
+        },
+        {
+          "beat": "The ask",
+          "job": "One decision, one date."
+        }
+      ]
+    },
+    {
+      "id": "moonshot",
+      "category": "proposal",
+      "template": "Budget request",
+      "name": "NASA: The moonshot budget",
+      "year": 1961,
+      "modelName": "the 1961 moonshot budget request structure",
+      "hook": "Nine billion dollars to win a race nobody else can see.",
+      "example": "https://pitchunfairly.com/templates/moonshot/",
+      "deck": "https://pitchunfairly.com/templates/moonshot/deck/",
+      "original": "https://www.jfklibrary.org/archives/other-resources/john-f-kennedy-speeches/united-states-congress-special-message-19610525",
+      "whatMakesItWork": [
+        "The scoreboard fills in: Ten real firsts from Sputnik to Gagarin light up one by one. The score ends five all. The front pages end five to nothing.",
+        "Pick your option, see the odds: Toggle hold course, a lab in orbit, a robot on the Moon, or a crew on the Moon, and read the cost, the date and von Braun's own odds for each.",
+        "The budget draws itself: NASA by fiscal year, 1960 to 1966: year one adds $531 million, and by year four the agency is five times bigger.",
+        "The receipt itemizes the weather: Rover, communications and weather satellites each get a line. The Moon gets \"the rest\"."
+      ],
+      "beats": [
+        {
+          "beat": "Cover",
+          "job": "The outcome and the deadline, in one line."
+        },
+        {
+          "beat": "The decision",
+          "job": "The one decision you need, and the first-year number, before any background."
+        },
+        {
+          "beat": "Why now: the scoreboard",
+          "job": "Where you stand against the competition, counted honestly, with what the market notices marked."
+        },
+        {
+          "beat": "Why now: the trigger",
+          "job": "The recent events that make waiting more expensive than acting, on a timeline."
+        },
+        {
+          "beat": "Options considered",
+          "job": "Every real alternative, including doing nothing, with cost, timing and odds for each."
+        },
+        {
+          "beat": "Recommendation",
+          "job": "The option you chose and the one insight that makes it winnable."
+        },
+        {
+          "beat": "Cost and phasing",
+          "job": "Spend by year, so the approvers see year one and the peak."
+        },
+        {
+          "beat": "Line items",
+          "job": "What the money buys, itemized like a receipt, totals that match."
+        },
+        {
+          "beat": "Milestones",
+          "job": "Gates with dates, and the slack against the deadline."
+        },
+        {
+          "beat": "Risks",
+          "job": "A register with an owner and a mitigation for each risk."
+        },
+        {
+          "beat": "Success criteria",
+          "job": "What counts as done, and what explicitly does not."
+        },
+        {
+          "beat": "The ask",
+          "job": "The numbers to approve, the commitment, and the return."
+        }
+      ]
+    },
+    {
+      "id": "apollo-13",
+      "category": "review",
+      "template": "Post-mortem",
+      "name": "Apollo 13: The incident review",
+      "year": 1970,
+      "modelName": "the Apollo 13 incident review structure",
+      "hook": "Houston, we've had a post-mortem.",
+      "example": "https://pitchunfairly.com/templates/apollo-13/",
+      "deck": "https://pitchunfairly.com/templates/apollo-13/deck/",
+      "original": "https://www.nasa.gov/history/50-years-ago-apollo-13-review-board-report/",
+      "whatMakesItWork": [
+        "Scrub the whole mission: 143 hours on one scrubber: drag from liftoff to splashdown and watch fourteen logged events light up, with the MET and the 1970 wall clock ticking alongside.",
+        "Five whys, one at a time: The board's findings become a five-whys chain that reveals cause by cause, from the bang at 55:54 back to a 1965 spec change nobody carried through.",
+        "The square peg, live: A CO2 gauge climbs toward the 7.5 mm Hg limit until the mailbox goes in. Flip the fix off and watch the needle run into the red.",
+        "Where we got lucky: The column most post-mortems skip: the lifeboat was still attached, the bad tank held for 56 hours, and Aquarius had 4.5 hours of power to spare."
+      ],
+      "beats": [
+        {
+          "beat": "Cover",
+          "job": "Incident name, detection time, severity, status, and the words \"blameless review\"."
+        },
+        {
+          "beat": "Summary",
+          "job": "What happened, impact, root cause, resolution: four lines an executive can read in thirty seconds."
+        },
+        {
+          "beat": "Impact",
+          "job": "Lead with the outcome that matters most, then what it cost, in one hero number and a quiet row."
+        },
+        {
+          "beat": "Timeline",
+          "job": "Every event with a timestamp, scrubbable, color-coded by phase."
+        },
+        {
+          "beat": "Detection",
+          "job": "Time to detect, diagnose and mitigate, plus every earlier signal you missed."
+        },
+        {
+          "beat": "Response",
+          "job": "What the team did to stop the bleeding, in the order it happened."
+        },
+        {
+          "beat": "Key mitigation",
+          "job": "The one fix that saved you, shown working against its limit."
+        },
+        {
+          "beat": "Root cause",
+          "job": "Five whys, from the symptom to the decision that made it possible."
+        },
+        {
+          "beat": "Retro",
+          "job": "What went well, what went wrong, and where you got lucky, three items each."
+        },
+        {
+          "beat": "Action items",
+          "job": "Every fix with one owner and a type: prevent, detect, mitigate, process, learn."
+        },
+        {
+          "beat": "Follow-ups",
+          "job": "Status, then dated follow-ups, so the review ends on what happens next."
+        }
+      ]
+    },
+    {
+      "id": "shackleton",
+      "category": "team",
+      "template": "Recruiting deck",
+      "name": "Ernest Shackleton: The Endurance recruiting pitch",
+      "year": 1914,
+      "modelName": "Shackleton's recruiting pitch structure",
+      "hook": "Small wages. Long nights. A story for life.",
+      "example": "https://pitchunfairly.com/templates/shackleton/",
+      "deck": "https://pitchunfairly.com/templates/shackleton/deck/",
+      "original": "https://en.wikipedia.org/wiki/Imperial_Trans-Antarctic_Expedition",
+      "whatMakesItWork": [
+        "The route draws itself: A polar map of Antarctica traces the 1,800-mile crossing from Vahsel Bay through the Pole to McMurdo Sound, with the Ross Sea party's depots popping in.",
+        "The hard parts go first: The legendary ad never existed, so we wrote an honest one: cold most days, dark for months, pay modest, story excellent.",
+        "A role-fit quiz: Three questions straight from the expedition (theatricals, singing, the twelve-pound banjo) and a verdict card: signed on, ship's company, or a warm winter at home.",
+        "Comp you can drag: Slide your time away and watch wages crawl, months without the sun stack up, and glory compound to Immortal."
+      ],
+      "beats": [
+        {
+          "beat": "Cover",
+          "job": "The mission as an invitation, in one line, with one picture of the work."
+        },
+        {
+          "beat": "The mission",
+          "job": "What we are doing and how, shown as a plan the candidate can follow."
+        },
+        {
+          "beat": "Why it matters",
+          "job": "Why now and why us: what is taken, what is still open, where we already lead."
+        },
+        {
+          "beat": "The role",
+          "job": "How many seats, what each group does, and the open roles by name."
+        },
+        {
+          "beat": "What it is really like",
+          "job": "The hard parts, stated plainly, so the wrong people opt out."
+        },
+        {
+          "beat": "Who thrives here",
+          "job": "The temperament you hire for, as a quick self-check with a verdict."
+        },
+        {
+          "beat": "How we pick people",
+          "job": "What the interview tests and why, with real examples."
+        },
+        {
+          "beat": "What you get",
+          "job": "Comp and conditions honestly, plus the upside nobody else offers."
+        },
+        {
+          "beat": "The team you would join",
+          "job": "Named people and their credentials: who you will spend your days with."
+        },
+        {
+          "beat": "The process",
+          "job": "Applicants to hires, then the steps and dates from letter to day one."
+        },
+        {
+          "beat": "The ask",
+          "job": "One action and a deadline."
+        }
+      ]
+    },
+    {
+      "id": "jurassic-park",
+      "category": "board",
+      "template": "Board meeting",
+      "name": "Jurassic Park: The board meeting after the storm",
+      "year": 1993,
+      "modelName": "the Jurassic Park board meeting structure (KPIs vs plan, incident, decisions)",
+      "hook": "Revenue: zero. Visitors: zero. Containment: below plan.",
+      "example": "https://pitchunfairly.com/templates/jurassic-park/",
+      "deck": "https://pitchunfairly.com/templates/jurassic-park/deck/",
+      "original": "https://en.wikipedia.org/wiki/Jurassic_Park_(film)",
+      "whatMakesItWork": [
+        "Every KPI turns red on cue: Visitors, revenue, uptime, containment and NPS start on plan, then flip to red one row at a time. Containment: below plan.",
+        "The grid drops to zero: A control-room chart plays the weekend's power hour by hour, from 100% through the storm to zero. Scrub it yourself.",
+        "The board actually votes: Three motions with costs and a recommendation. Click approve or defer and the tally gets minuted.",
+        "Lowlights before highlights: Four lowlights, three highlights, in that order. The gift shop is fully stocked."
+      ],
+      "beats": [
+        {
+          "beat": "Cover and agenda",
+          "job": "The company, the meeting, the one-line truth, and the agenda. Send it as a pre-read."
+        },
+        {
+          "beat": "TL;DR",
+          "job": "The quarter in three lines: what happened, where we are, what we need."
+        },
+        {
+          "beat": "Scorecard",
+          "job": "Last meeting's priorities, each with its target and an honest red, yellow or green."
+        },
+        {
+          "beat": "KPIs vs plan",
+          "job": "Every key metric against plan, with the variance and a status, bad ones included."
+        },
+        {
+          "beat": "What happened",
+          "job": "A neutral, timestamped summary of the quarter's defining event. Facts, no adjectives."
+        },
+        {
+          "beat": "The metric that broke",
+          "job": "One operational chart, annotated with the events from the timeline."
+        },
+        {
+          "beat": "Root causes",
+          "job": "Two or three causes, not symptoms, each with a concrete fix. Blame the system, not the person."
+        },
+        {
+          "beat": "Lowlights, then highlights",
+          "job": "Bad news first and longer. It buys trust for the good news."
+        },
+        {
+          "beat": "Financials and runway",
+          "job": "Revenue, burn by line, cash, and months of runway, stated plainly."
+        },
+        {
+          "beat": "Decisions needed",
+          "job": "Two or three motions with cost and recommendation, for the board to approve or defer."
+        },
+        {
+          "beat": "Next quarter",
+          "job": "Three priorities with a target and one owner each. They become the next scorecard."
+        },
+        {
+          "beat": "Close",
+          "job": "Questions, closed session, and the date of the next meeting. No thank-you slide."
+        }
+      ]
+    },
+    {
+      "id": "iphone",
+      "category": "launch",
+      "template": "Launch keynote",
+      "name": "Apple: The iPhone launch keynote",
+      "year": 2007,
+      "modelName": "the 2007 iPhone launch keynote structure",
+      "hook": "Three products. One device. Zero buttons.",
+      "example": "https://pitchunfairly.com/templates/iphone/",
+      "deck": "https://pitchunfairly.com/templates/iphone/deck/",
+      "original": "https://www.apple.com/newsroom/2007/01/09Apple-Reinvents-the-Phone-with-iPhone/",
+      "whatMakesItWork": [
+        "Three icons spin into one: An iPod, a phone and a web tile orbit the stage, then land in the dock of a phone that wasn't there a second ago. Replay it as often as Steve repeated the list.",
+        "Plastic morphs into glass: A 2006 smartphone loses its keyboard on cue. Flip between Phone, Text and iPod: the plastic keys never change, the glass redraws itself for every app.",
+        "A demo phone you can unlock: Drag the slider, flick Cover Flow, search the map for coffee near Moscone West, and order 4,000 lattes before hanging up.",
+        "The goal is a sliver: A billion phones next to every other gadget market, with the 1% goal drawn in blue. Drag the share and watch 10 million grow."
+      ],
+      "beats": [
+        {
+          "beat": "The promise",
+          "job": "Open on one sentence, the place and the date. Nothing else on the slide."
+        },
+        {
+          "beat": "The moment",
+          "job": "Why today: the company's past breakthroughs on a timeline, and this one next."
+        },
+        {
+          "beat": "The problem",
+          "job": "One napkin chart of what is wrong with today's category."
+        },
+        {
+          "beat": "The reveal",
+          "job": "Name the pieces, let the room solve it, then say the product's name."
+        },
+        {
+          "beat": "What it does",
+          "job": "The three jobs it does, each strong enough to be a product on its own."
+        },
+        {
+          "beat": "The breakthrough",
+          "job": "The one technical idea, shown as a before and after."
+        },
+        {
+          "beat": "Demo moments",
+          "job": "Three or four live moments the audience will retell."
+        },
+        {
+          "beat": "Who it's for",
+          "job": "Name buyers by what they already carry and pay for."
+        },
+        {
+          "beat": "Price and availability",
+          "job": "Do the price math out loud, then dates, regions and partners."
+        },
+        {
+          "beat": "The goal",
+          "job": "One number you can be held to next year, against the market size."
+        },
+        {
+          "beat": "One more thing",
+          "job": "A closing surprise bigger than the product, then get off stage."
+        }
+      ]
+    },
+    {
+      "id": "eiffel",
+      "category": "proposal",
+      "template": "Client proposal",
+      "name": "Gustave Eiffel: The tower proposal",
+      "year": 1886,
+      "modelName": "Eiffel's 1886 tower proposal structure",
+      "hook": "300 metres of iron for a 20-year permit.",
+      "example": "https://pitchunfairly.com/templates/eiffel/",
+      "deck": "https://pitchunfairly.com/templates/eiffel/deck/",
+      "original": "https://en.wikipedia.org/wiki/Eiffel_Tower",
+      "whatMakesItWork": [
+        "The brief ticks itself off: All six lines of the 1886 competition, from \"metal\" to \"ready for May 1889\", answered and checked in order, with a 6 of 6 score.",
+        "The tower builds to scale: A blueprint elevation assembles section by section while a height counter climbs past the Washington Monument to 300 m.",
+        "The deal is a slider: Move the State's cash between nothing and all 6.5 million francs and watch Eiffel's financing and the years of ticket rights move with it, anchored on the real 1.5 million for 20 years.",
+        "The protest is a line item: Wind, the artists in Le Temps, the 1909 teardown, and opening day each get an owner and a mitigation in the risk register."
+      ],
+      "beats": [
+        {
+          "beat": "Cover",
+          "job": "Who you are, what you will deliver, and the brief you are answering."
+        },
+        {
+          "beat": "Your goal",
+          "job": "Play the client's objective back to them, including what success looks like."
+        },
+        {
+          "beat": "Your requirements",
+          "job": "Quote each requirement in their order and show how you meet it."
+        },
+        {
+          "beat": "Our solution",
+          "job": "The thing you will deliver, shown, with its headline number."
+        },
+        {
+          "beat": "Why us",
+          "job": "Comparable work you have already delivered, and the named team."
+        },
+        {
+          "beat": "How we build",
+          "job": "The method that makes the plan believable."
+        },
+        {
+          "beat": "Plan and timeline",
+          "job": "Dated milestones the client can hold you to, ending before their deadline."
+        },
+        {
+          "beat": "Pricing and terms",
+          "job": "What they pay, what you carry, and what you get in return."
+        },
+        {
+          "beat": "Risks",
+          "job": "A register with an owner, a mitigation, and a status for each risk."
+        },
+        {
+          "beat": "What you get",
+          "job": "What the client holds at the end, not the work you will do."
+        },
+        {
+          "beat": "Next steps",
+          "job": "Three dated actions and a signature."
+        }
+      ]
+    },
+    {
+      "id": "wright",
+      "category": "board",
+      "template": "Investor update",
+      "name": "The Wright brothers: The December 1903 investor update",
+      "year": 1903,
+      "modelName": "the Wright brothers' investor update structure",
+      "hook": "Success. Four flights Thursday morning. Inform press.",
+      "example": "https://pitchunfairly.com/templates/wright/",
+      "deck": "https://pitchunfairly.com/templates/wright/deck/",
+      "original": "https://en.wikipedia.org/wiki/Wright_Flyer",
+      "whatMakesItWork": [
+        "The telegram types itself: The TL;DR is the real telegram, typed out letter by letter, then corrected in red pencil: 57 becomes 59 and \"Orevelle\" becomes Orville.",
+        "The flight log replays: All four flights draw over the Kill Devil Hills sand in their real durations, sped up 30x. Click any flight to fly it again.",
+        "Burn, divided by flights: Under $1,000 against Langley's $70,000 of mostly public money. Flip to \"per successful flight\" and Langley's bar becomes a division by zero.",
+        "Lowlights with status pills: The wreck, John Daniels tumbling with it, the three-second stall: written as a candid ledger, the way GitLab's update template demands."
+      ],
+      "beats": [
+        {
+          "beat": "Cover",
+          "job": "Who it is from, who it is to, and the month in one line."
+        },
+        {
+          "beat": "TL;DR",
+          "job": "The whole update in the length of a telegram: outcome, headline number, ask, next date."
+        },
+        {
+          "beat": "Asks",
+          "job": "Two or three specific requests, each with an owner and a due date. Put them near the top."
+        },
+        {
+          "beat": "Key metrics",
+          "job": "One hero number with its time frame, then the same 4 to 6 KPIs as every month, each against plan or last period."
+        },
+        {
+          "beat": "Proof chart",
+          "job": "The trend behind the hero number, so investors see the slope, not just the point."
+        },
+        {
+          "beat": "Highlights",
+          "job": "Two or three wins, each with evidence, including the work that made the result possible."
+        },
+        {
+          "beat": "Lowlights",
+          "job": "The misses, stated plainly, with a status for each. Never skip this section."
+        },
+        {
+          "beat": "Burn and runway",
+          "job": "What you spent, where the money came from, and how long it lasts. Benchmark it."
+        },
+        {
+          "beat": "Competition",
+          "job": "Your position against the best-funded rival, row by row, with dates."
+        },
+        {
+          "beat": "What's next",
+          "job": "Next period's priorities with a target for each; they open next month's update."
+        },
+        {
+          "beat": "Thanks",
+          "job": "Name the people who helped, then restate the one action you need."
+        }
+      ]
+    },
+    {
+      "id": "ford",
+      "category": "team",
+      "template": "All-hands",
+      "name": "Ford Motor Company: The $5 day all-hands",
+      "year": 1914,
+      "modelName": "Ford's $5 day all-hands structure",
+      "hook": "Double the pay. Cut the day. Watch what happens.",
+      "example": "https://pitchunfairly.com/templates/ford/",
+      "deck": "https://pitchunfairly.com/templates/ford/deck/",
+      "original": "https://www.thehenryford.org/collections/explore/artifact/261445",
+      "whatMakesItWork": [
+        "The line moves on the slide: Five chassis roll down a belt, gaining axles, engine and wheels, while a timer drops from 12 h 30 m to 1 h 33 m. Press Stationary to watch it go back to 1912.",
+        "Turnover is a leaking bucket: It fills with 52,000 hires, drains through four holes, and settles at the 14,000 who stayed. 370% gets a picture.",
+        "Your pay, your weeks: A calculator puts the old day ($2.34, 26 cents an hour) next to the new one ($5, 62.5 cents) and adds up what a man takes home and the hours he gets back.",
+        "The strings, said plainly: A Sociological Department form ticks off age, service, a clean house and regular savings, then stamps it. The FAQ answers the awkward questions in one line each."
+      ],
+      "beats": [
+        {
+          "beat": "Cover",
+          "job": "The change in three facts people will repeat: the money, the hours, the date."
+        },
+        {
+          "beat": "What happened",
+          "job": "The last period in one picture, so everyone starts from the same place."
+        },
+        {
+          "beat": "The broken number",
+          "job": "One metric that is failing, shown so nobody can argue with it."
+        },
+        {
+          "beat": "The decision",
+          "job": "The new policy as one number at poster size, with what it replaces."
+        },
+        {
+          "beat": "What changes for you: pay",
+          "job": "Let each person work out their own number before they ask."
+        },
+        {
+          "beat": "What changes for you: time",
+          "job": "Schedules, shifts or process, before and after, on one scale."
+        },
+        {
+          "beat": "Why we are doing it",
+          "job": "The real business reason, with its cost. People can tell when it is charity theater."
+        },
+        {
+          "beat": "What we expect",
+          "job": "Eligibility and conditions, stated plainly, before they find the fine print."
+        },
+        {
+          "beat": "What is not changing",
+          "job": "Name what stays, so the room stops guessing."
+        },
+        {
+          "beat": "FAQ",
+          "job": "The awkward questions, answered in one line each."
+        },
+        {
+          "beat": "What is next",
+          "job": "Dates, owners, and what to tell people outside the company."
+        },
+        {
+          "beat": "Thank you",
+          "job": "Thanks plus one thing everyone can do today."
+        }
+      ]
+    },
+    {
+      "id": "tom-sawyer",
+      "category": "sales",
+      "template": "Discovery call deck",
+      "name": "Tom Sawyer: The whitewashed fence discovery call",
+      "year": 1876,
+      "modelName": "Tom Sawyer's fence discovery call structure",
+      "hook": "Does a boy get to whitewash a fence every day?",
+      "example": "https://pitchunfairly.com/templates/tom-sawyer/",
+      "deck": "https://pitchunfairly.com/templates/tom-sawyer/deck/",
+      "original": "https://www.gutenberg.org/ebooks/74",
+      "whatMakesItWork": [
+        "Ask first, then show: The transcript plays back Tom's two questions, and the tally lands: Ben asked for a turn three times, Tom asked for help zero.",
+        "A boy-sized BANT: Run Ben, Billy Fisher, Johnny Miller or Sid through need, authority and budget. Sid washes out at Aunt Polly.",
+        "A deal desk with no discount: Four rounds, three stamped Declined, until the offer goes from the core to all of the apple. The rate card is every treasure Twain lists, down to the dog-collar with no dog.",
+        "The fence fills coat by coat: The mutual action plan checks off owners on both sides while thirty yards of fence, drawn to scale, takes three coats of whitewash."
+      ],
+      "beats": [
+        {
+          "beat": "Upfront contract",
+          "job": "Who is on the call, how long it takes, and what a yes looks like at the end."
+        },
+        {
+          "beat": "The big shift",
+          "job": "One change in the buyer's world, stated before a word about you."
+        },
+        {
+          "beat": "The stakes",
+          "job": "What saying no costs, and why the chance is rare."
+        },
+        {
+          "beat": "Discovery questions",
+          "job": "The questions you ask before you show anything; let the buyer talk."
+        },
+        {
+          "beat": "Qualification",
+          "job": "Need, authority and budget as a flow, so a bad fit leaves early."
+        },
+        {
+          "beat": "Proof from lookalikes",
+          "job": "One case study from a customer the buyer recognizes as themselves."
+        },
+        {
+          "beat": "The promised land",
+          "job": "The buyer's future state, drawn concretely, not your product."
+        },
+        {
+          "beat": "Terms",
+          "job": "How the price was set, and what you did not discount."
+        },
+        {
+          "beat": "Pricing in their currency",
+          "job": "Price in what the buyer already has and values."
+        },
+        {
+          "beat": "Mutual action plan",
+          "job": "Dated steps with owners on both sides; the first one is today. Never \"Thank you\"."
+        }
+      ]
+    },
+    {
+      "id": "paul-revere",
+      "category": "sales",
+      "template": "Champion deck",
+      "name": "Paul Revere: The midnight ride champion deck",
+      "year": 1775,
+      "modelName": "Paul Revere's forwardable champion deck structure",
+      "hook": "The Regulars are coming out. Pass it on.",
+      "example": "https://pitchunfairly.com/templates/paul-revere/",
+      "deck": "https://pitchunfairly.com/templates/paul-revere/deck/",
+      "original": "https://www.masshist.org/database/99",
+      "whatMakesItWork": [
+        "Two riders, one map: Toggle Revere and Dawes on an engraved map of Middlesex. Same news, same night; only one road lights up with captains woken.",
+        "The lanterns are a switch: Flip the North Church steeple between one lantern and two, and read what each one told Charlestown. Spoiler: not Revere. He was in the boat.",
+        "Waiting has a price: Drag the hour you forward the alarm and watch the next town's warning before sunrise on Lexington Green shrink, half hour by half hour.",
+        "The deck forwards itself: The close is one button. Each press stamps the next town on the routing slip, from Charlestown until all of Middlesex is up."
+      ],
+      "beats": [
+        {
+          "beat": "Cover with routing slip",
+          "job": "Name the change and the ask in one line, and show who has already forwarded it."
+        },
+        {
+          "beat": "If you read one slide",
+          "job": "The summary your champion can forward alone: what, where, who is at risk, and what we need from the reader."
+        },
+        {
+          "beat": "Why change",
+          "job": "Dated evidence the champion can repeat in the room, ending on what is happening now."
+        },
+        {
+          "beat": "Why now",
+          "job": "The trigger that makes this week different, shown as the signal everyone can see."
+        },
+        {
+          "beat": "Why us",
+          "job": "Against the alternative, side by side: same inputs, different outcome, and the reason."
+        },
+        {
+          "beat": "How it spreads",
+          "job": "The proof: how the result compounds once each person passes it on."
+        },
+        {
+          "beat": "Objections answered",
+          "job": "The four questions the champion will be asked without you, each with a one-line answer and its evidence."
+        },
+        {
+          "beat": "Cost of waiting",
+          "job": "What each week of delay costs, as something the reader can drag and feel."
+        },
+        {
+          "beat": "Mutual action plan",
+          "job": "Dated steps with owners on both sides, with the reader's own step left open."
+        },
+        {
+          "beat": "The ask",
+          "job": "One action: forward it to the next decision-maker."
+        }
+      ]
+    },
+    {
+      "id": "moneyball",
+      "category": "sales",
+      "template": "ROI business case",
+      "name": "The 2002 Oakland A's: The Moneyball business case",
+      "year": 2002,
+      "modelName": "the Moneyball ROI business case structure",
+      "hook": "103 wins at a third of the price.",
+      "example": "https://pitchunfairly.com/templates/moneyball/",
+      "deck": "https://pitchunfairly.com/templates/moneyball/deck/",
+      "original": "https://en.wikipedia.org/wiki/2002_Oakland_Athletics_season",
+      "whatMakesItWork": [
+        "The ROI model has visible assumptions: Slide replacement-level wins and the roster floor, pick a rival, and watch the cost of a marginal win: $636K for Oakland, $2.20M for the Yankees.",
+        "All 30 clubs on one chart: Payroll against wins for every 2002 team. The league line says $40M buys 74 wins. Oakland sits 29 above it.",
+        "Baseball cards price the work: Flip between first base and the bullpen: Hatteberg got on base for $4,245 a time, Giambi for $34,762. Bradford recorded outs at $1,040 each.",
+        "The streak lights the scoreboard: Twenty lamps, twenty real scores, and game 20 told in three frames: 11-0, 11-11, Hatteberg."
+      ],
+      "beats": [
+        {
+          "beat": "Headline outcome",
+          "job": "The result and the price on one line, before anything else."
+        },
+        {
+          "beat": "The decision",
+          "job": "The one approval you need today, with the unit economics that justify it."
+        },
+        {
+          "beat": "Cost of the status quo",
+          "job": "What standing still costs, in the buyer's own currency."
+        },
+        {
+          "beat": "Options",
+          "job": "Every real alternative, including doing nothing, with why it fails. One recommended."
+        },
+        {
+          "beat": "The insight",
+          "job": "What the market misprices, shown with like-for-like unit costs."
+        },
+        {
+          "beat": "ROI model",
+          "job": "The formula, its assumptions as controls, and the result the buyer drives."
+        },
+        {
+          "beat": "Proof from lookalikes",
+          "job": "Your result plotted against every peer, with the trend line drawn."
+        },
+        {
+          "beat": "Results to date",
+          "job": "The moment that made it undeniable, told as a sequence."
+        },
+        {
+          "beat": "Risks",
+          "job": "A register: what could go wrong, what you will do, and its status."
+        },
+        {
+          "beat": "The plan",
+          "job": "Past, now and next on one line, with where we are pinned."
+        },
+        {
+          "beat": "Decision and next step",
+          "job": "The ask restated, one button, and the date it is needed by."
+        }
+      ]
+    },
+    {
+      "id": "lewis-clark",
+      "category": "sales",
+      "template": "Quarterly business review",
+      "name": "Lewis and Clark: The Corps of Discovery report to Jefferson",
+      "year": 1806,
+      "modelName": "Lewis and Clark's QBR structure",
+      "hook": "Three green, one amber, and a passage that isn't there.",
+      "example": "https://pitchunfairly.com/templates/lewis-clark/",
+      "deck": "https://pitchunfairly.com/templates/lewis-clark/deck/",
+      "original": "https://www.loc.gov/exhibits/lewisandclark/transcript57.html",
+      "whatMakesItWork": [
+        "The goals are graded first: Jefferson's five goals, in his own words, scored green, amber and red before a single mile is mentioned. Click any one for the receipt.",
+        "The route draws itself: The line crawls up the Missouri and over the Divide as goals tick off, and the all-water route gets crossed out at Lemhi Pass. Scrub it with the slider.",
+        "The budget zooms: $2,500 against $38,722.25, to scale. Zoom into the estimate and the actual bar runs off the slide; contingencies were $87.",
+        "The miss is a terrain map: The 1803 plan (one short portage) morphs into the 1805 terrain (the Rockies), with the fix beside it: 29 Shoshone horses and a guide."
+      ],
+      "beats": [
+        {
+          "beat": "Cover",
+          "job": "Whose account, what period, and the outcome in one line."
+        },
+        {
+          "beat": "Their goals",
+          "job": "The goals the customer set, in the customer's own words, before anything you did."
+        },
+        {
+          "beat": "Scorecard",
+          "job": "Each goal red, amber or green, with a click-through to what happened."
+        },
+        {
+          "beat": "Results over time",
+          "job": "The period on one timeline, with goals ticking off where they were hit."
+        },
+        {
+          "beat": "Value in their terms",
+          "job": "One hero number in the unit the sponsor cares about, with the proof beside it."
+        },
+        {
+          "beat": "Cost against plan",
+          "job": "Budget and actual to scale, the variance named, no hiding."
+        },
+        {
+          "beat": "The big miss",
+          "job": "What didn't work, why, and what you did about it, shown not told."
+        },
+        {
+          "beat": "Issues register",
+          "job": "Every other problem with a date, a response and an honest status."
+        },
+        {
+          "beat": "What we learned",
+          "job": "What you now know about their world that they don't, and who taught you."
+        },
+        {
+          "beat": "Roadmap",
+          "job": "Past, now and next on one line, tied to their goals."
+        },
+        {
+          "beat": "The renewal ask",
+          "job": "The specific renewal or expansion, in units, with a decision date."
+        }
+      ]
+    },
+    {
+      "id": "overlord",
+      "category": "strategy",
+      "template": "Annual plan and OKRs",
+      "name": "Operation Overlord: The D-Day annual plan",
+      "year": 1944,
+      "modelName": "Operation Overlord's annual plan structure",
+      "hook": "One objective. Five beaches. One weather report.",
+      "example": "https://pitchunfairly.com/templates/overlord/",
+      "deck": "https://pitchunfairly.com/templates/overlord/deck/",
+      "original": "https://www.archives.gov/milestone-documents/general-eisenhowers-order-of-the-day",
+      "whatMakesItWork": [
+        "The key results get graded: Five KRs with real target dates flip from Plan to Scored: the beaches on time, Caen 45 days late, the Seine 15 days early.",
+        "Toggle what Germany saw: One map, two views: Patton's army group massing in Kent, or wood, canvas, simulated radio and one Spaniard with 27 imaginary agents.",
+        "The go/no-go is a forecast: Stagg's real forecasts for 5 and 6 June, checked against the minimums, with the tide windows and the storm that would have hit on the 19th.",
+        "The plan says what it won't do: Calais, a defended port, the peninsulas, 1 May and perfect weather all struck through in red pencil. Calais gets an asterisk."
+      ],
+      "beats": [
+        {
+          "beat": "Cover",
+          "job": "The year in one line: the objective and the scale of it."
+        },
+        {
+          "beat": "Where we are",
+          "job": "Score last year's plan honestly before proposing this year's, corrections in red."
+        },
+        {
+          "beat": "The one objective",
+          "job": "One sentence the whole company can repeat, ideally in the board's own words."
+        },
+        {
+          "beat": "Key results",
+          "job": "Three to five measurable results with dates, set up to be graded at year end."
+        },
+        {
+          "beat": "Bet one",
+          "job": "The biggest bet that delivers the KRs, with its specs and what it costs to build."
+        },
+        {
+          "beat": "Bet two",
+          "job": "The second bet, shown working: what the market sees versus what is true."
+        },
+        {
+          "beat": "Phases and timeline",
+          "job": "Past, you-are-here, next, with the phases and the one date you don't control."
+        },
+        {
+          "beat": "Owners and resources",
+          "job": "One owner per result, with the resources they command next to their name."
+        },
+        {
+          "beat": "Risks and contingencies",
+          "job": "Each risk with an owner and a fallback, and the real cost stated plainly."
+        },
+        {
+          "beat": "Not doing",
+          "job": "The options you rejected, struck through, with one line of why for each."
+        },
+        {
+          "beat": "Go/no-go",
+          "job": "The decision criteria against the latest data, and the verdict."
+        },
+        {
+          "beat": "The decision",
+          "job": "Who decided, when, and who owns it if it fails."
+        }
+      ]
+    },
+    {
+      "id": "wrigley",
+      "category": "strategy",
+      "template": "Pivot memo",
+      "name": "Wrigley: The soap company that became a gum company",
+      "year": 1892,
+      "modelName": "Wrigley's pivot memo structure",
+      "hook": "The free gift kept winning, so he sold the free gift.",
+      "example": "https://pitchunfairly.com/templates/wrigley/",
+      "deck": "https://pitchunfairly.com/templates/wrigley/deck/",
+      "original": "https://en.wikipedia.org/wiki/William_Wrigley_Jr.",
+      "whatMakesItWork": [
+        "The freebie wins, on a chart: Flip between what Wrigley pushed and what customers asked for, and watch baking powder win round one, get promoted, and lose round two to the gum.",
+        "A kill switch for soap: Three product lines, three switches. Soap goes gray and gets struck through. The gum switch refuses to turn off.",
+        "The free-gift engine: A flywheel that runs 1891, 1892 and the next year: sell the thing, give a gift, hear what they ask for, sell that instead.",
+        "Milestones on a slider: Drag from 1892 to 1921 and watch Spearmint, the 1907 ad gamble, the phone-book mailing and the Wrigley Building land on schedule."
+      ],
+      "beats": [
+        {
+          "beat": "The claim",
+          "job": "Say the pivot in one sentence, to the people who have to live with it."
+        },
+        {
+          "beat": "What we believed",
+          "job": "State the old plan plainly, with its numbers, before anyone rewrites history."
+        },
+        {
+          "beat": "The signal",
+          "job": "Show the customer behavior that broke the plan, as evidence, not opinion."
+        },
+        {
+          "beat": "The new bet",
+          "job": "Name what you now sell and to whom, and show it."
+        },
+        {
+          "beat": "What we stop",
+          "job": "Name what ends, with a date. A pivot that keeps everything is not a pivot."
+        },
+        {
+          "beat": "What carries over",
+          "job": "The assets, customers and skills that survive, so the team knows what still counts."
+        },
+        {
+          "beat": "Risks",
+          "job": "A register: each risk, what could go wrong, and what you will do about it."
+        },
+        {
+          "beat": "Milestones",
+          "job": "Dated checkpoints that will prove the bet right, or wrong, early."
+        },
+        {
+          "beat": "Proof at scale",
+          "job": "The one number that shows what the new model looks like when it works."
+        },
+        {
+          "beat": "The ask",
+          "job": "What you need approved and resourced, in three line items, and the return."
+        }
+      ]
+    },
+    {
+      "id": "blockbuster",
+      "category": "strategy",
+      "template": "Competitive response",
+      "name": "Blockbuster: The Netflix meeting, take two",
+      "year": 2000,
+      "modelName": "Blockbuster's competitive response structure",
+      "hook": "They passed on Netflix for $50M. This is the deck they needed next.",
+      "example": "https://pitchunfairly.com/templates/blockbuster/",
+      "deck": "https://pitchunfairly.com/templates/blockbuster/deck/",
+      "original": "https://fortune.com/2023/04/14/netflix-cofounder-marc-randolph-recalls-blockbuster-rejecting-chance-to-buy-it/",
+      "whatMakesItWork": [
+        "The late fee has a price tag: Drag how much late-fee revenue to give up, pick a plan price, and watch a wall of VHS tapes fill to the 3.3 million subscribers it takes just to stand still.",
+        "The plan, years early: A timeline flips between what happened and the plan: the same moves slide back to 2000 and 2001, and red bars measure exactly how late each one came.",
+        "Tripwires that actually tripped: Netflix's first-ever subscriber decline, -55,000, gets a red TRIPPED stamp. Then the deck notes, deadpan, that Blockbuster pulled back anyway.",
+        "A VCR counter rewinds to 0001: From close to 7,700 stores through the 9,094 peak to one store in Bend, Oregon, on a glowing tape counter."
+      ],
+      "beats": [
+        {
+          "beat": "The threat in one sentence",
+          "job": "Name the challenger and the exact line of your business it targets, with its size today drawn to scale."
+        },
+        {
+          "beat": "How the challenger wins",
+          "job": "Their customer journey next to yours; show the moment of yours that their pitch is built on."
+        },
+        {
+          "beat": "Where we're exposed",
+          "job": "The revenue line at risk as one poster number and its share of the total."
+        },
+        {
+          "beat": "What responding costs",
+          "job": "A calculator for the revenue you give up, what has to replace it, and what else you cannibalize."
+        },
+        {
+          "beat": "The options",
+          "job": "Every real option, including doing nothing and buying them, with one marked as the pick."
+        },
+        {
+          "beat": "Our move",
+          "job": "The chosen response as an ordered list of moves, with the price of the first one."
+        },
+        {
+          "beat": "Timeline",
+          "job": "When each move lands, set against the default path if you wait."
+        },
+        {
+          "beat": "Tripwire metrics",
+          "job": "Three numbers with triggers, agreed in advance, that tell you it's working before the P&L does."
+        },
+        {
+          "beat": "The cost of not deciding",
+          "job": "Where the core business goes if the room passes, in the most concrete unit you have."
+        },
+        {
+          "beat": "The decision",
+          "job": "One yes or no, the items it approves, and who signs."
+        }
+      ]
+    },
+    {
+      "id": "marshall-plan",
+      "category": "strategy",
+      "template": "Recovery plan",
+      "name": "The Marshall Plan: The European Recovery Program",
+      "year": 1947,
+      "modelName": "the Marshall Plan recovery structure",
+      "hook": "A cure, not a palliative.",
+      "example": "https://pitchunfairly.com/templates/marshall-plan/",
+      "deck": "https://pitchunfairly.com/templates/marshall-plan/deck/",
+      "original": "https://www.archives.gov/milestone-documents/marshall-plan",
+      "whatMakesItWork": [
+        "The vicious circle draws itself: Marshall's own diagnosis (farmers, cities, dollars, factories) loops around the dollar gap until a stamp marks where aid breaks it.",
+        "The ask gets edited live: Europe asks $22.4 billion, Truman asks $17 billion, $13.3 billion arrives: bars grow and a red pen strikes each draft.",
+        "Every dollar, by country: A treemap of all sixteen recipients from the ECA ledger. Click Britain, France, or Iceland and read the share.",
+        "Who decides, who reports: Flip the governance chart between the money flowing out and the quarterly reports flowing back, across the Atlantic."
+      ],
+      "beats": [
+        {
+          "beat": "The promise",
+          "job": "Name the recovery in one line and say who is writing the plan."
+        },
+        {
+          "beat": "Situation in numbers",
+          "job": "Three measures against a healthy baseline, with the worst one in color."
+        },
+        {
+          "beat": "Root cause",
+          "job": "Draw the loop that keeps things broken and mark where you will break it."
+        },
+        {
+          "beat": "Goal and time frame",
+          "job": "One goal, the program years, and an end date you commit to."
+        },
+        {
+          "beat": "Who wrote the plan",
+          "job": "Show the people closest to the problem drafted it, and how the ask changed in review."
+        },
+        {
+          "beat": "Pillars",
+          "job": "Four workstreams at most, with one clearly carrying the weight."
+        },
+        {
+          "beat": "Funding",
+          "job": "Where every dollar goes, by unit, sized to scale."
+        },
+        {
+          "beat": "Conditions",
+          "job": "What each recipient commits to in writing, and how the money recycles."
+        },
+        {
+          "beat": "Governance",
+          "job": "Who decides and who reports, as one diagram that can show either."
+        },
+        {
+          "beat": "Milestones",
+          "job": "The scoreboard metric by year against the baseline, with dates you will hit."
+        },
+        {
+          "beat": "Risks",
+          "job": "A register with owners and mitigations, honest about the ones you cannot stop."
+        },
+        {
+          "beat": "The ask",
+          "job": "The first tranche, the period it covers, and when you come back."
+        }
+      ]
+    },
+    {
+      "id": "spanx",
+      "category": "sales",
+      "template": "Product demo deck",
+      "name": "Spanx: Sara Blakely's fitting-room demo",
+      "year": 2000,
+      "modelName": "Sara Blakely's Spanx demo structure",
+      "hook": "Ten minutes and one ladies' room.",
+      "example": "https://pitchunfairly.com/templates/spanx/",
+      "deck": "https://pitchunfairly.com/templates/spanx/deck/",
+      "original": "https://en.wikipedia.org/wiki/Sara_Blakely",
+      "whatMakesItWork": [
+        "Drag the before and after: One pair of cream pants, split down the seam: drag left for panty lines, right for smooth. The ladies' room, without the trip.",
+        "The agenda has a ladies' room: A ten-minute tape measure ticks through the meeting while the restroom door flips from Vacant to Occupied to Smooth.",
+        "Restock the beige wall: Eleven beige boxes and one red one. Shuffle the shelf as often as you like; you find the red one first every time.",
+        "It ends on a purchase order: Seven stores, $20 a pair, three weeks, with a dated action plan for both sides and an Approved stamp. Never \"Thank you\"."
+      ],
+      "beats": [
+        {
+          "beat": "Promise",
+          "job": "The outcome in a few words, and the one object that proves it."
+        },
+        {
+          "beat": "Their problem, their words",
+          "job": "What the buyer's customers say, quoted the way the buyer hears it."
+        },
+        {
+          "beat": "Why this exists",
+          "job": "One slide of origin: the moment, the budget, the scrappy proof you mean it."
+        },
+        {
+          "beat": "Before and after",
+          "job": "Let the buyer see the difference with their own eyes, ideally by dragging it."
+        },
+        {
+          "beat": "Live demo",
+          "job": "The agenda for the part where you stop talking and show it."
+        },
+        {
+          "beat": "Product, briefly",
+          "job": "Three promises and the price. Winners spend less time on features."
+        },
+        {
+          "beat": "Where it lives",
+          "job": "Show it in the buyer's world: their shelf, their screen, their workflow."
+        },
+        {
+          "beat": "Hero proof",
+          "job": "One story from someone like the buyer's customer saying yes."
+        },
+        {
+          "beat": "Objections",
+          "job": "The four questions they were about to ask, answered before they ask."
+        },
+        {
+          "beat": "What happens next",
+          "job": "The path after yes, from the first order to the big outcome."
+        },
+        {
+          "beat": "The order",
+          "job": "The exact next step, with dates and owners on both sides."
+        }
+      ]
+    },
+    {
+      "id": "barbie",
+      "category": "proposal",
+      "template": "New product pitch",
+      "name": "Barbie: Ruth Handler's pitch to Mattel",
+      "year": 1959,
+      "modelName": "Ruth Handler's Barbie pitch structure",
+      "hook": "The doll is the razor. The wardrobe is the blade.",
+      "example": "https://pitchunfairly.com/templates/barbie/",
+      "deck": "https://pitchunfairly.com/templates/barbie/deck/",
+      "original": "https://en.wikipedia.org/wiki/Ruth_Handler",
+      "whatMakesItWork": [
+        "The objection flips over: Each memo from the room (\"mothers will never buy it\") turns over on its own to the answer, with the proof underneath.",
+        "The wardrobe fills up: Slide the outfits from 0 to 22, pick a price from $1 to $5, and watch the $3 doll shrink to a sliver of what she spends.",
+        "A behavior chart, not a hunch: Baby doll, paper doll, Lilli and ours, checked row by row. Only one column is complete, and only one signature is missing.",
+        "Fifty-two weeks, lit: The toy industry lights up seven weeks of the year; Mattel lights all 52, next to the $500,000 bet that paid for it."
+      ],
+      "beats": [
+        {
+          "beat": "Cover",
+          "job": "Name the product and its promise in one line, with the product drawn, not described."
+        },
+        {
+          "beat": "Customer insight",
+          "job": "The behavior you saw, in the customer's own words or play, before any product."
+        },
+        {
+          "beat": "Who it's for",
+          "job": "Separate the user, the buyer and the gatekeeper; make the user the hero."
+        },
+        {
+          "beat": "Evidence",
+          "job": "Show the behavior already exists, in a chart that compares today's options."
+        },
+        {
+          "beat": "Field research",
+          "job": "The proof you went and got yourself: what you bought, tested or saw elsewhere."
+        },
+        {
+          "beat": "The product",
+          "job": "Specs, price and what sells separately, set like a catalog page."
+        },
+        {
+          "beat": "Objection and answer",
+          "job": "Say leadership's objection out loud before they do, then answer it with proof."
+        },
+        {
+          "beat": "How we reach customers",
+          "job": "The channel you already own, and why it beats the industry default."
+        },
+        {
+          "beat": "Economics",
+          "job": "A live model of the first sale and the repeat sales, with the assumptions visible."
+        },
+        {
+          "beat": "The ask",
+          "job": "A production run, a price and a launch date, plus a forecast you'll be held to."
+        }
+      ]
+    },
+    {
+      "id": "eras-tour",
+      "category": "review",
+      "template": "Year in review",
+      "name": "The Eras Tour: The Eras Tour year in review",
+      "year": "2023 to 2024",
+      "modelName": "the Eras Tour year-in-review structure",
+      "hook": "149 shows. Every seat sold.",
+      "example": "https://pitchunfairly.com/templates/eras-tour/",
+      "deck": "https://pitchunfairly.com/templates/eras-tour/deck/",
+      "original": "https://en.wikipedia.org/wiki/The_Eras_Tour",
+      "whatMakesItWork": [
+        "The record race runs live: The gross counts up past Ed Sheeran and Elton John, flags each record as it falls, then flips to per show: $13.9 million a night against about $3 million.",
+        "Every city lights up in sequins: A sequin world map lights all 149 shows in order, Glendale to Vancouver; drag the slider to scrub the tour and watch the countries tick to 21.",
+        "String your own bracelet: Type a stat or tap a preset and the beads re-string themselves: 149 SHOWS, 10.1M FANS, $2.077B.",
+        "The Swift Quake, on paper: A seismograph draws Seattle 2023 against the 2011 Beast Quake at twice the swing, with a button to play it again."
+      ],
+      "beats": [
+        {
+          "beat": "Cover",
+          "job": "The year in one line and who it is for: the team that did it."
+        },
+        {
+          "beat": "The headline",
+          "job": "The single result everyone should repeat, with three quiet supporting numbers."
+        },
+        {
+          "beat": "Against the record",
+          "job": "The result next to the plan, last year, or the previous best, in total and per unit."
+        },
+        {
+          "beat": "What we shipped",
+          "job": "The product as it ran, and what changed during the year."
+        },
+        {
+          "beat": "Reach",
+          "job": "Where the work landed, shown on a map or timeline you can scrub."
+        },
+        {
+          "beat": "Highlight with proof",
+          "job": "One standout moment, measured by someone outside the team."
+        },
+        {
+          "beat": "What customers did",
+          "job": "The behavior you did not plan for, and the number that shows it spread."
+        },
+        {
+          "beat": "Receipts",
+          "job": "Outside sources that noticed: one document as the hero, the rest as stubs."
+        },
+        {
+          "beat": "What did not go to plan",
+          "job": "The misses, plainly, each with what followed."
+        },
+        {
+          "beat": "What we learned",
+          "job": "One lesson as the hero with its evidence, two more in a quiet list."
+        },
+        {
+          "beat": "Thank you",
+          "job": "The people who did it, by team and by name, and what they got."
+        },
+        {
+          "beat": "What is next",
+          "job": "Done, now, next on one line, so the year ends on the next step."
+        }
+      ]
+    },
+    {
+      "id": "elle-woods",
+      "category": "fun",
+      "template": "Admissions and hire-me deck",
+      "name": "Elle Woods: The Harvard Law admissions video",
+      "year": 2001,
+      "modelName": "Elle Woods' hire-me deck structure",
+      "hook": "Not serious? Read the score report.",
+      "example": "https://pitchunfairly.com/templates/elle-woods/",
+      "deck": "https://pitchunfairly.com/templates/elle-woods/deck/",
+      "original": "https://en.wikipedia.org/wiki/Legally_Blonde",
+      "whatMakesItWork": [
+        "The résumé unfolds: A pink tri-fold opens panel by panel on entry: monogram, 4.0, 179, president of Delta Nu. One button folds it back up.",
+        "179 counts up the curve: The score report climbs from 120 while a marker runs the distribution to the 99.9th percentile.",
+        "Why Harvard, with or without Warner: A fit matrix shows the personal reason, strikes it in crimson pen, and Harvard still wins. Put Warner back in with one click.",
+        "The objection gets overruled: The committee's \"not serious\" flips to the ruling and the evidence, and a pink gavel lands."
+      ],
+      "beats": [
+        {
+          "beat": "Who I am",
+          "job": "One line: your name, your credential, and the trait they are buying."
+        },
+        {
+          "beat": "Proof",
+          "job": "Your hardest number at poster size, against the field it beat."
+        },
+        {
+          "beat": "Case study",
+          "job": "One story where you did the job before you had it: claim, evidence, result."
+        },
+        {
+          "beat": "Why this place",
+          "job": "A fit matrix against the alternatives. Show your personal reason, then show you win without it."
+        },
+        {
+          "beat": "What I'll bring",
+          "job": "The one skill nobody else in the cohort has, then the rest as a quiet list."
+        },
+        {
+          "beat": "The objection",
+          "job": "Name their doubt in their words and answer it with evidence, not adjectives."
+        },
+        {
+          "beat": "References",
+          "job": "The voucher who knows your work best, up front; the rest kept short."
+        },
+        {
+          "beat": "The ask",
+          "job": "The exact seat or role and the start date. Then stop."
+        }
+      ]
+    },
+    {
+      "id": "fetch",
+      "category": "review",
+      "template": "Growth post-mortem",
+      "name": "Mean Girls: Making fetch happen: a growth post-mortem",
+      "year": 2004,
+      "modelName": "the fetch growth post-mortem structure",
+      "hook": "Three launches, one evangelist, zero repeats.",
+      "example": "https://pitchunfairly.com/templates/fetch/",
+      "deck": "https://pitchunfairly.com/templates/fetch/deck/",
+      "original": "https://en.wikipedia.org/wiki/Mean_Girls",
+      "whatMakesItWork": [
+        "Push harder, stay flat: Drag the \"Push harder\" slider and Gretchen's mentions climb toward a thousand while the line for everyone else never leaves zero.",
+        "Five whys, rung by rung: A ladder that walks from \"nobody else said it\" down to the root cause: a word with no pull, pushed through one person with a veto.",
+        "The cafeteria, as a network: Janis's lunch-table map becomes a spread chart: fetch lights one table, candy-cane grams light all of them.",
+        "Stop, keep, start, with owners: Stop fetch, keep pink Wednesdays, start pre-briefing the gatekeeper. Every decision has a name and a date."
+      ],
+      "beats": [
+        {
+          "beat": "Title",
+          "job": "Name the bet that failed, plainly, and promise the reason."
+        },
+        {
+          "beat": "Summary and impact",
+          "job": "The result first: one number that says how far off it was, with the supporting counts."
+        },
+        {
+          "beat": "What we tried",
+          "job": "The bet, the hypothesis, and the success criteria as written before launch."
+        },
+        {
+          "beat": "The metric",
+          "job": "One chart of the metric that mattered against the one you were tempted to watch."
+        },
+        {
+          "beat": "Timeline",
+          "job": "Every attempt in order, with what happened after each, and any outside benchmark."
+        },
+        {
+          "beat": "Root cause",
+          "job": "Five whys from the symptom to a cause about systems and decisions, never a person."
+        },
+        {
+          "beat": "Where it spread",
+          "job": "Map where adoption happened and where it didn't, next to a channel that already reaches everyone."
+        },
+        {
+          "beat": "What we got right",
+          "job": "Name what worked so it survives into the next attempt."
+        },
+        {
+          "beat": "What we'd change",
+          "job": "This time versus next time, one line each."
+        },
+        {
+          "beat": "Decisions",
+          "job": "Stop, keep, start, each with one owner and one date."
+        },
+        {
+          "beat": "Watching next",
+          "job": "The leading indicators, with thresholds, that would justify trying again."
+        }
+      ]
+    },
+    {
+      "id": "darcy",
+      "category": "sales",
+      "template": "Win-back deck",
+      "name": "Mr. Darcy: The second proposal",
+      "year": 1813,
+      "modelName": "Mr. Darcy's win-back deck structure",
+      "hook": "The worst pitch in English literature, and the comeback.",
+      "example": "https://pitchunfairly.com/templates/darcy/",
+      "deck": "https://pitchunfairly.com/templates/darcy/deck/",
+      "original": "https://www.gutenberg.org/ebooks/1342",
+      "whatMakesItWork": [
+        "The first pitch gets a call review: Four of Darcy's own lines from Hunsford, each red-penned like a sales coach would (\"Insults the buyer's family. Mid-pitch.\"), circled 0/4.",
+        "Every objection gets struck through: Her charges from chapter 34 strike out one by one, each replaced by what he actually did. Click a row to put the charge back.",
+        "The cost, in pounds and in pride: An account book straight from Mrs. Gardiner's letter: more than £2,000 counted up on one side; on the other, the total is Wickham as a brother-in-law.",
+        "April versus today, at the flick of a switch: The two proposals side by side, line for line, from \"In vain have I struggled\" to \"one word from you will silence me on this subject for ever.\""
+      ],
+      "beats": [
+        {
+          "beat": "Cover",
+          "job": "Name what you are asking for again, with a line they will recognise."
+        },
+        {
+          "beat": "Why we lost",
+          "job": "The loss on record, with their reason in their own words."
+        },
+        {
+          "beat": "Own the failure",
+          "job": "Review your last pitch honestly. No excuses, no \"but\"."
+        },
+        {
+          "beat": "What we heard",
+          "job": "Play back each objection and sort it: misinformation to explain, fair points to fix."
+        },
+        {
+          "beat": "Set the record straight",
+          "job": "Answer the misinformation with documents and a witness, fast."
+        },
+        {
+          "beat": "What we changed",
+          "job": "Each objection beside the specific change that answers it."
+        },
+        {
+          "beat": "Proof",
+          "job": "Evidence they have seen for themselves, ideally unscripted, plus one reference."
+        },
+        {
+          "beat": "What it cost us",
+          "job": "The investment behind the change, in money and in pride. It proves the change is real."
+        },
+        {
+          "beat": "The new offer",
+          "job": "Old pitch and new pitch side by side: same value, new terms."
+        },
+        {
+          "beat": "Low-risk next step",
+          "job": "One small decision in their hands, with what happens either way and an owner on each side."
+        }
+      ]
+    },
+    {
+      "id": "madam-walker",
+      "category": "team",
+      "template": "Sales kickoff deck",
+      "name": "Madam C. J. Walker: The Walker agents sales kickoff",
+      "year": 1917,
+      "modelName": "Madam C. J. Walker's sales kickoff structure",
+      "hook": "Two hundred agents, two scoreboards: sales and service.",
+      "example": "https://pitchunfairly.com/templates/madam-walker/",
+      "deck": "https://pitchunfairly.com/templates/madam-walker/deck/",
+      "original": "https://en.wikipedia.org/wiki/Madam_C._J._Walker",
+      "whatMakesItWork": [
+        "The scoreboard fills up: Two hundred dots, each a hundred women: the 950 agents of 1910 light up first, then the nearly 20,000 trained by 1917.",
+        "Your name on the board: The convention paid prizes for sales and for service. Type your name and it lands on both leaderboards.",
+        "The route plays: Delta, St. Louis, Denver, Pittsburgh, Indianapolis, the Caribbean, Harlem, Philadelphia: click a year and the territory map draws itself.",
+        "A day against a week: Slide the days you work and watch a Walker agent's $5 to $15 a day pass a laborer's $11 week on day one."
+      ],
+      "beats": [
+        {
+          "beat": "Welcome",
+          "job": "Name the room, the date and the energy in one line."
+        },
+        {
+          "beat": "Last year's results",
+          "job": "One scoreboard: where the team started and where it finished."
+        },
+        {
+          "beat": "Recognition",
+          "job": "Top performers by name, with the number that earned it."
+        },
+        {
+          "beat": "This year's target",
+          "job": "What gets scored this year and what wins, with the prize on the slide."
+        },
+        {
+          "beat": "The playbook",
+          "job": "The motion every rep runs, step by step, in order."
+        },
+        {
+          "beat": "Territories and growth",
+          "job": "Where the team sells now and where it is going, on a map."
+        },
+        {
+          "beat": "Compensation and incentives",
+          "job": "What a rep actually earns, against the alternative, and the bonuses on top."
+        },
+        {
+          "beat": "Enablement and training",
+          "job": "How every rep learns the product before selling it."
+        },
+        {
+          "beat": "The mission beyond the number",
+          "job": "Why the work matters past quota, stated plainly."
+        },
+        {
+          "beat": "The commitment",
+          "job": "A short pledge the room makes out loud."
+        },
+        {
+          "beat": "Rally close",
+          "job": "One line to send everyone out the door, and the date you meet again."
+        }
+      ]
+    },
+    {
+      "id": "nightingale",
+      "category": "proposal",
+      "template": "Impact report and funding ask",
+      "name": "Florence Nightingale: The rose diagram",
+      "year": 1858,
+      "modelName": "Florence Nightingale's impact report structure",
+      "hook": "The chart that cleaned up the army.",
+      "example": "https://pitchunfairly.com/templates/nightingale/",
+      "deck": "https://pitchunfairly.com/templates/nightingale/deck/",
+      "original": "https://en.wikipedia.org/wiki/Florence_Nightingale",
+      "whatMakesItWork": [
+        "The rose, rebuilt and playable: All 24 months redrawn from the real data. Switch causes off, drag through the months, or flip it to a bar chart and watch why she picked the rose.",
+        "A thousand soldiers, two winters: Two grids of 1,000 men fill with the dead at each winter's rate: 712 per thousand, then 35.",
+        "The bill, and the arithmetic: Three commissioners, 556 handcarts, 24 dead horses. Slide an army size and her two death rates do the rest.",
+        "An ask with a return: Four commissions, one hero, and a return in men: 1,100 a year who stop dying in barracks at home."
+      ],
+      "beats": [
+        {
+          "beat": "Cover",
+          "job": "The result and the ask in one line, with your strongest chart as the art."
+        },
+        {
+          "beat": "The problem in numbers",
+          "job": "One total, split by cause, so the preventable share is impossible to miss."
+        },
+        {
+          "beat": "The baseline",
+          "job": "Your worst measured period at poster size, so every later number has something to beat."
+        },
+        {
+          "beat": "What we did",
+          "job": "The intervention on a dated timeline, and the first results as they landed."
+        },
+        {
+          "beat": "Outcome against the baseline",
+          "job": "Same measure, same season, before and after, with the population size shown."
+        },
+        {
+          "beat": "The one chart",
+          "job": "The single chart that proves it, interactive, with a plain view beside it for skeptics."
+        },
+        {
+          "beat": "Cost and what it bought",
+          "job": "Itemize what you spent, then convert it into the outcome the funder cares about."
+        },
+        {
+          "beat": "What remains undone",
+          "job": "The gap that is still open, in the same units as your results."
+        },
+        {
+          "beat": "The ask",
+          "job": "What you want funded, the lead item first, and what it will change."
+        }
+      ]
+    },
+    {
+      "id": "clueless",
+      "category": "sales",
+      "template": "Negotiation deck",
+      "name": "Cher Horowitz: The report card negotiation",
+      "year": 1995,
+      "modelName": "Cher Horowitz's negotiation structure",
+      "hook": "Every grade is an opening offer.",
+      "example": "https://pitchunfairly.com/templates/clueless/",
+      "deck": "https://pitchunfairly.com/templates/clueless/deck/",
+      "original": "https://en.wikipedia.org/wiki/Clueless_(film)",
+      "whatMakesItWork": [
+        "The report card renegotiates itself: Apply the heartbreak story, the tardy objection and the matchmaking, and watch the red pen go to work until the average lands on A-minus.",
+        "Positions flip to interests: Pick Miss Stoeger, Miss Geist or Mr. Hall and flip from what each one says to what each one actually wants, with the move that serves it.",
+        "Mr. Hall's mood is a slider: Drag him from miserable to in love and watch his ceiling climb past Cher's walk-away until the zone of agreement opens.",
+        "The closet computer picks the options: Cher's outfit computer scores every option by who it makes happy, and finds the one that makes everybody happy: a match."
+      ],
+      "beats": [
+        {
+          "beat": "Frame",
+          "job": "Name the deal and reframe where you start: their first number is an opening offer."
+        },
+        {
+          "beat": "Where we stand",
+          "job": "The current position in the other side's own numbers, and why it matters to you."
+        },
+        {
+          "beat": "Target and walk-away",
+          "job": "Your anchor, the outcome you expect, the worst deal you will sign, and your BATNA if there is no deal."
+        },
+        {
+          "beat": "Their interests",
+          "job": "For each person across the table, the position they state and the interest underneath it."
+        },
+        {
+          "beat": "Zone of agreement",
+          "job": "Their limit against yours; if there is no overlap, show what would move their limit."
+        },
+        {
+          "beat": "Options",
+          "job": "Options that cost you little and are worth a lot to them, scored by who each one helps."
+        },
+        {
+          "beat": "Anchor and concessions",
+          "job": "Your opening ask and a ledger of planned concessions: what you give, and what you get for each."
+        },
+        {
+          "beat": "Objections",
+          "job": "The pushback you expect, each with a rehearsed answer, and where negotiation will not work."
+        },
+        {
+          "beat": "The agreement",
+          "job": "Before and after, in their units, so everyone signs the same thing."
+        },
+        {
+          "beat": "Next steps",
+          "job": "A mutual action plan: owners on both sides and a date for each step."
+        }
+      ]
+    },
+    {
+      "id": "prada",
+      "category": "strategy",
+      "template": "Trend report",
+      "name": "Runway: The cerulean trend report",
+      "year": 2006,
+      "modelName": "the cerulean trend report structure",
+      "hook": "It was never just blue.",
+      "example": "https://pitchunfairly.com/templates/prada/",
+      "deck": "https://pitchunfairly.com/templates/prada/deck/",
+      "original": "https://en.wikipedia.org/wiki/The_Devil_Wears_Prada_(film)",
+      "whatMakesItWork": [
+        "Scrub it down the curve: Drag cerulean along Rogers' adoption curve from the runway to the clearance bin; the sweater rides the curve and the price tag marks itself down at every step.",
+        "A swatch book with math: Re-dye the sweater in real Pantone Colors of the Year and read the CIEDE2000 distance: Serenity (2016) is only 6 away. Cerulean came back.",
+        "The org chart that chose it: Six rooms, from the color council to the markdown desk, each with what it decided and the instrument it used. You report to all of them.",
+        "Theory, sourced: Veblen's imitation and Simmel's differentiation drawn as a staircase, so the \"so what\" lands: mass adoption is the top's exit signal."
+      ],
+      "beats": [
+        {
+          "beat": "The signal",
+          "job": "State the trend in one sentence anyone could repeat, with the exact thing being tracked."
+        },
+        {
+          "beat": "Definition",
+          "job": "Pin it down precisely against its nearest neighbors, so the team chases the right thing."
+        },
+        {
+          "beat": "Origin",
+          "job": "Date the first sightings and name the source for each."
+        },
+        {
+          "beat": "Spread",
+          "job": "Plot who adopted it, in order, on an adoption curve, with what changed at each step (price, channel, audience)."
+        },
+        {
+          "beat": "Who decides",
+          "job": "Map the gatekeepers who move it, and what each one actually controls."
+        },
+        {
+          "beat": "Where it is now",
+          "job": "Place it on the curve today and say what has replaced it at the leading edge."
+        },
+        {
+          "beat": "What it means for us",
+          "job": "Say which end of the curve you sell to, and what this stage means for that."
+        },
+        {
+          "beat": "What we do",
+          "job": "Stop, harvest, seed: each move with an owner, a date and a measure."
+        },
+        {
+          "beat": "What we watch next",
+          "job": "Leading signals in the order they fire, each tied to the action it triggers."
+        },
+        {
+          "beat": "The decision",
+          "job": "Close on the one call you need from the room."
+        }
+      ]
+    },
+    {
+      "id": "taylors-version",
+      "category": "proposal",
+      "template": "Make-vs-buy business case",
+      "name": "Taylor's Version: The re-recording business case",
+      "year": "2019 to 2025",
+      "modelName": "the Taylor's Version make-vs-buy structure",
+      "hook": "Can't buy it? Make it again.",
+      "example": "https://pitchunfairly.com/templates/taylors-version/",
+      "deck": "https://pitchunfairly.com/templates/taylors-version/deck/",
+      "original": "https://en.wikipedia.org/wiki/Taylor_Swift_masters_dispute",
+      "whatMakesItWork": [
+        "The calculator does the case: Drag the studio-cost and fan-switch assumptions and watch dollars per point of listening you own: building wins unless almost nobody switches. The real switch rate is pinned in pen.",
+        "Which version do you stream?: Toggle Taylor's Version against the originals across four albums: 20.5 billion US streams to 12.7 billion, with Fearless the one holdout.",
+        "The paperwork is the brand: Record sleeves, a studio track sheet, a work order with the box ticked in ballpoint, and an Approved stamp. No album art, just the stationery.",
+        "Both tracks finish: A tape-style timeline plays from November 2020: four re-records land on Track B, then Track A closes on May 30, 2025."
+      ],
+      "beats": [
+        {
+          "beat": "The decision",
+          "job": "One sentence: buy this, or build our own. What you are asking them to approve."
+        },
+        {
+          "beat": "Why now",
+          "job": "The dated events that forced the decision, and the window that just opened."
+        },
+        {
+          "beat": "Option A: buy",
+          "job": "What you get, the price with its source, the terms on offer, and the timeline."
+        },
+        {
+          "beat": "Option B: build",
+          "job": "What you would make, what you would own, the cost basis, and the bonus only building gives you."
+        },
+        {
+          "beat": "How we compare",
+          "job": "Weighted criteria agreed up front, scored side by side, including the row the other option wins."
+        },
+        {
+          "beat": "The math",
+          "job": "A calculator with sourced figures and labeled assumptions, so the room can test the break-even."
+        },
+        {
+          "beat": "Risks",
+          "job": "A register for both options, each risk with a mitigation and an owner."
+        },
+        {
+          "beat": "Early proof",
+          "job": "The pilot result, against the benchmark you set."
+        },
+        {
+          "beat": "Adoption",
+          "job": "Whether users actually switched, shown as a share, with the exception called out."
+        },
+        {
+          "beat": "Recommendation",
+          "job": "The call, then the line items to approve and when you review it."
+        },
+        {
+          "beat": "Timeline",
+          "job": "Both tracks on one timeline, with the milestone that closes each."
+        }
+      ]
+    },
+    {
+      "id": "chanel-no5",
+      "category": "launch",
+      "template": "Brand launch",
+      "name": "Chanel No. 5: The 1921 fragrance launch",
+      "year": 1921,
+      "modelName": "Chanel No. 5's brand launch structure",
+      "hook": "Sample five, launched on the fifth.",
+      "example": "https://pitchunfairly.com/templates/chanel-no5/",
+      "deck": "https://pitchunfairly.com/templates/chanel-no5/deck/",
+      "original": "https://en.wikipedia.org/wiki/Chanel_No._5",
+      "whatMakesItWork": [
+        "Pick the sample yourself: Five lab vials on a tray. Tap through \"Not it\", \"Also not it\" and \"Almost\" until number five gets the stamp.",
+        "Turn up the aldehydes: Drag the dose and watch rose, jasmine and orris blur into something nobody can name, while the nose's verdict goes from \"Definitely rose\" to \"I want it\".",
+        "Squint at the 1921 shelf: Crystal flowers and gilt spires next to one plain vial. Hit the squint test: the ornate bottles go to mush, the number still reads.",
+        "A seeding map, ring by ring: The Grasse dinner table, the Rue Cambon fitting rooms, the gift list, then Paris asking where to buy it."
+      ],
+      "beats": [
+        {
+          "beat": "Brand idea",
+          "job": "The whole brand in one line, set against what the category does."
+        },
+        {
+          "beat": "Who it's for",
+          "job": "The first customer, specific enough to picture: what they already buy and what they refuse."
+        },
+        {
+          "beat": "The product",
+          "job": "Show the choice you made and the options you turned down."
+        },
+        {
+          "beat": "What makes it different",
+          "job": "The one ingredient or decision competitors don't have, made tangible."
+        },
+        {
+          "beat": "Name and identity",
+          "job": "Your name and look next to the shelf it will sit on."
+        },
+        {
+          "beat": "Launch moment",
+          "job": "A date with a reason, tied to something the audience already shows up for."
+        },
+        {
+          "beat": "Seeding",
+          "job": "Who gets it first, in order, and why each ring spreads it to the next."
+        },
+        {
+          "beat": "Distribution",
+          "job": "The channel path from one door to everywhere, and who you partner with."
+        },
+        {
+          "beat": "How we'll know",
+          "job": "Leading signals with a time frame, plus the long-run signal you're aiming at."
+        },
+        {
+          "beat": "Risks",
+          "job": "The real risks with a mitigation and a status, including the one that is the point."
+        },
+        {
+          "beat": "Launch",
+          "job": "Close on the line items and the date."
+        }
+      ]
+    },
+    {
+      "id": "nellie-bly",
+      "category": "fun",
+      "template": "Trip pitch",
+      "name": "Nellie Bly: Around the world in 72 days",
+      "year": 1889,
+      "modelName": "Nellie Bly's trip pitch structure",
+      "hook": "One dress, one bag, and a fictional record to beat.",
+      "example": "https://pitchunfairly.com/templates/nellie-bly/",
+      "deck": "https://pitchunfairly.com/templates/nellie-bly/deck/",
+      "original": "https://en.wikipedia.org/wiki/Around_the_World_in_Seventy-Two_Days",
+      "whatMakesItWork": [
+        "The race map runs: The globe from above the North Pole: Bly east, Bisland west, Fogg on his novel's schedule. Scrub to any day and see who is where.",
+        "The bag really closes: Pack her actual list item by item. Everything fits at exactly 100%, the cold cream hogs the bottom, and the second dress pops the clasp.",
+        "Fogg's clock stops early: A split-flap clock counts down 80 days and stops at 7 days, 17 hours, 49 minutes to spare, above every rival finish line.",
+        "The cost of a no, in her words: Her actual comeback to \"send a man\", set as the headline, with the office's reply on a telegram."
+      ],
+      "beats": [
+        {
+          "beat": "The trip in one line",
+          "job": "Where, how long, and the one constraint that makes it remarkable."
+        },
+        {
+          "beat": "Why now",
+          "job": "What makes this the moment: the record, the deadline, the window that closes."
+        },
+        {
+          "beat": "Route and plan",
+          "job": "The route on a map with dates, and how you will know where you are on any day."
+        },
+        {
+          "beat": "Budget",
+          "job": "One number, then where every part of it lives."
+        },
+        {
+          "beat": "What's in the bag",
+          "job": "The packing list, proven to fit, including what you are leaving behind."
+        },
+        {
+          "beat": "Risks and backup plan",
+          "job": "Every objection you have heard, who raised it, and the backup for each."
+        },
+        {
+          "beat": "The cost of a no",
+          "job": "What happens if the answer is no, said plainly."
+        },
+        {
+          "beat": "What everyone gets",
+          "job": "The upside for each person who has to say yes, not just for you."
+        },
+        {
+          "beat": "How we'll know it worked",
+          "job": "The finish line as a number, against the benchmark and the rivals."
+        },
+        {
+          "beat": "The ask with a date",
+          "job": "What you need, line by line, and the exact day you leave."
+        }
+      ]
+    },
+    {
+      "id": "gettysburg",
+      "category": "launch",
+      "template": "Short keynote",
+      "name": "Abraham Lincoln: The Gettysburg Address",
+      "year": 1863,
+      "modelName": "the Gettysburg short keynote structure",
+      "hook": "Two minutes, ten sentences, one idea.",
+      "example": "https://pitchunfairly.com/templates/gettysburg/",
+      "deck": "https://pitchunfairly.com/templates/gettysburg/deck/",
+      "original": "https://www.loc.gov/exhibits/gettysburg-address/",
+      "whatMakesItWork": [
+        "Drawn to scale: Everett's 13,607 words and Lincoln's 272 as squares on one grid. Flip to minutes and the ratio barely moves: 50 to 1 becomes 60 to 1.",
+        "The talk, beat by beat: All ten sentences of the Bliss copy, labeled past, present and future, light up one keynote beat at a time: history, stakes, why we are here, the turn, the call, the closing line.",
+        "Cut it: A slider fades the address from 272 words to 133 to 33, every one of them Lincoln's, in his order. The idea is still standing.",
+        "The review came from the other speaker: Everett's note the next morning and Lincoln's gracious reply, set as the proof slide, with the oration's two hours and the remarks' two minutes side by side."
+      ],
+      "beats": [
+        {
+          "beat": "Know your slot",
+          "job": "What the program needs from you, how long you have, and who speaks before you."
+        },
+        {
+          "beat": "One idea",
+          "job": "Write the idea in one sentence before you write the talk. Every line serves it."
+        },
+        {
+          "beat": "Shared history",
+          "job": "Open on a past the whole room already agrees on, in words they already know."
+        },
+        {
+          "beat": "The stakes",
+          "job": "Name what is being tested right now, in one sentence."
+        },
+        {
+          "beat": "Why we are here",
+          "job": "Say plainly what this gathering is for, today."
+        },
+        {
+          "beat": "The turn",
+          "job": "Say what this moment can't do on its own. Keep the frame, change one word, three times."
+        },
+        {
+          "beat": "The call",
+          "job": "Hand the room the unfinished work, addressed to them, not to you."
+        },
+        {
+          "beat": "The closing line",
+          "job": "End on the line you want quoted: rhythm, repetition, few words. Then stop."
+        },
+        {
+          "beat": "The cut",
+          "job": "Before you give it, cut until the idea breaks, and keep everything just before that."
+        }
+      ]
+    },
+    {
+      "id": "darwin-marry",
+      "category": "fun",
+      "template": "Big decision deck",
+      "name": "Charles Darwin: Marry / Not Marry",
+      "year": 1838,
+      "modelName": "Darwin's big decision structure",
+      "hook": "Two columns, one naturalist, Q.E.D.",
+      "example": "https://pitchunfairly.com/templates/darwin-marry/",
+      "deck": "https://pitchunfairly.com/templates/darwin-marry/deck/",
+      "original": "https://www.darwinproject.ac.uk/tags/about-darwin/family-life/darwin-marriage",
+      "whatMakesItWork": [
+        "The columns become a specimen drawer: Every pro and con is pinned on its own museum label with a Latin name. \"Better than a dog anyhow\" gets the red border of the type specimen.",
+        "A scorecard you can rig, and lose: Drag the weights toward Not Marry until it wins on points. The verdict stays Marry: the last row is locked by the author, and a pencil note says \"Never mind my boy. Cheer up.\"",
+        "The regrets go on a scale: A balloon ride and a trip to Wales on one pan, a neuter bee's life on the other. It tips the way his sentences do.",
+        "The bias check is on the page: The four lines he struck from the top of Not Marry, crossed out again in pencil and stamped \"Filed in the wrong column\"."
+      ],
+      "beats": [
+        {
+          "beat": "The question",
+          "job": "Name the decision in one line, in the words you would actually say."
+        },
+        {
+          "beat": "The facts",
+          "job": "Where things stand today, on one card, before anyone argues."
+        },
+        {
+          "beat": "The options",
+          "job": "Draw each option as a path with what it leads to, not as a label."
+        },
+        {
+          "beat": "What matters",
+          "job": "Pick the criteria first and note any that appear on both sides, so they cancel out."
+        },
+        {
+          "beat": "The case for each side",
+          "job": "Every pro and con in plain words, with the strongest one marked."
+        },
+        {
+          "beat": "Bias check",
+          "job": "Read each column for arguments filed on the wrong side, and move them."
+        },
+        {
+          "beat": "The regrets",
+          "job": "What you would miss under each option, weighed side by side."
+        },
+        {
+          "beat": "The test",
+          "job": "A weighted scorecard anyone can re-weight, showing which row really decides."
+        },
+        {
+          "beat": "The call",
+          "job": "The decision, stated once, in words nobody can misread."
+        },
+        {
+          "beat": "The next step",
+          "job": "When it happens, who you asked, and their reasons."
+        },
+        {
+          "beat": "What happened next",
+          "job": "Close the loop with dates, so the next big decision learns from this one."
+        }
+      ]
+    },
+    {
+      "id": "da-vinci",
+      "category": "sales",
+      "template": "Capabilities deck",
+      "name": "Leonardo da Vinci: The letter to the Duke of Milan",
+      "year": "c. 1482",
+      "modelName": "Leonardo's capabilities deck structure",
+      "hook": "Nine war machines. Also, painting.",
+      "example": "https://pitchunfairly.com/templates/da-vinci/",
+      "deck": "https://pitchunfairly.com/templates/da-vinci/deck/",
+      "original": "https://artsandculture.google.com/story/sQVRpZ4EhlnSKg",
+      "whatMakesItWork": [
+        "The capabilities are an engineering sheet: Click any of the ten items and its mechanism draws itself in sepia ink and red chalk. Item ten is an easel.",
+        "History reranks the services: Flip from the 1482 order to 2026 fame and watch painting climb from the last line of the letter to the top.",
+        "The flagship has a project tracker: Drag from the offer to the clay model, the bronze going to cannon, French archers, and the horse finally cast in 1999.",
+        "The ask is a demo slip: Pick the item you want proved and the request fills in: your park, or wherever your Excellency pleases."
+      ],
+      "beats": [
+        {
+          "beat": "Who we are",
+          "job": "Name the studio and its promise in one line, with one signature piece of work."
+        },
+        {
+          "beat": "The client's need",
+          "job": "Show that every rival offers the same thing, in the client's own terms."
+        },
+        {
+          "beat": "What we can do",
+          "job": "Numbered capabilities the client can browse, each with a concrete example."
+        },
+        {
+          "beat": "Proof",
+          "job": "Credentials, real past work, and one reference, set as a list the client can check."
+        },
+        {
+          "beat": "How we work",
+          "job": "Four steps from brief to delivery, ending in something the client sees."
+        },
+        {
+          "beat": "Adjacent services",
+          "job": "What else you do, and how it ranks, so the client can buy more later."
+        },
+        {
+          "beat": "The flagship offer",
+          "job": "The one signature project, with its milestones laid out as a plan."
+        },
+        {
+          "beat": "The ask",
+          "job": "A demonstration on the client's terms: what, where, and when they choose."
+        }
+      ]
+    },
+    {
+      "id": "brooklyn-bridge",
+      "category": "work",
+      "template": "Project status update",
+      "name": "Emily Warren Roebling: The Brooklyn Bridge status update",
+      "year": 1883,
+      "modelName": "Emily Warren Roebling's status update structure",
+      "hook": "Amber since 1872. Fix in hand: Emily.",
+      "example": "https://pitchunfairly.com/templates/brooklyn-bridge/",
+      "deck": "https://pitchunfairly.com/templates/brooklyn-bridge/deck/",
+      "original": "https://en.wikipedia.org/wiki/Emily_Warren_Roebling",
+      "whatMakesItWork": [
+        "The board plays the years: A red, amber and green board for six workstreams from 1869 to 1883. Click any year. The chief engineer goes amber in 1872 and stays there for ten years, fix in hand.",
+        "A hill chart you can scrub: Drag from 1870 to 1883 and watch foundations, towers, cables and deck climb the hill and roll down it, with last year's position as a ghost. The deck barely moves in 1880, which is the point.",
+        "Every wire counted: A to-scale cross-section of one main cable winds up strand by strand to 5,282 wires. Press Spin and it does it again.",
+        "The vote, seat by seat: The motion to remove the chief engineer fills in on a seat chart: 10 against, 7 for. Then the ask: a date, not a motion."
+      ],
+      "beats": [
+        {
+          "beat": "Status in one line",
+          "job": "One status (on track, at risk, off track) and the date, on the cover."
+        },
+        {
+          "beat": "Summary and date confidence",
+          "job": "Done, finishing, needed, in three lines, and whether the due date is holding."
+        },
+        {
+          "beat": "Safety",
+          "job": "Incidents first, stated plainly, before any good news."
+        },
+        {
+          "beat": "Status by workstream",
+          "job": "Green, amber, red per workstream, with the color meanings printed on the slide and history across updates."
+        },
+        {
+          "beat": "Progress since last update",
+          "job": "A hill chart or milestones moved, with prior positions, so stuck work shows."
+        },
+        {
+          "beat": "Wins",
+          "job": "One quantified result that finished this period."
+        },
+        {
+          "beat": "What changed",
+          "job": "Scope, schedule and budget: plan, now, and why."
+        },
+        {
+          "beat": "Risks",
+          "job": "Each risk with an owner, a date, and the fix already in hand."
+        },
+        {
+          "beat": "Decisions and asks",
+          "job": "What was decided, then the one decision you need, and who must make it."
+        },
+        {
+          "beat": "Next milestones",
+          "job": "The next dated milestones and when the next update lands."
+        }
+      ]
+    },
+    {
+      "id": "churchill-brevity",
+      "category": "work",
+      "template": "Executive briefing",
+      "name": "Winston Churchill: The Brevity memo",
+      "year": 1940,
+      "modelName": "Churchill's answer-first briefing structure",
+      "hook": "The answer first. The rest in the appendix.",
+      "example": "https://pitchunfairly.com/templates/churchill-brevity/",
+      "deck": "https://pitchunfairly.com/templates/churchill-brevity/deck/",
+      "original": "https://beta.nationalarchives.gov.uk/catalogue/id/C9135954/",
+      "whatMakesItWork": [
+        "The answer is the cover: Slide one is the recommendation in one sentence, with the docket typed in and the red \"Action this day\" label stuck on. Read nothing else and you have read the point.",
+        "A woolly phrase cutter: Churchill's two examples, a 2026 edition, or your own sentence: the red pencil strikes the padding, writes in the single word, and counts the words saved.",
+        "Bullets or a sentence, you choose: One toggle flips the same slide between topic-and-bullets and a sentence headline with evidence, with a live word count and the 2013 study that settles it (d = 0.81).",
+        "An appendix that opens: Nine short slides and one drawer: sources, the minute rule by rule, the woolly glossary and the template sit behind folder tabs you click open."
+      ],
+      "beats": [
+        {
+          "beat": "The answer",
+          "job": "The recommendation in one sentence, on the first slide. If they read nothing else, they read this."
+        },
+        {
+          "beat": "Situation",
+          "job": "The one thing everyone already agrees is true. One line."
+        },
+        {
+          "beat": "Complication",
+          "job": "What changed or is going wrong, shown in one picture."
+        },
+        {
+          "beat": "Question",
+          "job": "The question the complication raises, with the answer and its three supports drawn as a pyramid."
+        },
+        {
+          "beat": "Point 1 and evidence",
+          "job": "A sentence headline that makes the first claim, and one exhibit that proves it."
+        },
+        {
+          "beat": "Point 2 and evidence",
+          "job": "The second claim, with its own exhibit. No overlap with point 1."
+        },
+        {
+          "beat": "Point 3 and evidence",
+          "job": "The third claim, ideally one the reader can test for themselves."
+        },
+        {
+          "beat": "Risks and the alternative",
+          "job": "The options you rejected, including doing nothing, and each risk with its answer."
+        },
+        {
+          "beat": "Decision and date",
+          "job": "What you need, who decides, and by when. Never \"Thank you\"."
+        },
+        {
+          "beat": "Appendix",
+          "job": "Sources, figures and detail, behind tabs, at about ten to one."
+        }
+      ]
+    },
+    {
+      "id": "tesla-master-plan",
+      "category": "work",
+      "template": "Product roadmap",
+      "name": "Tesla: The Secret Master Plan",
+      "year": 2006,
+      "modelName": "the Tesla Master Plan roadmap structure",
+      "hook": "Sports car first. It pays for the rest.",
+      "example": "https://pitchunfairly.com/templates/tesla-master-plan/",
+      "deck": "https://pitchunfairly.com/templates/tesla-master-plan/deck/",
+      "original": "https://web.archive.org/web/20110317082303/http://www.teslamotors.com/blog/secret-tesla-motors-master-plan-just-between-you-and-me",
+      "whatMakesItWork": [
+        "The plan meets what shipped: A Now, Next, Later board with confidence by horizon. Toggle it and the real ship dates stamp on: Feb 2008, June 2012, July 2017.",
+        "The money actually flows: Cash runs from the Roadster to the family car to the third car. Flip to \"cheap car first\" and the pipe runs dry at step one.",
+        "One roadmap, two audiences: Internal shows confidence, dates and dependencies. Customer hides them all and leaves four lines and \"Don't tell anyone.\"",
+        "Outcomes, not cars: Success is measured in grams of CO2 per kilometre, with the post's own well-to-wheel numbers drawn as the chart."
+      ],
+      "beats": [
+        {
+          "beat": "The goal",
+          "job": "The outcome the roadmap serves, as a from-and-to. Products are outputs."
+        },
+        {
+          "beat": "Where we are now",
+          "job": "A timeline of what has happened, with a \"you are here\" pin and the next real milestone."
+        },
+        {
+          "beat": "Now, Next, Later",
+          "job": "The whole roadmap on one board, each horizon with its confidence level."
+        },
+        {
+          "beat": "Now",
+          "job": "What is committed and funded, with the specs that prove it is real."
+        },
+        {
+          "beat": "Next",
+          "job": "What is planned, as a direction and a target, no date until there is one."
+        },
+        {
+          "beat": "Later",
+          "job": "A direction only, deliberately vague, plus any parallel track."
+        },
+        {
+          "beat": "How each step unlocks the next",
+          "job": "Dependencies as a flow, with the alternative that breaks it."
+        },
+        {
+          "beat": "What we are not doing",
+          "job": "The obvious options you rejected, each with its reason."
+        },
+        {
+          "beat": "How we'll know",
+          "job": "The outcome metric that says the plan is working, with a baseline."
+        },
+        {
+          "beat": "Internal vs customer view",
+          "job": "The same roadmap with confidence, dates and dependencies hidden for customers."
+        },
+        {
+          "beat": "Next review",
+          "job": "End on the date of the next roadmap, never \"Thank you\"."
+        }
+      ]
+    },
+    {
+      "id": "ben-jerrys",
+      "category": "strategy",
+      "template": "Business plan",
+      "name": "Ben & Jerry's: The gas station business plan",
+      "year": 1978,
+      "modelName": "Ben & Jerry's business plan structure",
+      "hook": "Two friends, a $5 course, and an old gas station.",
+      "example": "https://pitchunfairly.com/templates/ben-jerrys/",
+      "deck": "https://pitchunfairly.com/templates/ben-jerrys/deck/",
+      "original": "https://www.benjerry.com/about-us",
+      "whatMakesItWork": [
+        "The ledger adds itself up: Sources and uses of the $12,000 write themselves in, the running total ticks to the bank's third, and the $5 course gets its own line.",
+        "Break-even you can argue with: Drag the cone price, July traffic and monthly costs; twelve months of bars show exactly how much summer has to carry the winter.",
+        "The corner, on a map: Our own drawing of downtown Burlington: tap the shop, the campus up the hill, Church Street, the park across the road and the lake.",
+        "Chunks, adjustable: A chunk-size slider runs from supermarket flecks to ours, because the co-founder doing quality control tastes in texture."
+      ],
+      "beats": [
+        {
+          "beat": "The business in one line",
+          "job": "What you sell and where, in one sentence on the cover."
+        },
+        {
+          "beat": "Customer and problem",
+          "job": "Who buys, and what they can't get today, shown as the reason for this place."
+        },
+        {
+          "beat": "Product",
+          "job": "What makes it different, shown rather than listed."
+        },
+        {
+          "beat": "Market and location",
+          "job": "Where the customers are, drawn on a map with the site pinned."
+        },
+        {
+          "beat": "Competition",
+          "job": "The real alternatives, including doing nothing, with the biggest one as the hero."
+        },
+        {
+          "beat": "How we'll sell",
+          "job": "The channels, cheapest first, with one clear lead."
+        },
+        {
+          "beat": "Operations",
+          "job": "How the product is made and delivered, day to day."
+        },
+        {
+          "beat": "Team",
+          "job": "Why these people can run it: credentials first, one playful detail."
+        },
+        {
+          "beat": "Startup costs",
+          "job": "Sources and uses of funds, and how much the owners put in."
+        },
+        {
+          "beat": "Break-even and year one",
+          "job": "The break-even point and first-year months, with every assumption labeled."
+        },
+        {
+          "beat": "Risks",
+          "job": "A register with likelihood and a mitigation for each, biggest first."
+        },
+        {
+          "beat": "The ask",
+          "job": "The amount, what it buys, the dated milestones, and how it gets repaid."
+        }
+      ]
+    },
+    {
+      "id": "apollo-11",
+      "category": "strategy",
+      "template": "Narrative memo and PR/FAQ",
+      "name": "Apollo 11: The press release written first",
+      "year": 1969,
+      "modelName": "the Apollo 11 PR/FAQ structure",
+      "hook": "The Moon landing, written up eight years early.",
+      "example": "https://pitchunfairly.com/templates/apollo-11/",
+      "deck": "https://pitchunfairly.com/templates/apollo-11/deck/",
+      "original": "https://www.archives.gov/presidential-libraries/events/centennials/nixon/exhibit/nixon-online-exhibit-disaster.html",
+      "whatMakesItWork": [
+        "The release stamps itself: Drag the date from May 25, 1961. The press release stays a draft for eight years, then slams down ISSUED on July 20, 1969.",
+        "Present it or read it: One switch (or the M key) turns every slide into the typed six-page memo, so the same deck works in the meeting and in silence before it.",
+        "An internal FAQ you open: Cost, people, the lunar orbit bet, Apollo 1, and the worst case: open each question and get the answer, $25.4 billion and all.",
+        "What must be true, ticked: Ten prerequisites from Friendship 7 to Apollo 11 check themselves off in the order they flew, with the year counting up beside them."
+      ],
+      "beats": [
+        {
+          "beat": "Memo header",
+          "job": "Name the document, the author, the date drafted and the date of the release, and how to read it."
+        },
+        {
+          "beat": "Tenets",
+          "job": "Three to five rules that settle the arguments before they start; one is the hero."
+        },
+        {
+          "beat": "Headline and subhead",
+          "job": "The press release for launch day, dated: who gets what, and the one-sentence result."
+        },
+        {
+          "beat": "Problem and solution",
+          "job": "The customer's problem in one line, the solution in three, with a picture of how it works."
+        },
+        {
+          "beat": "The quotes",
+          "job": "One quote from the leader on why, one from the customer on what it's like."
+        },
+        {
+          "beat": "How to get it",
+          "job": "Where, when and what it costs the customer: the call to action."
+        },
+        {
+          "beat": "External FAQ",
+          "job": "The five or six questions customers and press will ask, one line each."
+        },
+        {
+          "beat": "Internal FAQ",
+          "job": "Cost, people, the hard technical bet and what it has already cost, one answer at a time."
+        },
+        {
+          "beat": "The worst case",
+          "job": "What we will do and say if it fails, written down before launch."
+        },
+        {
+          "beat": "What must be true",
+          "job": "The prerequisites in the order they must be proven, ticked off as they are."
+        },
+        {
+          "beat": "Result",
+          "job": "Close on the goal, clause by clause, and what came true."
+        }
+      ]
+    },
+    {
+      "id": "broad-street",
+      "category": "sales",
+      "template": "Case study",
+      "name": "John Snow: The Broad Street pump",
+      "year": 1854,
+      "modelName": "John Snow's case study structure",
+      "hook": "One map, one meeting, one handle.",
+      "example": "https://pitchunfairly.com/templates/broad-street/",
+      "deck": "https://pitchunfairly.com/templates/broad-street/deck/",
+      "original": "https://archive.org/details/b28985266",
+      "whatMakesItWork": [
+        "Snow's map, rebuilt from the data: All 578 deaths and 13 pumps from the digitized map. Press \"Nearest pump\" and 359 of them light up in Broad Street's patch.",
+        "The brewery puzzle: A ledger of who died and who didn't, with the water column hidden. Reveal it: beer and a private well, against two tubs of pump water.",
+        "An honest result chart: Scrub Snow's own table day by day. The handle came off on 8 September, after cases had already fallen from 143 a day to 12.",
+        "The skeptic as the reference: Whitehead's own words play from \"a careful investigation would refute it\" to the cesspool two feet eight inches from the well."
+      ],
+      "beats": [
+        {
+          "beat": "Result in the title",
+          "job": "State the outcome and the time it took, with two or three summary metrics."
+        },
+        {
+          "beat": "The customer",
+          "job": "Who they are in a few facts, so readers can check if they match; ask them."
+        },
+        {
+          "beat": "The problem",
+          "job": "The stakes in the customer's own terms and numbers, plainly."
+        },
+        {
+          "beat": "What they tried first",
+          "job": "The standard approach, done properly, and why it couldn't explain the problem."
+        },
+        {
+          "beat": "The approach",
+          "job": "What was done, by whom, in what order, with dates."
+        },
+        {
+          "beat": "The evidence",
+          "job": "The one picture that makes the cause obvious."
+        },
+        {
+          "beat": "The exceptions",
+          "job": "The cases that should break the story and instead confirm it."
+        },
+        {
+          "beat": "Independent proof",
+          "job": "The customer's own data, gathered separately, pointing the same way."
+        },
+        {
+          "beat": "The result, honestly",
+          "job": "The numbers before and after, including what the product did not cause."
+        },
+        {
+          "beat": "What it took",
+          "job": "Time, meetings, cost and effort, and how long adoption took."
+        },
+        {
+          "beat": "In the customer's words",
+          "job": "A named quote that starts with doubt, next to the claim it supports."
+        },
+        {
+          "beat": "What to do next",
+          "job": "If you're like them: three steps with owners and dates."
+        }
+      ]
+    },
+    {
+      "id": "miyagi",
+      "category": "team",
+      "template": "Training and onboarding",
+      "name": "Mr. Miyagi: Wax on, wax off",
+      "year": 1984,
+      "modelName": "Mr. Miyagi's training structure",
+      "hook": "Four days of chores. Every one a block.",
+      "example": "https://pitchunfairly.com/templates/miyagi/",
+      "deck": "https://pitchunfairly.com/templates/miyagi/deck/",
+      "original": "https://en.wikipedia.org/wiki/The_Karate_Kid_(1984_film)",
+      "whatMakesItWork": [
+        "The chores flip into blocks: Four cards (sponge, sandpaper, fence brush, house brush) turn over one by one into the block each one trained. Click to flip them back.",
+        "The deck quizzes you: A no-notes check with three questions and instant feedback, because tested students remembered 56% a week later and re-readers 42%.",
+        "The practice log ties the belt: Two weeks of spaced practice, each chore returning a little later each time; log the days and a gi belt fills to the knot.",
+        "Outcomes, not topics: \"Block a punch without thinking about it\", with how it gets checked. Karate history and belt theory are struck off the syllabus."
+      ],
+      "beats": [
+        {
+          "beat": "Welcome",
+          "job": "Name the learner, the program and the first thing to bring."
+        },
+        {
+          "beat": "Outcomes",
+          "job": "Up to four things they will be able to do, each with how it gets checked."
+        },
+        {
+          "beat": "Why it matters",
+          "job": "The stakes in writing: what changes if they learn this, and what happens if they don't."
+        },
+        {
+          "beat": "First skill",
+          "job": "One skill, practiced on the slide, before the theory."
+        },
+        {
+          "beat": "Check yourself",
+          "job": "A no-notes quiz with instant feedback. Retrieval beats re-reading."
+        },
+        {
+          "beat": "Next skill",
+          "job": "What builds on the first one, one new piece at a time."
+        },
+        {
+          "beat": "The explanation",
+          "job": "Now name what they have been practicing and why it works."
+        },
+        {
+          "beat": "Spaced practice",
+          "job": "A calendar where each skill returns after growing gaps, with unannounced checks."
+        },
+        {
+          "beat": "The real situation",
+          "job": "Where it gets used for real, under pressure, with nobody prompting."
+        },
+        {
+          "beat": "Support",
+          "job": "Who is in their corner, starting with an active manager."
+        },
+        {
+          "beat": "Day one",
+          "job": "Exactly what to do first, and when the first check-in is booked."
+        }
+      ]
+    },
+    {
+      "id": "berkshire",
+      "category": "board",
+      "template": "Results report and letter to owners",
+      "name": "Berkshire Hathaway: The letter to shareholders",
+      "year": 1965,
+      "modelName": "the Berkshire letter-to-owners structure",
+      "hook": "One number, one yardstick, and the mistakes left in.",
+      "example": "https://pitchunfairly.com/templates/berkshire/",
+      "deck": "https://pitchunfairly.com/templates/berkshire/deck/",
+      "original": "https://www.berkshirehathaway.com/letters/letters.html",
+      "whatMakesItWork": [
+        "Scrub sixty-one years: Drag through every year of the real per-share table: the lines compound on a log scale, the gap strip turns gray in the 21 years Berkshire trailed, and 2025 is one of them.",
+        "A ledger of mistakes, priced: Nine confessions from the letters, from an eighth of a point in 1964 to Pilot, filtered by did, passed and waited, each with the cost the letters put on it.",
+        "Memo mode: The whole report as a one-page letter, opening \"Dear Doris and Bertie\". One click rewrites it as an earnings call, which is the argument for writing plainly.",
+        "Weather gets credit: Every line of the good year is marked earned or luck. A year with no U.S. hurricane landfall goes in the luck column."
+      ],
+      "beats": [
+        {
+          "beat": "The number",
+          "job": "Lead with one result and the yardstick it is measured against, over the longest honest period."
+        },
+        {
+          "beat": "The record",
+          "job": "Show every period against that yardstick, misses included, so the reader can check the claim."
+        },
+        {
+          "beat": "What went well, and why",
+          "job": "Name the wins and sort each into earned or luck."
+        },
+        {
+          "beat": "Mistakes, owned",
+          "job": "List the errors with dates and costs, in the first person, with what you took from each."
+        },
+        {
+          "beat": "Capital allocation",
+          "job": "Rank where money (or effort) goes, and the test each use has to pass."
+        },
+        {
+          "beat": "Will and won't",
+          "job": "Restate the standing principles, including the ones that cost you."
+        },
+        {
+          "beat": "The people",
+          "job": "Praise by name, criticize by category; tell one story that shows the culture."
+        },
+        {
+          "beat": "Changes at the top",
+          "job": "Say plainly who now runs what, and what stays the same."
+        },
+        {
+          "beat": "The letter",
+          "job": "Write the whole report as one page for a smart reader outside your field."
+        },
+        {
+          "beat": "What to expect",
+          "job": "Set expectations for next year, lower ones included, and say when you will report again."
+        }
+      ]
+    },
+    {
+      "id": "new-coke",
+      "category": "strategy",
+      "template": "Competitive and market analysis",
+      "name": "Coca-Cola: The Pepsi Challenge and New Coke",
+      "year": 1985,
+      "modelName": "the New Coke competitive analysis structure",
+      "hook": "200,000 sips said change it. The can disagreed.",
+      "example": "https://pitchunfairly.com/templates/new-coke/",
+      "deck": "https://pitchunfairly.com/templates/new-coke/deck/",
+      "original": "https://www.coca-colacompany.com/about-us/history/new-coke-the-most-memorable-marketing-blunder-ever",
+      "whatMakesItWork": [
+        "Take the blind test: Pick cup M or cup Q on the one-sip promise, then see the reveal: you just voted like 191,000 tasters in Project Kansas.",
+        "Sip versus can: Behind a one-way mirror, toggle one sip, half a can, and a whole can, and watch the winner change from the sweeter formula to the one people grew up with.",
+        "The SWOT with an empty box: Strengths, weaknesses, opportunities and threats are all full. The fifth box, what customers feel, says \"Not measured\" until you press \"What we missed\".",
+        "The test plays out: The recommendation says \"watch the hotline\"; then the hotline counts from 400 to 1,500 calls a day and the timeline runs 79 days to Classic."
+      ],
+      "beats": [
+        {
+          "beat": "Cover",
+          "job": "The finding and the matchup in one line: who is winning what."
+        },
+        {
+          "beat": "The question",
+          "job": "The one question this analysis answers, and the decision riding on it."
+        },
+        {
+          "beat": "The market",
+          "job": "Share over time for you and the main rival, with the gap you are trying to explain."
+        },
+        {
+          "beat": "Who competes, on what",
+          "job": "A grid of the dimensions that matter, with the one row you lose highlighted."
+        },
+        {
+          "beat": "What customers value",
+          "job": "What buyers say they want, and exactly how you measured it: sample, cost, format."
+        },
+        {
+          "beat": "SWOT",
+          "job": "Strengths, weaknesses, opportunities, threats, plus a box for what customers feel, so it leads to a move."
+        },
+        {
+          "beat": "What the data can't tell us",
+          "job": "The limits of the method: what it measured versus how people actually buy and use."
+        },
+        {
+          "beat": "Implications",
+          "job": "Three things that must now be true, and the stake if you act on them."
+        },
+        {
+          "beat": "Recommendation and test",
+          "job": "The move, the date, and the signals with baselines that would prove you wrong."
+        },
+        {
+          "beat": "What we'd check again",
+          "job": "The lesson to carry into the next analysis, stated as a rule."
+        }
+      ]
+    },
+    {
+      "id": "nasa-worm",
+      "category": "launch",
+      "template": "Brand guidelines",
+      "name": "NASA: The 1975 Graphics Standards Manual",
+      "year": 1975,
+      "modelName": "NASA's brand guidelines structure",
+      "hook": "One agency. One mark. No exceptions.",
+      "example": "https://pitchunfairly.com/templates/nasa-worm/",
+      "deck": "https://pitchunfairly.com/templates/nasa-worm/deck/",
+      "original": "https://www.nasa.gov/wp-content/uploads/2015/01/nasa_graphics_manual_nhb_1430-2_jan_1976.pdf",
+      "whatMakesItWork": [
+        "Clear space you can break: Drag the center name toward the mark: the three-stroke-width zone turns red the moment you cross it, and grows with every decal size.",
+        "Nine misuses, flippable: Outlined, shadowed, squashed, sideways, and rule two, \"such as a circle\". Flip each tile between wrong and right.",
+        "The red, tested on every ground: Pantone 179 with its hex, RGB and process values, then click five backgrounds to see which colors the mark may wear on each.",
+        "The forms finally arrive: The 1975 manual promised new forms \"at a later date\". Here is one, with a grid overlay you can switch on."
+      ],
+      "beats": [
+        {
+          "beat": "Cover",
+          "job": "Name the standard and its promise: one brand, applied one way."
+        },
+        {
+          "beat": "Why a standard",
+          "job": "Show the cost of inconsistency: every team drawing the brand its own way."
+        },
+        {
+          "beat": "The mark",
+          "job": "What the logo is, how it is built, and the one rule: never redraw it."
+        },
+        {
+          "beat": "Clear space and size",
+          "job": "The minimum air around the mark and the approved sizes, measured from the mark itself."
+        },
+        {
+          "beat": "Color",
+          "job": "Exact values for every medium, and which color goes on which background."
+        },
+        {
+          "beat": "Typography",
+          "job": "The typefaces, the weights, and how names lock up with the mark."
+        },
+        {
+          "beat": "The grid",
+          "job": "The understructure every layout hangs from, shown on a real application."
+        },
+        {
+          "beat": "Applications",
+          "job": "The brand at its largest and smallest: vehicles, signs, forms, decals, with sizes."
+        },
+        {
+          "beat": "Misuse",
+          "job": "The specific don'ts, drawn, so nobody has to guess."
+        },
+        {
+          "beat": "Ownership and help",
+          "job": "Who owns the standard, and where each common question gets answered."
+        },
+        {
+          "beat": "Why it lasts",
+          "job": "Close on what the standard protects over time."
+        }
+      ]
+    },
+    {
+      "id": "rosling",
+      "category": "launch",
+      "template": "Data story",
+      "name": "Hans Rosling: 200 countries, 200 years",
+      "year": 2010,
+      "modelName": "Hans Rosling's data story structure",
+      "hook": "Press play on 200 years.",
+      "example": "https://pitchunfairly.com/templates/rosling/",
+      "deck": "https://pitchunfairly.com/templates/rosling/deck/",
+      "original": "https://en.wikipedia.org/wiki/Hans_Rosling",
+      "whatMakesItWork": [
+        "You take the chimp test: Three questions in the spirit of Factfulness, scored live against the 2017 public (9%, 13%, 37% right) and against chimps guessing at random (33%).",
+        "The chart actually plays: 184 countries from 1800 to 2025 on Gapminder's open data, with a play button, a year scrubber, live captions, and a number for every bubble you hover.",
+        "Sweden is the clock: Sweden's whole road on the chart, with South Korea, China, the USA, India or Nigeria laid beside it, then every country pinned to the year Sweden lived as long.",
+        "The dips get names: Click the outliers: the 1918 flu, China's famine, the Khmer Rouge, HIV in Botswana. Every one recovered."
+      ],
+      "beats": [
+        {
+          "beat": "Cover",
+          "job": "Name the dataset and the promise: what the one chart will show."
+        },
+        {
+          "beat": "Misconception",
+          "job": "Draw the picture the audience already holds, so the data has something to overwrite."
+        },
+        {
+          "beat": "Test the room",
+          "job": "Three quick questions that prove the misconception, scored against chance."
+        },
+        {
+          "beat": "The question",
+          "job": "Explain the axes and ask the one question the chart answers."
+        },
+        {
+          "beat": "The one chart",
+          "job": "Play the data over time; let people scrub, pause and hover."
+        },
+        {
+          "beat": "Zoom in",
+          "job": "Stop the clock on the surprise and put one number on it."
+        },
+        {
+          "beat": "One path",
+          "job": "Follow a single case the audience knows, against one they don't."
+        },
+        {
+          "beat": "Outliers",
+          "job": "Name the exceptions and what explains them, instead of averaging them away."
+        },
+        {
+          "beat": "What it means",
+          "job": "Turn the chart into one sentence the audience can repeat."
+        },
+        {
+          "beat": "What to do",
+          "job": "Three habits to take home, and a way to replay the chart."
+        }
+      ]
+    },
+    {
+      "id": "panama-canal",
+      "category": "work",
+      "template": "Project kickoff",
+      "name": "The Panama Canal: Sanitation first, then dig",
+      "year": 1904,
+      "modelName": "the Panama Canal project kickoff structure",
+      "hook": "The dig stays locked until the mosquitoes sign off.",
+      "example": "https://pitchunfairly.com/templates/panama-canal/",
+      "deck": "https://pitchunfairly.com/templates/panama-canal/deck/",
+      "original": "https://en.wikipedia.org/wiki/History_of_the_Panama_Canal",
+      "whatMakesItWork": [
+        "The dig is locked: A phase plan where \"Dig at full scale\" stays padlocked until Sanitation and Railway both sign off. Reset it and try to start digging early.",
+        "The French ledger becomes rules: Five crossed-out entries from 1881 to 1889, each one clicked open into what happened and the rule it gave us.",
+        "Havana is the proof: Gorgas's own monthly table: 310 yellow fever deaths in 1900, 18 in 1901 once the mosquito work began. Toggle the years and watch the bars fall.",
+        "Hindsight on the risk register: Flip from the 1905 plan to what happened. Four risks held. One assumption failed, and the deck says so plainly."
+      ],
+      "beats": [
+        {
+          "beat": "Cover",
+          "job": "The project and its one rule of order, in five words."
+        },
+        {
+          "beat": "Why this project",
+          "job": "Answer first: the situation as it stands and the change you are making."
+        },
+        {
+          "beat": "What failed before",
+          "job": "The last attempt's record, each failure turned into a rule."
+        },
+        {
+          "beat": "Goal and done",
+          "job": "One checkable outcome, plus the conditions that make it count."
+        },
+        {
+          "beat": "Scope",
+          "job": "What is in, and what is out for now, with the reason for each out."
+        },
+        {
+          "beat": "Evidence",
+          "job": "Proof the approach has worked somewhere else, as a chart."
+        },
+        {
+          "beat": "Plan in phases",
+          "job": "Phases with owners and gates; later phases stay locked until earlier ones sign off."
+        },
+        {
+          "beat": "Roles",
+          "job": "A RACI with exactly one accountable name per row."
+        },
+        {
+          "beat": "Risks and assumptions",
+          "job": "Each risk with an owner and a fix; list the assumptions you have not tested."
+        },
+        {
+          "beat": "Cadence",
+          "job": "How often you report, to whom, and status colors with fixed meanings."
+        },
+        {
+          "beat": "First two weeks",
+          "job": "Dated first moves and the one decision you need, with a named decider."
+        }
+      ]
+    },
+    {
+      "id": "baskervilles",
+      "category": "proposal",
+      "template": "Client deliverable",
+      "name": "Sherlock Holmes: The Baskerville case report",
+      "year": 1902,
+      "modelName": "Sherlock Holmes' client deliverable structure",
+      "hook": "There is no curse. There was a cousin with a dog.",
+      "example": "https://pitchunfairly.com/templates/baskervilles/",
+      "deck": "https://pitchunfairly.com/templates/baskervilles/deck/",
+      "original": "https://www.gutenberg.org/ebooks/2852",
+      "whatMakesItWork": [
+        "The answer comes first: Holmes saved the solution for the fireside in the last chapter. The 2026 report opens on it: no curse, one cousin, one painted dog, case closed.",
+        "The evidence board has real string: Nine clues from the novel pinned to three findings. Click a finding and its strings light up: the boots, the cigar ash, the portrait.",
+        "The staffing plan has a twist: A map of the moor from Merripit House to the Grimpen Mire. Flip \"As briefed\" to \"As run\" and Holmes leaves London for a stone hut.",
+        "The curse gets an alibi: Curse, convict, butler, clergyman, typist: each suspect is struck through and stamped as its evidence lands."
+      ],
+      "beats": [
+        {
+          "beat": "Cover",
+          "job": "The engagement, the client, and the verdict in one line."
+        },
+        {
+          "beat": "Executive summary",
+          "job": "The answer first, three supporting points that don't overlap, and the status."
+        },
+        {
+          "beat": "The question",
+          "job": "Situation, complication, and the question the client asked, in their words."
+        },
+        {
+          "beat": "What we did",
+          "job": "The method and where the work happened, staffing as run rather than as sold."
+        },
+        {
+          "beat": "Evidence map",
+          "job": "Every key piece of evidence linked to the finding it supports."
+        },
+        {
+          "beat": "Finding 1",
+          "job": "A full-sentence headline and the one exhibit that proves it."
+        },
+        {
+          "beat": "Finding 2",
+          "job": "One finding per slide, with a diagram the client can check for themselves."
+        },
+        {
+          "beat": "Finding 3",
+          "job": "The finding the client least wants to hear, with the number behind it."
+        },
+        {
+          "beat": "Ruled out",
+          "job": "The hypotheses you eliminated and the evidence that eliminated each one."
+        },
+        {
+          "beat": "Recommendations",
+          "job": "Actions with one owner and a date each; the most important one first."
+        },
+        {
+          "beat": "Risks",
+          "job": "What stays open, including what went wrong on your side."
+        },
+        {
+          "beat": "Next steps",
+          "job": "Dates for what happens next and exactly what you need from the client."
+        }
+      ]
+    },
+    {
+      "id": "julia-child",
+      "category": "launch",
+      "template": "Webinar and workshop",
+      "name": "Julia Child: The French Chef",
+      "year": 1963,
+      "modelName": "Julia Child's webinar structure",
+      "hook": "Live, one take, and the potato hits the stove.",
+      "example": "https://pitchunfairly.com/templates/julia-child/",
+      "deck": "https://pitchunfairly.com/templates/julia-child/deck/",
+      "original": "https://en.wikipedia.org/wiki/The_French_Chef",
+      "whatMakesItWork": [
+        "The agenda runs like a broadcast clock: A studio clock sweeps all 28 minutes in about fourteen seconds, the ON AIR light glows, and each segment lights up as the hand reaches it. Click a segment to jump.",
+        "You can overcrowd the pan: Drag the slider past eight pieces of beef and the copper sear turns to grey steam. The demonstration proves the one rule of a good stew.",
+        "A mishap button, with a playbook: Cause a mishap (the flipped potato, the burned-down studio, the crackling mic) and a calm three-step recovery plays, followed by what the show really did.",
+        "The poll answers back: Vote on what keeps you out of the kitchen and the reply appears on air. The live tally is one vote, and it is yours."
+      ],
+      "beats": [
+        {
+          "beat": "Title card and promise",
+          "job": "Name the session and the one thing people will be able to do by the end."
+        },
+        {
+          "beat": "Housekeeping",
+          "job": "Say how it runs: live or recorded, how long, and how to ask questions."
+        },
+        {
+          "beat": "Who's teaching",
+          "job": "One credential the audience can check, plus why this person in particular."
+        },
+        {
+          "beat": "Agenda with times",
+          "job": "Four to six segments with real timecodes, so people know when the good part is."
+        },
+        {
+          "beat": "Live demonstration",
+          "job": "Do the thing on screen and let the audience change one variable."
+        },
+        {
+          "beat": "Mistakes and recovery",
+          "job": "The common mistake, what happens, and how to recover without stopping."
+        },
+        {
+          "beat": "Audience participation",
+          "job": "A poll or question at the halfway mark, answered on air."
+        },
+        {
+          "beat": "Recap",
+          "job": "The moves in the order people will use them, not the agenda again."
+        },
+        {
+          "beat": "The replay",
+          "job": "How the recording will reach the people who watch later."
+        },
+        {
+          "beat": "Next step and take-home",
+          "job": "One dated next session and the one resource to use tonight."
+        }
+      ]
+    },
+    {
+      "id": "tupperware",
+      "category": "strategy",
+      "template": "Go-to-market plan",
+      "name": "Brownie Wise: The Tupperware party",
+      "year": 1951,
+      "modelName": "Brownie Wise's go-to-market structure",
+      "hook": "Take it off the shelf. Throw it a party.",
+      "example": "https://pitchunfairly.com/templates/tupperware/",
+      "deck": "https://pitchunfairly.com/templates/tupperware/deck/",
+      "original": "https://www.pbs.org/wgbh/americanexperience/features/tupperware-wise/",
+      "whatMakesItWork": [
+        "Burp the seal yourself: Press the button and a drawn bowl does the whole demo: lid down, edge up, pfft, airtight. That one move is why stores couldn't sell it.",
+        "Shelf versus living room: Toggle the same 39-cent bowl between Aisle 6 and a party table ringed with ten coffee cups, and watch who shows the seal, who's watching, and what happens next.",
+        "One dealer compounds: Drag parties a week, guests, bookings and recruits, and watch one dealer become a sales force in three years, next to the real 20,000 by 1954.",
+        "The risk nobody listed: Plastic, the seal, and Jubilee prizes sinking into the Florida swamp are all handled. The last row is the founder, and it says plainly what happened in 1958."
+      ],
+      "beats": [
+        {
+          "beat": "The bet",
+          "job": "Name the product and the channel you are betting on, in one line."
+        },
+        {
+          "beat": "Product and the gap",
+          "job": "What it is, what it costs, and the exact reason it isn't selling yet."
+        },
+        {
+          "beat": "Channel fit",
+          "job": "Show the product in today's channel next to the proposed one, and what changes."
+        },
+        {
+          "beat": "Target customer",
+          "job": "Who buys, what they doubt, and where they already gather."
+        },
+        {
+          "beat": "The motion",
+          "job": "The sale step by step, ending in the step that starts the next sale."
+        },
+        {
+          "beat": "Funnel math",
+          "job": "Conversion at every step as a calculator, with the assumptions visible and adjustable."
+        },
+        {
+          "beat": "Pricing and incentives",
+          "job": "Who pays what, and what each person in the chain earns."
+        },
+        {
+          "beat": "The sellers",
+          "job": "Who sells it, how you recruit and train them, and how you reward them in public."
+        },
+        {
+          "beat": "Launch plan",
+          "job": "Milestones with dates, with the one big moment called out."
+        },
+        {
+          "beat": "Metrics",
+          "job": "The outcome number, plus the three leading indicators you count every week."
+        },
+        {
+          "beat": "Risks",
+          "job": "A register with a mitigation and a status for each, including the one you'd rather not write down."
+        },
+        {
+          "beat": "The ask",
+          "job": "The decisions you need, as line items, and when."
+        }
+      ]
+    },
+    {
+      "id": "tylenol",
+      "category": "review",
+      "template": "Crisis communication",
+      "name": "Johnson & Johnson: The Tylenol recall",
+      "year": 1982,
+      "modelName": "the Tylenol crisis communication structure",
+      "hook": "The public first, whatever it costs.",
+      "example": "https://pitchunfairly.com/templates/tylenol/",
+      "deck": "https://pitchunfairly.com/templates/tylenol/deck/",
+      "original": "https://en.wikipedia.org/wiki/Chicago_Tylenol_murders",
+      "whatMakesItWork": [
+        "Facts, and the gaps, side by side: What we know sits next to what we don't, with the date on it, so nobody fills a gap with a guess.",
+        "One message per audience: Click the public, customers, employees, regulators or the press and see the message, the channel, the voice and the ask change while the facts stay put.",
+        "Six days, played in order: A dated timeline runs from the first death on September 29 to the national recall on October 5, one action at a time.",
+        "The seal assembles itself: Foil under the cap, a band over the neck, a glued box: the triple seal builds layer by layer, and each seal can be inspected on its own."
+      ],
+      "beats": [
+        {
+          "beat": "Principle",
+          "job": "Open on the one rule every decision in the crisis will follow."
+        },
+        {
+          "beat": "What happened",
+          "job": "Facts only: what you know, what you don't yet, and the time you knew it."
+        },
+        {
+          "beat": "People first",
+          "job": "Name who is affected, then what you are doing for each group, before any business impact."
+        },
+        {
+          "beat": "The decision",
+          "job": "The action in one sentence, with its size, the reasons, and the cost you accept."
+        },
+        {
+          "beat": "Why",
+          "job": "Tie the decision to a principle the company already held, not one written for the crisis."
+        },
+        {
+          "beat": "Message matrix",
+          "job": "Each audience gets the same facts, with its own message, channel, voice and ask."
+        },
+        {
+          "beat": "Who speaks",
+          "job": "One lead voice, a named owner for each topic, and what you will not speak to."
+        },
+        {
+          "beat": "Timeline of actions",
+          "job": "Every action so far, dated, and what comes next."
+        },
+        {
+          "beat": "Prevention",
+          "job": "The change that makes this harder to happen again, shown, not described."
+        },
+        {
+          "beat": "Update rhythm",
+          "job": "When people will hear from you, what triggers an update, and when the next one is."
+        }
+      ]
+    },
+    {
+      "id": "dog",
+      "category": "fun",
+      "template": "Persuasion deck",
+      "name": "The Kids, Inc.: Why we need a dog",
+      "year": 2023,
+      "modelName": "the party-pitch structure (serious format, personal stakes, a vote at the end)",
+      "hook": "A Series A for one good dog.",
+      "example": "https://pitchunfairly.com/templates/dog/",
+      "deck": "https://pitchunfairly.com/templates/dog/deck/",
+      "original": null,
+      "whatMakesItWork": [
+        "The budget always wins: Drag food, vet and toys as high as you like. The dog lands under therapy every time, because Leo's allowance quietly absorbs the rest.",
+        "The chore chart checks itself: Thirty-five boxes fill in day by day as the slide opens, and the room can tap any of them. The promise is the visual.",
+        "Investor costume, all the way down: Traction is hours walking the neighbor's dog, the market is a house score docked six points for the white rug, and each sibling signs an SLA.",
+        "The vote happens in the room: The last slide is a live ballot with two options, Yes and Absolutely, a running tally, and confetti on every vote."
+      ],
+      "beats": [
+        {
+          "beat": "Serious cover",
+          "job": "Put a personal ask in a corporate costume: \"Series A, for Mom and Dad\"."
+        },
+        {
+          "beat": "Problem",
+          "job": "One concrete, slightly tragic artifact (a greeting log of zeros)."
+        },
+        {
+          "beat": "Solution",
+          "job": "The thing you want, labeled like a product spec."
+        },
+        {
+          "beat": "Traction",
+          "job": "Proof you already do the work, as a chart that goes up and to the right."
+        },
+        {
+          "beat": "Operations",
+          "job": "A chore chart with owners, so the objection is answered before it is raised."
+        },
+        {
+          "beat": "Market",
+          "job": "Score your readiness and own the one weakness out loud."
+        },
+        {
+          "beat": "Unit economics",
+          "job": "Compare the cost to something absurdly worse, and let them play with it."
+        },
+        {
+          "beat": "Team",
+          "job": "Each person, a title, and a promise they can be held to."
+        },
+        {
+          "beat": "Competition",
+          "job": "A 2x2 where the alternatives lose with a joke each."
+        },
+        {
+          "beat": "Risks and mitigations",
+          "job": "Quote every likely no and answer it in one line."
+        },
+        {
+          "beat": "The ask",
+          "job": "One thing, one condition, one date, on a term sheet."
+        },
+        {
+          "beat": "The vote",
+          "job": "Decide in the room, with options that all mean yes."
+        }
+      ]
+    }
+  ]
+}

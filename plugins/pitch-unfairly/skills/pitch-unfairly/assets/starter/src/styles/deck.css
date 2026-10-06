@@ -1,0 +1,370 @@
+/*
+  Design tokens and shared slide primitives.
+
+  Slides are composed on a fixed 1920x1080 stage. Desktop scales that stage to
+  fit the window and the PDF prints it 1:1, so what you see is what exports.
+  Below 800px the stage unwraps into one full-height slide per screen and the
+  tokens switch to a phone scale. Size things with these tokens and most slides
+  need only a few per-slide mobile overrides.
+
+  Rebrand by changing the tokens, not by sprinkling new colors through slides.
+*/
+
+:root {
+  /* Brand roles, fonts, physical style, and motion come from
+     src/brand/brand.css (generated from brand/brand.json). Everything below
+     derives from them: never write a raw color in a slide. */
+
+  /* Derived tints. Mix toward ink or paper so any palette stays coherent. */
+  --ink-faint: color-mix(in oklab, var(--ink) 55%, var(--paper));
+  --tint-1: color-mix(in oklab, var(--ink) 3%, var(--paper));
+  --tint-2: color-mix(in oklab, var(--ink) 9%, var(--paper));
+  --tint-3: color-mix(in oklab, var(--ink) 16%, var(--paper));
+  --tint-4: color-mix(in oklab, var(--ink) 24%, var(--paper));
+  --ink-raised: color-mix(in oklab, var(--ink) 90%, var(--paper));
+  --ink-edge: color-mix(in oklab, var(--ink) 78%, var(--paper));
+  --paper-on-ink: color-mix(in oklab, var(--paper) 88%, var(--ink));
+  --paper-a72: color-mix(in oklab, var(--paper) 72%, transparent);
+  --paper-a55: color-mix(in oklab, var(--paper) 55%, transparent);
+  --paper-a35: color-mix(in oklab, var(--paper) 35%, transparent);
+  --paper-a18: color-mix(in oklab, var(--paper) 18%, transparent);
+  --accent-a14: color-mix(in oklab, var(--accent) 14%, transparent);
+  /* For text and frames on dark (tone="ink") slides. */
+  --on-night-a72: color-mix(in oklab, var(--on-night) 72%, transparent);
+  --on-night-a55: color-mix(in oklab, var(--on-night) 55%, transparent);
+  --on-night-a18: color-mix(in oklab, var(--on-night) 18%, transparent);
+  --night-edge: color-mix(in oklab, var(--night) 70%, var(--on-night));
+  --letterbox: color-mix(in oklab, var(--ink) 80%, #000);
+
+  /* Hover timing is fixed; entrances come from the brand's motion preset. */
+  --ease-hover: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --dur-hover: 160ms;
+
+  /* Type scale in stage pixels (1920x1080). Display sizes follow the brand
+     face's width via --display-scale. */
+  --t-hero: calc(176px * var(--display-scale));
+  --t-display: calc(124px * var(--display-scale));
+  --t-title: calc(84px * var(--display-scale));
+  --t-lede: 40px;
+  --t-body: 30px;
+  --t-label: 22px;
+  --t-fine: 18px;
+
+  /* Space and physical style scale with the brand's density and kit values. */
+  --pad-x: calc(136px * var(--density));
+  --pad-y: calc(104px * var(--density));
+  --gap: calc(56px * var(--density));
+  --radius: var(--radius-base);
+  --border-w: var(--border-base);
+  --shadow-offset: var(--shadow-offset-base);
+}
+
+@media (max-width: 799px) {
+  :root {
+    --t-hero: calc(54px * var(--display-scale));
+    --t-display: calc(42px * var(--display-scale));
+    --t-title: calc(30px * var(--display-scale));
+    --t-lede: 18px;
+    --t-body: 15px;
+    --t-label: 11px;
+    --t-fine: 11px;
+
+    --pad-x: 22px;
+    --pad-y: 30px;
+    --gap: 18px;
+    --radius: min(var(--radius-base), 16px);
+    --border-w: calc(var(--border-base) * 0.6);
+    --shadow-offset: calc(var(--shadow-offset-base) * 0.42);
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  font-weight: var(--body-weight);
+  line-height: var(--body-line);
+  letter-spacing: var(--body-tracking);
+  color: var(--ink);
+  background: var(--letterbox);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol,
+figure,
+blockquote {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* ---------- Slide frame ---------- */
+
+.slide {
+  counter-increment: slide;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 1920px;
+  height: 1080px;
+  padding: var(--pad-y) var(--pad-x);
+  overflow: hidden;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.tone-warm { background: var(--surface); }
+.tone-ink {
+  /* Dark sections re-point the tokens slides use, so slide code stays the same
+     on any background. */
+  background: var(--night);
+  color: var(--on-night);
+  --accent: var(--accent-on-night);
+  --headline-color: var(--headline-on-night);
+  --hl-color: var(--hl-on-night);
+}
+.tone-accent { background: var(--accent); color: var(--on-accent); }
+
+.slide-num {
+  position: absolute;
+  right: var(--pad-x);
+  bottom: calc(var(--pad-y) * 0.45);
+  font-family: var(--font-mono);
+  font-size: var(--t-fine);
+  letter-spacing: 0.14em;
+  opacity: 0.45;
+}
+
+.slide-num::before {
+  content: counter(slide, decimal-leading-zero);
+}
+
+/* ---------- Type primitives ---------- */
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.display {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  line-height: var(--display-line);
+  letter-spacing: var(--display-tracking);
+  text-transform: var(--display-case);
+  text-wrap: balance;
+}
+
+.hero { font-size: var(--t-hero); }
+.h-display { font-size: var(--t-display); }
+.h-title { font-size: var(--t-title); line-height: 1; }
+
+.lede {
+  font-size: var(--t-lede);
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  text-wrap: pretty;
+}
+
+.fine {
+  font-family: var(--font-mono);
+  font-size: var(--t-fine);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.55;
+}
+
+/* One emphasized phrase per headline: accent color, or full contrast for
+   monochrome brands (style.emphasis in the kit). */
+.display { color: var(--headline-color); }
+.hl { color: var(--hl-color); }
+.tone-accent .display { color: var(--on-accent); }
+.tone-accent .hl { color: var(--paper); }
+
+/* ---------- Physical primitives ---------- */
+
+.card {
+  background: var(--paper);
+  color: var(--ink);
+  border: var(--border-w) solid var(--border-color);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.35em 0.8em;
+  border: calc(var(--border-w) * 0.75) solid currentColor;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Window chrome for screenshots and HTML mockups. */
+.window {
+  overflow: hidden;
+  border: var(--border-w) solid var(--border-color);
+  border-radius: calc(var(--radius) * 0.75);
+  background: var(--paper);
+  box-shadow: var(--shadow-card);
+}
+
+.window-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: var(--t-fine);
+}
+
+.window-bar i {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--ink-faint);
+}
+
+.window-bar i:nth-child(1) { background: var(--accent); }
+.window-bar i:nth-child(2) { background: var(--highlight); }
+.window-bar i:nth-child(3) { background: var(--positive); }
+.window-bar span { margin-left: 12px; opacity: 0.7; }
+
+@media (max-width: 799px) {
+  .window-bar { gap: 5px; padding: 7px 10px; }
+  .window-bar i { width: 7px; height: 7px; }
+  .mobile-hide { display: none !important; }
+}
+
+@media (min-width: 800px) {
+  .mobile-only { display: none !important; }
+}
+
+/* ---------- Entrance motion ---------- */
+
+/*
+  Content is visible by default. .rise only animates when its slide becomes
+  active, and static modes (PDF, reduced motion) jump to the end state, so a
+  slide never renders on its first frame.
+*/
+.is-active .rise {
+  animation: rise var(--dur-enter) var(--ease) var(--d, 0ms) both;
+}
+
+.is-active .pop {
+  animation: pop 480ms var(--ease-pop) var(--d, 0ms) both;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ---------- Motion kit ----------
+   Showpieces that animate the slide's point. Each one's resting style is its
+   finished state, so PDF, reduced motion, and no-JS all show the end. */
+
+/* Draw an SVG stroke on. Give the path pathLength="1". */
+.is-active .draw {
+  animation: draw 900ms var(--ease) var(--d, 0ms) both;
+}
+
+@keyframes draw {
+  from { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  to { stroke-dasharray: 1; stroke-dashoffset: 0; }
+}
+
+/* Reveal left to right, e.g. a bar growing to its value. Text inside stays unscaled. */
+.is-active .wipe {
+  animation: wipe 700ms var(--ease) var(--d, 0ms) both;
+}
+
+@keyframes wipe {
+  from { clip-path: inset(0 100% 0 0 round 6px); }
+  to { clip-path: inset(0 0 0 0 round 6px); }
+}
+
+/* Type a single monospace line. Set --chars to its length. */
+.is-active .type {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  vertical-align: bottom;
+  animation: type calc(var(--chars, 20) * 28ms) steps(var(--chars, 20), end) var(--d, 0ms) both;
+}
+
+@keyframes type {
+  from { width: 0; }
+  to { width: calc(var(--chars, 20) * 1ch); }
+}
+
+/* The one ambient loop: a slow breath on a shared clock. Ends at rest. */
+.breathe {
+  animation: breathe 3.6s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes pop {
+  from { opacity: 0; transform: scale(0.85) rotate(calc(var(--r, 0deg) * var(--tilt))); }
+  to { opacity: 1; transform: scale(1) rotate(calc(var(--r, 0deg) * var(--tilt))); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition: none !important;
+  }
+}
+
+html.is-static *,
+html.is-static *::before,
+html.is-static *::after {
+  animation-delay: -60s !important;
+  animation-iteration-count: 1 !important;
+  transition: none !important;
+}

@@ -1,0 +1,175 @@
+---
+import Slide from '../components/Slide.astro';
+import CountUp from '../components/motion/CountUp.astro';
+
+const bullets = [
+  'Market overview and key trends',
+  'Customer pain points identified',
+  'Our differentiated approach',
+  'Strong early traction signals',
+  'Experienced founding team',
+  'Large and growing opportunity',
+];
+---
+
+<Slide
+  id="before-after"
+  label="Before and after"
+  tone="warm"
+  notes="Comparison slide. The old way is greyed out; only the new way gets color and a shadow."
+>
+  <div class="ba">
+    <div class="head">
+      <p class="eyebrow rise">03 / The difference</p>
+      <h2 class="display h-title rise" style="--d: 80ms">Say it once. <span class="hl">Then show it.</span></h2>
+    </div>
+
+    <div class="pair">
+      <article class="side before rise" style="--d: 180ms">
+        <p class="label">Template</p>
+        <p class="title">Why now?</p>
+        <ul>
+          {bullets.map((b, i) => <li class:list={{ 'mobile-hide': i > 2 }}>{b}</li>)}
+        </ul>
+      </article>
+
+      <span class="arrow rise" style="--d: 260ms" aria-hidden="true">
+        <svg viewBox="0 0 64 32"><path d="M2 16h54M44 4l14 12-14 12" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+      </span>
+
+      <article class="side after card rise" style="--d: 340ms">
+        <p class="label">Composed</p>
+        <p class="claim display">Teams wait <span class="hl"><CountUp to={11} suffix=" days" delay={420} /></span> for a deck.</p>
+        <p class="fine caveat">Example figure</p>
+        <div class="bars" aria-label="Example: 11 days before, 1 day after">
+          <span style="--w: 100%; --d: 520ms" class="wipe"><b>Before</b> 11 days</span>
+          <span style="--w: 9%; --d: 900ms" class="now wipe"><b>After</b> 1 day</span>
+        </div>
+        <span class="sticker">reads in 3 seconds</span>
+      </article>
+    </div>
+  </div>
+</Slide>
+
+<style>
+  .ba {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 64px;
+  }
+
+  .eyebrow { margin-bottom: 24px; color: var(--accent-dark); }
+
+  .pair {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 48px;
+  }
+
+  .side {
+    position: relative;
+    min-height: 500px;
+    padding: 48px 52px;
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--radius);
+  }
+
+  .label {
+    margin-bottom: 26px;
+    font: 600 var(--t-label) var(--font-mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .before {
+    border: 3px solid var(--tint-3);
+    background: var(--tint-1);
+    color: var(--ink-faint);
+    filter: grayscale(1);
+  }
+
+  .before .title {
+    margin-bottom: 20px;
+    font: 700 52px/1 var(--font-display);
+    color: var(--ink-muted);
+  }
+
+  .before ul { display: grid; gap: 10px; font-size: 26px; }
+  .before li::before { content: '• '; }
+
+  .after {
+    box-shadow: var(--shadow-focal);
+  }
+
+  .after .label { color: var(--accent-dark); }
+
+  .claim {
+    font-size: 76px;
+    margin-bottom: 14px;
+  }
+
+  .claim .hl { white-space: nowrap; }
+  .caveat { margin-bottom: 40px; }
+
+  .bars {
+    display: grid;
+    gap: 14px;
+    margin-top: auto;
+  }
+
+  .bars span {
+    width: var(--w);
+    min-width: max-content;
+    padding: 12px 18px;
+    border-radius: 10px;
+    background: var(--ink);
+    color: var(--paper);
+    font: 500 var(--t-fine) var(--font-mono);
+    letter-spacing: 0.04em;
+  }
+
+  .bars span.now { background: var(--accent); color: var(--on-accent); }
+  .bars b { margin-right: 10px; font-weight: 700; }
+
+  .sticker {
+    position: absolute;
+    top: -26px;
+    right: -18px;
+    padding: 12px 22px;
+    border: 3px solid var(--border-color);
+    border-radius: 999px;
+    background: var(--highlight);
+    font: 700 var(--t-label) var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    transform: rotate(calc(6deg * var(--tilt)));
+  }
+
+  .arrow { width: 72px; color: var(--ink); }
+
+  @media (max-width: 799px) {
+    .ba { gap: 22px; }
+    .eyebrow { margin-bottom: 12px; }
+
+    .pair {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .arrow { display: none; }
+
+    .side { min-height: 0; padding: 16px 18px; }
+    .label { margin-bottom: 8px; }
+    .before .title { margin-bottom: 6px; font-size: 20px; }
+    .before ul { gap: 2px; font-size: 13px; }
+    .claim { font-size: 28px; margin-bottom: 4px; }
+    .caveat { margin-bottom: 12px; }
+    .bars { gap: 6px; }
+    .bars span { padding: 5px 8px; border-radius: 6px; }
+    .sticker { top: -12px; right: -4px; padding: 4px 10px; border-width: 2px; }
+  }
+</style>

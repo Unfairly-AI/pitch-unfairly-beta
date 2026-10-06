@@ -1,0 +1,46 @@
+{
+  "schema": "brand-kit@1",
+  "identity": {
+    "name": "Pitch Unfairly",
+    "domain": null,
+    "wordmark": "Pitch Unfairly",
+    "logos": {}
+  },
+  "palette": {
+    "paper": "#f5f1e8",
+    "surface": "#ebe4d4",
+    "ink": "#16130f",
+    "ink_muted": "#4a443b",
+    "accent": "#ff5a36",
+    "accent_dark": "#d63d1b",
+    "accent_secondary": "#2f5bff",
+    "on_accent": "#16130f",
+    "highlight": "#f6d96b",
+    "positive": "#bfe6c9",
+    "border": "#16130f",
+    "extras": [],
+    "data": ["#ff5a36", "#2f5bff", "#16130f", "#f6d96b"]
+  },
+  "typography": {
+    "display": { "family": "Bricolage Grotesque", "source": "fontsource", "package": "@fontsource-variable/bricolage-grotesque", "weight": 750, "tracking": -0.045, "line_height": 0.95, "case": "none", "scale": 1, "license": "open" },
+    "body": { "family": "Inter", "source": "fontsource", "package": "@fontsource-variable/inter", "weight": 400, "tracking": -0.01, "line_height": 1.45, "license": "open" },
+    "mono": { "family": "JetBrains Mono", "source": "fontsource", "package": "@fontsource-variable/jetbrains-mono", "license": "open" }
+  },
+  "style": {
+    "radius": 28,
+    "border_width": 4,
+    "shadow": "hard",
+    "shadow_offset": 12,
+    "texture": "none",
+    "density": "balanced",
+    "motion": "crisp",
+    "tilt": 1,
+    "photo_treatment": null,
+    "illustration_style": "Flat geometric shapes with thick ink outlines and hard offset shadows; playful small rotations.",
+    "layout_notes": "Generous margins, one focal object per slide, poster-scale numbers."
+  },
+  "imagery": [],
+  "voice": ["Plain, confident, specific.", "Short sentences; the headline states the point."],
+  "rules": ["One accent phrase per headline.", "Hard shadows only on the focal element and stickers."],
+  "sources": { "all": { "from": "starter default", "confidence": "high" } }
+}

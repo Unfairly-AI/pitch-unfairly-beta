@@ -1,0 +1,146 @@
+---
+import Slide from '../components/Slide.astro';
+
+const steps = [
+  { n: '01', title: 'Story', body: 'Outline every slide: its job, headline, and proof.' },
+  { n: '02', title: 'Compose', body: 'Design each slide for that job. No templates.' },
+  { n: '03', title: 'Verify', body: 'Audit and screenshot desktop, phone, and PDF.' },
+];
+
+const log = [
+  ['$', 'npm run audit'],
+  ['ok', 'stage    7 slides fit 1920×1080'],
+  ['ok', 'mobile   7 slides fit 393×745'],
+  ['ok', 'mobile   7 slides fit 375×667'],
+  ['ok', 'pdf      7 pages, 1920×1080'],
+  ['$', 'npm run shots'],
+  ['→', 'artifacts/contact-sheet.png'],
+];
+---
+
+<Slide
+  id="process"
+  label="How it works"
+  notes="Product-mockup slide. Real output in window chrome beats a diagram of boxes."
+>
+  <div class="process">
+    <div class="left">
+      <p class="eyebrow rise">04 / How it works</p>
+      <h2 class="display h-title rise" style="--d: 80ms">Story first. <span class="hl">Proof last.</span></h2>
+      <ol>
+        {steps.map((s, i) => (
+          <li class="rise" style={`--d: ${180 + i * 80}ms`}>
+            <span class="n">{s.n}</span>
+            <div>
+              <h3>{s.title}</h3>
+              <p>{s.body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <figure class="window terminal rise mobile-hide" style="--d: 300ms">
+      <div class="window-bar"><i></i><i></i><i></i><span>~/my-deck</span></div>
+      <pre>{log.map(([k, v], i) => {
+        // Each command types out; its output lines appear just after.
+        const cmdIndex = log.slice(0, i + 1).filter(([kk]) => kk === '$').length - 1;
+        const base = 420 + cmdIndex * 1100 + i * 140;
+        return k === '$' ? (
+          <div class="cmd"><span>$</span><b class="type" style={`--chars: ${v.length}; --d: ${base}ms`}>{v}</b></div>
+        ) : (
+          <div class={`${k === 'ok' ? 'ok' : 'out'} appear`} style={`--d: ${base + 420}ms`}><span>{k === 'ok' ? '✓' : k}</span>{v}</div>
+        );
+      })}</pre>
+    </figure>
+  </div>
+</Slide>
+
+<style>
+  .process {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1.05fr;
+    align-items: center;
+    gap: calc(var(--gap) * 1.4);
+  }
+
+  .eyebrow { margin-bottom: 24px; color: var(--accent-dark); }
+  .h-title { margin-bottom: 56px; }
+
+  ol {
+    display: grid;
+    gap: 34px;
+  }
+
+  li {
+    display: grid;
+    grid-template-columns: 92px 1fr;
+    align-items: baseline;
+  }
+
+  .n {
+    font: 600 var(--t-label) var(--font-mono);
+    color: var(--accent-dark);
+    letter-spacing: 0.1em;
+  }
+
+  h3 {
+    margin: 0 0 6px;
+    font: 700 46px/1.05 var(--font-display);
+    letter-spacing: -0.03em;
+  }
+
+  li p {
+    font-size: var(--t-body);
+    color: var(--ink-muted);
+  }
+
+  .terminal {
+    transform: rotate(calc(1.5deg * var(--tilt)));
+    background: var(--ink-raised);
+  }
+
+  pre {
+    margin: 0;
+    padding: 40px 44px 48px;
+    color: var(--paper-on-ink);
+    font: 400 26px/1.75 var(--font-mono);
+    white-space: pre;
+  }
+
+  pre span {
+    display: inline-block;
+    width: 1.8em;
+  }
+
+  .cmd { color: var(--paper); font-weight: 600; }
+  .cmd b { font-weight: 600; }
+
+  :global(.is-active) .appear {
+    animation: appear 160ms linear var(--d, 0ms) both;
+  }
+
+  @keyframes appear {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .cmd + .ok,
+  .cmd + .out { margin-top: 4px; }
+  .ok span { color: var(--positive); }
+  .out { color: var(--highlight); }
+  .ok + .cmd { margin-top: 24px; }
+
+  @media (max-width: 799px) {
+    .process {
+      grid-template-columns: 1fr;
+      align-content: center;
+    }
+
+    .eyebrow { margin-bottom: 12px; }
+    .h-title { margin-bottom: 26px; }
+    ol { gap: 18px; }
+    li { grid-template-columns: 38px 1fr; }
+    h3 { font-size: 22px; margin-bottom: 2px; }
+  }
+</style>

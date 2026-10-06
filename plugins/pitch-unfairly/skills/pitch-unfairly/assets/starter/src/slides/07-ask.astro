@@ -1,0 +1,55 @@
+---
+import Slide from '../components/Slide.astro';
+import BrandMark from '../components/BrandMark.astro';
+---
+
+<Slide
+  id="ask"
+  label="Next step"
+  tone="accent"
+  bare
+  notes="Close with one specific request the audience can say yes to. One button, nothing else."
+>
+  <div class="ask">
+    <BrandMark on="accent" height={44} class="rise mark" />
+    <h2 class="display hero rise">Start with<br />the <span class="hl">story.</span></h2>
+    <p class="lede rise" style="--d: 120ms">Write what each slide must prove. Then make it beautiful.</p>
+    <span class="breathe"><span class="cta pop" style="--d: 240ms">npm run dev</span></span>
+  </div>
+</Slide>
+
+<style>
+  .ask {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .mark { margin-bottom: 64px; }
+  .hero { margin-bottom: 44px; }
+  .lede { max-width: 24ch; margin-bottom: 64px; }
+
+  .breathe {
+    display: inline-block;
+  }
+
+  .cta {
+    display: inline-block;
+    padding: 26px 44px;
+    border: var(--border-w) solid var(--border-color);
+    border-radius: var(--radius-button);
+    background: var(--ink);
+    color: var(--paper);
+    box-shadow: var(--shadow-contrast);
+    font: 600 var(--t-lede) var(--font-mono);
+  }
+
+  @media (max-width: 799px) {
+    .mark { margin-bottom: 26px; }
+    .hero { margin-bottom: 18px; }
+    .lede { margin-bottom: 30px; }
+    .cta { padding: 12px 20px; }
+  }
+</style>
