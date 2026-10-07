@@ -1,10 +1,10 @@
 /*
   Design tokens and shared slide primitives.
 
-  Slides are composed on a fixed 1920x1080 stage. Desktop scales that stage to
-  fit the window and the PDF prints it 1:1, so what you see is what exports.
-  Below 800px the stage unwraps into one full-height slide per screen and the
-  tokens switch to a phone scale. Size things with these tokens and most slides
+  Slides are composed on a fixed 1920x1080 stage. Desktop stacks one slide per
+  screen, scales each to fit, and snaps between them; the PDF prints it 1:1, so
+  what you see is what exports. Below 800px each slide becomes the full screen
+  itself and the tokens switch to a phone scale. Size things with these tokens and most slides
   need only a few per-slide mobile overrides.
 
   Rebrand by changing the tokens, not by sprinkling new colors through slides.
@@ -140,6 +140,7 @@ svg {
   color: var(--ink);
 }
 
+.deck-frame { background: var(--paper); }
 .tone-warm { background: var(--surface); }
 .tone-ink {
   /* Dark sections re-point the tokens slides use, so slide code stays the same

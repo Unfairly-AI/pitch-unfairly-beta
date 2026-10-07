@@ -22,17 +22,20 @@ const { title, description = '' } = Astro.props;
       // slide and asks the frame for fullscreen.
       if (/[?&]pdf=1(&|$)/.test(location.search)) document.documentElement.classList.add('is-pdf', 'is-static');
       if (window.parent !== window) document.documentElement.classList.add('is-framed');
+      // Hide slides that haven't played yet, so content doesn't show and then
+      // re-enter. Static renders and reduced motion skip this.
+      if (!/[?&]pdf=1(&|$)/.test(location.search) && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('is-armed');
+      }
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
   </head>
   <body>
-    <div class="viewport">
-      <main class="stage" id="stage">
-        <slot />
-      </main>
-    </div>
+    <main class="stage" id="stage">
+      <slot />
+    </main>
 
     <nav class="deck-nav" aria-label="Deck controls">
       <button type="button" data-go="prev" aria-label="Previous slide">‹</button>
@@ -44,9 +47,16 @@ const { title, description = '' } = Astro.props;
     <aside class="deck-notes" id="deck-notes" hidden></aside>
 
     <script>
+      /*
+        The deck scrolls like a website: every slide fills one screen and the
+        page snaps between them, so a mouse wheel, trackpad, or swipe moves a
+        slide at a time. It also behaves like a deck: arrow keys, Space, Page
+        Up/Down, Home/End, N for notes, F for fullscreen. Each slide's entrance
+        plays the first time it comes into view.
+      */
       const html = document.documentElement;
-      const stage = document.getElementById('stage') as HTMLElement;
-      const slides = [...document.querySelectorAll<HTMLElement>('.slide')];
+      const frames = [...document.querySelectorAll<HTMLElement>('.stage > .deck-frame')];
+      const slides = frames.map((f) => f.querySelector<HTMLElement>('.slide')!);
       const pdf = html.classList.contains('is-pdf');
       const framed = html.classList.contains('is-framed');
       // Tell a host frame (pitchunfairly.com) where we are. Its badge and
@@ -54,43 +64,56 @@ const { title, description = '' } = Astro.props;
       const toFrame = (message: Record<string, unknown>) => {
         if (framed) window.parent.postMessage(message, '*');
       };
-      const phone = matchMedia('(max-width: 799px)');
       const notesEl = document.getElementById('deck-notes');
       const notesBtn = document.querySelector<HTMLButtonElement>('[data-go="notes"]');
-      let current = 0;
+      const played = new Set<number>();
+      let current = -1;
 
       // Effects driven by JS (counters, typing) should check this and render
       // their finished state instead of animating.
       (window as any).deckStill = () => pdf || matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+      // Stage scale: the 1920x1080 slide fits its frame (one screen).
       const fit = () => {
-        stage.style.setProperty('--s', String(Math.min(innerWidth / 1920, innerHeight / 1080)));
+        const frame = frames[0];
+        if (!frame) return;
+        html.style.setProperty('--s', String(Math.min(frame.clientWidth / 1920, frame.clientHeight / 1080)));
       };
 
-      const activate = (index: number) => {
-        slides.forEach((slide, i) => {
-          const on = i === index;
-          const entering = on && !slide.classList.contains('is-active');
-          if (entering) {
-            // Force a reflow so entrance animations replay on every visit.
-            void slide.offsetWidth;
-          }
-          slide.classList.toggle('is-active', on);
+      const setCurrent = (index: number) => {
+        if (index === current) return;
+        current = index;
+        slides.forEach((slide, i) => slide.classList.toggle('is-active', i === index));
+        const slide = slides[index];
+        if (!played.has(index)) {
+          played.add(index);
           // Script-driven motion (CountUp) listens for this.
-          if (entering) slide.dispatchEvent(new CustomEvent('deck:enter'));
-          slide.setAttribute('aria-hidden', String(!on && !phone.matches));
-        });
+          slide.dispatchEvent(new CustomEvent('deck:enter'));
+        } else {
+          // Coming back: show the finished slide instead of replaying.
+          slide.classList.add('is-replay');
+        }
+        history.replaceState(null, '', `#${index + 1}`);
+        const count = document.getElementById('deck-current');
+        if (count) count.textContent = String(index + 1);
+        if (notesEl) notesEl.textContent = slide.dataset.notes || 'No notes for this slide.';
+        toFrame({ type: 'deck:slide', index, total: slides.length });
       };
 
-      const show = (index: number, { scroll = true } = {}) => {
-        current = Math.max(0, Math.min(slides.length - 1, index));
-        activate(current);
-        history.replaceState(null, '', `#${current + 1}`);
-        const count = document.getElementById('deck-current');
-        if (count) count.textContent = String(current + 1);
-        if (notesEl) notesEl.textContent = slides[current].dataset.notes || 'No notes for this slide.';
-        toFrame({ type: 'deck:slide', index: current, total: slides.length });
-        if (phone.matches && scroll) slides[current].scrollIntoView({ behavior: 'smooth' });
+      const go = (index: number, smooth = true) => {
+        const i = Math.max(0, Math.min(frames.length - 1, index));
+        // Scroll only this document: scrollIntoView would also scroll a page that embeds the deck.
+        document.scrollingElement?.scrollTo({ top: frames[i].offsetTop, behavior: smooth ? 'smooth' : 'auto' });
+        setCurrent(i);
+      };
+
+      // Jump to a slide and play its entrance from the start, even on a
+      // revisit. npm run motion uses this to film every entrance.
+      (window as any).deckReplay = (index: number) => {
+        played.clear();
+        slides.forEach((slide) => slide.classList.remove('is-replay', 'is-active'));
+        current = -1;
+        go(index, false);
       };
 
       const fromHash = () => {
@@ -104,13 +127,22 @@ const { title, description = '' } = Astro.props;
         history.scrollRestoration = 'manual';
         fit();
         addEventListener('resize', fit);
-        show(fromHash());
+        go(fromHash(), false);
         addEventListener('hashchange', () => {
-          if (fromHash() !== current) show(fromHash());
+          if (fromHash() !== current) go(fromHash());
         });
 
-        document.querySelector('[data-go="prev"]')?.addEventListener('click', () => show(current - 1));
-        document.querySelector('[data-go="next"]')?.addEventListener('click', () => show(current + 1));
+        // Whichever slide holds most of the screen is the current one.
+        const observer = new IntersectionObserver((entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) setCurrent(frames.indexOf(entry.target as HTMLElement));
+          }
+        }, { threshold: 0.55 });
+        frames.forEach((frame) => observer.observe(frame));
+
+        document.querySelectorAll<HTMLElement>('[data-go="prev"], [data-go="next"]').forEach((el) => {
+          el.addEventListener('click', () => go(current + (el.dataset.go === 'prev' ? -1 : 1)));
+        });
 
         const toggleNotes = () => {
           if (!notesEl || !notesBtn) return;
@@ -122,12 +154,13 @@ const { title, description = '' } = Astro.props;
         addEventListener('keydown', (event) => {
           const target = event.target as HTMLElement;
           if (event.metaKey || event.ctrlKey || event.altKey) return;
+          if (target.closest('input, textarea, select, button, a, [contenteditable="true"]') && event.key === ' ') return;
           if (target.closest('input, textarea, select, [contenteditable="true"]')) return;
           const key = event.key;
-          if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(key)) show(current + 1);
-          else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(key)) show(current - 1);
-          else if (key === 'Home') show(0);
-          else if (key === 'End') show(slides.length - 1);
+          if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(key)) go(current + (event.shiftKey && key === ' ' ? -1 : 1));
+          else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(key)) go(current - 1);
+          else if (key === 'Home') go(0);
+          else if (key === 'End') go(slides.length - 1);
           else if (key === 'f') {
             if (framed) toFrame({ type: 'deck:fullscreen' });
             else if (document.fullscreenElement) document.exitFullscreen();
@@ -137,7 +170,7 @@ const { title, description = '' } = Astro.props;
           event.preventDefault();
         });
 
-        // Horizontal swipe on tablets; phones scroll vertically instead.
+        // Horizontal swipe on tablets also steps through the deck.
         let touchX = 0;
         let touchY = 0;
         addEventListener('touchstart', (e) => {
@@ -145,31 +178,15 @@ const { title, description = '' } = Astro.props;
           touchY = e.touches[0].clientY;
         }, { passive: true });
         addEventListener('touchend', (e) => {
-          if (phone.matches) return;
           const dx = e.changedTouches[0].clientX - touchX;
           const dy = e.changedTouches[0].clientY - touchY;
-          if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) show(current + (dx < 0 ? 1 : -1));
+          if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) go(current + (dx < 0 ? 1 : -1));
         }, { passive: true });
 
-        // On phones every slide is on the page; activate whichever is in view.
-        // Crossing the breakpoint (resizing, rotating a tablet) restacks the
-        // slides, so ignore the observer until the current slide is back in place.
-        let switching = false;
-        const observer = new IntersectionObserver((entries) => {
-          if (!phone.matches || switching) return;
-          for (const entry of entries) {
-            if (entry.isIntersecting) show(slides.indexOf(entry.target as HTMLElement), { scroll: false });
-          }
-        }, { threshold: 0.6 });
-        slides.forEach((slide) => observer.observe(slide));
-        phone.addEventListener('change', () => {
-          switching = true;
-          requestAnimationFrame(() => {
-            if (phone.matches) slides[current].scrollIntoView();
-            show(current, { scroll: false });
-            setTimeout(() => { switching = false; }, 400);
-          });
-        });
+        // Fullscreen and rotation resize the frames; keep the current slide in place.
+        const settle = () => requestAnimationFrame(() => { fit(); go(current, false); });
+        document.addEventListener('fullscreenchange', settle);
+        matchMedia('(max-width: 799px)').addEventListener('change', settle);
 
         // Hide the controls while presenting with a still mouse.
         let idle: number | undefined;
@@ -195,37 +212,42 @@ const { title, description = '' } = Astro.props;
     </script>
 
     <style is:global>
-      /* Desktop: one slide at a time on a scaled 1920x1080 stage. */
-      .viewport {
-        position: fixed;
-        inset: 0;
+      :root { --s: 0.5; }
+
+      /* Screen: one slide per screen, stacked, snapping like a deck. */
+      html:not(.is-pdf) { scroll-snap-type: y mandatory; }
+      html:not(.is-pdf) body { background: var(--letterbox); }
+
+      /* overflow-x: hidden on body would make it the scroll container and
+         strand the snap points; clip trims sideways overflow without that. */
+      html:not(.is-pdf),
+      html:not(.is-pdf) body { overflow-x: clip; }
+
+      .stage { counter-reset: slide; }
+
+      /* Each frame is one full screen in its slide's color; the slide is
+         scaled to fit inside it. */
+      .deck-frame {
+        position: relative;
+        height: 100svh;
         overflow: hidden;
-        background: var(--letterbox);
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
       }
 
-      .stage {
+      .deck-frame > .slide {
         position: absolute;
         left: 50%;
         top: 50%;
-        width: 1920px;
-        height: 1080px;
-        transform: translate(-50%, -50%) scale(var(--s, 1));
-        counter-reset: slide;
+        transform: translate(-50%, -50%) scale(var(--s));
       }
 
-      .stage > .slide {
-        position: absolute;
-        inset: 0;
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.45s var(--ease), visibility 0s linear 0.45s;
-      }
-
-      .stage > .slide.is-active {
-        opacity: 1;
-        visibility: visible;
-        transition: opacity 0.45s var(--ease), visibility 0s;
-      }
+      /* A slide that hasn't come into view yet waits, so its entrance plays clean. */
+      html.is-armed .slide:not(.is-active):not(.is-replay) > * { opacity: 0; }
+      /* A revisited slide shows its finished state instead of replaying. */
+      .slide.is-replay *,
+      .slide.is-replay *::before,
+      .slide.is-replay *::after { animation: none !important; }
 
       /* PDF: every slide 1:1, one per page. */
       @page {
@@ -240,25 +262,21 @@ const { title, description = '' } = Astro.props;
         background: var(--paper);
       }
 
-      html.is-pdf .viewport,
-      html.is-pdf .stage {
-        position: static;
-        width: 1920px;
+      html.is-pdf .deck-frame {
         height: auto;
-        transform: none;
         overflow: visible;
-      }
-
-      html.is-pdf .stage > .slide {
-        position: relative;
-        inset: auto;
-        opacity: 1;
-        visibility: visible;
         break-after: page;
       }
 
-      html.is-pdf .stage > .slide:last-child {
+      html.is-pdf .deck-frame:last-child {
         break-after: auto;
+      }
+
+      html.is-pdf .deck-frame > .slide {
+        position: relative;
+        left: auto;
+        top: auto;
+        transform: none;
       }
 
       html.is-pdf .deck-nav,
@@ -266,30 +284,17 @@ const { title, description = '' } = Astro.props;
         display: none !important;
       }
 
-      /* Phone: the stage unwraps into one full-height slide per screen. */
+      /* Phone: the slide itself is the screen, laid out at phone size. */
       @media (max-width: 799px) {
-        html:not(.is-pdf) {
-          scroll-snap-type: y mandatory;
-        }
+        html:not(.is-pdf) .deck-frame { height: auto; }
 
-        html:not(.is-pdf) .viewport,
-        html:not(.is-pdf) .stage {
-          position: static;
-          width: auto;
-          height: auto;
-          transform: none;
-          overflow: visible;
-        }
-
-        html:not(.is-pdf) .stage > .slide {
+        html:not(.is-pdf) .deck-frame > .slide {
           position: relative;
-          inset: auto;
+          left: auto;
+          top: auto;
           width: 100%;
           height: 100svh;
-          opacity: 1;
-          visibility: visible;
-          scroll-snap-align: start;
-          transition: none;
+          transform: none;
         }
       }
 

@@ -14,7 +14,10 @@ interface Props {
 const { id, label, tone = 'paper', notes, bare = false } = Astro.props;
 ---
 
-<section id={`slide-${id}`} class={`slide tone-${tone}`} aria-label={label} data-notes={notes}>
-  <slot />
-  {!bare && <span class="slide-num" aria-hidden="true"></span>}
-</section>
+<!-- The frame is one screen in the slide's color; the scaled slide sits inside it. -->
+<div class={`deck-frame tone-${tone}`}>
+  <section id={`slide-${id}`} class={`slide tone-${tone}`} aria-label={label} data-notes={notes}>
+    <slot />
+    {!bare && <span class="slide-num" aria-hidden="true"></span>}
+  </section>
+</div>

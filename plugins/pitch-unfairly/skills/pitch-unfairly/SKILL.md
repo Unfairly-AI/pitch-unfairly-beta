@@ -94,7 +94,7 @@ Every slide renders three ways, and a fix in one mode does not fix the others:
 
 | Mode | Where | How it renders |
 |---|---|---|
-| Present | Desktop browser | The 1920×1080 stage scaled to the window, one slide at a time |
+| Present | Desktop browser | One slide per screen, scaled to fit; scroll, swipe, or arrow keys move a slide at a time |
 | Phone | Below 800px wide | One full-height slide per screen, phone token scale, per-slide overrides |
 | PDF | `dist/deck.pdf` (built by `npm run build`) | The stage printed 1:1, one page per slide |
 

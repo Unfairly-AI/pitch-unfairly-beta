@@ -30,11 +30,9 @@ try {
   const ids = await page.$$eval('.slide', (s) => s.map((x) => x.id.replace(/^slide-/, '')));
   const strips = [];
   for (const [i, id] of ids.entries()) {
-    // Leave the slide, then enter it, so its entrance replays from the start.
-    await page.evaluate((n) => { location.hash = `#${n}`; }, i === 0 ? 2 : i);
-    await new Promise((r) => setTimeout(r, 600));
+    // Jump to the slide and replay its entrance from the start.
     const t0 = Date.now();
-    await page.evaluate((n) => { location.hash = `#${n}`; }, i + 1);
+    await page.evaluate((n) => window.deckReplay(n), i);
     const frames = [];
     for (const at of FRAMES_MS) {
       const wait = t0 + at - Date.now();
