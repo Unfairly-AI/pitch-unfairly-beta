@@ -110,11 +110,13 @@ A clean audit is necessary, not sufficient. Run `npm run shots` and `npm run mot
 
 The review catches what the audit can't: an orphaned word, a number broken across lines, a crowded slide, a weak focal point, clip-art, a run of slides that look alike. Fix by tightening copy first and layout second. Read [references/modes.md](references/modes.md) when a mode misbehaves; it lists the known traps.
 
-Before calling the deck done, the full audit is clean, the latest review marks every slide ready, you have looked at every slide in all three modes, and the story still reads in order from the contact sheet alone. `npm run upload` refuses to publish without that review; there is no review bypass, including for updates to an existing deck. In your final message, quote the audit's last line and say how many audit and review rounds it took.
+Before calling the deck done, the full audit is clean, the latest review marks every slide ready, you have looked at every slide in all three modes, and the story still reads in order from the contact sheet alone. `npm run upload` refuses to publish without that review; there is no review bypass, including for updates to an existing deck. Keep the audit lines and round counts for yourself; the final message (step 7) says it in plain words.
 
 ### 6. Build and publish
 
 `npm run build` writes a static deck to `dist/`, including `dist/deck.pdf`. Every asset path is relative, so the folder works wherever it is hosted.
+
+**Publish by default.** A deck the person can't open from a link isn't finished: a folder on disk, a `localhost` preview (it stops working when you do), and a PDF are not what they asked for. Once the audit is clean and the review marks every slide ready, publish without asking. The link is unlisted, so publishing doesn't make the deck public. Skip publishing only when the user said not to ("keep it local", "just the PDF"), or when the deck holds material that looks confidential (unreleased financials, a client's private data, anything the user called private): then ask once, in one plain sentence, before publishing.
 
 Publish it with the plugin's `unfairly-decks` tools, which host it at an unlisted link: `pitchunfairly.com/<workspace>/<deck>-<code>`. The random code keeps the link private; anyone who has it can view the deck, and decks are never indexed. The first call asks the user to sign in to Unfairly. A new email gets an account, and someone without a team can set up a workspace for their company in the same step: Unfairly reads their website for positioning and brand, so `deck_context` and `brand_kit_get` know the company from the first deck.
 
@@ -124,7 +126,21 @@ Publish it with the plugin's `unfairly-decks` tools, which host it at an unliste
 
 The publish result has two different destinations. Always give the user both: the unlisted `pitchunfairly.com` presentation link is what they share with viewers, and the signed-in `app.unfairly.ai` link opens that exact deck in their workspace so they can manage it, inspect its story and versions, and find it again later. Do not collapse these into one link or describe the app link as public.
 
-Give the user the link, say it's unlisted (shared only by link), and say where the PDF is (`dist/deck.pdf`, and the PDF button on the deck). Free decks show a small "Made with Unfairly" badge. Publish only when the user asked for a link, and only decks they made; don't put private material on a public URL without checking with them. If the tools aren't available, give them the `dist/` folder: it works on any static host.
+Free decks show a small "Made with Unfairly" badge. Only publish decks the user made. If the hosting tools aren't available, say so plainly and give them the `dist/` folder: it works on any static host.
+
+### 7. Hand it over
+
+The person reading your last message may have never heard of Pitch Unfairly. Write it for them, not for a developer: short, warm, and in plain words. In this order:
+
+1. One sentence on what you made ("Your 10-slide Thanksgiving deck is ready.").
+2. The presentation link, labeled as the one to share: "Share this link: <link>. Only people with the link can see it."
+3. The gallery link, labeled as theirs: "Your decks, with every version, live here: <link> (you'll sign in)."
+4. One line on how to use it: arrow keys to move, the PDF button on the deck for a file.
+5. One sentence offering the next step ("Want a different photo on slide 3, or a password on the link?").
+
+Leave out the machinery: audit lines, round counts, "modes", contact sheets, review verdicts, npm scripts, `localhost` URLs, and file paths. If they ask how it was checked, say it was checked on a laptop, a phone, and as a PDF, and a design review passed every slide. Mention the local folder only if they didn't get a link (the deck isn't published), and then say what's in it in a sentence.
+
+### Taking a deck offline
 
 To take a deck offline, call `deck_list`, find the deck by title (ask if more than one matches), and call `deck_unpublish` with its `slug` and `workspace`. Its link stops working right away; republishing later brings it back. Only take down decks in the user's own workspaces; for anyone else's deck, point them to https://pitchunfairly.com/support.
 
@@ -139,7 +155,8 @@ The deck studio runs this same starter, scripts, and audits in a sandbox on Unfa
 - Sign-off (step 1.6) works the same in chat: the numbered headlines with their jobs and the brand (palette, fonts, logo, look in a sentence) go in the message that asks for approval, unless the user asked you to skip it.
 - `studio_check` is your eyes: it audits desktop and phone, takes the screenshots, and has a design director review every changed slide against the craft guide, with a ready or fix verdict and a concrete fix for each. Send the user the live preview link after the first check, so they watch the deck come together.
 - `studio_publish` publishes the last build to the unlisted link; there's no manifest or upload step.
-- After `studio_publish`, give the user both returned destinations: the unlisted presentation link and the signed-in Unfairly web-app link for the exact deck.
+- Publish by default once the bar passes, as in step 6; there's nothing to ask unless the user said not to or the deck looks confidential.
+- After `studio_publish`, hand it over as in step 7: the unlisted presentation link to share, the signed-in gallery link for the exact deck, in plain words with no checker output.
 
 ## Where this runs
 

@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "pitch-unfairly",
-  "version": "0.13.4",
+  "version": "0.13.5",
   "description": "Builds presentation decks as Astro websites with PDF export and desktop, phone, and PDF layout checks, and publishes them to unlisted links.",
   "author": {
     "name": "Unfairly AI",
@@ -61,7 +61,7 @@
               "description": "Start a new deck from the user's saved brand kit and the workspace's earlier decks. The test account has a saved brand kit.",
               "prompt": "Make a 4-slide product update deck in our saved brand.",
               "tools_triggered": "deck_context, brand_kit_get",
-              "expected_behavior": "The agent calls deck_context and brand_kit_get before composing and applies the saved kit. The finished deck uses the kit's colors, fonts, and logo, and the agent reports that the audit is clean on desktop, phone, and PDF and that the design review marked every slide ready."
+              "expected_behavior": "The agent calls deck_context and brand_kit_get before composing and applies the saved kit. The finished deck uses the kit's colors, fonts, and logo, and the agent publishes it and replies in plain words with the shareable link and the gallery link, saying the deck was checked on desktop, phone, and PDF, without audit output, round counts, or file paths."
             },
             {
               "description": "Bring in a company's brand from its public website and save it as the user's brand kit for future decks.",
