@@ -54,4 +54,4 @@ Run `npm run story:check -- --templates <skill>/references/templates.json`. It f
 
 ## 6. Sign off
 
-Show the user the angle, the template, and the headlines (not the whole file) and settle them before composing. Changing a headline now costs a sentence; later it costs a slide.
+Show the user the angle, the template, and every headline, numbered, with its one-line job, in the same message that asks for approval (not the whole file, and never just a path to it), and settle them before composing. Ask for the story and the brand in one checkpoint. Changing a headline now costs a sentence; later it costs a slide.

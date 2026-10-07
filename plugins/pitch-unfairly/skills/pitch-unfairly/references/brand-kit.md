@@ -21,7 +21,7 @@ The capture measures; you judge. Open every screenshot in `brand/capture/` and c
 - **Logos.** `primary` must read on `paper`; add `on_ink` and `on_accent` variants (recolor the SVG fill) when the primary would vanish on those backgrounds.
 - **Words.** Write `photo_treatment`, `illustration_style`, `layout_notes`, `voice`, and `rules` from what you see. They guide your composition; be specific.
 
-Then `npm run brand:apply`, `npm run dev`, and `npm run brand:board`. Show `artifacts/brand-board.png` to the user and get a yes before composing slides.
+Then `npm run brand:apply`, `npm run dev`, and `npm run brand:board`. Show `artifacts/brand-board.png` to the user as an image in the sign-off message, alongside the story, and get a yes before composing slides.
 
 ## Fonts and licensing
 
