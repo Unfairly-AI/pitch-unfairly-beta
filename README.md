@@ -2,26 +2,10 @@
 
 Pitch Unfairly builds presentation decks as real websites, on brand, with present mode, a phone layout and a PDF, then publishes them to an unlisted link on pitchunfairly.com.
 
-This is the beta distribution of the plugin, for invited testers. It's proprietary software: see [LICENSE](LICENSE). Setup instructions for testers are at https://pitchunfairly.com/beta/.
+This is the beta distribution of the plugin, and the marketplace the ChatGPT desktop app and Codex install it from. It's proprietary software: see [LICENSE](LICENSE).
 
-## Install
+**Set it up: https://pitchunfairly.com/setup/** (the steps live there, so they stay current).
 
-**ChatGPT (desktop app):**
-
-1. Add the plugin source (needs the Codex CLI: `npm i -g @openai/codex`):
-   ```bash
-   codex plugin marketplace add Unfairly-AI/pitch-unfairly-beta
-   ```
-2. Restart the ChatGPT desktop app, open Plugins, and install Pitch Unfairly.
-3. In any chat, pick Pitch Unfairly with @ or the + menu and ask for a deck.
-
-**Codex:**
-
-```bash
-codex plugin marketplace add Unfairly-AI/pitch-unfairly-beta
-codex plugin add pitch-unfairly@pitch-unfairly
-```
-
-**ChatGPT Business or Enterprise (whole workspace, no terminal):** an admin goes to Admin Console, Plugins, Add, Import marketplace, and enters `https://github.com/Unfairly-AI/pitch-unfairly-beta`.
+ChatGPT Business or Enterprise admins can add it for the whole workspace by importing this repo as a plugin marketplace in the Admin Console.
 
 Questions: support@unfairly.ai
