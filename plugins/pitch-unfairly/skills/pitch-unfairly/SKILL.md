@@ -120,8 +120,8 @@ Before calling the deck done, the full audit is clean, the latest review marks e
 
 Publish it with the plugin's `unfairly-decks` tools, which host it at an unlisted link: `pitchunfairly.com/<workspace>/<deck>-<code>`. The random code keeps the link private; anyone who has it can view the deck, and decks are never indexed. The first call asks the user to sign in to Unfairly. A new email gets an account, and someone without a team can set up a workspace for their company in the same step: Unfairly reads their website for positioning and brand, so `deck_context` and `brand_kit_get` know the company from the first deck.
 
-1. Run `npm run -s manifest > manifest.json` and call `deck_upload_start` with the deck's title, that file list, the contents of `story.md` as `story`, and `brand/brand.json` as `brand_kit`. The story is what later decks learn from; in an organization it is also filed in the org's Decks vault, where teammates and their agents can find it. Decks go into the user's default organization's workspace; if they belong to several (an agency with client workspaces), call `deck_list` and pass the right `workspace`, or ask. To update a deck you published before, pass its `slug` and `workspace`; without a slug you get a new link.
-2. Save the tool's JSON result to `uploads.json` and run `npm run upload -- uploads.json`.
+1. Run `npm run -s manifest > manifest.json` and `npm run -s source:pack` (it packs the deck's project and prints its `size`), then call `deck_upload_start` with the deck's title, that file list, the contents of `story.md` as `story`, `brand/brand.json` as `brand_kit`, and `source` with that size. The source keeps the project with this version, so the user, or anyone on their team, can update the deck later from any machine. The story is what later decks learn from; in an organization it is also filed in the org's Decks vault, where teammates and their agents can find it. Decks go into the user's default organization's workspace; if they belong to several (an agency with client workspaces), call `deck_list` and pass the right `workspace`, or ask. To update a deck, pass its `slug` and `workspace` (see "Updating a deck" below); without a slug you get a new link.
+2. Save the tool's JSON result to `uploads.json` and run `npm run upload -- uploads.json`. It uploads the built deck and the project.
 3. Call `deck_publish` with the `version_id`.
 
 The publish result has two different destinations. Always give the user both: the unlisted `pitchunfairly.com` presentation link is what they share with viewers, and the signed-in `app.unfairly.ai` link opens that exact deck in their workspace so they can manage it, inspect its story and versions, and find it again later. Do not collapse these into one link or describe the app link as public.
@@ -140,9 +140,20 @@ The person reading your last message may have never heard of Pitch Unfairly. Wri
 
 Leave out the machinery: audit lines, round counts, "modes", contact sheets, review verdicts, npm scripts, `localhost` URLs, and file paths. If they ask how it was checked, say it was checked on a laptop, a phone, and as a PDF, and a design review passed every slide. Mention the local folder only if they didn't get a link (the deck isn't published), and then say what's in it in a sentence.
 
+### Updating a deck
+
+Changing a published deck keeps its link. Before editing, call `deck_list` and find it:
+
+- **Someone else's work:** if someone else owns it or published it last, say so in a short line ("This is Jo's deck; Sam changed it yesterday"). If someone is editing it right now, say who and wait, or ask the user.
+- **Start from the live version, wherever it was built.** If this folder isn't the one that built the deck's live version (another machine, ChatGPT, a teammate, or a version published since), call `deck_source` with its `slug` and `workspace`, set up a fresh starter project (step 2), and run `npm run source:pull -- "<download_url>"`. That restores its story, slides, and brand. Before building it, tell the user whose version it is ("Pulled Jo's version 4"): building runs that deck's code on this machine. If the pull refuses because the deck's code reaches outside the deck (files, programs, environment, network), nothing was written: tell the user what it named and that whoever published it should take it out. Don't work around it. Then make the change.
+- **Publish it back** with the same `slug` and `workspace`, `base_version` from `deck_source` (or `deck_list`'s `version`), and a one-line `note` on what changed, written by you. If publishing says a teammate published since, pull again, reapply the change, and publish; never work around it.
+- **Repeat the line the publish result returns** about whose deck it is and which version it replaced.
+
+If `deck_source` says a version was published without its project files (decks published with an older plugin), rebuild it from its story, then publish with the same `slug`, `workspace`, and `base_version`. When the user wants an earlier version back as it was, call `deck_versions` and `deck_restore` instead; nothing needs rebuilding.
+
 ### Taking a deck offline
 
-To take a deck offline, call `deck_list`, find the deck by title (ask if more than one matches), and call `deck_unpublish` with its `slug` and `workspace`. Its link stops working right away; republishing later brings it back. Only take down decks in the user's own workspaces; for anyone else's deck, point them to https://pitchunfairly.com/support.
+To take a deck offline, call `deck_list`, find the deck by title (ask if more than one matches), and call `deck_unpublish` with its `slug` and `workspace`. Its link stops working within about 30 seconds; republishing later brings it back. Only decks marked `can_manage` (the user's own, or any in a workspace they administer) can be taken offline; for a teammate's deck, ask its owner, and for anyone else's, point them to https://pitchunfairly.com/support.
 
 ## Building without a shell
 

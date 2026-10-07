@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "pitch-unfairly",
-  "version": "0.13.5",
+  "version": "0.13.6",
   "description": "Builds presentation decks as Astro websites with PDF export and desktop, phone, and PDF layout checks, and publishes them to unlisted links.",
   "author": {
     "name": "Unfairly AI",

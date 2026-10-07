@@ -16,6 +16,8 @@
     "shots": "node bin/shots.mjs",
     "manifest": "node bin/manifest.mjs",
     "upload": "node bin/upload.mjs",
+    "source:pack": "node bin/source.mjs pack",
+    "source:pull": "node bin/source.mjs pull",
     "review-files": "node bin/review-files.mjs",
     "motion": "node bin/motion.mjs",
     "brand:apply": "node bin/brand-apply.mjs",

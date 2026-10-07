@@ -58,10 +58,24 @@ async function worker() {
 }
 await Promise.all(Array.from({ length: 6 }, worker));
 
+// The deck's project (npm run source:pack), kept with this version so the
+// team can update the deck later from any machine.
+let source = '';
+if (!Array.isArray(parsed) && parsed.source_upload) {
+  const body = await readFile(join('artifacts', 'source.json')).catch(() => null);
+  if (!body) {
+    failed.push('source bundle: artifacts/source.json is missing. Run npm run -s source:pack, then npm run upload again.');
+  } else {
+    const response = await fetch(parsed.source_upload.upload_url, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body });
+    if (response.ok || response.status === 409) source = ' and the project files';
+    else failed.push(`source bundle: HTTP ${response.status} ${await response.text().catch(() => '')}`.slice(0, 300));
+  }
+}
+
 if (failed.length) {
-  console.error(`${failed.length} of ${uploads.length} uploads failed:`);
+  console.error(`${failed.length} upload(s) failed:`);
   failed.forEach((f) => console.error(`  ✗ ${f}`));
   process.exitCode = 1;
 } else {
-  console.log(`Uploaded ${uploads.length} files.`);
+  console.log(`Uploaded ${uploads.length} files${source}.`);
 }
