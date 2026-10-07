@@ -1,0 +1,48 @@
+---
+// Pattern: big number. The number at poster scale in the accent color, a short
+// headline finishing the sentence beside it, and one line at most. No box and
+// no list: the number is the focal element.
+import Slide from '../components/Slide.astro';
+---
+
+<Slide
+  id="one-job"
+  label="One slide, one job"
+  notes="The rule behind every slide in this deck. If a slide has two jobs, it's two slides."
+>
+  <div class="job">
+    <p class="num pop" aria-hidden="true">1</p>
+    <div class="copy">
+      <h2 class="display h-display rise" style="--d: 120ms"><span class="sr">One</span> slide, <span class="hl">one job.</span></h2>
+      <p class="lede rise" style="--d: 260ms">If a slide has two jobs, it's two slides.</p>
+    </div>
+  </div>
+</Slide>
+
+<style>
+  .job {
+    flex: 1;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: calc(var(--gap) * 1.6);
+  }
+
+  .num {
+    margin: 0;
+    font: 800 760px/0.74 var(--font-display);
+    letter-spacing: -0.06em;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .h-display { margin-bottom: 44px; }
+  .lede { max-width: 22ch; }
+
+  @media (max-width: 799px) {
+    .job { grid-template-columns: 1fr; align-content: center; gap: 8px; }
+    .num { font-size: 180px; }
+    .h-display { margin-bottom: 14px; }
+  }
+</style>

@@ -65,7 +65,7 @@ To set up an existing deck that has the starter's `package.json`, run setup with
 
 Every deck is built in one brand: its fonts, colors, logo, imagery, illustration style, and physical feel. The brand lives in `brand/brand.json` and the files beside it; every slide reads it through tokens, so the deck can't drift off brand. Read [references/brand-kit.md](references/brand-kit.md) for the format and review checklist.
 
-**No deck ships in the starter's house brand.** The starter's coral-and-cream kit with Bricolage Grotesque and Inter is Pitch Unfairly's own look; a deck wearing it reads as a template, whatever its content (the audit fails it). Every deck gets a real brand before the first slide is composed:
+**No deck ships in the starter's house brand.** The starter's magenta-and-cream kit with Sora and DM Sans is Pitch Unfairly's own look; a deck wearing it reads as a template, whatever its content (the audit fails it). Every deck gets a real brand before the first slide is composed:
 
 - The user's own company: call `brand_kit_get` first (when the hosting tools are connected) and use the saved or organization kit unless they want another brand for this deck. With no kit, capture it from their website.
 - Another real company: capture it from its website: `npm run brand:capture -- https://brand.com`.

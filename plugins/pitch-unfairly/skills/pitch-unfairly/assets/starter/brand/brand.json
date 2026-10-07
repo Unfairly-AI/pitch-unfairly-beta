@@ -1,30 +1,95 @@
 {
   "schema": "brand-kit@1",
+  "house": true,
   "identity": {
     "name": "Pitch Unfairly",
-    "domain": null,
+    "domain": "pitchunfairly.com",
     "wordmark": "Pitch Unfairly",
     "logos": {}
   },
   "palette": {
-    "paper": "#f5f1e8",
-    "surface": "#ebe4d4",
-    "ink": "#16130f",
-    "ink_muted": "#4a443b",
-    "accent": "#ff5a36",
-    "accent_dark": "#d63d1b",
-    "accent_secondary": "#2f5bff",
-    "on_accent": "#16130f",
-    "highlight": "#f6d96b",
-    "positive": "#bfe6c9",
-    "border": "#16130f",
-    "extras": [],
-    "data": ["#ff5a36", "#2f5bff", "#16130f", "#f6d96b"]
+    "paper": "#faf5eb",
+    "surface": "#f2ebdb",
+    "ink": "#1a1612",
+    "ink_muted": "#5c5347",
+    "accent": "#c92a89",
+    "accent_dark": "#9a176e",
+    "accent_secondary": "#697ffc",
+    "on_accent": "#faf5eb",
+    "highlight": "#ffd866",
+    "positive": "#32752d",
+    "border": "#1a1612",
+    "night": "#1a1612",
+    "on_night": "#faf5eb",
+    "accent_on_night": "#ff7a5c",
+    "extras": [
+      {
+        "name": "yellow",
+        "hex": "#ffd866"
+      },
+      {
+        "name": "yellow-soft",
+        "hex": "#ffedba"
+      },
+      {
+        "name": "cyan",
+        "hex": "#81ebeb"
+      },
+      {
+        "name": "cyan-soft",
+        "hex": "#c6f6f6"
+      },
+      {
+        "name": "pink",
+        "hex": "#f5a7c4"
+      },
+      {
+        "name": "pink-soft",
+        "hex": "#fad8e5"
+      },
+      {
+        "name": "coral",
+        "hex": "#e8553a"
+      },
+      {
+        "name": "cool",
+        "hex": "#697ffc"
+      }
+    ],
+    "data": [
+      "#c92a89",
+      "#697ffc",
+      "#e8553a",
+      "#81ebeb"
+    ]
   },
   "typography": {
-    "display": { "family": "Bricolage Grotesque", "source": "fontsource", "package": "@fontsource-variable/bricolage-grotesque", "weight": 750, "tracking": -0.045, "line_height": 0.95, "case": "none", "scale": 1, "license": "open" },
-    "body": { "family": "Inter", "source": "fontsource", "package": "@fontsource-variable/inter", "weight": 400, "tracking": -0.01, "line_height": 1.45, "license": "open" },
-    "mono": { "family": "JetBrains Mono", "source": "fontsource", "package": "@fontsource-variable/jetbrains-mono", "license": "open" }
+    "display": {
+      "family": "Sora",
+      "source": "fontsource",
+      "package": "@fontsource-variable/sora",
+      "weight": 750,
+      "tracking": -0.045,
+      "line_height": 0.98,
+      "case": "none",
+      "scale": 0.92,
+      "license": "open"
+    },
+    "body": {
+      "family": "DM Sans",
+      "source": "fontsource",
+      "package": "@fontsource-variable/dm-sans",
+      "weight": 450,
+      "tracking": -0.01,
+      "line_height": 1.45,
+      "license": "open"
+    },
+    "mono": {
+      "family": "JetBrains Mono",
+      "source": "fontsource",
+      "package": "@fontsource-variable/jetbrains-mono",
+      "license": "open"
+    }
   },
   "style": {
     "radius": 28,
@@ -36,11 +101,23 @@
     "motion": "crisp",
     "tilt": 1,
     "photo_treatment": null,
-    "illustration_style": "Flat geometric shapes with thick ink outlines and hard offset shadows; playful small rotations.",
-    "layout_notes": "Generous margins, one focal object per slide, poster-scale numbers."
+    "illustration_style": "Real artifacts, not drawings: windows, phones, stickers, and numbers with thick ink outlines, hard offset shadows, and small playful rotations.",
+    "layout_notes": "One focal object per slide, poster-scale type, color-blocked slides (magenta, cream, cyan, pink, yellow, ink)."
   },
   "imagery": [],
-  "voice": ["Plain, confident, specific.", "Short sentences; the headline states the point."],
-  "rules": ["One accent phrase per headline.", "Hard shadows only on the focal element and stickers."],
-  "sources": { "all": { "from": "starter default", "confidence": "high" } }
+  "voice": [
+    "Cocky, funny, specific.",
+    "Short headlines a reader could repeat."
+  ],
+  "rules": [
+    "One accent phrase per headline.",
+    "No em dashes.",
+    "Hard shadows only on the focal element and stickers."
+  ],
+  "sources": {
+    "all": {
+      "from": "pitchunfairly.com",
+      "confidence": "high"
+    }
+  }
 }

@@ -47,8 +47,11 @@ const report = (mode, msg) => problems.push(`${mode}: ${msg}`);
 {
   const { readFile } = await import('node:fs/promises');
   const kit = JSON.parse(await readFile('brand/brand.json', 'utf8').catch(() => '{}'));
-  // Renaming the kit or nudging the accent isn't a brand: the house look is its type pairing.
-  const houseLook = kit.typography?.display?.family === 'Bricolage Grotesque' && kit.typography?.body?.family === 'Inter';
+  // Renaming the kit isn't a brand: the house look is its type pairing with the house magenta.
+  const houseLook =
+    kit.typography?.display?.family === 'Sora' &&
+    kit.typography?.body?.family === 'DM Sans' &&
+    (kit.palette?.accent ?? '').toLowerCase() === '#c92a89';
   if ((kit.identity?.name === 'Pitch Unfairly' || houseLook) && kit.house !== true) {
     report('brand', "the deck still wears the starter's house brand (brand/brand.json). Use the company's real brand, or write an art direction for it (SKILL step 3). Set \"house\": true only for a deck about Pitch Unfairly itself.");
   }

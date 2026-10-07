@@ -1,148 +1,70 @@
 ---
+// Pattern: cover. Full accent background, the promise at hero size, one
+// sub-line, and one typographic gesture (the struck word and the stamp).
+// Nothing else on the slide.
 import Slide from '../components/Slide.astro';
 import BrandMark from '../components/BrandMark.astro';
-import { imagery } from '../brand/assets';
-
-// Photographic brands open on their own imagery; others get the card fan.
-const hero = imagery.find((img) => img.role === 'hero');
-const illustration = !hero && imagery.find((img) => img.role === 'illustration');
 ---
 
-<Slide id="cover" label="Cover" tone="accent" bare notes="Open on the promise. Say the line, pause, then move on.">
-  {hero && <img class="photo" src={hero.url} alt="" data-bleed />}
-  <div class:list={['cover', { 'has-photo': hero }]}>
-    <div class="copy">
-      <BrandMark on={hero ? 'ink' : 'accent'} height={52} class="rise mark" />
-      <h1 class="display hero rise" style="--d: 80ms">Decks that <span class="hl">land.</span></h1>
-      <p class="lede rise" style="--d: 160ms">
-        Every slide designed for its job, then checked on a laptop, a phone, and a PDF.
-      </p>
-    </div>
-
-    {illustration && <img class="art pop" src={illustration.url} alt="" style="--d: 260ms" />}
-    {!hero && !illustration && <div class="fan" aria-hidden="true">
-      <div class="mini card pop" style="--r: -8deg; --d: 260ms">
-        <i class="bar wide"></i><i class="bar"></i><i class="dot"></i>
-      </div>
-      <div class="mini card pop" style="--r: 5deg; --d: 340ms">
-        <b>1</b><i class="bar"></i>
-      </div>
-      <div class="mini card pop focus" style="--r: -2deg; --d: 420ms">
-        <i class="bar wide"></i><i class="bar wide"></i><i class="bar"></i>
-      </div>
-    </div>}
+<Slide
+  id="cover"
+  label="Decks so good it's unfair"
+  tone="accent"
+  bare
+  notes="Open on the promise. The struck word is the only joke on the slide; the stamp lands last."
+>
+  <div class="cover">
+    <BrandMark on="accent" height={48} class="rise mark" />
+    <h1 class="display hero">
+      <span class="w" style="--d: 60ms">Decks</span> <span class="w" style="--d: 130ms">so</span> <span class="w" style="--d: 200ms">good</span> <span class="w" style="--d: 270ms">it's</span>
+      <span class="w" style="--d: 340ms"><s class="strike">illegal</s></span> <span class="hl stamp">unfair.</span>
+    </h1>
+    <p class="lede rise" style="--d: 520ms">Every slide designed for one job, then checked on a laptop, a phone, and a PDF.</p>
   </div>
 </Slide>
 
 <style>
   .cover {
     flex: 1;
-    display: grid;
-    grid-template-columns: 1.25fr 1fr;
-    align-items: center;
-    gap: var(--gap);
-  }
-
-  .mark { margin-bottom: 56px; }
-
-  .art { width: 100%; max-height: 760px; object-fit: contain; }
-
-  /* Photo cover: full bleed with a scrim so the headline always reads. */
-  .photo {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    max-width: none;
-    object-fit: cover;
-  }
-
-  .has-photo { position: relative; color: var(--paper); }
-  .has-photo .display { color: var(--paper); }
-  .has-photo .hl { color: var(--paper); opacity: 0.82; }
-  .has-photo .lede { color: var(--paper-a72); }
-  :global(.slide):has(.has-photo)::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, color-mix(in oklab, var(--ink) 72%, transparent) 0%, color-mix(in oklab, var(--ink) 20%, transparent) 70%, transparent 100%);
-  }
-  .has-photo { z-index: 1; }
-  .hero { margin-bottom: 44px; }
-  .lede { max-width: 22ch; }
-
-  .fan {
-    position: relative;
-    height: 620px;
-  }
-
-  .mini {
-    position: absolute;
-    width: 480px;
-    aspect-ratio: 16 / 9;
-    padding: 40px;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
-    gap: 16px;
-    transform: rotate(calc(var(--r) * var(--tilt)));
+    justify-content: center;
+    align-items: flex-start;
   }
 
-  .mini:nth-child(1) { top: 0; left: 40px; }
-  .mini:nth-child(2) { top: 170px; left: 180px; background: var(--ink); }
-  .mini:nth-child(3) { top: 340px; left: 20px; }
+  .mark { margin-bottom: 72px; }
+  .hero { max-width: 11ch; margin-bottom: 52px; }
+  .lede { max-width: 30ch; color: var(--on-accent); }
 
-  .mini.focus { box-shadow: var(--shadow-card), 0 0 0 10px var(--paper-a35); }
+  /* Words land one at a time; the strike draws across "illegal", then
+     "unfair." stamps on. Everything rests in its finished state (PDF, reduced
+     motion); only the active slide animates into it. */
+  :global(.is-active) .w { display: inline-block; animation: word var(--dur-enter) var(--ease) var(--d, 0ms) both; }
+  @keyframes word { from { opacity: 0; transform: translateY(0.35em); } }
 
-  .bar {
-    display: block;
-    height: 22px;
-    width: 45%;
-    border-radius: 6px;
-    background: var(--ink);
-    opacity: 0.85;
-  }
-
-  .bar.wide { width: 80%; }
-  .mini:nth-child(2) .bar { background: var(--paper); }
-
-  .dot {
+  .strike { position: relative; text-decoration: none; color: color-mix(in oklab, var(--on-accent) 38%, var(--accent)); }
+  .strike::after {
+    content: '';
     position: absolute;
-    top: 36px;
-    right: 36px;
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    background: var(--accent);
-    border: var(--border-w) solid var(--border-color);
+    left: -2%;
+    right: -2%;
+    top: 56%;
+    height: 0.075em;
+    border-radius: 99px;
+    background: var(--c-coral, var(--highlight));
+    transform: rotate(-4deg);
+    transform-origin: left;
   }
+  :global(.is-active) .strike::after { animation: strike 360ms var(--ease) 700ms both; }
+  @keyframes strike { from { transform: rotate(-4deg) scaleX(0); } }
 
-  .mini b {
-    font-family: var(--font-display);
-    font-size: 150px;
-    line-height: 0.8;
-    color: var(--accent);
-  }
+  .stamp { display: inline-block; transform: rotate(calc(-2deg * var(--tilt))); }
+  :global(.is-active) .stamp { animation: stamp 520ms var(--ease-pop) 1000ms both; }
+  @keyframes stamp { from { opacity: 0; transform: scale(1.6) rotate(-8deg); } }
 
   @media (max-width: 799px) {
-    .cover {
-      grid-template-columns: 1fr;
-      align-content: center;
-      gap: 36px;
-    }
-
-    .mark { margin-bottom: 22px; }
-    .art { max-height: 240px; }
-    .hero { margin-bottom: 18px; }
-
-    .fan { height: 150px; }
-    .mini { width: 170px; padding: 14px; gap: 7px; }
-    .mini:nth-child(1) { top: 0; left: 0; }
-    .mini:nth-child(2) { top: 26px; left: 120px; }
-    .mini:nth-child(3) { top: 52px; left: 40px; }
-    .bar { height: 8px; border-radius: 3px; }
-    .dot { top: 12px; right: 12px; width: 22px; height: 22px; }
-    .mini b { font-size: 54px; }
-    .mini.focus { box-shadow: var(--shadow-card), 0 0 0 4px var(--paper-a35); }
+    .mark { margin-bottom: 28px; }
+    .hero { margin-bottom: 20px; }
   }
+
 </style>

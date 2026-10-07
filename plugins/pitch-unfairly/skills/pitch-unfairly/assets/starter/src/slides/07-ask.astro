@@ -1,55 +1,46 @@
 ---
+// Pattern: close. A dark slide, the request at hero size, and one button-like
+// element. One ask, no filler line.
 import Slide from '../components/Slide.astro';
 import BrandMark from '../components/BrandMark.astro';
 ---
 
 <Slide
   id="ask"
-  label="Next step"
-  tone="accent"
+  label="Your turn"
+  tone="ink"
   bare
-  notes="Close with one specific request the audience can say yes to. One button, nothing else."
+  notes="Close with one request the audience can say yes to today. Here it's to start with the story: write what each slide must prove, then make it beautiful."
 >
   <div class="ask">
-    <BrandMark on="accent" height={44} class="rise mark" />
-    <h2 class="display hero rise">Start with<br />the <span class="hl">story.</span></h2>
-    <p class="lede rise" style="--d: 120ms">Write what each slide must prove. Then make it beautiful.</p>
-    <span class="breathe"><span class="cta pop" style="--d: 240ms">npm run dev</span></span>
+    <BrandMark on="ink" height={44} class="rise mark" />
+    <h2 class="display hero rise" style="--d: 80ms">Your turn. <span class="hl">Pitch unfairly.</span></h2>
+    <span class="cta pop" style="--d: 320ms">Start with your story <span aria-hidden="true">→</span></span>
   </div>
 </Slide>
 
 <style>
-  .ask {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-  }
-
-  .mark { margin-bottom: 64px; }
-  .hero { margin-bottom: 44px; }
-  .lede { max-width: 24ch; margin-bottom: 64px; }
-
-  .breathe {
-    display: inline-block;
-  }
+  .ask { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; }
+  .mark { margin-bottom: 72px; }
+  .hero { max-width: 12ch; margin-bottom: 52px; }
 
   .cta {
-    display: inline-block;
-    padding: 26px 44px;
-    border: var(--border-w) solid var(--border-color);
+    display: inline-flex;
+    align-items: center;
+    gap: 18px;
+    padding: 34px 56px;
+    border: var(--border-w) solid var(--on-night);
     border-radius: var(--radius-button);
-    background: var(--ink);
-    color: var(--paper);
-    box-shadow: var(--shadow-contrast);
-    font: 600 var(--t-lede) var(--font-mono);
+    background: var(--accent);
+    color: var(--on-accent);
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--on-night);
+    font: 800 50px/1 var(--font-display);
+    letter-spacing: -0.02em;
   }
 
   @media (max-width: 799px) {
     .mark { margin-bottom: 26px; }
-    .hero { margin-bottom: 18px; }
-    .lede { margin-bottom: 30px; }
-    .cta { padding: 12px 20px; }
+    .hero { margin-bottom: 24px; }
+    .cta { padding: 18px 26px; box-shadow: 4px 4px 0 var(--on-night); font-size: 21px; }
   }
 </style>

@@ -1,11 +1,11 @@
-# Decks that land
+# Decks so good it's unfair
 
-Kernel: templates make every slide look equal, so the one that matters gets lost.
-Audience: people deciding whether to build their next deck this way.
-After the last slide they should: copy the starter and write their outline.
+Kernel: most decks are walls of text and equal slides; yours should be a story people repeat.
+Audience: people deciding whether to make their next deck this way.
+After the last slide they should: write their story and start their first deck.
 Format: presented live and sent afterwards as a PDF.
 Template: trojan-horse (Product launch)
-Angle: the problem isn't ugly slides, it's equal slides; give every slide one job and the important one stands out.
+Angle: a deck is a website; give every slide one job and it can do things slides can't.
 
 <!--
 Header first (npm run story:check enforces it):
@@ -30,42 +30,45 @@ probably a speaker line, not a slide.
 ## 01 cover
 - Beat: One-line promise
 - Job: make the promise.
-- Headline: Decks that land.
-- Proof: a fan of distinct slides, none alike.
+- Headline: Decks so good it's unfair.
+- Proof: the promise at hero size, with one typographic gesture.
 
-## 02 problem
-- Beat: Problem
-- Job: show why templates fail.
-- Headline: Every slide looks the same.
-- Proof: a grid of identical thumbnails with the important one lost in the middle.
-
-## 03 one-job
+## 02 one-job
 - Beat: Insight
-- Job: state the rule.
-- Headline: 1 job per slide.
-- Proof: the number itself, with three one-line rules.
+- Job: state the rule every slide follows.
+- Headline: One slide, one job.
+- Proof: the number itself at poster scale, with three one-line rules.
 
-## 04 before-after
+## 03 headlines
+- Beat: Problem
+- Job: show why topic titles fail.
+- Headline: Say the point. Then prove it.
+- Proof: a struck topic title next to the sentence headline that replaces it.
+- Source: Garner, Alley, Wolfe and Sawarynski (2013); the bracketed figure is a placeholder.
+
+## 04 chat
 - Beat: Product
-- Job: make the difference visible.
-- Headline: Say it once. Then show it.
-- Proof: a greyed bullet slide next to a single claim with one chart.
-- Source: example figure, labelled on the slide.
+- Job: show how a deck gets made.
+- Headline: Describe it in a chat. Send a link.
+- Proof: a chat that ends with the deck's link, unfurled.
+- Source: example; Fizz Soda is made up.
 
-## 05 process
+## 05 play
+- Beat: Product
+- Job: show what a website deck can do that slides can't.
+- Headline: Let them play with your numbers.
+- Proof: a working slider that drives an ROI figure.
+- Source: example model, labelled on the slide.
+
+## 06 screens
 - Beat: Go to market
-- Job: show it is a repeatable method.
-- Headline: Story first. Proof last.
-- Proof: real audit output in a terminal window.
-
-## 06 three-modes
-- Beat: Positioning
-- Job: define done.
-- Headline: One deck. Three places it has to work.
-- Proof: the same slide on a laptop, a phone, and a PDF page.
+- Job: show that one deck works everywhere it's sent.
+- Headline: One link. Every screen.
+- Proof: the same deck in a browser, a phone chat, and a PDF.
+- Source: example; Fizz Soda is made up.
 
 ## 07 ask
 - Beat: The ask
 - Job: get the first step.
-- Headline: Start with the story.
-- Proof: the one command to run.
+- Headline: Your turn. Pitch unfairly.
+- Proof: one button.

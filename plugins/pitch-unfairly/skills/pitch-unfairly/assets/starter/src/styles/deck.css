@@ -152,6 +152,13 @@ svg {
 }
 .tone-accent { background: var(--accent); color: var(--on-accent); }
 
+/* Color-blocked tones. They use the kit's named extras (--c-yellow and so on)
+   when it has them, and fall back to tints of its own roles when it doesn't,
+   so any brand gets a coherent set. Text stays ink; the accent phrase adapts. */
+.tone-yellow { background: var(--c-yellow, var(--highlight)); }
+.tone-cyan { background: var(--c-cyan, color-mix(in oklab, var(--accent-2) 30%, var(--paper))); --hl-color: var(--accent-dark); }
+.tone-pink { background: var(--c-pink, color-mix(in oklab, var(--accent) 28%, var(--paper))); --hl-color: var(--accent-dark); }
+
 .slide-num {
   position: absolute;
   right: var(--pad-x);
@@ -209,7 +216,7 @@ svg {
 .display { color: var(--headline-color); }
 .hl { color: var(--hl-color); }
 .tone-accent .display { color: var(--on-accent); }
-.tone-accent .hl { color: var(--paper); }
+.tone-accent .hl { color: var(--highlight); }
 
 /* ---------- Physical primitives ---------- */
 
