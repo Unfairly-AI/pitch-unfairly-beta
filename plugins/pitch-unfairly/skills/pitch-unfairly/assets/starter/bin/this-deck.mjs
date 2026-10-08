@@ -13,6 +13,21 @@ export async function projectSlideIds(dir = 'src/slides') {
   return ids;
 }
 
+/**
+ * Whether a served page is this project's deck: most of the slides it shows
+ * are slides this project defines. Measured against what the page shows, not
+ * every file in src/slides, because a deck often leaves the starter's example
+ * slides in place and imports only its own (six real slides next to seven
+ * unused ones used to read as "another dev server" and block every check).
+ * Another project on the port still fails: its slides aren't ours.
+ */
+export function deckMatches(ours, theirs) {
+  if (!ours.size) return true;
+  if (!theirs.size) return false;
+  const shared = [...theirs].filter((id) => ours.has(id)).length;
+  return shared >= Math.ceil(theirs.size / 2);
+}
+
 export async function assertThisDeck(base) {
   const ours = await projectSlideIds();
   let html;
@@ -22,8 +37,7 @@ export async function assertThisDeck(base) {
     throw new Error(`Nothing is serving ${base}. Start npm run dev and pass the URL it prints.`);
   }
   const theirs = new Set([...html.matchAll(/id="slide-([^"]+)"/g)].map((m) => m[1]));
-  const shared = [...ours].filter((id) => theirs.has(id)).length;
-  if (ours.size && shared < Math.ceil(ours.size / 2)) {
+  if (!deckMatches(ours, theirs)) {
     const seen = [...theirs].slice(0, 4).join(', ') || 'no slides';
     throw new Error(
       `${base} isn't this deck (it shows ${seen}; this project has ${[...ours].slice(0, 4).join(', ')}). ` +
