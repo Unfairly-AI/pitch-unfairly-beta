@@ -28,6 +28,37 @@ These are the tells. The audit counts the first three, and a design review fails
 17. **No clip-art.** Don't build objects out of CSS boxes: a truck from rectangles, a building from squares, a phone from divs. Use the brand's real imagery or illustration style, a photo, an icon from a proper set, a typographic treatment, or the data itself. If an illustration wouldn't appear on the brand's own website, it doesn't go in the deck.
 18. **Vary the composition, not just the color.** No more than two slides in a row with the same structure (headline left, visual right). Mix in full-bleed type, a centered statement, a single image, an edge-to-edge chart.
 
+## The design floor
+
+Adapted from Impeccable's craft floor by Paul Bakaus (Apache 2.0), rewritten for slides; see THIRD_PARTY_NOTICES.md at the plugin's root.
+
+The floor holds the mechanics; it never picks the direction. The brand kit and the user's explicit request win over anything here: a brand that really is neobrutalist earns hard offset shadows, and a brand whose own site sets gradient type earns it in the deck. Reaching for one of these when the brand didn't choose it means nobody decided.
+
+Check these on the built slides, in the same round as the audit and screenshots:
+
+19. **Contrast.** Text against whatever is behind it is at least 4.5:1, display type at least 3:1. On a colored or photographic slide, tint secondary text from that color or the ink, never a mid-gray. Text over a photo sits on a quiet area of it or on a scrim.
+20. **Spacing has a rhythm.** Tight inside a group, generous between groups, more room above a headline than below it. One spacing value repeated everywhere makes every element equal. Squint at the contact sheet: on each slide the focal element should still be the first thing you see.
+21. **Dark slides get compensated type.** Light text on a dark slide needs a touch more line height, tracking, and weight than the same text on paper.
+22. **Numbers line up.** Counters, tables, and figures that change or sit in columns use tabular figures (`font-variant-numeric: tabular-nums`).
+23. **The browser's own surfaces are designed too.** Text selection, focus rings, link underlines, and the controls on interactive slides (sliders, tabs, inputs) take the palette, not browser defaults. Every control works by keyboard and shows hover, focus, and disabled states.
+24. **Not the same entrance everywhere.** One authored moment per slide (see Motion). If every slide rises in the same way, the deck reads as a template.
+
+Refuse these unless the brand chose them:
+
+25. **Gradient text.** Emphasis comes from weight, size, or the accent color.
+26. **Glass and blur as decoration.** Frosted panels and backdrop blur only when the brand's own surfaces use them.
+27. **Side stripes.** A colored border thicker than 1px on one side of a card, quote, or callout.
+28. **Glow halos.** A shadow with no offset in a bright color is decoration, not depth. Shadows come from the kit's tokens.
+29. **Nested cards.** A card inside a card is always wrong.
+30. **Emoji or symbols as icons.** Icons come from a real set or the brand's own, in one stroke weight.
+31. **Mono as a costume.** Monospace is for code, data, figures, and labels on them, not a way to look technical.
+32. **A system font as the display face.** Arial, Helvetica, Impact, or the operating system's sans standing in for the brand's display face. Use the brand's face or an open stand-in from Fontsource, named on the board.
+33. **Sketchy illustration.** Hand-drawn-style SVG scenes, doodles, and noise-grain filters read as amateur. Crisp shapes, diagrams, drawn lines, and the brand's real illustration are fine.
+34. **Pattern backgrounds.** Stripes and grid paper need a subject that is a blueprint, map, chart, or measuring tool.
+35. **Fake cut-outs.** A circle or polygon mask standing in for the outline of a person or product. Use a real cut-out or the plain photo.
+
+When every check is green, spend the rest on the brand. Torn between refined and committed, commit.
+
 ## Slide patterns
 
 Starting points, not templates. Pick by the slide's job, then compose for its content.
@@ -39,8 +70,8 @@ Starting points, not templates. Pick by the slide's job, then compose for its co
 | Show traction | Hero metric | One number is the hero, at poster size, with its time frame ("22% month over month, last 4 months"). The other metrics sit in a quiet row of mono label and value pairs. Four equal stat boxes have no focal point. |
 | Land a number | Big number | The number at poster scale (500px+ on the stage) in the accent color, a short headline completing the sentence beside it, up to three one-line supports. |
 | Prove it with voices | Quote wall | Dark slide, three to five short real quotes set as large type with a mono attribution; one of them bigger than the rest. Cards only if the brand uses them. On phones, show only the three shortest. |
-| Contrast old and new | Before and after | The old way grayscale and faded, the new way in color with the only hard shadow and a small tilted sticker. An arrow between them on wide screens only. |
-| Show the product | Mockup | A real screenshot, or a faithful HTML mockup, inside window chrome, rotated 1 to 2 degrees with a hard shadow. Steps or claims beside it, not on top of it. |
+| Contrast old and new | Before and after | The old way grayscale and faded, the new way in color with the only focal shadow and a small tilted sticker. An arrow between them on wide screens only. |
+| Show the product | Mockup | A real screenshot, or a faithful HTML mockup, inside window chrome, rotated 1 to 2 degrees with the focal shadow (`--shadow-focal`). Steps or claims beside it, not on top of it. |
 | Show progression | You are here | One line with three points: past (faded), present (bold, with a "you are here" pin), next (in the accent). Labels sit on the line, not in boxes. |
 | Size a market | Venn or stack | Overlapping circles or stacked bars with one highlighted region and its figure; the math in mono rows underneath. |
 | Introduce people | Team | Photos at equal size, names and one credential each. Personality comes from one playful element, not from more text. |
@@ -57,7 +88,7 @@ The starter's tokens (stage pixels at 1920×1080; phone values in parentheses):
 | `--t-title` | Headlines with a dense visual | 84 (30) |
 | `--t-lede` | The one line of body copy | 40 (18) |
 | `--t-body` | Lists, card copy | 30 (15) |
-| `--t-label` | Eyebrows, chips, captions | 22 (11) |
+| `--t-label` | Chips, captions, chart labels | 22 (11) |
 | `--t-fine` | Sources, page numbers | 18 (11) |
 
 - Display type: line-height around 0.95, letter-spacing around -0.045em, `text-wrap: balance`. Large type needs tight tracking; small mono labels need loose tracking (0.08 to 0.14em, uppercase).
@@ -79,7 +110,7 @@ The brand kit decides the physical style; slides only apply it. Cards are rare (
 
 - Only the focal element gets `--shadow-focal`; supporting cards get `--shadow-card` or nothing.
 - Rotations multiply by `--tilt` (`rotate(calc(4deg * var(--tilt)))`), so serious brands sit straight and playful ones lean. Never rotate body text or data.
-- Mono eyebrows and pills for numbering and categories ("02 / The rule"), in the brand's mono face.
+- No eyebrow or section number ("02 / The rule") above a headline. The headline carries its own weight; a pill is for a category or a status the slide is about, in the brand's mono face.
 - At most one sticker or badge per slide.
 
 ## Motion
@@ -108,6 +139,6 @@ Rules:
 
 ## Density
 
-- One eyebrow, one headline, one visual, one line. Anything more needs a reason.
+- One headline, one visual, one line. Anything more needs a reason.
 - On phones, the secondary visual or column goes (`mobile-hide`) before the type shrinks below the token scale.
 - If a slide needs more than one idea, it is two slides.

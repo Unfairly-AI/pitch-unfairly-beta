@@ -6,6 +6,9 @@ sublicense, or sell copies of this software, in whole or in part, except as
 expressly permitted in a separate written agreement with Unfairly AI or under
 the terms of service at https://pitchunfairly.com/terms.
 
+Third-party material included in the plugin is licensed under its own terms;
+see plugins/pitch-unfairly/THIRD_PARTY_NOTICES.md.
+
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
