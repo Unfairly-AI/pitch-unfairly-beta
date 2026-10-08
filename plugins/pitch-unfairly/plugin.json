@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "pitch-unfairly",
-  "version": "0.13.8",
+  "version": "0.13.9",
   "description": "Builds presentation decks as Astro websites with PDF export and desktop, phone, and PDF layout checks, and publishes them to unlisted links.",
   "author": {
     "name": "Unfairly AI",
@@ -20,7 +20,7 @@
       "interface": {
         "displayName": "Pitch Unfairly",
         "shortDescription": "Pitch decks built as websites",
-        "longDescription": "Pitch Unfairly creates presentation decks, such as pitch decks, sales decks, and board updates, as interactive websites. Describe the deck or share your notes, and it writes the story slide by slide, designs each slide, and exports a PDF.\n\nShare your company's website and it captures your brand's fonts, colors, logo, and style, then shows you a brand board to approve before it designs any slides. Slides can be interactive, with sliders, tabs, calculators, and charts. Every deck has keyboard navigation, present mode, speaker notes, and a phone layout, and the plugin checks each slide on a desktop screen, two phone sizes, and a 16:9 PDF page before handing the deck back.\n\nPublishing is optional. With an Unfairly account, the plugin publishes a deck to an unlisted pitchunfairly.com link that isn't indexed and that you can take offline at any time. Published decks show a small \"Made with Unfairly\" badge, and a saved brand kit carries over to your next deck. Without an account, the built deck is a folder you can host anywhere.\n\nWhere the agent has a shell, such as Codex or ChatGPT Work, it builds on your computer and installs what it needs on first use, including Node.js and Chrome, without admin rights. In a regular ChatGPT chat it builds the same deck in a studio on Unfairly's side, so nothing installs. It doesn't edit PowerPoint or Google Slides files.",
+        "longDescription": "Pitch Unfairly creates presentation decks, such as pitch decks, sales decks, and board updates, as interactive websites. Describe the deck or share your notes, and it writes the story slide by slide, designs each slide, and exports a PDF.\n\nShare your company's website and it captures your brand's fonts, colors, logo, and style, and shows you a brand board of what it captured: before it designs any slides when you want to check first, or with the finished deck when you ask it to just make it. Slides can be interactive, with sliders, tabs, calculators, and charts. Every deck has keyboard navigation, present mode, speaker notes, and a phone layout, and the plugin checks each slide on a desktop screen, two phone sizes, and a 16:9 PDF page before handing the deck back.\n\nPublishing is optional. With an Unfairly account, the plugin publishes a deck to an unlisted pitchunfairly.com link that isn't indexed and that you can take offline at any time. Published decks show a small \"Made with Unfairly\" badge, and a saved brand kit carries over to your next deck. Without an account, the built deck is a folder you can host anywhere.\n\nWhere the agent has a shell, such as Codex or ChatGPT Work, it builds on your computer and installs what it needs on first use, including Node.js and Chrome, without admin rights. In a regular ChatGPT chat it builds the same deck in a studio on Unfairly's side, so nothing installs. It doesn't edit PowerPoint or Google Slides files.",
         "developerName": "Unfairly AI",
         "category": "Creativity",
         "capabilities": [

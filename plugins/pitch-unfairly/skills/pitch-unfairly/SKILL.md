@@ -42,7 +42,7 @@ Then turn the user's kernel into a story before writing any markup. Read [refere
 3. **Template.** Pick the category from the deck's job and a template from [references/templates.md](references/templates.md), the same library as pitchunfairly.com/templates. Follow the category's rules. If the user arrived from a template page ("using Airbnb's 2009 seed deck structure"), use that template.
 4. **Beat sheet.** Write `story.md` in the deck project: the header (kernel, audience, after the last slide, format, template, angle), then one block per slide with its beat, job, headline, proof, and source. The starter's `story.md` shows the format.
 5. **Critique.** Run `npm run story:check -- --templates <this skill's folder>/references/templates.json` and fix every error; weigh every warning. Without a shell, apply the same checks by hand. Then read the headlines alone, in order: they should tell the story.
-6. **Sign off.** One checkpoint, before composing, covering the story and the brand together (section 3). Put everything being approved in that same message: the angle in a sentence, the template, and every slide numbered with its headline and one-line job, plus the brand board image (or, without one, the art direction). Never ask for approval of something the message doesn't show, and never point to a file path instead; the user can't see your files. If the user asked you to skip the check-in ("just build it", "skip checking the outline"), skip it and say what you went with. Changing a headline is cheap now and expensive later.
+6. **Sign off.** One checkpoint, before composing, covering the story and the brand together (section 3). Put everything being approved in that same message: the angle in a sentence, the template, and every slide numbered with its headline and one-line job, plus the brand board image (or, without one, the art direction). Never ask for approval of something the message doesn't show, and never point to a file path instead; the user can't see your files. Skip it when the request already says what to make and who it's for and asks you to make or publish it ("make a 6-slide seed deck for our investor meeting and publish it", "just build it"): build, publish, and show the story and brand in the hand-over instead (step 7), where changing anything keeps the same link. Keep the checkpoint when the request is thin (a topic with no audience or goal) or the user asks to see the outline first. When it's held, changing a headline is cheap now and expensive later.
 
 The rules that hold throughout:
 
@@ -69,13 +69,13 @@ Every deck is built in one brand: its fonts, colors, logo, imagery, illustration
 
 - The user's own company: call `brand_kit_get` first (when the hosting tools are connected) and use the saved or organization kit unless they want another brand for this deck. With no kit, capture it from their website.
 - Another real company: capture it from its website: `npm run brand:capture -- https://brand.com`.
-- A new or imagined company with no site (a startup idea, "a taco truck"): write an art direction before anything else, in a few sentences: who it's for, three adjectives, and one concrete visual reference (for example "a 1970s Mexican street-food poster: hand-painted signage, sun-faded red and turquoise, chunky condensed type"). Build the kit from it: a palette from that reference, a type pairing from Fontsource that fits it and isn't the starter's, the physical style (radius, borders, shadows, texture), and how imagery or illustration will look. Show the brand board and the art direction in the sign-off message (step 1.6).
+- A new or imagined company with no site (a startup idea, "a taco truck"): write an art direction before anything else, in a few sentences: who it's for, three adjectives, and one concrete visual reference (for example "a 1970s Mexican street-food poster: hand-painted signage, sun-faded red and turquoise, chunky condensed type"). Build the kit from it: a palette from that reference, a type pairing from Fontsource that fits it and isn't the starter's, the physical style (radius, borders, shadows, texture), and how imagery or illustration will look. Show the brand board and the art direction in the sign-off message (step 1.6), or in the hand-over when sign-off is skipped.
 
 For a captured brand, review every screenshot in `brand/capture/` and correct the draft. The capture measures; you decide the roles, dark sections, stand-in fonts, physical style, which imagery is on brand, and the logo variants.
 
 Then, for every brand:
 
-- Run `npm run brand:apply` and `npm run brand:board`, and include `artifacts/brand-board.png` as an image in the sign-off message (step 1.6), not as a path. Fix what they correct before composing.
+- Run `npm run brand:apply` and `npm run brand:board`, and include `artifacts/brand-board.png` as an image in the sign-off message (step 1.6), or the hand-over when sign-off is skipped, not as a path. Fix what they correct before composing.
 - If the user asked to keep this brand, save it so their next deck starts from it: call `brand_kit_save` with the kit and its files, PUT each file to its `upload_url`, then call `brand_kit_publish` with the `version_id`. A user has one saved kit; saving replaces it.
 
 Commercial fonts: use only files the user supplies or licenses; otherwise an open stand-in, named on the board. Never copy font files off a website.
@@ -136,7 +136,8 @@ The person reading your last message may have never heard of Pitch Unfairly. Wri
 2. The presentation link, labeled as the one to share: "Share this link: <link>. Only people with the link can see it."
 3. The gallery link, labeled as theirs: "Your decks, with every version, live here: <link> (you'll sign in)."
 4. One line on how to use it: arrow keys to move, the PDF button on the deck for a file.
-5. One sentence offering the next step ("Want a different photo on slide 3, or a password on the link?").
+5. When you skipped sign-off (step 1.6): the slides as numbered headlines and the brand in a sentence, so they can see what you went with.
+6. One sentence offering the next step ("Want a different photo on slide 3, or a password on the link?"). After a skipped sign-off, say any change keeps the same link.
 
 Leave out the machinery: audit lines, round counts, "modes", contact sheets, review verdicts, npm scripts, `localhost` URLs, and file paths. If they ask how it was checked, say it was checked on a laptop, a phone, and as a PDF, and a design review passed every slide. Mention the local folder only if they didn't get a link (the deck isn't published), and then say what's in it in a sentence.
 
@@ -163,7 +164,7 @@ The deck studio runs this same starter, scripts, and audits in a sandbox on Unfa
 - Create or replace files with `studio_write`, and make small fixes with `studio_edit` (an exact passage replaced in place): `story.md`, `src/slides/*`, `src/pages/index.astro`, `src/components/*`, `src/styles/*`, `brand/*` (text files such as `brand.json` and SVG logos). Logos and imagery come in through the brand tools.
 - Brand: start from `brand_kit_get`. For a company's own brand, `studio_brand_import` (by website) brings in its logos, colors, and fonts from Brandfetch and drafts `brand/brand.json`; `studio_capture` reads the live site for colors, type, component style, and imagery. Review the draft against the [brand kit checklist](references/brand-kit.md) and fix it with `studio_write` before composing.
 - Work in few, big rounds. Draft the whole deck (story, brand, every slide) before the first `studio_check`, then fix every slide it flags in one pass before checking again. A good deck takes three to five rounds, not twenty.
-- Sign-off (step 1.6) works the same in chat: the numbered headlines with their jobs and the brand (palette, fonts, logo, look in a sentence) go in the message that asks for approval, unless the user asked you to skip it.
+- Sign-off (step 1.6) works the same in chat: when it's held, the numbered headlines with their jobs and the brand (palette, fonts, logo, look in a sentence) go in the message that asks for approval.
 - `studio_check` is your eyes: it audits desktop and phone, takes the screenshots, and has a design director review every changed slide against the craft guide, with a ready or fix verdict and a concrete fix for each. Send the user the live preview link after the first check, so they watch the deck come together.
 - `studio_publish` publishes the last build to the unlisted link; there's no manifest or upload step.
 - Publish by default once the bar passes, as in step 6; there's nothing to ask unless the user said not to or the deck looks confidential.
