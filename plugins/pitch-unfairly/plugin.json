@@ -48,13 +48,13 @@
             {
               "description": "Build a short deck from scratch and publish it. Works in ChatGPT chat with Pitch Unfairly selected from the composer, ChatGPT Work, and Codex, signed in to the Unfairly test account.",
               "prompt": "Make a 3-slide deck introducing Taco Hour, a food truck that caters office lunches, then publish it and give me a link I can send. Skip checking the outline with me.",
-              "tools_triggered": "deck_context, studio_start, studio_check, studio_publish (ChatGPT chat); deck_context, deck_review, deck_upload_start, deck_publish (ChatGPT Work, Codex)",
+              "tools_triggered": "deck_context, studio_start, studio_check, studio_publish (ChatGPT chat); deck_guide, deck_context, deck_review, deck_upload_start, deck_publish (ChatGPT Work, Codex)",
               "expected_behavior": "The agent calls deck_context, writes the story, and builds three slides. In ChatGPT chat it builds in the deck studio on Unfairly's side (studio_start, studio_write, studio_check until the audit is clean and the design review marks every slide ready), then studio_publish; in ChatGPT Work or Codex it builds locally, runs the audit and the design review (deck_review), and publishes with deck_upload_start and deck_publish. It replies with an unlisted link of the form https://pitchunfairly.com/<workspace>/<deck>-<code> and a separate signed-in app.unfairly.ai link to that exact deck. The public link opens a 3-slide Taco Hour deck, arrow keys move between slides, and the app link opens the same deck in its workspace."
             },
             {
               "description": "Update a deck that was already published, keeping its link. The test account's published deck was built in the studio, so it can be reopened from any surface.",
               "prompt": "Change the headline on slide 2 of my Taco Hour deck to 'Lunch, on schedule' and update it so the same link shows the new version.",
-              "tools_triggered": "deck_list, studio_start, studio_open_deck, studio_check, studio_publish (ChatGPT chat); deck_list, deck_review_start, deck_review, deck_upload_start, deck_publish (ChatGPT Work, Codex)",
+              "tools_triggered": "deck_list, studio_start, studio_open_deck, studio_check, studio_publish (ChatGPT chat); deck_guide, deck_list, deck_review_start, deck_review, deck_upload_start, deck_publish (ChatGPT Work, Codex)",
               "expected_behavior": "The agent calls deck_list to find the deck's slug and workspace. In ChatGPT chat it reopens the deck in the studio with studio_open_deck, edits slide 2, runs studio_check, and calls studio_publish with the same slug and workspace; in ChatGPT Work or Codex it edits and rebuilds the local project and publishes with the same slug and workspace. The reply gives the same URL as before with a higher version number, and the live deck shows the new headline."
             },
             {
@@ -94,7 +94,7 @@
         "commerce": false
       },
       "publication": {
-        "release_notes": "Completes the ChatGPT onboarding journey from install and OAuth workspace creation through hosted Studio deck creation, then returns both the unlisted presentation link and the exact signed-in deck in the Unfairly web app.",
+        "release_notes": "Decks read better on phones: the deck's controls no longer sit on top of slides, small labels are larger, and every deck is checked for text that is hard to read against its background. The deck-building guide now comes from Unfairly's side, so improvements reach you without reinstalling the plugin.",
         "countries": [
           "US",
           "CA",
