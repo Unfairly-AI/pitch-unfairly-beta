@@ -377,12 +377,19 @@ const { title, description = '' } = Astro.props;
         bottom: 64px;
       }
 
+      /* On a phone the controls would sit on top of every slide (only the PDF
+         link shows there), so they move into the page after the last slide. */
       @media (max-width: 799px) {
         .deck-nav {
-          top: 12px;
-          right: 12px;
-          bottom: auto;
+          position: static;
+          width: max-content;
+          margin: 24px auto 32px;
           padding: 3px;
+          box-shadow: none;
+        }
+
+        html.is-idle .deck-nav:not(:hover):not(:focus-within) {
+          opacity: 1;
         }
 
         .deck-nav button,

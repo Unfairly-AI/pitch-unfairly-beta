@@ -52,6 +52,23 @@ Push a button, get a car. In 2008. Example: https://pitchunfairly.com/templates/
 10. **Scenarios:** Worst, realistic, best: show the floor is fine.
 11. **Progress and next:** What is done, and the next milestone with a date.
 
+### Snapchat: Series A deck (`snapchat`, Series A pitch deck)
+
+Ten seconds, then gone. Facebook wanted it anyway. Example: https://pitchunfairly.com/templates/snapchat/
+
+1. **One-line promise:** Show the product's one rule in a sentence and a picture.
+2. **Problem:** Name the pressure everyone feels and nobody says out loud.
+3. **Insight:** The counterintuitive bet, set side by side with the old way.
+4. **Live demo:** Let the room use the product for ten seconds.
+5. **Objections:** Put the skeptics on the slide, then the user who proves them wrong.
+6. **Traction:** One usage number, plotted over time, with the milestones marked.
+7. **Engagement:** Prove the habit: daily use, opens a day, retention.
+8. **Competition:** Show the biggest player copying you, and what happened next.
+9. **Why a company:** Explain why this is a new behavior and not a feature.
+10. **Team:** How few people are carrying how much load.
+11. **The ask:** The amount, the lead, and the two things the money buys.
+12. **Kicker:** Leave them with the stakes: what this is worth if it works.
+
 ### LinkedIn: Series B deck (`linkedin`, Series B pitch deck)
 
 Promised. Delivered. Repeat. Example: https://pitchunfairly.com/templates/linkedin/
@@ -69,22 +86,21 @@ Promised. Delivered. Repeat. Example: https://pitchunfairly.com/templates/linked
 11. **Team and backers:** Who executes, and who already bet on them.
 12. **Ask and thesis:** The amount, what it unlocks, and the thesis left on screen.
 
-### Front: Series A deck (`front`, Series A pitch deck)
+### Scrub Daddy: The Shark Tank pitch (`shark-tank`, Shark Tank pitch)
 
-The founder graded her own slides. We fixed the weak ones. Example: https://pitchunfairly.com/templates/front/
+A smiley sponge, a $1M ask, and the deal the show is known for. Example: https://pitchunfairly.com/templates/shark-tank/
 
-1. **Promise:** The product in one line, with the thing it replaces in view.
-2. **Problem:** One poster-size number and the reason the old tool fails teams.
-3. **Product:** Play one real workflow from start to finish.
-4. **Wedge:** Why this entry point: small commitment, big pain, willingness to pay.
-5. **Customer love:** Short quotes with seat counts, one hero quote.
-6. **Growth:** One multiple over twelve months, with churn beside it.
-7. **Net retention:** Show the cohort spending more a year later.
-8. **Efficiency:** Money spent against ARR earned, side by side.
-9. **Go-to-market engine:** The repeatable channel as a model investors can turn.
-10. **Plan and use of funds:** Default alive against the plan, tied to hires.
-11. **Team:** Who builds and who sells, and the unfair advantage.
-12. **Market and ask:** The analogy that sizes the prize, then the number.
+1. **The ask:** Say the amount and the equity in the first breath. The valuation is the first thing they compute.
+2. **The valuation math:** Show cash divided by equity, before and after the money, and the multiple of sales it implies.
+3. **The problem:** A pain every investor has felt personally, shown in one picture.
+4. **The live demo:** One gesture that makes the product obvious. If it can be touched, let them touch it.
+5. **Why you:** The founder story that explains why you, specifically, found this.
+6. **Traction:** Sell-through, not interest: units per store, per day, against the alternative.
+7. **The numbers:** Sales, cost to make, price, margin, how you find customers, and what the money is for. One slide.
+8. **Objections:** The four doubts they are about to raise, each answered in a line with a fact.
+9. **The negotiation:** Every offer on the same line: cash, equity, implied valuation. Know your walk-away number.
+10. **The choice:** Pick the investor who moves your hardest number, and say why.
+11. **The close:** Say the deal out loud, then the result it should lead to.
 
 ### Christopher Columbus: The Atlantic seed round (`columbus`, Seed pitch deck)
 
@@ -120,50 +136,22 @@ Asia is just west. Probably. Example: https://pitchunfairly.com/templates/columb
 
 **Common failures:** Starting with the company history; A feature tour; Logos from the wrong industry; No next step with a date.
 
-### Zuora: The greatest sales deck (`zuora`, Sales narrative)
+### The Wolf of Wall Street: Sell me this pen (`sell-me-this-pen`, Discovery call deck)
 
-Name the shift. Pick the winners. Example: https://pitchunfairly.com/templates/zuora/
+Hand them a napkin before you hand them a pen. Example: https://pitchunfairly.com/templates/sell-me-this-pen/
 
-1. **Name the shift:** Open with an undeniable change in the world, not the buyer's problem.
-2. **Why it's happening:** Show how buyers behave differently now, old next to new.
-3. **Losers:** One hard number for what happens to those who ignore the shift.
-4. **Winners:** The companies that adapted, grouped so the common thread is obvious.
-5. **The Promised Land:** The future state, as criteria the buyer picks from. Not your product.
-6. **A new way of thinking:** The mental model that has to change to get there.
-7. **The obstacle:** Why the old tools cannot reach the Promised Land.
-8. **Magic gift:** Your product, introduced as the thing that gets the hero past that obstacle.
-9. **Evidence:** Customers like this buyer who already made the shift.
-10. **Mutual action plan:** Dated steps with owners on both sides. Never "Thank you."
-
-### Tom Sawyer: The whitewashed fence discovery call (`tom-sawyer`, Discovery call deck)
-
-Does a boy get to whitewash a fence every day? Example: https://pitchunfairly.com/templates/tom-sawyer/
-
-1. **Upfront contract:** Who is on the call, how long it takes, and what a yes looks like at the end.
-2. **The big shift:** One change in the buyer's world, stated before a word about you.
-3. **The stakes:** What saying no costs, and why the chance is rare.
-4. **Discovery questions:** The questions you ask before you show anything; let the buyer talk.
-5. **Qualification:** Need, authority and budget as a flow, so a bad fit leaves early.
-6. **Proof from lookalikes:** One case study from a customer the buyer recognizes as themselves.
-7. **The promised land:** The buyer's future state, drawn concretely, not your product.
-8. **Terms:** How the price was set, and what you did not discount.
-9. **Pricing in their currency:** Price in what the buyer already has and values.
-10. **Mutual action plan:** Dated steps with owners on both sides; the first one is today. Never "Thank you".
-
-### Paul Revere: The midnight ride champion deck (`paul-revere`, Champion deck)
-
-The Regulars are coming out. Pass it on. Example: https://pitchunfairly.com/templates/paul-revere/
-
-1. **Cover with routing slip:** Name the change and the ask in one line, and show who has already forwarded it.
-2. **If you read one slide:** The summary your champion can forward alone: what, where, who is at risk, and what we need from the reader.
-3. **Why change:** Dated evidence the champion can repeat in the room, ending on what is happening now.
-4. **Why now:** The trigger that makes this week different, shown as the signal everyone can see.
-5. **Why us:** Against the alternative, side by side: same inputs, different outcome, and the reason.
-6. **How it spreads:** The proof: how the result compounds once each person passes it on.
-7. **Objections answered:** The four questions the champion will be asked without you, each with a one-line answer and its evidence.
-8. **Cost of waiting:** What each week of delay costs, as something the reader can drag and feel.
-9. **Mutual action plan:** Dated steps with owners on both sides, with the reader's own step left open.
-10. **The ask:** One action: forward it to the next decision-maker.
+1. **Promise:** The outcome for the buyer, with the product held back on purpose.
+2. **Agenda:** Tell them they will do most of the talking, and when the product comes out.
+3. **The default pitch:** Name the pitch they have heard a hundred times, so you can skip it.
+4. **Discovery questions:** Five questions: how often, where, the last bad time, who else suffers, what it cost.
+5. **Create the moment:** A small, real moment where the buyer needs the thing before you show it.
+6. **Their words:** The buyer states the problem. Write it down and play it back in their language.
+7. **Size the need:** Their numbers from discovery, showing how big and how urgent it is.
+8. **Product, briefly:** One slide, three promises, each tied to something they said.
+9. **Proof:** Side by side: the same buyer with and without it, or a customer like them who said yes.
+10. **Objections:** Answer each one with a question that sends them back to the need.
+11. **The method:** The structure on one page, so a champion can retell it.
+12. **Next step:** A dated follow-up with owners on both sides, booked before you hang up.
 
 ### The 2002 Oakland A's: The Moneyball business case (`moneyball`, ROI business case)
 
@@ -180,22 +168,6 @@ The Regulars are coming out. Pass it on. Example: https://pitchunfairly.com/temp
 9. **Risks:** A register: what could go wrong, what you will do, and its status.
 10. **The plan:** Past, now and next on one line, with where we are pinned.
 11. **Decision and next step:** The ask restated, one button, and the date it is needed by.
-
-### Lewis and Clark: The Corps of Discovery report to Jefferson (`lewis-clark`, Quarterly business review)
-
-Three green, one amber, and a passage that isn't there. Example: https://pitchunfairly.com/templates/lewis-clark/
-
-1. **Cover:** Whose account, what period, and the outcome in one line.
-2. **Their goals:** The goals the customer set, in the customer's own words, before anything you did.
-3. **Scorecard:** Each goal red, amber or green, with a click-through to what happened.
-4. **Results over time:** The period on one timeline, with goals ticking off where they were hit.
-5. **Value in their terms:** One hero number in the unit the sponsor cares about, with the proof beside it.
-6. **Cost against plan:** Budget and actual to scale, the variance named, no hiding.
-7. **The big miss:** What didn't work, why, and what you did about it, shown not told.
-8. **Issues register:** Every other problem with a date, a response and an honest status.
-9. **What we learned:** What you now know about their world that they don't, and who taught you.
-10. **Roadmap:** Past, now and next on one line, tied to their goals.
-11. **The renewal ask:** The specific renewal or expansion, in units, with a decision date.
 
 ### Spanx: Sara Blakely's fitting-room demo (`spanx`, Product demo deck)
 
@@ -256,23 +228,6 @@ Nine war machines. Also, painting. Example: https://pitchunfairly.com/templates/
 7. **The flagship offer:** The one signature project, with its milestones laid out as a plan.
 8. **The ask:** A demonstration on the client's terms: what, where, and when they choose.
 
-### John Snow: The Broad Street pump (`broad-street`, Case study)
-
-One map, one meeting, one handle. Example: https://pitchunfairly.com/templates/broad-street/
-
-1. **Result in the title:** State the outcome and the time it took, with two or three summary metrics.
-2. **The customer:** Who they are in a few facts, so readers can check if they match; ask them.
-3. **The problem:** The stakes in the customer's own terms and numbers, plainly.
-4. **What they tried first:** The standard approach, done properly, and why it couldn't explain the problem.
-5. **The approach:** What was done, by whom, in what order, with dates.
-6. **The evidence:** The one picture that makes the cause obvious.
-7. **The exceptions:** The cases that should break the story and instead confirm it.
-8. **Independent proof:** The customer's own data, gathered separately, pointing the same way.
-9. **The result, honestly:** The numbers before and after, including what the product did not cause.
-10. **What it took:** Time, meetings, cost and effort, and how long adoption took.
-11. **In the customer's words:** A named quote that starts with doubt, next to the claim it supports.
-12. **What to do next:** If you're like them: three steps with owners and dates.
-
 ## Board and investor updates (`board`)
 
 **Use when:** Board meetings, monthly or quarterly investor updates, crisis plans.
@@ -289,22 +244,6 @@ One map, one meeting, one handle. Example: https://pitchunfairly.com/templates/b
 - Close on the decisions you need from the board, then next period's priorities with one owner each. Detail goes in the appendix.
 
 **Common failures:** A product demo instead of a review; Numbers without plan or trend; Misses hidden at the end; No decision asked of the board.
-
-### Sequoia: R.I.P. Good Times (`sequoia`, Crisis board deck)
-
-The downturn deck every CEO saved. Example: https://pitchunfairly.com/templates/sequoia/
-
-1. **The title moment:** Name the new reality in three words people will repeat.
-2. **The agenda:** Three acts: how we got here, where we are, what you do now.
-3. **The cause:** One chart that shows what was unsustainable.
-4. **The exposure:** Show who is overextended and why demand will fall.
-5. **The mechanism:** Draw how the damage compounds, so nobody waits it out.
-6. **The comparison:** Say how this differs from the last downturn, and how long it lasts.
-7. **New realities:** Strike through every assumption the old plan rested on.
-8. **Runway:** Cash, burn, cuts, and the month you reach profit or run out.
-9. **The cuts:** Before and after, function by function, with the total.
-10. **Speed:** Show the cost of cutting late against cutting now.
-11. **The order:** One line to leave the room with.
 
 ### Jurassic Park: The board meeting after the storm (`jurassic-park`, Board meeting)
 
@@ -339,21 +278,6 @@ Success. Four flights Thursday morning. Inform press. Example: https://pitchunfa
 10. **What's next:** Next period's priorities with a target for each; they open next month's update.
 11. **Thanks:** Name the people who helped, then restate the one action you need.
 
-### Berkshire Hathaway: The letter to shareholders (`berkshire`, Results report and letter to owners)
-
-One number, one yardstick, and the mistakes left in. Example: https://pitchunfairly.com/templates/berkshire/
-
-1. **The number:** Lead with one result and the yardstick it is measured against, over the longest honest period.
-2. **The record:** Show every period against that yardstick, misses included, so the reader can check the claim.
-3. **What went well, and why:** Name the wins and sort each into earned or luck.
-4. **Mistakes, owned:** List the errors with dates and costs, in the first person, with what you took from each.
-5. **Capital allocation:** Rank where money (or effort) goes, and the test each use has to pass.
-6. **Will and won't:** Restate the standing principles, including the ones that cost you.
-7. **The people:** Praise by name, criticize by category; tell one story that shows the culture.
-8. **Changes at the top:** Say plainly who now runs what, and what stays the same.
-9. **The letter:** Write the whole report as one page for a smart reader outside your field.
-10. **What to expect:** Set expectations for next year, lower ones included, and say when you will report again.
-
 ## Everyday work (`work`)
 
 **Use when:** Project status updates, executive briefings, roadmaps and the other recurring decks a team reads every week.
@@ -371,36 +295,6 @@ One number, one yardstick, and the mistakes left in. Example: https://pitchunfai
 
 **Common failures:** Activity instead of outcomes; Everything green until it is suddenly red; The conclusion on the last slide; A roadmap of promised dates nobody believes.
 
-### Emily Warren Roebling: The Brooklyn Bridge status update (`brooklyn-bridge`, Project status update)
-
-Amber since 1872. Fix in hand: Emily. Example: https://pitchunfairly.com/templates/brooklyn-bridge/
-
-1. **Status in one line:** One status (on track, at risk, off track) and the date, on the cover.
-2. **Summary and date confidence:** Done, finishing, needed, in three lines, and whether the due date is holding.
-3. **Safety:** Incidents first, stated plainly, before any good news.
-4. **Status by workstream:** Green, amber, red per workstream, with the color meanings printed on the slide and history across updates.
-5. **Progress since last update:** A hill chart or milestones moved, with prior positions, so stuck work shows.
-6. **Wins:** One quantified result that finished this period.
-7. **What changed:** Scope, schedule and budget: plan, now, and why.
-8. **Risks:** Each risk with an owner, a date, and the fix already in hand.
-9. **Decisions and asks:** What was decided, then the one decision you need, and who must make it.
-10. **Next milestones:** The next dated milestones and when the next update lands.
-
-### Winston Churchill: The Brevity memo (`churchill-brevity`, Executive briefing)
-
-The answer first. The rest in the appendix. Example: https://pitchunfairly.com/templates/churchill-brevity/
-
-1. **The answer:** The recommendation in one sentence, on the first slide. If they read nothing else, they read this.
-2. **Situation:** The one thing everyone already agrees is true. One line.
-3. **Complication:** What changed or is going wrong, shown in one picture.
-4. **Question:** The question the complication raises, with the answer and its three supports drawn as a pyramid.
-5. **Point 1 and evidence:** A sentence headline that makes the first claim, and one exhibit that proves it.
-6. **Point 2 and evidence:** The second claim, with its own exhibit. No overlap with point 1.
-7. **Point 3 and evidence:** The third claim, ideally one the reader can test for themselves.
-8. **Risks and the alternative:** The options you rejected, including doing nothing, and each risk with its answer.
-9. **Decision and date:** What you need, who decides, and by when. Never "Thank you".
-10. **Appendix:** Sources, figures and detail, behind tabs, at about ten to one.
-
 ### Tesla: The Secret Master Plan (`tesla-master-plan`, Product roadmap)
 
 Sports car first. It pays for the rest. Example: https://pitchunfairly.com/templates/tesla-master-plan/
@@ -416,22 +310,6 @@ Sports car first. It pays for the rest. Example: https://pitchunfairly.com/templ
 9. **How we'll know:** The outcome metric that says the plan is working, with a baseline.
 10. **Internal vs customer view:** The same roadmap with confidence, dates and dependencies hidden for customers.
 11. **Next review:** End on the date of the next roadmap, never "Thank you".
-
-### The Panama Canal: Sanitation first, then dig (`panama-canal`, Project kickoff)
-
-The dig stays locked until the mosquitoes sign off. Example: https://pitchunfairly.com/templates/panama-canal/
-
-1. **Cover:** The project and its one rule of order, in five words.
-2. **Why this project:** Answer first: the situation as it stands and the change you are making.
-3. **What failed before:** The last attempt's record, each failure turned into a rule.
-4. **Goal and done:** One checkable outcome, plus the conditions that make it count.
-5. **Scope:** What is in, and what is out for now, with the reason for each out.
-6. **Evidence:** Proof the approach has worked somewhere else, as a chart.
-7. **Plan in phases:** Phases with owners and gates; later phases stay locked until earlier ones sign off.
-8. **Roles:** A RACI with exactly one accountable name per row.
-9. **Risks and assumptions:** Each risk with an owner and a fix; list the assumptions you have not tested.
-10. **Cadence:** How often you report, to whom, and status colors with fixed meanings.
-11. **First two weeks:** Dated first moves and the one decision you need, with a named decider.
 
 ## Launches and keynotes (`launch`)
 
@@ -496,82 +374,6 @@ Three products. One device. Zero buttons. Example: https://pitchunfairly.com/tem
 9. **Price and availability:** Do the price math out loud, then dates, regions and partners.
 10. **The goal:** One number you can be held to next year, against the market size.
 11. **One more thing:** A closing surprise bigger than the product, then get off stage.
-
-### Chanel No. 5: The 1921 fragrance launch (`chanel-no5`, Brand launch)
-
-Sample five, launched on the fifth. Example: https://pitchunfairly.com/templates/chanel-no5/
-
-1. **Brand idea:** The whole brand in one line, set against what the category does.
-2. **Who it's for:** The first customer, specific enough to picture: what they already buy and what they refuse.
-3. **The product:** Show the choice you made and the options you turned down.
-4. **What makes it different:** The one ingredient or decision competitors don't have, made tangible.
-5. **Name and identity:** Your name and look next to the shelf it will sit on.
-6. **Launch moment:** A date with a reason, tied to something the audience already shows up for.
-7. **Seeding:** Who gets it first, in order, and why each ring spreads it to the next.
-8. **Distribution:** The channel path from one door to everywhere, and who you partner with.
-9. **How we'll know:** Leading signals with a time frame, plus the long-run signal you're aiming at.
-10. **Risks:** The real risks with a mitigation and a status, including the one that is the point.
-11. **Launch:** Close on the line items and the date.
-
-### Abraham Lincoln: The Gettysburg Address (`gettysburg`, Short keynote)
-
-Two minutes, ten sentences, one idea. Example: https://pitchunfairly.com/templates/gettysburg/
-
-1. **Know your slot:** What the program needs from you, how long you have, and who speaks before you.
-2. **One idea:** Write the idea in one sentence before you write the talk. Every line serves it.
-3. **Shared history:** Open on a past the whole room already agrees on, in words they already know.
-4. **The stakes:** Name what is being tested right now, in one sentence.
-5. **Why we are here:** Say plainly what this gathering is for, today.
-6. **The turn:** Say what this moment can't do on its own. Keep the frame, change one word, three times.
-7. **The call:** Hand the room the unfinished work, addressed to them, not to you.
-8. **The closing line:** End on the line you want quoted: rhythm, repetition, few words. Then stop.
-9. **The cut:** Before you give it, cut until the idea breaks, and keep everything just before that.
-
-### NASA: The 1975 Graphics Standards Manual (`nasa-worm`, Brand guidelines)
-
-One agency. One mark. No exceptions. Example: https://pitchunfairly.com/templates/nasa-worm/
-
-1. **Cover:** Name the standard and its promise: one brand, applied one way.
-2. **Why a standard:** Show the cost of inconsistency: every team drawing the brand its own way.
-3. **The mark:** What the logo is, how it is built, and the one rule: never redraw it.
-4. **Clear space and size:** The minimum air around the mark and the approved sizes, measured from the mark itself.
-5. **Color:** Exact values for every medium, and which color goes on which background.
-6. **Typography:** The typefaces, the weights, and how names lock up with the mark.
-7. **The grid:** The understructure every layout hangs from, shown on a real application.
-8. **Applications:** The brand at its largest and smallest: vehicles, signs, forms, decals, with sizes.
-9. **Misuse:** The specific don'ts, drawn, so nobody has to guess.
-10. **Ownership and help:** Who owns the standard, and where each common question gets answered.
-11. **Why it lasts:** Close on what the standard protects over time.
-
-### Hans Rosling: 200 countries, 200 years (`rosling`, Data story)
-
-Press play on 200 years. Example: https://pitchunfairly.com/templates/rosling/
-
-1. **Cover:** Name the dataset and the promise: what the one chart will show.
-2. **Misconception:** Draw the picture the audience already holds, so the data has something to overwrite.
-3. **Test the room:** Three quick questions that prove the misconception, scored against chance.
-4. **The question:** Explain the axes and ask the one question the chart answers.
-5. **The one chart:** Play the data over time; let people scrub, pause and hover.
-6. **Zoom in:** Stop the clock on the surprise and put one number on it.
-7. **One path:** Follow a single case the audience knows, against one they don't.
-8. **Outliers:** Name the exceptions and what explains them, instead of averaging them away.
-9. **What it means:** Turn the chart into one sentence the audience can repeat.
-10. **What to do:** Three habits to take home, and a way to replay the chart.
-
-### Julia Child: The French Chef (`julia-child`, Webinar and workshop)
-
-Live, one take, and the potato hits the stove. Example: https://pitchunfairly.com/templates/julia-child/
-
-1. **Title card and promise:** Name the session and the one thing people will be able to do by the end.
-2. **Housekeeping:** Say how it runs: live or recorded, how long, and how to ask questions.
-3. **Who's teaching:** One credential the audience can check, plus why this person in particular.
-4. **Agenda with times:** Four to six segments with real timecodes, so people know when the good part is.
-5. **Live demonstration:** Do the thing on screen and let the audience change one variable.
-6. **Mistakes and recovery:** The common mistake, what happens, and how to recover without stopping.
-7. **Audience participation:** A poll or question at the halfway mark, answered on air.
-8. **Recap:** The moves in the order people will use them, not the agenda again.
-9. **The replay:** How the recording will reach the people who watch later.
-10. **Next step and take-home:** One dated next session and the one resource to use tonight.
 
 ## Proposals and business cases (`proposal`)
 
@@ -639,22 +441,6 @@ Nine billion dollars to win a race nobody else can see. Example: https://pitchun
 11. **Success criteria:** What counts as done, and what explicitly does not.
 12. **The ask:** The numbers to approve, the commitment, and the return.
 
-### Gustave Eiffel: The tower proposal (`eiffel`, Client proposal)
-
-300 metres of iron for a 20-year permit. Example: https://pitchunfairly.com/templates/eiffel/
-
-1. **Cover:** Who you are, what you will deliver, and the brief you are answering.
-2. **Your goal:** Play the client's objective back to them, including what success looks like.
-3. **Your requirements:** Quote each requirement in their order and show how you meet it.
-4. **Our solution:** The thing you will deliver, shown, with its headline number.
-5. **Why us:** Comparable work you have already delivered, and the named team.
-6. **How we build:** The method that makes the plan believable.
-7. **Plan and timeline:** Dated milestones the client can hold you to, ending before their deadline.
-8. **Pricing and terms:** What they pay, what you carry, and what you get in return.
-9. **Risks:** A register with an owner, a mitigation, and a status for each risk.
-10. **What you get:** What the client holds at the end, not the work you will do.
-11. **Next steps:** Three dated actions and a signature.
-
 ### Barbie: Ruth Handler's pitch to Mattel (`barbie`, New product pitch)
 
 The doll is the razor. The wardrobe is the blade. Example: https://pitchunfairly.com/templates/barbie/
@@ -669,20 +455,6 @@ The doll is the razor. The wardrobe is the blade. Example: https://pitchunfairly
 8. **How we reach customers:** The channel you already own, and why it beats the industry default.
 9. **Economics:** A live model of the first sale and the repeat sales, with the assumptions visible.
 10. **The ask:** A production run, a price and a launch date, plus a forecast you'll be held to.
-
-### Florence Nightingale: The rose diagram (`nightingale`, Impact report and funding ask)
-
-The chart that cleaned up the army. Example: https://pitchunfairly.com/templates/nightingale/
-
-1. **Cover:** The result and the ask in one line, with your strongest chart as the art.
-2. **The problem in numbers:** One total, split by cause, so the preventable share is impossible to miss.
-3. **The baseline:** Your worst measured period at poster size, so every later number has something to beat.
-4. **What we did:** The intervention on a dated timeline, and the first results as they landed.
-5. **Outcome against the baseline:** Same measure, same season, before and after, with the population size shown.
-6. **The one chart:** The single chart that proves it, interactive, with a plain view beside it for skeptics.
-7. **Cost and what it bought:** Itemize what you spent, then convert it into the outcome the funder cares about.
-8. **What remains undone:** The gap that is still open, in the same units as your results.
-9. **The ask:** What you want funded, the lead item first, and what it will change.
 
 ### Taylor's Version: The re-recording business case (`taylors-version`, Make-vs-buy business case)
 
@@ -699,23 +471,6 @@ Can't buy it? Make it again. Example: https://pitchunfairly.com/templates/taylor
 9. **Adoption:** Whether users actually switched, shown as a share, with the exception called out.
 10. **Recommendation:** The call, then the line items to approve and when you review it.
 11. **Timeline:** Both tracks on one timeline, with the milestone that closes each.
-
-### Sherlock Holmes: The Baskerville case report (`baskervilles`, Client deliverable)
-
-There is no curse. There was a cousin with a dog. Example: https://pitchunfairly.com/templates/baskervilles/
-
-1. **Cover:** The engagement, the client, and the verdict in one line.
-2. **Executive summary:** The answer first, three supporting points that don't overlap, and the status.
-3. **The question:** Situation, complication, and the question the client asked, in their words.
-4. **What we did:** The method and where the work happened, staffing as run rather than as sold.
-5. **Evidence map:** Every key piece of evidence linked to the finding it supports.
-6. **Finding 1:** A full-sentence headline and the one exhibit that proves it.
-7. **Finding 2:** One finding per slide, with a diagram the client can check for themselves.
-8. **Finding 3:** The finding the client least wants to hear, with the number behind it.
-9. **Ruled out:** The hypotheses you eliminated and the evidence that eliminated each one.
-10. **Recommendations:** Actions with one owner and a date each; the most important one first.
-11. **Risks:** What stays open, including what went wrong on your side.
-12. **Next steps:** Dates for what happens next and exactly what you need from the client.
 
 ## Team and culture (`team`)
 
@@ -748,55 +503,6 @@ There is no curse. There was a cousin with a dog. Example: https://pitchunfairly
 9. **How teams work:** Agree on the what, free the how.
 10. **How we pay:** Tie pay to the value of the best people, with the math.
 11. **End card:** Close on the promise and what comes next.
-
-### Ernest Shackleton: The Endurance recruiting pitch (`shackleton`, Recruiting deck)
-
-Small wages. Long nights. A story for life. Example: https://pitchunfairly.com/templates/shackleton/
-
-1. **Cover:** The mission as an invitation, in one line, with one picture of the work.
-2. **The mission:** What we are doing and how, shown as a plan the candidate can follow.
-3. **Why it matters:** Why now and why us: what is taken, what is still open, where we already lead.
-4. **The role:** How many seats, what each group does, and the open roles by name.
-5. **What it is really like:** The hard parts, stated plainly, so the wrong people opt out.
-6. **Who thrives here:** The temperament you hire for, as a quick self-check with a verdict.
-7. **How we pick people:** What the interview tests and why, with real examples.
-8. **What you get:** Comp and conditions honestly, plus the upside nobody else offers.
-9. **The team you would join:** Named people and their credentials: who you will spend your days with.
-10. **The process:** Applicants to hires, then the steps and dates from letter to day one.
-11. **The ask:** One action and a deadline.
-
-### Ford Motor Company: The $5 day all-hands (`ford`, All-hands)
-
-Double the pay. Cut the day. Watch what happens. Example: https://pitchunfairly.com/templates/ford/
-
-1. **Cover:** The change in three facts people will repeat: the money, the hours, the date.
-2. **What happened:** The last period in one picture, so everyone starts from the same place.
-3. **The broken number:** One metric that is failing, shown so nobody can argue with it.
-4. **The decision:** The new policy as one number at poster size, with what it replaces.
-5. **What changes for you: pay:** Let each person work out their own number before they ask.
-6. **What changes for you: time:** Schedules, shifts or process, before and after, on one scale.
-7. **Why we are doing it:** The real business reason, with its cost. People can tell when it is charity theater.
-8. **What we expect:** Eligibility and conditions, stated plainly, before they find the fine print.
-9. **What is not changing:** Name what stays, so the room stops guessing.
-10. **FAQ:** The awkward questions, answered in one line each.
-11. **What is next:** Dates, owners, and what to tell people outside the company.
-12. **Thank you:** Thanks plus one thing everyone can do today.
-
-### Madam C. J. Walker: The Walker agents sales kickoff (`madam-walker`, Sales kickoff deck)
-
-Two hundred agents, two scoreboards: sales and service. Example: https://pitchunfairly.com/templates/madam-walker/
-
-1. **Welcome:** Name the room, the date and the energy in one line.
-2. **Last year's results:** One scoreboard: where the team started and where it finished.
-3. **Recognition:** Top performers by name, with the number that earned it.
-4. **This year's target:** What gets scored this year and what wins, with the prize on the slide.
-5. **The playbook:** The motion every rep runs, step by step, in order.
-6. **Territories and growth:** Where the team sells now and where it is going, on a map.
-7. **Compensation and incentives:** What a rep actually earns, against the alternative, and the bonuses on top.
-8. **Enablement and training:** How every rep learns the product before selling it.
-9. **The mission beyond the number:** Why the work matters past quota, stated plainly.
-10. **The commitment:** A short pledge the room makes out loud.
-11. **Rally close:** One line to send everyone out the door, and the date you meet again.
 
 ### Mr. Miyagi: Wax on, wax off (`miyagi`, Training and onboarding)
 
@@ -880,21 +586,6 @@ Three launches, one evangelist, zero repeats. Example: https://pitchunfairly.com
 10. **Decisions:** Stop, keep, start, each with one owner and one date.
 11. **Watching next:** The leading indicators, with thresholds, that would justify trying again.
 
-### Johnson & Johnson: The Tylenol recall (`tylenol`, Crisis communication)
-
-The public first, whatever it costs. Example: https://pitchunfairly.com/templates/tylenol/
-
-1. **Principle:** Open on the one rule every decision in the crisis will follow.
-2. **What happened:** Facts only: what you know, what you don't yet, and the time you knew it.
-3. **People first:** Name who is affected, then what you are doing for each group, before any business impact.
-4. **The decision:** The action in one sentence, with its size, the reasons, and the cost you accept.
-5. **Why:** Tie the decision to a principle the company already held, not one written for the crisis.
-6. **Message matrix:** Each audience gets the same facts, with its own message, channel, voice and ask.
-7. **Who speaks:** One lead voice, a named owner for each topic, and what you will not speak to.
-8. **Timeline of actions:** Every action so far, dated, and what comes next.
-9. **Prevention:** The change that makes this harder to happen again, shown, not described.
-10. **Update rhythm:** When people will hear from you, what triggers an update, and when the next one is.
-
 ## Strategy and planning (`strategy`)
 
 **Use when:** Annual plans, strategy offsites, OKRs, big bets.
@@ -910,38 +601,6 @@ The public first, whatever it costs. Example: https://pitchunfairly.com/template
 
 **Common failures:** A list of everything; Bets without owners; Nothing stopped.
 
-### Operation Overlord: The D-Day annual plan (`overlord`, Annual plan and OKRs)
-
-One objective. Five beaches. One weather report. Example: https://pitchunfairly.com/templates/overlord/
-
-1. **Cover:** The year in one line: the objective and the scale of it.
-2. **Where we are:** Score last year's plan honestly before proposing this year's, corrections in red.
-3. **The one objective:** One sentence the whole company can repeat, ideally in the board's own words.
-4. **Key results:** Three to five measurable results with dates, set up to be graded at year end.
-5. **Bet one:** The biggest bet that delivers the KRs, with its specs and what it costs to build.
-6. **Bet two:** The second bet, shown working: what the market sees versus what is true.
-7. **Phases and timeline:** Past, you-are-here, next, with the phases and the one date you don't control.
-8. **Owners and resources:** One owner per result, with the resources they command next to their name.
-9. **Risks and contingencies:** Each risk with an owner and a fallback, and the real cost stated plainly.
-10. **Not doing:** The options you rejected, struck through, with one line of why for each.
-11. **Go/no-go:** The decision criteria against the latest data, and the verdict.
-12. **The decision:** Who decided, when, and who owns it if it fails.
-
-### Wrigley: The soap company that became a gum company (`wrigley`, Pivot memo)
-
-The free gift kept winning, so he sold the free gift. Example: https://pitchunfairly.com/templates/wrigley/
-
-1. **The claim:** Say the pivot in one sentence, to the people who have to live with it.
-2. **What we believed:** State the old plan plainly, with its numbers, before anyone rewrites history.
-3. **The signal:** Show the customer behavior that broke the plan, as evidence, not opinion.
-4. **The new bet:** Name what you now sell and to whom, and show it.
-5. **What we stop:** Name what ends, with a date. A pivot that keeps everything is not a pivot.
-6. **What carries over:** The assets, customers and skills that survive, so the team knows what still counts.
-7. **Risks:** A register: each risk, what could go wrong, and what you will do about it.
-8. **Milestones:** Dated checkpoints that will prove the bet right, or wrong, early.
-9. **Proof at scale:** The one number that shows what the new model looks like when it works.
-10. **The ask:** What you need approved and resourced, in three line items, and the return.
-
 ### Blockbuster: The Netflix meeting, take two (`blockbuster`, Competitive response)
 
 They passed on Netflix for $50M. This is the deck they needed next. Example: https://pitchunfairly.com/templates/blockbuster/
@@ -956,23 +615,6 @@ They passed on Netflix for $50M. This is the deck they needed next. Example: htt
 8. **Tripwire metrics:** Three numbers with triggers, agreed in advance, that tell you it's working before the P&L does.
 9. **The cost of not deciding:** Where the core business goes if the room passes, in the most concrete unit you have.
 10. **The decision:** One yes or no, the items it approves, and who signs.
-
-### The Marshall Plan: The European Recovery Program (`marshall-plan`, Recovery plan)
-
-A cure, not a palliative. Example: https://pitchunfairly.com/templates/marshall-plan/
-
-1. **The promise:** Name the recovery in one line and say who is writing the plan.
-2. **Situation in numbers:** Three measures against a healthy baseline, with the worst one in color.
-3. **Root cause:** Draw the loop that keeps things broken and mark where you will break it.
-4. **Goal and time frame:** One goal, the program years, and an end date you commit to.
-5. **Who wrote the plan:** Show the people closest to the problem drafted it, and how the ask changed in review.
-6. **Pillars:** Four workstreams at most, with one clearly carrying the weight.
-7. **Funding:** Where every dollar goes, by unit, sized to scale.
-8. **Conditions:** What each recipient commits to in writing, and how the money recycles.
-9. **Governance:** Who decides and who reports, as one diagram that can show either.
-10. **Milestones:** The scoreboard metric by year against the baseline, with dates you will hit.
-11. **Risks:** A register with owners and mitigations, honest about the ones you cannot stop.
-12. **The ask:** The first tranche, the period it covers, and when you come back.
 
 ### Runway: The cerulean trend report (`prada`, Trend report)
 
@@ -1006,22 +648,6 @@ Two friends, a $5 course, and an old gas station. Example: https://pitchunfairly
 11. **Risks:** A register with likelihood and a mitigation for each, biggest first.
 12. **The ask:** The amount, what it buys, the dated milestones, and how it gets repaid.
 
-### Apollo 11: The press release written first (`apollo-11`, Narrative memo and PR/FAQ)
-
-The Moon landing, written up eight years early. Example: https://pitchunfairly.com/templates/apollo-11/
-
-1. **Memo header:** Name the document, the author, the date drafted and the date of the release, and how to read it.
-2. **Tenets:** Three to five rules that settle the arguments before they start; one is the hero.
-3. **Headline and subhead:** The press release for launch day, dated: who gets what, and the one-sentence result.
-4. **Problem and solution:** The customer's problem in one line, the solution in three, with a picture of how it works.
-5. **The quotes:** One quote from the leader on why, one from the customer on what it's like.
-6. **How to get it:** Where, when and what it costs the customer: the call to action.
-7. **External FAQ:** The five or six questions customers and press will ask, one line each.
-8. **Internal FAQ:** Cost, people, the hard technical bet and what it has already cost, one answer at a time.
-9. **The worst case:** What we will do and say if it fails, written down before launch.
-10. **What must be true:** The prerequisites in the order they must be proven, ticked off as they are.
-11. **Result:** Close on the goal, clause by clause, and what came true.
-
 ### Coca-Cola: The Pepsi Challenge and New Coke (`new-coke`, Competitive and market analysis)
 
 200,000 sips said change it. The can disagreed. Example: https://pitchunfairly.com/templates/new-coke/
@@ -1036,23 +662,6 @@ The Moon landing, written up eight years early. Example: https://pitchunfairly.c
 8. **Implications:** Three things that must now be true, and the stake if you act on them.
 9. **Recommendation and test:** The move, the date, and the signals with baselines that would prove you wrong.
 10. **What we'd check again:** The lesson to carry into the next analysis, stated as a rule.
-
-### Brownie Wise: The Tupperware party (`tupperware`, Go-to-market plan)
-
-Take it off the shelf. Throw it a party. Example: https://pitchunfairly.com/templates/tupperware/
-
-1. **The bet:** Name the product and the channel you are betting on, in one line.
-2. **Product and the gap:** What it is, what it costs, and the exact reason it isn't selling yet.
-3. **Channel fit:** Show the product in today's channel next to the proposed one, and what changes.
-4. **Target customer:** Who buys, what they doubt, and where they already gather.
-5. **The motion:** The sale step by step, ending in the step that starts the next sale.
-6. **Funnel math:** Conversion at every step as a calculator, with the assumptions visible and adjustable.
-7. **Pricing and incentives:** Who pays what, and what each person in the chain earns.
-8. **The sellers:** Who sells it, how you recruit and train them, and how you reward them in public.
-9. **Launch plan:** Milestones with dates, with the one big moment called out.
-10. **Metrics:** The outcome number, plus the three leading indicators you count every week.
-11. **Risks:** A register with a mitigation and a status for each, including the one you'd rather not write down.
-12. **The ask:** The decisions you need, as line items, and when.
 
 ## Just for fun (`fun`)
 
@@ -1081,37 +690,6 @@ Not serious? Read the score report. Example: https://pitchunfairly.com/templates
 6. **The objection:** Name their doubt in their words and answer it with evidence, not adjectives.
 7. **References:** The voucher who knows your work best, up front; the rest kept short.
 8. **The ask:** The exact seat or role and the start date. Then stop.
-
-### Nellie Bly: Around the world in 72 days (`nellie-bly`, Trip pitch)
-
-One dress, one bag, and a fictional record to beat. Example: https://pitchunfairly.com/templates/nellie-bly/
-
-1. **The trip in one line:** Where, how long, and the one constraint that makes it remarkable.
-2. **Why now:** What makes this the moment: the record, the deadline, the window that closes.
-3. **Route and plan:** The route on a map with dates, and how you will know where you are on any day.
-4. **Budget:** One number, then where every part of it lives.
-5. **What's in the bag:** The packing list, proven to fit, including what you are leaving behind.
-6. **Risks and backup plan:** Every objection you have heard, who raised it, and the backup for each.
-7. **The cost of a no:** What happens if the answer is no, said plainly.
-8. **What everyone gets:** The upside for each person who has to say yes, not just for you.
-9. **How we'll know it worked:** The finish line as a number, against the benchmark and the rivals.
-10. **The ask with a date:** What you need, line by line, and the exact day you leave.
-
-### Charles Darwin: Marry / Not Marry (`darwin-marry`, Big decision deck)
-
-Two columns, one naturalist, Q.E.D. Example: https://pitchunfairly.com/templates/darwin-marry/
-
-1. **The question:** Name the decision in one line, in the words you would actually say.
-2. **The facts:** Where things stand today, on one card, before anyone argues.
-3. **The options:** Draw each option as a path with what it leads to, not as a label.
-4. **What matters:** Pick the criteria first and note any that appear on both sides, so they cancel out.
-5. **The case for each side:** Every pro and con in plain words, with the strongest one marked.
-6. **Bias check:** Read each column for arguments filed on the wrong side, and move them.
-7. **The regrets:** What you would miss under each option, weighed side by side.
-8. **The test:** A weighted scorecard anyone can re-weight, showing which row really decides.
-9. **The call:** The decision, stated once, in words nobody can misread.
-10. **The next step:** When it happens, who you asked, and their reasons.
-11. **What happened next:** Close the loop with dates, so the next big decision learns from this one.
 
 ### The Kids, Inc.: Why we need a dog (`dog`, Persuasion deck)
 

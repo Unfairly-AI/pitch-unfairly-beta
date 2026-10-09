@@ -1,6 +1,6 @@
 {
   "name": "pitch-unfairly",
-  "version": "0.13.10",
+  "version": "0.14.0",
   "description": "Builds presentation decks as Astro websites with PDF export and desktop, phone, and PDF layout checks, and publishes them to unlisted links.",
   "author": {
     "name": "Unfairly AI",

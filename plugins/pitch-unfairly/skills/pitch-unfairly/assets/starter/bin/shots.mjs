@@ -22,33 +22,37 @@ const run = promisify(execFile);
 await rm(out, { recursive: true, force: true });
 const browser = await puppeteer.launch({ headless: true });
 
+// The deck's own controls (slide counter, arrows, Notes, PDF) sit over the
+// slides on a phone. They aren't part of any slide, so they stay out of the
+// screenshots: a reviewer once flagged the PDF button as a slide defect 37 times.
+const HIDE_CHROME = '.deck-nav, .deck-notes, astro-dev-toolbar { display: none !important; }';
+
 async function capture(name, viewport, query) {
   const dir = join(out, name);
   await mkdir(dir, { recursive: true });
   const page = await browser.newPage();
   await page.setViewport(viewport);
+  // Reduced motion: every entrance jumps to its end state, which is what the
+  // review judges, so the phone pass doesn't wait out each slide's animation.
+  await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
   await page.goto(`${base}/${query}`, { waitUntil: 'networkidle0' });
   await page.waitForFunction(() => window.__deckReady === true, { timeout: 15000 }).catch(() => {});
-  await page.evaluate(() => document.querySelector('astro-dev-toolbar')?.remove());
+  await page.addStyleTag({ content: HIDE_CHROME });
   const ids = await page.$$eval('.slide', (slides) => slides.map((s) => s.id));
   const files = [];
   for (const [i, id] of ids.entries()) {
     const file = join(dir, `${String(i + 1).padStart(2, '0')}-${id.replace(/^slide-/, '')}.png`);
     if (name === 'mobile') {
-      // Scroll the slide into place, then wait for its entrance to finish:
-      // CSS animations first, then scripted ones (counters, typed text) until
-      // the slide stops changing. Capped, so a looping animation can't stall.
+      // Scroll the slide into place. With reduced motion, CSS entrances finish
+      // at once; a scripted one that ignores it (a counter, typed text) gets
+      // until the slide stops changing, capped so a loop can't stall.
       await page.evaluate((id) => document.getElementById(id).scrollIntoView(), id);
       await page.evaluate(async (id) => {
         const slide = document.getElementById(id);
         const pause = (ms) => new Promise((r) => setTimeout(r, ms));
-        await pause(300);
-        const running = document.getAnimations().filter((a) =>
-          slide.contains(a.effect?.target) && a.effect.getTiming().iterations !== Infinity);
-        await Promise.race([Promise.all(running.map((a) => a.finished.catch(() => {}))), pause(4000)]);
         const snapshot = () => slide.innerHTML;
-        for (let last = snapshot(), still = 0, t = 0; still < 2 && t < 4000; t += 200) {
-          await pause(200);
+        for (let last = snapshot(), still = 0, t = 0; still < 2 && t < 4000; t += 100) {
+          await pause(100);
           const now = snapshot();
           still = now === last ? still + 1 : 0;
           last = now;
@@ -77,10 +81,15 @@ async function contactSheet(files, file, columns, width) {
 
 try {
   // Stage at half resolution: 960x540 per slide, the same render the PDF prints.
-  const stage = await capture('stage', { width: 1920, height: 1080, deviceScaleFactor: 0.5 }, '?pdf=1');
-  const mobile = await capture('mobile', { width: 393, height: 745, isMobile: true, hasTouch: true, deviceScaleFactor: 1 }, '');
-  await contactSheet(stage, join(out, 'contact-sheet.png'), 3, 480);
-  await contactSheet(mobile, join(out, 'contact-sheet-mobile.png'), 6, 197);
+  // The stage and the phone are separate pages, so they run side by side.
+  const [stage, mobile] = await Promise.all([
+    capture('stage', { width: 1920, height: 1080, deviceScaleFactor: 0.5 }, '?pdf=1'),
+    capture('mobile', { width: 393, height: 745, isMobile: true, hasTouch: true, deviceScaleFactor: 1 }, ''),
+  ]);
+  await Promise.all([
+    contactSheet(stage, join(out, 'contact-sheet.png'), 3, 480),
+    contactSheet(mobile, join(out, 'contact-sheet-mobile.png'), 6, 197),
+  ]);
 
   // --quick skips the PDF (the slowest part) for fast iteration; the full run and the build still make it.
   const bytes = process.argv.includes('--quick') ? null : await renderPdf(browser, base).catch((error) => {

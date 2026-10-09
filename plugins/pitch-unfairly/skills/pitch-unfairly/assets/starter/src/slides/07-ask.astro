@@ -14,7 +14,7 @@ import BrandMark from '../components/BrandMark.astro';
 >
   <div class="ask">
     <BrandMark on="ink" height={44} class="rise mark" />
-    <h2 class="display hero rise" style="--d: 80ms">Your turn. <span class="hl">Pitch unfairly.</span></h2>
+    <h2 class="display hero rise" style="--d: 80ms">Now it's your turn to <span class="hl">pitch unfairly.</span></h2>
     <span class="cta pop" style="--d: 320ms">Start with your story <span aria-hidden="true">→</span></span>
   </div>
 </Slide>
@@ -32,7 +32,8 @@ import BrandMark from '../components/BrandMark.astro';
     border: var(--border-w) solid var(--on-night);
     border-radius: var(--radius-button);
     background: var(--accent);
-    color: var(--on-accent);
+    /* On a dark slide the accent is its lighter night tint, so the label is night-dark to read on it. */
+    color: var(--night);
     box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--on-night);
     font: 800 50px/1 var(--font-display);
     letter-spacing: -0.02em;

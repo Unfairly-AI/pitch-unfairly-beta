@@ -4,7 +4,7 @@ Pitch Unfairly is proprietary software of Unfairly AI (see LICENSE at the reposi
 
 ## Impeccable
 
-The "Design floor" section of `skills/pitch-unfairly/references/craft.md` is adapted from Impeccable's craft floor (`skill/reference/craft-floor.md`) and its typography, layout, and color references. Unfairly AI modified it: rewritten for 1920×1080 slides and the plugin's brand-kit tokens, with web-app guidance (page scaffolds, modals, form states) left out.
+The "Design floor" section of the craft guide (`guide/craft.md` in the plugin's repository, served to the plugin by the `deck_guide` tool) is adapted from Impeccable's craft floor (`skill/reference/craft-floor.md`) and its typography, layout, and color references. Unfairly AI modified it: rewritten for 1920×1080 slides and the plugin's brand-kit tokens, with web-app guidance (page scaffolds, modals, form states) left out.
 
 - Project: https://github.com/pbakaus/impeccable
 - Copyright 2025 Paul Bakaus

@@ -18,11 +18,11 @@ Also settle the format: presented, sent, or both. A sent deck can't lean on a sp
 
 The same kernel can be told several ways. Write three angles, each one sentence, each built on a different tension, and recommend one:
 
-- **The shift:** something changed in the world, and there will be winners and losers (Zuora's subscription economy).
+- **The shift:** something changed in the world, and there will be winners and losers (streaming ate the video store).
 - **The proof of behavior:** people already do this the hard way (Airbnb's couches and Craigslist listings).
-- **The broken number:** one figure that can't stand (Ford's 370% turnover, every KPI red).
-- **The honest grade:** what didn't work and what fixed it (Front grading its own slides, Apollo 13's five whys).
-- **The audacious ask:** a clear, almost unreasonable goal with a plan (the moonshot, the Eiffel bid).
+- **The broken number:** one figure that can't stand (Jurassic Park's opening weekend, every KPI red).
+- **The honest grade:** what didn't work and what fixed it (Apollo 13's five whys, Mean Girls' fetch post-mortem).
+- **The audacious ask:** a clear, almost unreasonable goal with a plan (the moonshot, the Tesla master plan).
 
 The angle decides which beats get the most room and which get cut. Pick the one the proof supports best, not the one that sounds best.
 
@@ -39,13 +39,14 @@ The angle decides which beats get the most room and which get cut. Pick the one 
 Write `story.md`: the header (kernel, audience, after the last slide, format, template, angle), then one block per slide with its beat, job, headline, proof, and source. The starter's `story.md` shows the format.
 
 - Each headline is a claim the audience could repeat, with the key phrase marked for emphasis. Never a topic label.
+- Each headline is one whole sentence, written the way [voice.md](voice.md) says: no em dashes, no stacked fragments ("Your turn. Pitch unfairly."), no "Title: subtitle".
 - One job per slide. Two slides with one job become one. A slide with no proof is a speaker line.
 - Order for the audience, not for you: the strongest proof as early as the category allows.
 - Never invent numbers, quotes, customers, or logos. Example data is labeled on the slide.
 
 ## 5. Critique it
 
-Run `npm run story:check -- --templates <skill>/references/templates.json`. It fails on missing header fields, topic-label headlines, and slides without proof; it warns on unsourced numbers, duplicate jobs, template beats with no slide, and length past the category's norm. Then read it as the audience would, in order, headlines only:
+Run `npm run story:check -- --templates <url>`, with the template library URL from `deck_guide`'s `templates` result. It fails on missing header fields, topic-label headlines, and slides without proof; it warns on unsourced numbers, duplicate jobs, template beats with no slide, and length past the category's norm. Then read it as the audience would, in order, headlines only:
 
 - Do the headlines alone tell the story? If not, rewrite headlines, not slides.
 - Is the tension on slide 1 or 2? Is the ask unmistakable and answerable?

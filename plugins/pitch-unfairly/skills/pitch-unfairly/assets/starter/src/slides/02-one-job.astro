@@ -13,7 +13,7 @@ import Slide from '../components/Slide.astro';
   <div class="job">
     <p class="num pop" aria-hidden="true">1</p>
     <div class="copy">
-      <h2 class="display h-display rise" style="--d: 120ms"><span class="sr">One</span> slide, <span class="hl">one job.</span></h2>
+      <h2 class="display h-display rise" style="--d: 120ms">Every slide gets <span class="hl">one job.</span></h2>
       <p class="lede rise" style="--d: 260ms">If a slide has two jobs, it's two slides.</p>
     </div>
   </div>
@@ -36,7 +36,6 @@ import Slide from '../components/Slide.astro';
     font-variant-numeric: tabular-nums;
   }
 
-  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .h-display { margin-bottom: 44px; }
   .lede { max-width: 22ch; }
 

@@ -4,6 +4,10 @@ import puppeteer from 'puppeteer';
 import { countPdfPages, renderPdf } from './render-pdf.mjs';
 import { assertThisDeck } from './this-deck.mjs';
 import { clearStamp, stampPass } from './audit-stamp.mjs';
+import { blend, contrastFloor, contrastRatio, luminance, parseColor } from './contrast.mjs';
+
+// The contrast helpers run inside the page.
+const CONTRAST = `(() => { ${parseColor}\n${blend}\n${luminance}\n${contrastRatio}\n${contrastFloor}\nwindow.__contrast = { parseColor, blend, luminance, contrastRatio, contrastFloor }; })();`;
 
 const base = (process.argv.slice(2).find((a) => !a.startsWith('--')) ?? 'http://localhost:4321').replace(/\/$/, '');
 await assertThisDeck(base).catch((error) => {
@@ -11,15 +15,20 @@ await assertThisDeck(base).catch((error) => {
   process.exit(1);
 });
 
-// name, viewport, query, minimum readable font size in CSS px.
-// On the stage, 18px renders at ~12px on a 1280px-wide laptop window.
-// The last value is the most lines a headline may wrap to before it reads as
-// a paragraph: shorten it or give it a wider column.
+// name, viewport, query, minimum readable font size in CSS px, the most
+// lines a headline may wrap to before it reads as a paragraph, the size where
+// text counts as large for contrast (3:1 instead of 4.5:1), and whether to
+// check contrast in this mode (once per layout is enough).
+// On the stage, 18px renders at ~12px on a 1280px-wide laptop window, so
+// large text there is 36px (28px bold), WCAG's 24px (19px bold) scaled up.
+// On a phone, 13px is the floor for any text and 15px for body copy: smaller
+// reads as a footnote at arm's length.
 const MODES = [
-  ['stage', { width: 1920, height: 1080 }, '?pdf=1', 18, 3],
-  ['mobile', { width: 393, height: 745, isMobile: true, hasTouch: true }, '', 11, 4],
-  ['mobile-small', { width: 375, height: 667, isMobile: true, hasTouch: true }, '', 11, 5],
+  ['stage', { width: 1920, height: 1080 }, '?pdf=1', 18, 3, { px: 36, boldPx: 28 }, true],
+  ['mobile', { width: 393, height: 745, isMobile: true, hasTouch: true }, '', 13, 4, { px: 24, boldPx: 19 }, true],
+  ['mobile-small', { width: 375, height: 667, isMobile: true, hasTouch: true }, '', 12, 5, { px: 24, boldPx: 19 }, false],
 ];
+const PHONE_BODY_MIN = 15;
 
 const problems = [];
 let slideCount = 0;
@@ -60,7 +69,7 @@ const report = (mode, msg) => problems.push(`${mode}: ${msg}`);
 const browser = await puppeteer.launch({ headless: true });
 
 try {
-  for (const [mode, viewport, query, minFont, maxLines] of MODES) {
+  for (const [mode, viewport, query, minFont, maxLines, large, checkContrast] of MODES) {
     const page = await browser.newPage();
     await page.setViewport(viewport);
     await page.goto(`${base}/${query}`, { waitUntil: 'networkidle0' });
@@ -68,9 +77,17 @@ try {
       report(mode, 'deck never signalled ready (fonts or images still loading)');
     });
     await page.evaluate(() => document.querySelector('astro-dev-toolbar')?.remove());
+    await page.addScriptTag({ content: CONTRAST });
 
-    const result = await page.evaluate((minFont, maxLines, judgeLook) => {
+    const result = await page.evaluate((minFont, maxLines, judgeLook, large, checkContrast, phoneBodyMin) => {
       const out = { slides: 0, issues: [], boxed: [] };
+      // Measure what a viewer sees once a slide has settled, not a frame of
+      // its entrance (text half faded in reads as low contrast).
+      for (const a of document.getAnimations()) {
+        try {
+          if (a.effect?.getTiming().iterations !== Infinity) a.finish();
+        } catch {}
+      }
       const slides = [...document.querySelectorAll('.slide')];
       out.slides = slides.length;
       if (!slides.length) out.issues.push('no .slide elements found');
@@ -217,6 +234,76 @@ try {
           }
         }
         if (collision) out.issues.push(`${name}: text collides: ${collision}; give one of them its own space`);
+
+        // Body copy on a phone: a paragraph at caption size reads as small print.
+        if (!judgeLook) {
+          let smallBody = null;
+          for (const el of slide.querySelectorAll('p, li, span, div')) {
+            if (skipped(el)) continue;
+            const style = getComputedStyle(el);
+            if (style.display === 'none' || style.visibility === 'hidden') continue;
+            const own = [...el.childNodes].filter((n) => n.nodeType === 3).map((n) => n.textContent).join('').trim();
+            const size = parseFloat(style.fontSize);
+            if (own.length > 60 && size < phoneBodyMin && (!smallBody || size < smallBody.size)) smallBody = { size, el: describe(el) };
+          }
+          if (smallBody) out.issues.push(`${name}: a paragraph at ${smallBody.size}px (${smallBody.el}); body copy on a phone is ${phoneBodyMin}px or larger, or cut it from the phone layout`);
+        }
+
+        // Contrast: each run of text against what is painted behind it. Text
+        // over a photo, image, or gradient is skipped (it can't be measured
+        // reliably); everything else meets WCAG: 4.5:1, or 3:1 for large text.
+        if (checkContrast) {
+          const C = window.__contrast;
+          const PRECEDING = Node.DOCUMENT_POSITION_PRECEDING;
+          const media = (el, style) => ['IMG', 'VIDEO', 'CANVAS', 'PICTURE'].includes(el.tagName) || style.backgroundImage !== 'none';
+          const layers = [];
+          for (const el of [slide, ...slide.querySelectorAll('*')]) {
+            if (el !== slide && skipped(el)) continue;
+            if (el !== slide && el.closest('svg')) continue;
+            const style = getComputedStyle(el);
+            if (style.display === 'none' || style.visibility === 'hidden') continue;
+            const bg = C.parseColor(style.backgroundColor);
+            if (media(el, style) || (bg && bg.a > 0)) layers.push({ el, rect: el.getBoundingClientRect(), media: media(el, style), bg });
+          }
+          let page = { r: 255, g: 255, b: 255, a: 1 };
+          for (let e = slide.parentElement; e; e = e.parentElement) {
+            const c = C.parseColor(getComputedStyle(e).backgroundColor);
+            if (c && c.a >= 0.99) { page = c; break; }
+          }
+          let low = null;
+          const tw = document.createTreeWalker(slide, NodeFilter.SHOW_TEXT);
+          for (let node = tw.nextNode(); node; node = tw.nextNode()) {
+            const el = node.parentElement;
+            if (!node.textContent.trim() || skipped(el) || el.closest('svg')) continue;
+            const style = getComputedStyle(el);
+            if (style.visibility === 'hidden' || /text/.test(style.backgroundClip + ' ' + (style.webkitBackgroundClip || ''))) continue;
+            let opacity = 1;
+            for (let e = el; e && e !== slide.parentElement; e = e.parentElement) opacity *= Number(getComputedStyle(e).opacity);
+            if (opacity < 0.05) continue;
+            const fill = style.webkitTextFillColor && style.webkitTextFillColor !== style.color ? style.webkitTextFillColor : style.color;
+            const fg0 = C.parseColor(fill);
+            if (!fg0) continue;
+            const range = document.createRange();
+            range.selectNodeContents(node);
+            const r = [...range.getClientRects()].find((x) => x.width > 2 && x.height > 2);
+            if (!r) continue;
+            const cx = r.left + r.width / 2;
+            const cy = r.top + r.height / 2;
+            // Behind the text: its own box, its ancestors, and anything painted before it that covers it.
+            const under = layers.filter((l) => (l.el === el || el.compareDocumentPosition(l.el) & PRECEDING) &&
+              cx >= l.rect.left && cx <= l.rect.right && cy >= l.rect.top && cy <= l.rect.bottom);
+            let baseAt = -1;
+            for (let i = under.length - 1; i >= 0; i--) if (!under[i].media && under[i].bg.a >= 0.99) { baseAt = i; break; }
+            if (under.slice(baseAt + 1).some((l) => l.media) || (baseAt < 0 && under.some((l) => l.media))) continue;
+            let bg = baseAt >= 0 ? under[baseAt].bg : page;
+            for (const l of under.slice(baseAt + 1)) bg = C.blend(l.bg, bg);
+            const fg = C.blend({ ...fg0, a: fg0.a * opacity }, bg);
+            const ratio = C.contrastRatio(fg, bg);
+            const floor = C.contrastFloor(parseFloat(style.fontSize), Number(style.fontWeight) || 400, large);
+            if (ratio < floor - 0.05 && (!low || ratio / floor < low.ratio / low.floor)) low = { ratio, floor, el: describe(el) };
+          }
+          if (low) out.issues.push(`${name}: text contrast ${low.ratio.toFixed(1)}:1 is below ${low.floor}:1, e.g. ${low.el}; set it in a brand color that reads on that background (the kit's ink or on-accent)`);
+        }
         if (tooSmall) out.issues.push(`${name}: text at ${tooSmall.size}px is below the ${minFont}px minimum, e.g. ${tooSmall.el}`);
       }
 
@@ -230,7 +317,7 @@ try {
         }
       }
       return out;
-    }, minFont, maxLines, mode === 'stage');
+    }, minFont, maxLines, mode === 'stage', large, checkContrast, PHONE_BODY_MIN);
 
     if (mode === 'stage' && result.boxed.length > Math.ceil(result.slides / 2)) {
       result.issues.push(`${result.boxed.length} of ${result.slides} slides put their content in bordered or shadowed boxes (${result.boxed.join(', ')}). At most half may; let type, numbers, images, and color carry the rest`);

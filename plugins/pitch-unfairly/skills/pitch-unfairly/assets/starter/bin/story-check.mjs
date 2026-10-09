@@ -3,7 +3,9 @@
 // slide has a job, a claim for a headline, and its proof; the deck covers the
 // template's beats and fits its category's length.
 //
-//   node bin/story-check.mjs --templates <skill>/references/templates.json [story.md]
+//   node bin/story-check.mjs --templates <library url or path> [story.md]
+//
+// The library URL comes with the deck guide's templates topic (deck_guide).
 //
 // Exits 1 on errors. Warnings are judgment calls: read them, then decide.
 import { readFile } from 'node:fs/promises';
@@ -104,13 +106,28 @@ export function checkStory(story, library) {
   return { errors, warnings, template, category };
 }
 
+/** The template library from a URL (the deck guide serves it) or a local file. Unreachable means structure-only, not a failed check. */
+async function loadLibrary(source) {
+  try {
+    if (/^https?:\/\//.test(source)) {
+      const res = await fetch(source);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return await res.json();
+    }
+    return JSON.parse(await readFile(source, 'utf8'));
+  } catch (error) {
+    console.log(`Couldn't load the template library (${error.message}); checking structure only.`);
+    return null;
+  }
+}
+
 async function main() {
   const args = process.argv.slice(2);
   const t = args.indexOf('--templates');
   const templatesPath = t >= 0 ? args[t + 1] : process.env.PITCH_UNFAIRLY_TEMPLATES;
   const file = args.find((a, i) => !a.startsWith('--') && args[i - 1] !== '--templates') ?? 'story.md';
   const story = parseStory(await readFile(file, 'utf8'));
-  const library = templatesPath ? JSON.parse(await readFile(templatesPath, 'utf8')) : null;
+  const library = templatesPath ? await loadLibrary(templatesPath) : null;
   if (!library) console.log('No template library given (--templates); checking structure only.');
   const { errors, warnings, template, category } = checkStory(story, library);
 

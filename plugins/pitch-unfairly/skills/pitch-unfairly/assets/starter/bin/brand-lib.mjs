@@ -1,6 +1,6 @@
 // Brand kit (brand/brand.json, schema brand-kit@1): validation and the
 // generated files every slide reads from. Pure functions; brand-apply.mjs
-// does the file and npm work. See references/brand-kit.md in the skill.
+// does the file and npm work. See the brand-kit topic of the deck guide (deck_guide).
 
 export const ROLES = [
   'paper', 'surface', 'ink', 'ink_muted', 'accent', 'accent_dark',

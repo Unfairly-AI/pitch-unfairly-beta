@@ -66,8 +66,10 @@
     --t-title: calc(30px * var(--display-scale));
     --t-lede: 18px;
     --t-body: 15px;
-    --t-label: 11px;
-    --t-fine: 11px;
+    /* 13px is the floor for any text on a phone (the audit checks it): labels and
+       fine print smaller than that read as smudges at arm's length. */
+    --t-label: 13px;
+    --t-fine: 13px;
 
     --pad-x: 22px;
     --pad-y: 30px;
