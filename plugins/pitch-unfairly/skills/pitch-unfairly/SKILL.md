@@ -21,9 +21,12 @@ sh <this skill's folder>/scripts/setup.sh <deck-dir>
 
 This skill's folder is the one that holds this SKILL.md (it ends in `skills/pitch-unfairly`), not the plugin's root.
 
-It creates the deck from the starter and installs its tools into `~/.pitch-unfairly`, a folder in the user's home; nothing is installed system-wide and nothing needs `sudo`. It installs the starter's npm packages from the starter's lockfile; Chrome for the audits and PDF (the installed Google Chrome when it works, otherwise Chrome for Testing through Puppeteer); and, only when Node.js 22.12 or newer is missing, Node.js from nodejs.org, checked against nodejs.org's published SHA-256 checksums. Before the first run, tell the user in a sentence or two what it installs and from where, and run it once they agree. The first run takes a few minutes; after that a new deck is ready in seconds. If the environment asks for network access, the user approves it; never change sandbox or permission settings yourself.
+It creates the deck from the starter and keeps its tools in `~/.pitch-unfairly`, a folder in the user's home; nothing is installed system-wide, nothing needs `sudo`, and setup downloads no programs on its own. It uses the Node.js and Google Chrome already installed and installs the starter's npm packages from its lockfile. Tell the user in a sentence that setup installs the deck's packages, and run it. The first run takes a minute or two; after that a new deck is ready in seconds. If the environment asks for network access, the user approves it; never change sandbox or permission settings yourself.
 
-Run every npm command in the deck as `. ~/.pitch-unfairly/env.sh && npm run <script>` (setup prints the exact line). If setup reports that Chrome can't launch here, keep going with the story and slides, then tell the user the audit, shots, and PDF need a browser and let them choose how: approving those commands, or running them themselves. Don't try to work around a sandbox.
+- **No Node.js 22.12 or newer:** setup stops. Tell the user to install the LTS from https://nodejs.org/en/download (or `brew install node`), then run setup again.
+- **No working Chrome:** setup says so and still creates the deck, so write the story and slides. The audit, shots, and PDF need Chrome: ask the user to install Google Chrome, or, only if they agree, run setup again with `--download-chrome` to download Chrome for Testing into `~/.pitch-unfairly`. If Chrome is installed but can't launch here, ask the user how they want to run those commands, or whether they'll run them. Don't try to work around a sandbox.
+
+Run every npm command in the deck as `. ~/.pitch-unfairly/env.sh && npm run <script>` (setup prints the exact line).
 
 ## 2. Get the workflow
 

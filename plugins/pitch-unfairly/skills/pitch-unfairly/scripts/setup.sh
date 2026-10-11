@@ -1,21 +1,22 @@
 #!/bin/sh
 # One-time setup for the deck workflow, and a fast start for every deck after.
 #
-#   sh setup.sh [deck-dir]
+#   sh setup.sh [deck-dir] [--download-chrome]
 #
-# Installs what the workflow needs into ~/.pitch-unfairly (or
+# Sets up what the workflow needs in ~/.pitch-unfairly (or
 # $PITCH_UNFAIRLY_HOME, or ./.pitch-unfairly when the home folder isn't
-# writable). It never uses sudo, never changes system settings, and writes
-# only to that folder and the deck folder:
-#   - Node.js 22.12+: the one on PATH. Only when that is missing or older, a
-#     copy from nodejs.org, verified against nodejs.org's SHA-256 checksums.
+# writable). It never uses sudo, never changes system settings, never downloads
+# programs on its own, and writes only to that folder and the deck folder:
+#   - Node.js 22.12+: uses the one installed. If it's missing or older, setup
+#     stops and says where to get it (nodejs.org).
 #   - The starter's npm packages, from its lockfile (npm ci): installed once per
 #     starter version, then copied into each new deck in a second or two.
-#   - Chrome for the audits and PDF: the installed Google Chrome or Chromium
-#     when Puppeteer can drive it, otherwise Chrome for Testing via Puppeteer.
+#   - Chrome for the audits and PDF: the installed Google Chrome or Chromium.
+#     If none works, setup says so; it downloads Chrome for Testing (through
+#     Puppeteer) only when run with --download-chrome, which the agent passes
+#     only after the user agrees.
 # With deck-dir, it also creates the deck from the starter, or installs the
-# packages into an existing deck. All downloads happen in this one command,
-# which the agent runs only after telling the user what it installs.
+# packages into an existing deck.
 #
 # Afterwards, run deck commands from the deck folder as:
 #   . ~/.pitch-unfairly/env.sh && npm run dev
@@ -24,7 +25,15 @@ set -eu
 here=$(cd "$(dirname "$0")" && pwd)
 starter="$here/../assets/starter"
 home="${PITCH_UNFAIRLY_HOME:-$HOME/.pitch-unfairly}"
-deck="${1:-}"
+deck=
+download_chrome=
+for arg in "$@"; do
+  case "$arg" in
+    --download-chrome) download_chrome=1 ;;
+    -*) printf 'setup: unknown option %s\n' "$arg" >&2; exit 1 ;;
+    *) deck=$arg ;;
+  esac
+done
 
 say() { printf '%s\n' "$*"; }
 fail() { printf 'setup: %s\n' "$*" >&2; exit 1; }
@@ -34,15 +43,7 @@ case "$(uname -s)" in
   Linux) os=linux ;;
   *) fail "this setup runs on macOS and Linux. On Windows, run it inside WSL." ;;
 esac
-case "$(uname -m)" in
-  arm64 | aarch64) arch=arm64 ;;
-  x86_64 | amd64) arch=x64 ;;
-  *) fail "no Node.js build for this CPU ($(uname -m))" ;;
-esac
 
-fetch() {
-  if command -v curl >/dev/null 2>&1; then curl -fsSL "$1"; else wget -qO- "$1"; fi
-}
 sha256() {
   if command -v shasum >/dev/null 2>&1; then shasum -a 256 "$1"; else sha256sum "$1"; fi | cut -d' ' -f1
 }
@@ -76,20 +77,8 @@ elif [ -x "$home/node/bin/node" ] && node_ok "$home/node/bin/node"; then
   node_bin="$home/node/bin"
   say "Node.js $("$node_bin/node" -v): using the private copy"
 else
-  say "Node.js 22.12 or newer isn't installed. Downloading a private copy (about 50 MB, one time)..."
-  base=https://nodejs.org/dist/latest-v24.x
-  sums=$(fetch "$base/SHASUMS256.txt")
-  file=$(printf '%s\n' "$sums" | awk -v want="-$os-$arch.tar.gz" 'substr($2, length($2) - length(want) + 1) == want { print $2; exit }')
-  [ -n "$file" ] || fail "no Node.js build for $os-$arch"
-  tmp=$(mktemp -d)
-  fetch "$base/$file" >"$tmp/$file"
-  expected=$(printf '%s\n' "$sums" | awk -v f="$file" '$2 == f { print $1 }')
-  [ "$(sha256 "$tmp/$file")" = "$expected" ] || fail "the Node.js download failed its checksum; run setup again"
-  rm -rf "$home/node" && mkdir -p "$home/node"
-  tar -xzf "$tmp/$file" -C "$home/node" --strip-components=1
-  rm -rf "$tmp"
-  node_bin="$home/node/bin"
-  say "Node.js $("$node_bin/node" -v) installed in $home/node"
+  found=$(command -v node >/dev/null 2>&1 && node -v || true)
+  fail "Node.js 22.12 or newer is needed${found:+ (found $found)}. Install the LTS from https://nodejs.org/en/download (or run: brew install node), then run setup again."
 fi
 
 if [ -n "$node_bin" ]; then
@@ -164,11 +153,11 @@ if [ -n "$chrome" ]; then
   say "Chrome: using $chrome"
 elif chrome_works ""; then
   say "Chrome: using Puppeteer's copy"
-else
-  say "Downloading Chrome for the audits and PDF (about 370 MB on disk, one time)..."
+elif [ -n "$download_chrome" ]; then
+  say "Downloading Chrome for Testing for the audits and PDF (about 370 MB on disk, one time)..."
   (cd "$engine" && npx --no-install puppeteer browsers install chrome >/dev/null)
   if chrome_works ""; then
-    say "Chrome: using Puppeteer's copy"
+    say "Chrome: using Chrome for Testing"
   else
     # Usually an environment that blocks launching browsers. The deck can still
     # be written and built; the audits, screenshots, and PDF need Chrome, so the
@@ -176,6 +165,13 @@ else
     no_chrome=1
     say "Chrome is installed but can't launch here. Write and build the deck now; the audit, shots, and PDF need a browser, so ask the user how they want to run them."
   fi
+elif chrome_candidates | { while IFS= read -r path; do [ -x "$path" ] && exit 0; done; exit 1; }; then
+  # Installed but won't launch: usually an environment that blocks browsers.
+  no_chrome=1
+  say "Chrome is installed but can't launch here. Write and build the deck now; the audit, shots, and PDF need a browser, so ask the user how they want to run them."
+else
+  no_chrome=1
+  say "No working Google Chrome or Chromium found. Write and build the deck now. The audit, shots, and PDF need Chrome: ask the user to install Google Chrome, or, if they agree, run setup again with --download-chrome to download Chrome for Testing (about 370 MB, into $home)."
 fi
 
 # 4. The deck ------------------------------------------------------------------
