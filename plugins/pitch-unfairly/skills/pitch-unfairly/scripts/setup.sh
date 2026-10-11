@@ -4,16 +4,18 @@
 #   sh setup.sh [deck-dir]
 #
 # Installs what the workflow needs into ~/.pitch-unfairly (or
-# $PITCH_UNFAIRLY_HOME, or ./.pitch-unfairly when a sandbox blocks the home
-# folder), without admin rights or a package manager:
-#   - Node.js 22.12+: the one on PATH, or a private copy it downloads.
-#   - The starter's packages: installed once per starter version, then cloned
-#     into each new deck in a second or two.
+# $PITCH_UNFAIRLY_HOME, or ./.pitch-unfairly when the home folder isn't
+# writable). It never uses sudo, never changes system settings, and writes
+# only to that folder and the deck folder:
+#   - Node.js 22.12+: the one on PATH. Only when that is missing or older, a
+#     copy from nodejs.org, verified against nodejs.org's SHA-256 checksums.
+#   - The starter's npm packages, from its lockfile (npm ci): installed once per
+#     starter version, then copied into each new deck in a second or two.
 #   - Chrome for the audits and PDF: the installed Google Chrome or Chromium
-#     when Puppeteer can drive it, otherwise Puppeteer's own download.
+#     when Puppeteer can drive it, otherwise Chrome for Testing via Puppeteer.
 # With deck-dir, it also creates the deck from the starter, or installs the
-# packages into an existing deck. Every download happens in this one command,
-# so a sandboxed agent asks for network access once.
+# packages into an existing deck. All downloads happen in this one command,
+# which the agent runs only after telling the user what it installs.
 #
 # Afterwards, run deck commands from the deck folder as:
 #   . ~/.pitch-unfairly/env.sh && npm run dev
@@ -168,11 +170,11 @@ else
   if chrome_works ""; then
     say "Chrome: using Puppeteer's copy"
   else
-    # Usually a sandbox that blocks launching browsers. The deck can still be
-    # written and built; the audits, screenshots, and PDF need Chrome, so run
-    # those outside the sandbox (an agent asks for that permission).
+    # Usually an environment that blocks launching browsers. The deck can still
+    # be written and built; the audits, screenshots, and PDF need Chrome, so the
+    # agent asks the user how they want to run those.
     no_chrome=1
-    say "Chrome is installed but can't launch here, likely a sandbox. Write and build the deck now; run the audit, shots, and PDF outside the sandbox."
+    say "Chrome is installed but can't launch here. Write and build the deck now; the audit, shots, and PDF need a browser, so ask the user how they want to run them."
   fi
 fi
 
