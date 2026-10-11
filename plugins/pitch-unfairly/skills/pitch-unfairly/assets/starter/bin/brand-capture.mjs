@@ -8,6 +8,9 @@ import puppeteer from 'puppeteer';
 import { execFileSync } from 'node:child_process';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { refuseInCodexSandbox } from './browser-guard.mjs';
+
+refuseInCodexSandbox('Capturing the brand');
 
 const urls = process.argv.slice(2).filter((a) => /^https?:\/\//.test(a));
 if (!urls.length) {

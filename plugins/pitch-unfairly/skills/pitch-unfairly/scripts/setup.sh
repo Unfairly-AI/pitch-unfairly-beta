@@ -190,7 +190,7 @@ if [ -n "${CODEX_SANDBOX:-}" ]; then
     if [ -x "$path" ]; then printf '%s' "$path"; break; fi
   done)
   no_chrome=1
-  say "BROWSER_BLOCKED: Codex's sandbox doesn't let a browser start, so setup didn't launch one. Write the story and slides now (npm run dev previews them). The audit, shots, and PDF need a browser: ask the user to switch Codex's permissions (the setting under the message box) to Full access, then run them. Don't download a browser or try another way around the sandbox."
+  say "BROWSER_BLOCKED: Codex's sandbox doesn't let a browser start, so setup didn't launch one. Write the story and slides here (npm run dev previews them), and run the brand capture, checks, and publish in the deck studio instead, as the workflow's \"When the browser is blocked\" section says. Don't ask the user to change settings or try another way around the sandbox."
 else
   chrome=$(chrome_candidates | while IFS= read -r path; do
     if [ -x "$path" ] && chrome_works "$path"; then

@@ -18,7 +18,7 @@ sh <this skill's folder>/scripts/setup.sh <deck-dir>
 
 The skill's folder is the one that holds its SKILL.md (it ends in `skills/pitch-unfairly`), not the plugin's root; the same goes for every `assets/` path below.
 
-It creates the deck from the starter and keeps its tools in `~/.pitch-unfairly`, a folder in the user's home (nothing system-wide, no `sudo`). It installs the starter's npm packages from its lockfile and uses the Node.js and browser already installed; it downloads a program only when you pass a flag for it, after the user agrees. The first run takes a minute or two; after that a new deck is ready in seconds. Tell the user in a sentence that setup installs the deck's packages, then move on to the story while it works. If the environment asks for network access, the user approves it; never change sandbox or permission settings yourself. If setup reports `NEEDS_NODE`, nothing was installed: offer the user a choice between installing Node.js from https://nodejs.org/en/download and a private copy in `~/.pitch-unfairly` (about 50 MB, checked against nodejs.org's checksums), and run setup again with `--install-node` if they pick the private copy. If it reports `BROWSER_BLOCKED` (Codex's sandbox stops any browser from starting), write the story and slides, then ask the user once to switch Codex's permissions to Full access for the audit, shots, and PDF; don't download a browser, open another app, or try any other way around it. If it reports `NEEDS_CHROME`, the deck was still created: the user installs Google Chrome or, if they agree, you run setup again with `--download-chrome` to get Chrome for Testing.
+It creates the deck from the starter and keeps its tools in `~/.pitch-unfairly`, a folder in the user's home (nothing system-wide, no `sudo`). It installs the starter's npm packages from its lockfile and uses the Node.js and browser already installed; it downloads a program only when you pass a flag for it, after the user agrees. The first run takes a minute or two; after that a new deck is ready in seconds. Tell the user in a sentence that setup installs the deck's packages, then move on to the story while it works. If the environment asks for network access, the user approves it; never change sandbox or permission settings yourself. If setup reports `NEEDS_NODE`, nothing was installed: offer the user a choice between installing Node.js from https://nodejs.org/en/download and a private copy in `~/.pitch-unfairly` (about 50 MB, checked against nodejs.org's checksums), and run setup again with `--install-node` if they pick the private copy. If it reports `BROWSER_BLOCKED` (Codex's sandbox stops any browser from starting), keep writing and previewing locally and run the checks in the deck studio instead, as [When the browser is blocked](#when-the-browser-is-blocked) says; don't ask the user to change settings, download a browser, open another app, or try any other way around the sandbox. If it reports `NEEDS_CHROME`, the deck was still created: the user installs Google Chrome or, if they agree, you run setup again with `--download-chrome` to get Chrome for Testing.
 
 Run every npm command in the deck as `. ~/.pitch-unfairly/env.sh && npm run <script>` (setup prints the exact line), so the right Node.js is on the path. In a sandbox that can't write to the home folder, setup keeps its tools in `./.pitch-unfairly` instead and prints that path; use the line it prints. If setup reports that Chrome is installed but can't launch here, keep going: write the story and the slides, then tell the user the audit, shots, and PDF need a browser and let them choose how: approving those commands, or running them themselves. Don't try to work around a sandbox. The audit is not optional (see step 5).
 
@@ -94,7 +94,7 @@ Every slide renders three ways, and a fix in one mode does not fix the others:
 |---|---|---|
 | Present | Desktop browser | One slide per screen, scaled to fit; scroll, swipe, or arrow keys move a slide at a time |
 | Phone | Below 800px wide | One full-height slide per screen, phone token scale, per-slide overrides |
-| PDF | `dist/deck.pdf` (built by `npm run build`) | The stage printed 1:1, one page per slide |
+| PDF | Made on Unfairly's side from the published deck, the first time someone clicks its PDF button (`npm run pdf` makes `dist/deck.pdf` locally, on request) | The stage printed 1:1, one page per slide |
 
 **The audit is mandatory.** The deck is not done, and can't be published, until `npm run audit` ends with "All modes clean". A clean audit stamps the deck; `npm run manifest` refuses to publish a deck that has no stamp or has changed since. If Chrome can't launch where you are, ask the user how they want to run the audit; never hand back a deck you couldn't audit as finished.
 
@@ -112,7 +112,7 @@ Before calling the deck done, the full audit is clean, the latest review marks e
 
 ### 6. Build and publish
 
-`npm run build` writes a static deck to `dist/`, including `dist/deck.pdf`. Every asset path is relative, so the folder works wherever it is hosted.
+`npm run build` writes a static deck to `dist/`. Every asset path is relative, so the folder works wherever it is hosted. The build doesn't make the PDF: a published deck's PDF button gets one from Unfairly's side, made from the published deck. Run `npm run pdf` only when the user wants a PDF file now, or for a deck hosted somewhere other than pitchunfairly.com.
 
 **Publish by default.** A deck the person can't open from a link isn't finished: a folder on disk, a `localhost` preview (it stops working when you do), and a PDF are not what they asked for. Once the audit is clean and the review marks every slide ready, publish without asking. The link is unlisted, so publishing doesn't make the deck public. Skip publishing only when the user said not to ("keep it local", "just the PDF"), or when the deck holds material that looks confidential (unreleased financials, a client's private data, anything the user called private): then ask once, in one plain sentence, before publishing.
 
@@ -169,6 +169,17 @@ The deck studio runs this same starter, scripts, and audits in a sandbox on Unfa
 - Publish by default once the bar passes, as in step 6; there's nothing to ask unless the user said not to or the deck looks confidential.
 - After `studio_publish`, hand it over as in step 7: the unlisted presentation link to share, the signed-in gallery link for the exact deck, in plain words with no checker output.
 
+## When the browser is blocked
+
+Where setup or a deck script reports `BROWSER_BLOCKED` (Codex's sandbox, which stops any browser from starting), the local loop still works for writing: compose `story.md` and the slides in this folder and preview them with `npm run dev` as usual. Only the steps that need a browser move to the deck studio on Unfairly's side, which runs the same starter, audit, screenshots, and design review:
+
+- Brand: capture it in the studio (`studio_brand_import` or `studio_capture`) instead of `npm run brand:capture`, then copy the studio's `brand/brand.json` into this folder with `studio_read` so local previews match.
+- Checks: `studio_start` once, then send the project with `studio_write` (up to 20 files a call): `story.md`, `src/pages/index.astro`, everything you changed under `src/slides/`, `src/components/`, `src/styles/`, and the text files under `brand/`. Then `studio_check`: its audit, screenshots (`studio_view` shows any slide), and design review are the ones this workflow requires. Fix slides here, send only the changed files, and check again.
+- Images under `public/` aren't text: add them in the studio with `studio_fetch_image` from their public URL, or describe them with SVG or CSS.
+- Publish with `studio_publish` once the check passes; there's no local manifest or upload. Hand it over as in step 7.
+
+Don't ask the user to change Codex's permissions for this; the studio is the path. If the user switches to Full access on their own, the local checks work again.
+
 ## Where this runs
 
-The local workflow needs a shell on macOS, Linux, or WSL, as in Codex or ChatGPT Work; without one, the deck studio builds it on Unfairly's side. It uses the Node.js and Chrome on the machine; when either is missing, setup says so and, with the user's agreement, puts a private copy in `~/.pitch-unfairly`. If Chrome can't launch where the agent runs, the user decides how the audit, shots, and PDF get run. If they can't run anywhere, say plainly that the deck is unaudited and not ready to publish.
+The local workflow needs a shell on macOS, Linux, or WSL, as in Codex or ChatGPT Work; without one, the deck studio builds it on Unfairly's side. It uses the Node.js and Chrome on the machine; when either is missing, setup says so and, with the user's agreement, puts a private copy in `~/.pitch-unfairly`. If a browser can't start where the agent runs, the checks run in the deck studio (see [When the browser is blocked](#when-the-browser-is-blocked)). If they can't run anywhere, say plainly that the deck is unaudited and not ready to publish.

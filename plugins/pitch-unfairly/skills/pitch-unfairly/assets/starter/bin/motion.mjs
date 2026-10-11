@@ -6,6 +6,9 @@ import puppeteer from 'puppeteer';
 import { mkdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { assertThisDeck } from './this-deck.mjs';
+import { refuseInCodexSandbox } from './browser-guard.mjs';
+
+refuseInCodexSandbox('The motion check');
 
 // Positional arguments, ignoring flags such as --quick.
 const args = process.argv.slice(2).filter((a) => !a.startsWith('--'));

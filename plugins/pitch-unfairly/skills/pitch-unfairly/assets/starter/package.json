@@ -9,7 +9,8 @@
   "scripts": {
     "dev": "astro dev",
     "story:check": "node bin/story-check.mjs",
-    "build": "node bin/brand-apply.mjs && astro build && node bin/pdf.mjs",
+    "build": "node bin/brand-apply.mjs && astro build",
+    "pdf": "node bin/pdf.mjs",
     "preview": "astro preview",
     "setup:browser": "puppeteer browsers install",
     "audit": "node bin/audit.mjs",

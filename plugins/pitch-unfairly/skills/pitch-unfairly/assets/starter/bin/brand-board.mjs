@@ -2,6 +2,9 @@
 // Usage: node bin/brand-board.mjs [base-url]
 import puppeteer from 'puppeteer';
 import { mkdir } from 'node:fs/promises';
+import { refuseInCodexSandbox } from './browser-guard.mjs';
+
+refuseInCodexSandbox('The brand board');
 
 const base = (process.argv[2] ?? 'http://localhost:4321').replace(/\/$/, '');
 await mkdir('artifacts', { recursive: true });

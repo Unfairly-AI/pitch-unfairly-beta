@@ -8,6 +8,9 @@ import { promisify } from 'node:util';
 import { join } from 'node:path';
 import { renderPdf } from './render-pdf.mjs';
 import { assertThisDeck } from './this-deck.mjs';
+import { refuseInCodexSandbox } from './browser-guard.mjs';
+
+refuseInCodexSandbox('Taking screenshots');
 
 // Positional arguments, ignoring flags such as --quick.
 const args = process.argv.slice(2).filter((a) => !a.startsWith('--'));

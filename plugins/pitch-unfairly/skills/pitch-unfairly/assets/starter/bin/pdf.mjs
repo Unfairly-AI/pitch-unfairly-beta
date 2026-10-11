@@ -4,6 +4,9 @@ import puppeteer from 'puppeteer';
 import { writeFile } from 'node:fs/promises';
 import { serveDir } from './serve.mjs';
 import { countPdfPages, renderPdf } from './render-pdf.mjs';
+import { refuseInCodexSandbox } from './browser-guard.mjs';
+
+refuseInCodexSandbox('The PDF');
 
 const dir = process.argv[2] ?? 'dist';
 const server = await serveDir(dir);

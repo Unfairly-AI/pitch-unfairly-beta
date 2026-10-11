@@ -5,6 +5,9 @@ import { countPdfPages, renderPdf } from './render-pdf.mjs';
 import { assertThisDeck } from './this-deck.mjs';
 import { clearStamp, stampPass } from './audit-stamp.mjs';
 import { blend, contrastFloor, contrastRatio, luminance, parseColor } from './contrast.mjs';
+import { refuseInCodexSandbox } from './browser-guard.mjs';
+
+refuseInCodexSandbox('The audit');
 
 // The contrast helpers run inside the page.
 const CONTRAST = `(() => { ${parseColor}\n${blend}\n${luminance}\n${contrastRatio}\n${contrastFloor}\nwindow.__contrast = { parseColor, blend, luminance, contrastRatio, contrastFloor }; })();`;
