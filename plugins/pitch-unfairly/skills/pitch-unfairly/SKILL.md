@@ -25,6 +25,7 @@ It creates the deck from the starter and keeps its tools in `~/.pitch-unfairly`,
 
 - **`NEEDS_NODE`** (no Node.js 22.12 or newer): nothing was installed. Ask the user, plainly and briefly: install Node.js from https://nodejs.org/en/download, or let setup put a private copy in `~/.pitch-unfairly` (about 50 MB, from nodejs.org, checked against its published checksums). If they agree to the private copy, run setup again with `--install-node`.
 - **`NEEDS_CHROME`** (no working Chrome, Chromium, Edge, or Brave): setup still created the deck, so write the story and slides. The audit, shots, and PDF need a browser: ask the user to install Google Chrome, or, if they agree, run setup again with `--download-chrome` to get Chrome for Testing (about 370 MB, in `~/.pitch-unfairly`). If setup says Chrome is installed but can't launch here, ask the user how they want to run those commands. Don't try to work around a sandbox.
+- **`BROWSER_BLOCKED`** (Codex's sandbox, which stops any browser from starting): write the story and slides, then ask the user once to switch Codex's permissions to Full access for the audit, shots, and PDF. Don't download a browser, open another app, or try any other way around it.
 
 Run every npm command in the deck as `. ~/.pitch-unfairly/env.sh && npm run <script>` (setup prints the exact line).
 

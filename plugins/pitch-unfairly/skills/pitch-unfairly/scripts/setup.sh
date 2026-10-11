@@ -181,46 +181,57 @@ chrome_candidates() {
   fi
 }
 
-chrome=$(chrome_candidates | while IFS= read -r path; do
-  if [ -x "$path" ] && chrome_works "$path"; then
-    printf '%s' "$path"
-    break
-  fi
-done)
+# Codex runs commands in a sandbox (it sets CODEX_SANDBOX) that kills any
+# browser it starts, and macOS then shows a crash dialog for each one. So there,
+# find the installed Chrome without launching it, and leave the browser steps
+# for a mode that allows them.
+if [ -n "${CODEX_SANDBOX:-}" ]; then
+  chrome=$(chrome_candidates | while IFS= read -r path; do
+    if [ -x "$path" ]; then printf '%s' "$path"; break; fi
+  done)
+  no_chrome=1
+  say "BROWSER_BLOCKED: Codex's sandbox doesn't let a browser start, so setup didn't launch one. Write the story and slides now (npm run dev previews them). The audit, shots, and PDF need a browser: ask the user to switch Codex's permissions (the setting under the message box) to Full access, then run them. Don't download a browser or try another way around the sandbox."
+else
+  chrome=$(chrome_candidates | while IFS= read -r path; do
+    if [ -x "$path" ] && chrome_works "$path"; then
+      printf '%s' "$path"
+      break
+    fi
+  done)
 
-if [ -n "$chrome" ]; then
-  say "Chrome: using $chrome"
-elif chrome_works ""; then
-  say "Chrome: using Puppeteer's copy"
-elif [ -n "$download_chrome" ] && [ "$os-$arch" = linux-arm64 ]; then
-  no_chrome=1
-  say "NEEDS_CHROME: Chrome for Testing isn't published for Linux on ARM. Write the story and slides now (npm run dev previews them). The audit, shots, and PDF need a browser: ask the user to install Chromium from their package manager, then run setup again."
-elif [ -n "$download_chrome" ] && [ "$os" = linux ] && ! command -v unzip >/dev/null 2>&1; then
-  no_chrome=1
-  say "NEEDS_CHROME: downloading Chrome for Testing needs unzip, which isn't installed. Write the story and slides now (npm run dev previews them). Ask the user to install unzip (for example: sudo apt install unzip) or Google Chrome, then run setup again."
-elif [ -n "$download_chrome" ]; then
-  say "Downloading Chrome for Testing for the audits and PDF (about 370 MB on disk, one time)..."
-  if ! (cd "$engine" && ./node_modules/.bin/puppeteer browsers install chrome >/dev/null 2>&1); then
-    no_chrome=1
-    say "NEEDS_CHROME: the Chrome for Testing download didn't finish (often a blocked network or proxy). Write the story and slides now (npm run dev previews them). Ask the user to install Google Chrome, or try again later."
+  if [ -n "$chrome" ]; then
+    say "Chrome: using $chrome"
   elif chrome_works ""; then
-    say "Chrome: using Chrome for Testing"
-  else
-    # Usually an environment that blocks launching browsers. The deck can still
-    # be written and built; the audits, screenshots, and PDF need Chrome, so the
-    # agent asks the user how they want to run those.
+    say "Chrome: using Puppeteer's copy"
+  elif [ -n "$download_chrome" ] && [ "$os-$arch" = linux-arm64 ]; then
+    no_chrome=1
+    say "NEEDS_CHROME: Chrome for Testing isn't published for Linux on ARM. Write the story and slides now (npm run dev previews them). The audit, shots, and PDF need a browser: ask the user to install Chromium from their package manager, then run setup again."
+  elif [ -n "$download_chrome" ] && [ "$os" = linux ] && ! command -v unzip >/dev/null 2>&1; then
+    no_chrome=1
+    say "NEEDS_CHROME: downloading Chrome for Testing needs unzip, which isn't installed. Write the story and slides now (npm run dev previews them). Ask the user to install unzip (for example: sudo apt install unzip) or Google Chrome, then run setup again."
+  elif [ -n "$download_chrome" ]; then
+    say "Downloading Chrome for Testing for the audits and PDF (about 370 MB on disk, one time)..."
+    if ! (cd "$engine" && ./node_modules/.bin/puppeteer browsers install chrome >/dev/null 2>&1); then
+      no_chrome=1
+      say "NEEDS_CHROME: the Chrome for Testing download didn't finish (often a blocked network or proxy). Write the story and slides now (npm run dev previews them). Ask the user to install Google Chrome, or try again later."
+    elif chrome_works ""; then
+      say "Chrome: using Chrome for Testing"
+    else
+      # Usually an environment that blocks launching browsers. The deck can still
+      # be written and built; the audits, screenshots, and PDF need Chrome, so the
+      # agent asks the user how they want to run those.
+      no_chrome=1
+      say "Chrome is installed but can't launch here. Write the story and slides now (npm run dev previews them); the audit, shots, and PDF need a browser, so ask the user how they want to run them."
+    fi
+  elif chrome_candidates | { while IFS= read -r path; do [ -x "$path" ] && exit 0; done; exit 1; }; then
+    # Installed but won't launch: usually an environment that blocks browsers.
     no_chrome=1
     say "Chrome is installed but can't launch here. Write the story and slides now (npm run dev previews them); the audit, shots, and PDF need a browser, so ask the user how they want to run them."
+  else
+    no_chrome=1
+    say "NEEDS_CHROME: No working Google Chrome, Chromium, Edge, or Brave found. Write the story and slides now (npm run dev previews them). The audit, shots, and PDF need Chrome: ask the user to install Google Chrome, or, if they agree, run setup again with --download-chrome to download Chrome for Testing (about 370 MB, into Puppeteer's cache in the home folder)."
   fi
-elif chrome_candidates | { while IFS= read -r path; do [ -x "$path" ] && exit 0; done; exit 1; }; then
-  # Installed but won't launch: usually an environment that blocks browsers.
-  no_chrome=1
-  say "Chrome is installed but can't launch here. Write the story and slides now (npm run dev previews them); the audit, shots, and PDF need a browser, so ask the user how they want to run them."
-else
-  no_chrome=1
-  say "NEEDS_CHROME: No working Google Chrome, Chromium, Edge, or Brave found. Write the story and slides now (npm run dev previews them). The audit, shots, and PDF need Chrome: ask the user to install Google Chrome, or, if they agree, run setup again with --download-chrome to download Chrome for Testing (about 370 MB, into Puppeteer's cache in the home folder)."
 fi
-
 # 4. The deck ------------------------------------------------------------------
 
 if [ -n "$deck" ]; then
