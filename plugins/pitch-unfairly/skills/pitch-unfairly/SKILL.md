@@ -1,6 +1,6 @@
 ---
 name: pitch-unfairly
-description: Build or redesign a presentation deck where every slide is hand-composed in Astro, with present mode, speaker notes, PDF export, and audits for desktop, phone, and PDF. Use when someone asks for a pitch deck, board deck, sales deck, talk slides, or any presentation built as a web page or PDF. Use another workflow for editing native PowerPoint or Google Slides files.
+description: Build or redesign a presentation deck as an interactive website in the user's brand, with every slide designed for its job, present mode, speaker notes, PDF export, and checks on desktop, phone, and PDF. Use when someone asks for a pitch deck, board deck, sales deck, talk slides, or any presentation built as a web page or PDF. Use another workflow for editing native PowerPoint or Google Slides files.
 ---
 
 # Pitch Unfairly
