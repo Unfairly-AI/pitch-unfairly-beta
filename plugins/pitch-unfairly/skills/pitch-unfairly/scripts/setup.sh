@@ -1,20 +1,20 @@
 #!/bin/sh
 # One-time setup for the deck workflow, and a fast start for every deck after.
 #
-#   sh setup.sh [deck-dir] [--download-chrome]
+#   sh setup.sh [deck-dir] [--install-node] [--download-chrome]
 #
 # Sets up what the workflow needs in ~/.pitch-unfairly (or
 # $PITCH_UNFAIRLY_HOME, or ./.pitch-unfairly when the home folder isn't
-# writable). It never uses sudo, never changes system settings, never downloads
-# programs on its own, and writes only to that folder and the deck folder:
-#   - Node.js 22.12+: uses the one installed. If it's missing or older, setup
-#     stops and says where to get it (nodejs.org).
+# writable). It never uses sudo, never changes system settings, and writes only
+# to that folder and the deck folder. It downloads a program only when the
+# agent passes a flag for it, which the agent does only after the user agrees:
+#   - Node.js 22.12+: the one installed. With --install-node, a private copy
+#     from nodejs.org, verified against nodejs.org's published SHA-256 checksums.
 #   - The starter's npm packages, from its lockfile (npm ci): installed once per
 #     starter version, then copied into each new deck in a second or two.
-#   - Chrome for the audits and PDF: the installed Google Chrome or Chromium.
-#     If none works, setup says so; it downloads Chrome for Testing (through
-#     Puppeteer) only when run with --download-chrome, which the agent passes
-#     only after the user agrees.
+#   - Chrome for the audits and PDF: an installed Google Chrome, Chromium,
+#     Microsoft Edge, or Brave, or a Playwright copy if one exists. With
+#     --download-chrome, Chrome for Testing through Puppeteer.
 # With deck-dir, it also creates the deck from the starter, or installs the
 # packages into an existing deck.
 #
@@ -27,9 +27,11 @@ starter="$here/../assets/starter"
 home="${PITCH_UNFAIRLY_HOME:-$HOME/.pitch-unfairly}"
 deck=
 download_chrome=
+install_node=
 for arg in "$@"; do
   case "$arg" in
     --download-chrome) download_chrome=1 ;;
+    --install-node) install_node=1 ;;
     -*) printf 'setup: unknown option %s\n' "$arg" >&2; exit 1 ;;
     *) deck=$arg ;;
   esac
@@ -43,6 +45,15 @@ case "$(uname -s)" in
   Linux) os=linux ;;
   *) fail "this setup runs on macOS and Linux. On Windows, run it inside WSL." ;;
 esac
+case "$(uname -m)" in
+  arm64 | aarch64) arch=arm64 ;;
+  x86_64 | amd64) arch=x64 ;;
+  *) arch= ;;
+esac
+
+fetch() {
+  if command -v curl >/dev/null 2>&1; then curl -fsSL "$1"; else wget -qO- "$1"; fi
+}
 
 sha256() {
   if command -v shasum >/dev/null 2>&1; then shasum -a 256 "$1"; else sha256sum "$1"; fi | cut -d' ' -f1
@@ -76,9 +87,25 @@ if command -v node >/dev/null 2>&1 && node_ok node; then
 elif [ -x "$home/node/bin/node" ] && node_ok "$home/node/bin/node"; then
   node_bin="$home/node/bin"
   say "Node.js $("$node_bin/node" -v): using the private copy"
+elif [ -n "$install_node" ]; then
+  [ -n "$arch" ] || fail "no Node.js build for this CPU ($(uname -m))"
+  say "Downloading Node.js from nodejs.org into $home/node (about 50 MB, one time)..."
+  base=https://nodejs.org/dist/latest-v24.x
+  sums=$(fetch "$base/SHASUMS256.txt")
+  file=$(printf '%s\n' "$sums" | awk -v want="-$os-$arch.tar.gz" 'substr($2, length($2) - length(want) + 1) == want { print $2; exit }')
+  [ -n "$file" ] || fail "no Node.js build for $os-$arch"
+  tmp=$(mktemp -d)
+  fetch "$base/$file" >"$tmp/$file"
+  expected=$(printf '%s\n' "$sums" | awk -v f="$file" '$2 == f { print $1 }')
+  [ "$(sha256 "$tmp/$file")" = "$expected" ] || fail "the Node.js download failed its checksum; run setup again"
+  rm -rf "$home/node" && mkdir -p "$home/node"
+  tar -xzf "$tmp/$file" -C "$home/node" --strip-components=1
+  rm -rf "$tmp"
+  node_bin="$home/node/bin"
+  say "Node.js $("$node_bin/node" -v) installed in $home/node"
 else
   found=$(command -v node >/dev/null 2>&1 && node -v || true)
-  fail "Node.js 22.12 or newer is needed${found:+ (found $found)}. Install the LTS from https://nodejs.org/en/download (or run: brew install node), then run setup again."
+  fail "NEEDS_NODE: Node.js 22.12 or newer isn't on this machine${found:+ (found $found)}, so nothing was installed. Ask the user: install Node.js from https://nodejs.org/en/download, or, if they agree, run setup again with --install-node to put a private copy in $home (about 50 MB, checked against nodejs.org's checksums)."
 fi
 
 if [ -n "$node_bin" ]; then
@@ -134,11 +161,16 @@ chrome_candidates() {
     printf '%s\n' \
       "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
       "$HOME/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
-      "/Applications/Chromium.app/Contents/MacOS/Chromium"
+      "/Applications/Chromium.app/Contents/MacOS/Chromium" \
+      "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge" \
+      "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser"
+    # A Playwright browser, if one is already on the machine, newest first.
+    ls -d "$HOME/Library/Caches/ms-playwright"/chromium-*/chrome-mac*/*.app/Contents/MacOS/* 2>/dev/null | sort -r
   else
-    for name in google-chrome google-chrome-stable chromium chromium-browser; do
+    for name in google-chrome google-chrome-stable chromium chromium-browser microsoft-edge brave-browser; do
       command -v "$name" || true
     done
+    ls -d "$HOME/.cache/ms-playwright"/chromium-*/chrome-linux*/chrome 2>/dev/null | sort -r
   fi
 }
 
@@ -155,7 +187,7 @@ elif chrome_works ""; then
   say "Chrome: using Puppeteer's copy"
 elif [ -n "$download_chrome" ]; then
   say "Downloading Chrome for Testing for the audits and PDF (about 370 MB on disk, one time)..."
-  (cd "$engine" && npx --no-install puppeteer browsers install chrome >/dev/null)
+  (cd "$engine" && ./node_modules/.bin/puppeteer browsers install chrome >/dev/null)
   if chrome_works ""; then
     say "Chrome: using Chrome for Testing"
   else
@@ -171,7 +203,7 @@ elif chrome_candidates | { while IFS= read -r path; do [ -x "$path" ] && exit 0;
   say "Chrome is installed but can't launch here. Write and build the deck now; the audit, shots, and PDF need a browser, so ask the user how they want to run them."
 else
   no_chrome=1
-  say "No working Google Chrome or Chromium found. Write and build the deck now. The audit, shots, and PDF need Chrome: ask the user to install Google Chrome, or, if they agree, run setup again with --download-chrome to download Chrome for Testing (about 370 MB, into $home)."
+  say "NEEDS_CHROME: No working Google Chrome, Chromium, Edge, or Brave found. Write and build the deck now. The audit, shots, and PDF need Chrome: ask the user to install Google Chrome, or, if they agree, run setup again with --download-chrome to download Chrome for Testing (about 370 MB, into $home)."
 fi
 
 # 4. The deck ------------------------------------------------------------------
