@@ -91,7 +91,8 @@
             }
           ]
         },
-        "commerce": false
+        "commerce": false,
+        "demo_recording_url": "https://drive.google.com/file/d/17DBYyNlc0fgYTJarMQftJbkZ_hVyc69m/view?usp=sharing"
       },
       "publication": {
         "release_notes": "Decks read better on phones: the deck's controls no longer sit on top of slides, small labels are larger, and every deck is checked for text that is hard to read against its background. The deck-building guide now comes from Unfairly's side, so improvements reach you without reinstalling the plugin.",
