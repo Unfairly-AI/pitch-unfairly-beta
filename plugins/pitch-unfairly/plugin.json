@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "pitch-unfairly",
-  "version": "0.14.9",
+  "version": "0.14.10",
   "description": "Builds on-brand presentation decks as interactive websites, with PDF export and desktop, phone, and PDF checks, and publishes them to unlisted links.",
   "author": {
     "name": "Unfairly AI",
@@ -96,7 +96,7 @@
         "demo_recording_url": "https://drive.google.com/file/d/17DBYyNlc0fgYTJarMQftJbkZ_hVyc69m/view?usp=sharing"
       },
       "publication": {
-        "release_notes": "Decks read better on phones: the deck's controls no longer sit on top of slides, small labels are larger, and every deck is checked for text that is hard to read against its background. The deck-building guide now comes from Unfairly's side, so improvements reach you without reinstalling the plugin.",
+        "release_notes": "Setup first checks it can reach Unfairly, so where it can't, the deck is built in the studio straight away instead of failing at publish. Setup's messages now carry the install options, so the agent offers the same choices everywhere.",
         "countries": [
           "US",
           "CA",
@@ -106,6 +106,16 @@
           "NZ"
         ]
       }
+    },
+    "com.anthropic": {
+      "displayName": "Pitch Unfairly",
+      "license": "SEE LICENSE IN LICENSE",
+      "repository": "https://github.com/Unfairly-AI/pitch-unfairly-beta",
+      "icon": "./assets/logo.png",
+      "documentationUrl": "https://pitchunfairly.com/setup",
+      "supportUrl": "https://pitchunfairly.com/support",
+      "privacyPolicyUrl": "https://pitchunfairly.com/privacy",
+      "termsOfServiceUrl": "https://pitchunfairly.com/terms"
     }
   }
 }

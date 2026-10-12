@@ -1,0 +1,32 @@
+---
+/**
+ * The brand's logo, in the variant made for the background it sits on.
+ * Kit logos: primary (on paper), on_ink (on ink slides), on_accent (on accent
+ * slides). Falls back to primary, then to the wordmark in the display face.
+ */
+import { logos, wordmark } from '../brand/assets';
+
+interface Props {
+  on?: 'paper' | 'ink' | 'accent';
+  /** Height in stage pixels. */
+  height?: number;
+  class?: string;
+}
+const { on = 'paper', height = 56, class: className } = Astro.props;
+const src = (on === 'ink' && logos.on_ink) || (on === 'accent' && logos.on_accent) || logos.primary;
+---
+
+{src ? (
+  <img class:list={['brand-mark', className]} src={src} alt={wordmark} style={`--h: ${height}px`} />
+) : (
+  <span class:list={['brand-mark', 'brand-wordmark', 'display', className]} style={`--h: ${height}px`}>{wordmark}</span>
+)}
+
+<style>
+  .brand-mark { display: block; height: var(--h); width: auto; max-width: 520px; object-fit: contain; object-position: left center; }
+  .brand-wordmark { height: auto; font-size: calc(var(--h) * 0.72); line-height: 1; }
+  @media (max-width: 799px) {
+    .brand-mark { height: calc(var(--h) * 0.45); }
+    .brand-wordmark { height: auto; font-size: calc(var(--h) * 0.34); }
+  }
+</style>

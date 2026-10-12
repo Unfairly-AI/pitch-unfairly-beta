@@ -1,0 +1,26 @@
+{
+  "name": "pitch-unfairly",
+  "displayName": "Pitch Unfairly",
+  "version": "0.14.10",
+  "description": "Builds on-brand presentation decks as interactive websites, with PDF export and desktop, phone, and PDF checks, and publishes them to unlisted links.",
+  "author": {
+    "name": "Unfairly AI",
+    "url": "https://unfairly.ai"
+  },
+  "homepage": "https://pitchunfairly.com",
+  "repository": "https://github.com/Unfairly-AI/pitch-unfairly-beta",
+  "license": "SEE LICENSE IN LICENSE",
+  "keywords": [
+    "pitch deck",
+    "sales deck",
+    "presentation",
+    "slides",
+    "deck",
+    "pdf"
+  ],
+  "icon": "./assets/logo.png",
+  "documentationUrl": "https://pitchunfairly.com/setup",
+  "supportUrl": "https://pitchunfairly.com/support",
+  "privacyPolicyUrl": "https://pitchunfairly.com/privacy",
+  "termsOfServiceUrl": "https://pitchunfairly.com/terms"
+}

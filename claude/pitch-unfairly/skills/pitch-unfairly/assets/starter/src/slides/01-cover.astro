@@ -1,0 +1,70 @@
+---
+// Pattern: cover. Full accent background, the promise at hero size, one
+// sub-line, and one typographic gesture (the struck word and the stamp).
+// Nothing else on the slide.
+import Slide from '../components/Slide.astro';
+import BrandMark from '../components/BrandMark.astro';
+---
+
+<Slide
+  id="cover"
+  label="Decks so good it's unfair"
+  tone="accent"
+  bare
+  notes="Open on the promise. The struck word is the only joke on the slide; the stamp lands last."
+>
+  <div class="cover">
+    <BrandMark on="accent" height={48} class="rise mark" />
+    <h1 class="display hero">
+      <span class="w" style="--d: 60ms">Decks</span> <span class="w" style="--d: 130ms">so</span> <span class="w" style="--d: 200ms">good</span> <span class="w" style="--d: 270ms">it's</span>
+      <span class="w" style="--d: 340ms"><s class="strike">illegal</s></span> <span class="hl stamp">unfair.</span>
+    </h1>
+    <p class="lede rise" style="--d: 520ms">We design every slide for one job and check it on a laptop, a phone, and a PDF.</p>
+  </div>
+</Slide>
+
+<style>
+  .cover {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .mark { margin-bottom: 72px; }
+  .hero { max-width: 11ch; margin-bottom: 52px; }
+  .lede { max-width: 30ch; color: var(--on-accent); }
+
+  /* Words land one at a time; the strike draws across "illegal", then
+     "unfair." stamps on. Everything rests in its finished state (PDF, reduced
+     motion); only the active slide animates into it. */
+  :global(.is-active) .w { display: inline-block; animation: word var(--dur-enter) var(--ease) var(--d, 0ms) both; }
+  @keyframes word { from { opacity: 0; transform: translateY(0.35em); } }
+
+  .strike { position: relative; text-decoration: none; color: color-mix(in oklab, var(--on-accent) 38%, var(--accent)); }
+  .strike::after {
+    content: '';
+    position: absolute;
+    left: -2%;
+    right: -2%;
+    top: 56%;
+    height: 0.075em;
+    border-radius: 99px;
+    background: var(--c-coral, var(--highlight));
+    transform: rotate(-4deg);
+    transform-origin: left;
+  }
+  :global(.is-active) .strike::after { animation: strike 360ms var(--ease) 700ms both; }
+  @keyframes strike { from { transform: rotate(-4deg) scaleX(0); } }
+
+  .stamp { display: inline-block; transform: rotate(calc(-2deg * var(--tilt))); }
+  :global(.is-active) .stamp { animation: stamp 520ms var(--ease-pop) 1000ms both; }
+  @keyframes stamp { from { opacity: 0; transform: scale(1.6) rotate(-8deg); } }
+
+  @media (max-width: 799px) {
+    .mark { margin-bottom: 28px; }
+    .hero { margin-bottom: 20px; }
+  }
+
+</style>

@@ -1,0 +1,23 @@
+---
+interface Props {
+  /** Stable, unique id. Becomes #slide-{id}; audits and screenshots use it. */
+  id: string;
+  /** Short name for assistive tech and screenshots. */
+  label: string;
+  tone?: 'paper' | 'warm' | 'ink' | 'accent' | 'yellow' | 'cyan' | 'pink';
+  /** Speaker notes. Press N while presenting. Put sources and caveats here. */
+  notes?: string;
+  /** Hide the page number, e.g. on a cover. */
+  bare?: boolean;
+}
+
+const { id, label, tone = 'paper', notes, bare = false } = Astro.props;
+---
+
+<!-- The frame is one screen in the slide's color; the scaled slide sits inside it. -->
+<div class={`deck-frame tone-${tone}`}>
+  <section id={`slide-${id}`} class={`slide tone-${tone}`} aria-label={label} data-notes={notes}>
+    <slot />
+    {!bare && <span class="slide-num" aria-hidden="true"></span>}
+  </section>
+</div>

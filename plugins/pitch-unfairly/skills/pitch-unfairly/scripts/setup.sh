@@ -1,20 +1,36 @@
 #!/bin/sh
 # One-time setup for the deck workflow, and a fast start for every deck after.
 #
-#   sh setup.sh [deck-dir] [--install-node] [--download-chrome]
+# >>> codex-only
+#   sh setup.sh [deck-dir] [--offline] [--install-node] [--download-chrome]
+# <<< codex-only
+# >>> claude-only
+# #   sh setup.sh [deck-dir] [--offline]
+# <<< claude-only
 #
 # Sets up what the workflow needs in ~/.pitch-unfairly (or
 # $PITCH_UNFAIRLY_HOME, or ./.pitch-unfairly when the home folder isn't
 # writable). It never uses sudo, never changes system settings, and writes only
-# to that folder and the deck folder. It downloads a program only when the
-# agent passes a flag for it, which the agent does only after the user agrees:
-#   - Node.js 22.12+: the one installed. With --install-node, a private copy
-#     from nodejs.org, verified against nodejs.org's published SHA-256 checksums.
+# to that folder and the deck folder.
+#   - Unfairly: first checks that app.unfairly.ai, where decks are checked and
+#     published, can be reached. Where it can't (some agent sandboxes allow
+#     only package registries), it reports NETWORK_BLOCKED and installs
+#     nothing, so the agent builds in the deck studio instead. --offline skips
+#     the check, for building a deck to host yourself.
+#   - Node.js 22.12+: the one installed.
+# >>> codex-only
+#     With --install-node, a private copy from nodejs.org, verified against
+#     nodejs.org's published SHA-256 checksums. The agent passes it only after
+#     the user agrees.
+# <<< codex-only
 #   - The starter's npm packages, from its lockfile (npm ci): installed once per
 #     starter version, then copied into each new deck in a second or two.
 #   - Chrome for the audits and PDF: an installed Google Chrome, Chromium,
-#     Microsoft Edge, or Brave, or a Playwright copy if one exists. With
-#     --download-chrome, Chrome for Testing through Puppeteer.
+#     Microsoft Edge, or Brave, or a Playwright copy if one exists.
+# >>> codex-only
+#     With --download-chrome, Chrome for Testing through Puppeteer. The agent
+#     passes it only after the user agrees.
+# <<< codex-only
 # With deck-dir, it also creates the deck from the starter, or installs the
 # packages into an existing deck.
 #
@@ -28,10 +44,14 @@ home="${PITCH_UNFAIRLY_HOME:-$HOME/.pitch-unfairly}"
 deck=
 download_chrome=
 install_node=
+offline=
 for arg in "$@"; do
   case "$arg" in
+    --offline) offline=1 ;;
+# >>> codex-only
     --download-chrome) download_chrome=1 ;;
     --install-node) install_node=1 ;;
+# <<< codex-only
     -*) printf 'setup: unknown option %s\n' "$arg" >&2; exit 1 ;;
     *) deck=$arg ;;
   esac
@@ -59,7 +79,25 @@ sha256() {
   if command -v shasum >/dev/null 2>&1; then shasum -a 256 "$1"; else sha256sum "$1"; fi | cut -d' ' -f1
 }
 
-# Sandboxed agents (Codex's default workspace-write mode) can't write outside
+# Some agent sandboxes can't reach Unfairly at all: they allow package
+# registries and little else. A deck built there could never be checked or
+# published, so stop before installing anything and say so; the agent then
+# builds in the deck studio, which runs on Unfairly's side. The check reads
+# the deck server's public metadata, so a proxy's own error page doesn't pass.
+if [ -z "$offline" ]; then
+  probe=https://app.unfairly.ai/.well-known/oauth-protected-resource/api/decks/mcp
+  if command -v curl >/dev/null 2>&1; then
+    meta=$(curl -fsS -m 10 "$probe" 2>/dev/null || true)
+  else
+    meta=$(wget -qO- -T 10 "$probe" 2>/dev/null || true)
+  fi
+  case "$meta" in
+    *'"resource":"https://app.unfairly.ai/api/decks/mcp"'*) ;;
+    *) fail "NETWORK_BLOCKED: this environment can't reach app.unfairly.ai, where decks are checked and published, so nothing was installed. Build the deck in the deck studio instead, as the workflow's \"Building without a shell\" section says. Don't ask the user to change network settings." ;;
+  esac
+fi
+
+# Sandboxed agents (such as Codex's default workspace-write mode) can't write outside
 # the workspace. If the home folder is off limits and no explicit home was
 # given, keep everything inside the workspace instead, so setup still works
 # without asking for wider permissions.
@@ -87,6 +125,7 @@ if command -v node >/dev/null 2>&1 && node_ok node; then
 elif [ -x "$home/node/bin/node" ] && node_ok "$home/node/bin/node"; then
   node_bin="$home/node/bin"
   say "Node.js $("$node_bin/node" -v): using the private copy"
+# >>> codex-only
 elif [ -n "$install_node" ]; then
   [ -n "$arch" ] || fail "no Node.js build for this CPU ($(uname -m))"
   say "Downloading Node.js from nodejs.org into $home/node (about 50 MB, one time)..."
@@ -103,9 +142,15 @@ elif [ -n "$install_node" ]; then
   rm -rf "$tmp"
   node_bin="$home/node/bin"
   say "Node.js $("$node_bin/node" -v) installed in $home/node"
+# <<< codex-only
 else
   found=$(command -v node >/dev/null 2>&1 && node -v || true)
+# >>> codex-only
   fail "NEEDS_NODE: Node.js 22.12 or newer isn't on this machine${found:+ (found $found)}, so nothing was installed. Ask the user: install Node.js from https://nodejs.org/en/download, or, if they agree, run setup again with --install-node to put a private copy in $home (about 50 MB, checked against nodejs.org's checksums)."
+# <<< codex-only
+# >>> claude-only
+#   fail "NEEDS_NODE: Node.js 22.12 or newer isn't on this machine${found:+ (found $found)}, so nothing was installed. Ask the user to install Node.js from https://nodejs.org/en/download and then run setup again, or, if they'd rather not install anything, build the deck in the deck studio as the workflow's \"Building without a shell\" section says."
+# <<< claude-only
 fi
 
 if [ -n "$node_bin" ]; then
@@ -117,7 +162,7 @@ else
 fi
 
 # Astro writes a telemetry file under the home folder on every build, which
-# fails where the home folder isn't writable (Codex's default sandbox). Turn it
+# fails where the home folder isn't writable (as in some agent sandboxes). Turn it
 # off; decks don't need it.
 printf 'export ASTRO_TELEMETRY_DISABLED=1\n' >>"$home/env.sh"
 ASTRO_TELEMETRY_DISABLED=1
@@ -184,13 +229,13 @@ chrome_candidates() {
 # Codex runs commands in a sandbox (it sets CODEX_SANDBOX) that kills any
 # browser it starts, and macOS then shows a crash dialog for each one. So there,
 # find the installed Chrome without launching it, and leave the browser steps
-# for a mode that allows them.
+# for a mode that allows them. Other sandboxes are found by trying a launch below.
 if [ -n "${CODEX_SANDBOX:-}" ]; then
   chrome=$(chrome_candidates | while IFS= read -r path; do
     if [ -x "$path" ]; then printf '%s' "$path"; break; fi
   done)
   no_chrome=1
-  say "BROWSER_BLOCKED: Codex's sandbox doesn't let a browser start, so setup didn't launch one. Write the story and slides here (npm run dev previews them), and run the brand capture, checks, and publish in the deck studio instead, as the workflow's \"When the browser is blocked\" section says. Don't ask the user to change settings or try another way around the sandbox."
+  say "BROWSER_BLOCKED: this sandbox doesn't let a browser start, so setup didn't launch one. Write the story and slides here (npm run dev previews them), and run the brand capture, checks, and publish in the deck studio instead, as the workflow's \"When the browser is blocked\" section says. Don't ask the user to change settings or try another way around the sandbox."
 else
   chrome=$(chrome_candidates | while IFS= read -r path; do
     if [ -x "$path" ] && chrome_works "$path"; then
@@ -203,6 +248,7 @@ else
     say "Chrome: using $chrome"
   elif chrome_works ""; then
     say "Chrome: using Puppeteer's copy"
+# >>> codex-only
   elif [ -n "$download_chrome" ] && [ "$os-$arch" = linux-arm64 ]; then
     no_chrome=1
     say "NEEDS_CHROME: Chrome for Testing isn't published for Linux on ARM. Write the story and slides now (npm run dev previews them). The audit, shots, and PDF need a browser: ask the user to install Chromium from their package manager, then run setup again."
@@ -223,13 +269,19 @@ else
       no_chrome=1
       say "Chrome is installed but can't launch here. Write the story and slides now (npm run dev previews them); the audit, shots, and PDF need a browser, so ask the user how they want to run them."
     fi
+# <<< codex-only
   elif chrome_candidates | { while IFS= read -r path; do [ -x "$path" ] && exit 0; done; exit 1; }; then
     # Installed but won't launch: usually an environment that blocks browsers.
     no_chrome=1
     say "Chrome is installed but can't launch here. Write the story and slides now (npm run dev previews them); the audit, shots, and PDF need a browser, so ask the user how they want to run them."
   else
     no_chrome=1
+# >>> codex-only
     say "NEEDS_CHROME: No working Google Chrome, Chromium, Edge, or Brave found. Write the story and slides now (npm run dev previews them). The audit, shots, and PDF need Chrome: ask the user to install Google Chrome, or, if they agree, run setup again with --download-chrome to download Chrome for Testing (about 370 MB, into Puppeteer's cache in the home folder)."
+# <<< codex-only
+# >>> claude-only
+#     say "NEEDS_CHROME: No working Google Chrome, Chromium, Edge, or Brave found. Write the story and slides now (npm run dev previews them). The audit, shots, and PDF need Chrome: ask the user to install Google Chrome and run setup again, or, if they'd rather not, run the checks and publish in the deck studio as the workflow's \"When the browser is blocked\" section says."
+# <<< claude-only
   fi
 fi
 # 4. The deck ------------------------------------------------------------------

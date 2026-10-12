@@ -1,0 +1,22 @@
+{
+  "name": "pitch-unfairly",
+  "description": "Pitch decks built as websites, published to a link.",
+  "owner": {
+    "name": "Unfairly AI",
+    "email": "support@unfairly.ai",
+    "url": "https://pitchunfairly.com"
+  },
+  "plugins": [
+    {
+      "name": "pitch-unfairly",
+      "source": {
+        "source": "git-subdir",
+        "url": "Unfairly-AI/pitch-unfairly-beta",
+        "path": "claude/pitch-unfairly",
+        "ref": "claude-release"
+      },
+      "description": "Pitch decks built as websites, published to a link.",
+      "category": "productivity"
+    }
+  ]
+}
