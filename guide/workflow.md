@@ -53,7 +53,7 @@ The rules that hold throughout:
 
 ### 2. Set up the project
 
-Setup (step 0) created the deck from the skill's starter (`assets/starter`). Start `npm run dev` and keep it running. If port 4321 is taken, Astro moves to the next free port: pass the URL it prints to the audit, shots, and motion scripts (`npm run audit -- http://localhost:4322`). They refuse to check a page that isn't this deck.
+Setup (step 0) created the deck from the skill's starter (`assets/starter`). Start `npm run dev` and keep it running. If port 4321 is taken, Astro moves to the next free port: pass the URL it prints to the audit, shots, brand board, and motion scripts (`npm run audit -- http://localhost:4322`). They refuse to check a page that isn't this deck.
 
 The starter has no example slides, only a placeholder in `src/slides/01-cover.astro`: replace it, write every slide for this deck from its story and brand, and set the order in `src/pages/index.astro`. Keep the deck shell in `src/layouts/Deck.astro` and the `Slide` component; they provide navigation, present mode, notes, the phone layout, and PDF mode.
 

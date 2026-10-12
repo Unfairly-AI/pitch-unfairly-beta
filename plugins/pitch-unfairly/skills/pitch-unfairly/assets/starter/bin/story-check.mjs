@@ -5,7 +5,7 @@
 //
 //   node bin/story-check.mjs --templates <library url or path> [story.md]
 //
-// The library URL comes with the deck guide's templates topic (deck_guide).
+// The library comes with the deck guide's templates topic: a URL, or the path to templates.json.
 //
 // Exits 1 on errors. Warnings are judgment calls: read them, then decide.
 import { readFile } from 'node:fs/promises';

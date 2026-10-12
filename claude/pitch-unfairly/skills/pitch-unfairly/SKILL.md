@@ -9,7 +9,7 @@ Make a deck that tells one clear story, with every slide designed for its own jo
 
 ## Where to build
 
-**Build locally whenever setup says this environment can.** That is the default and the richer loop, so use it even when the deck studio tools are also connected. Build in the deck studio instead when there is no shell at all (plain ChatGPT chat), or when setup reports `NETWORK_BLOCKED` (a sandbox that can't reach Unfairly, as in some chat apps): if the `studio_start` tool is available, build there (the workflow's "Building without a shell" section); do not send the user to another app. In a regular ChatGPT chat the user must select Pitch Unfairly from the composer&rsquo;s **Add files and more** menu before sending the request. If `studio_start` is absent, explain that the plugin is not active in this chat and tell them how to select it; do not claim to have captured, saved, checked, or published anything.
+**Build locally whenever setup says this environment can.** That is the default and the richer loop, so use it even when the deck studio tools are also connected. Build in the deck studio instead when there is no shell at all (plain ChatGPT chat), or when setup reports `NETWORK_BLOCKED` (a sandbox that can't reach Unfairly, as in some chat apps): if the `studio_start` tool is available, build there (the workflow's "Building without a shell" section); do not send the user to another app. If `studio_start` is absent, explain that the Pitch Unfairly connector isn't connected in this chat and tell them to connect it from the plugin's Connectors tab (on Team and Enterprise plans an Owner adds it first); do not claim to have captured, saved, checked, or published anything.
 
 ## 1. Start setup
 

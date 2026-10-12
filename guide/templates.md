@@ -2,7 +2,7 @@
 
 <!-- Generated from the pitchunfairly.com templates by unfairly-app apps/decks/scripts/export-templates.ts. Do not edit by hand. -->
 
-Each category is a job someone needs a deck for, with the rules good decks of that kind follow. Each template is a proven structure, named for the famous deck it comes from; its example is a live rebuild on pitchunfairly.com. Pick the category from the job, then the template whose shape fits the story. The ids work with `npm run story:check -- --template <id>`.
+Each category is a job someone needs a deck for, with the rules good decks of that kind follow. Each template is a proven structure, named for the famous deck it comes from; its example is a live rebuild on pitchunfairly.com. Pick the category from the job, then the template whose shape fits the story. Pass the library to `npm run story:check -- --templates <library>` and it checks a story's slides against its template's beats.
 
 ## Pitch decks (`pitch`)
 

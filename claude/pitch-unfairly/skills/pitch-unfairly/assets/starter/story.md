@@ -12,7 +12,7 @@ Fill in the header first (npm run story:check enforces it):
 - Kernel: the raw idea in one line, as the user gave it.
 - Audience, After the last slide they should, Format: who, what they do next,
   and whether the deck is presented, sent, or both.
-- Template: an id from the template library (deck_guide, topic templates), chosen from the
+- Template: an id from the template library (the templates guide), chosen from the
   job this deck does. The template's beats are the skeleton; the angle decides
   which beats get the most room and which you cut.
 - Angle: the one tension the deck turns on, in a sentence.

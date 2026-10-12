@@ -8,7 +8,7 @@ How the starter renders each mode, and the traps that have broken real decks.
 
 **Phone (below 800px).** Same stack, but each slide is the screen itself, `100svh` tall, laid out at phone size instead of scaled. The tokens in `deck.css` switch to the phone scale. Each slide's own `@media (max-width: 799px)` block handles the rest: usually a single column, smaller fixed sizes, and `mobile-hide` on secondary content.
 
-**PDF.** `npm run build` ends by rendering `dist/deck.pdf` (`bin/pdf.mjs`): it opens `/?pdf=1` at 1920×1080 in screen media, waits for `window.__deckReady` (fonts and every image loaded), then prints one 1920×1080 page per slide. `?pdf=1` adds `is-pdf` and `is-static` to `<html>` before first paint: every slide visible at full size, animations at their end state, controls hidden. Because the PDF prints the same stage as present mode, there is no separate print stylesheet to keep in sync. The audit renders the PDF the same way to count its pages.
+**PDF.** `npm run pdf` renders `dist/deck.pdf` on request (`bin/pdf.mjs`; `npm run build` doesn't): it opens `/?pdf=1` at 1920×1080 in screen media, waits for `window.__deckReady` (fonts and every image loaded), then prints one 1920×1080 page per slide. `?pdf=1` adds `is-pdf` and `is-static` to `<html>` before first paint: every slide visible at full size, animations at their end state, controls hidden. Because the PDF prints the same stage as present mode, there is no separate print stylesheet to keep in sync. The audit renders the PDF the same way to count its pages.
 
 ## Rules
 

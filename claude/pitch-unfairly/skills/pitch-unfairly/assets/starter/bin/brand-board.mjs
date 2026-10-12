@@ -3,10 +3,16 @@
 import puppeteer from 'puppeteer';
 import { mkdir } from 'node:fs/promises';
 import { refuseInCodexSandbox } from './browser-guard.mjs';
+import { assertThisDeck } from './this-deck.mjs';
 
 refuseInCodexSandbox('The brand board');
 
 const base = (process.argv[2] ?? 'http://localhost:4321').replace(/\/$/, '');
+// Another dev server on the default port would be captured in this deck's place.
+await assertThisDeck(base).catch((error) => {
+  console.error(`✗ ${error.message}`);
+  process.exit(1);
+});
 await mkdir('artifacts', { recursive: true });
 const browser = await puppeteer.launch({ headless: true });
 try {
