@@ -75,7 +75,11 @@ try {
   for (const [mode, viewport, query, minFont, maxLines, large, checkContrast] of MODES) {
     const page = await browser.newPage();
     await page.setViewport(viewport);
-    await page.goto(`${base}/${query}`, { waitUntil: 'networkidle0' });
+    // 'load', then the deck's own ready signal (fonts and images): measured on
+    // 35 drafts, the same problems as networkidle0, which idles 500ms per mode
+    // on top. The keyboard check below keeps networkidle0: at 'load' the dev
+    // server hasn't wired the deck's keys yet.
+    await page.goto(`${base}/${query}`, { waitUntil: 'load' });
     await page.waitForFunction(() => window.__deckReady === true, { timeout: 15000 }).catch(() => {
       report(mode, 'deck never signalled ready (fonts or images still loading)');
     });

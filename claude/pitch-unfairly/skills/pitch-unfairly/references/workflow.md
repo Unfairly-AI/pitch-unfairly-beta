@@ -55,7 +55,7 @@ The rules that hold throughout:
 
 Setup (step 0) created the deck from the skill's starter (`assets/starter`). Start `npm run dev` and keep it running. If port 4321 is taken, Astro moves to the next free port: pass the URL it prints to the audit, shots, and motion scripts (`npm run audit -- http://localhost:4322`). They refuse to check a page that isn't this deck.
 
-Replace the example slides in `src/slides/` and the order in `src/pages/index.astro`. Keep the deck shell in `src/layouts/Deck.astro` and the `Slide` component; they provide navigation, present mode, notes, the phone layout, and PDF mode.
+The starter has no example slides, only a placeholder in `src/slides/01-cover.astro`: replace it, write every slide for this deck from its story and brand, and set the order in `src/pages/index.astro`. Keep the deck shell in `src/layouts/Deck.astro` and the `Slide` component; they provide navigation, present mode, notes, the phone layout, and PDF mode.
 
 To set up an existing deck that has the starter's `package.json`, run setup with its folder; it installs the packages without touching the slides. In any other existing project, port the mechanics (the stage, the three modes, the audits) rather than replacing their app.
 
@@ -158,7 +158,7 @@ To take a deck offline, call `deck_list`, find the deck by title (ask if more th
 
 The deck studio runs this same starter, scripts, and audits in a sandbox on Unfairly's side. Everything above still applies (story first, one job per slide, the craft reference, every slide checked in all three modes); only the mechanics change:
 
-- `studio_start` opens your project (or resumes it) and returns the craft guide and the key files (`story.md`, `src/pages/index.astro`, the `Slide` component, an example slide, `brand/brand.json`), so you can start writing straight away.
+- `studio_start` opens your project (or resumes it) and returns the craft guide and the key files (`story.md`, `src/pages/index.astro`, the `Slide` component, the placeholder slide, `brand/brand.json`), so you can start writing straight away.
 - Create or replace files with `studio_write`, and make small fixes with `studio_edit` (an exact passage replaced in place): `story.md`, `src/slides/*`, `src/pages/index.astro`, `src/components/*`, `src/styles/*`, `brand/*` (text files such as `brand.json` and SVG logos). Logos and imagery come in through the brand tools.
 - Brand: start from `brand_kit_get`. For a company's own brand, `studio_brand_import` (by website) brings in its logos, colors, and fonts from Brandfetch and drafts `brand/brand.json`; `studio_capture` reads the live site for colors, type, component style, and imagery. Review the draft against the brand kit checklist (`brand-kit.md`) and fix it with `studio_write` before composing.
 - Work in few, big rounds. Draft the whole deck (story, brand, every slide) before the first `studio_check`, then fix every slide it flags, polish notes included, in one pass before checking again. A good deck takes three to five rounds, not twenty.
