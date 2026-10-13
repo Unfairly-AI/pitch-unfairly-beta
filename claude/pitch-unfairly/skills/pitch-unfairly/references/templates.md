@@ -2,7 +2,7 @@
 
 <!-- Generated from the pitchunfairly.com templates by unfairly-app apps/decks/scripts/export-templates.ts. Do not edit by hand. -->
 
-Each category is a job someone needs a deck for, with the rules good decks of that kind follow. Each template is a proven structure, named for the famous deck it comes from; its example is a live rebuild on pitchunfairly.com. Pick the category from the job, then the template whose shape fits the story. Pass the library to `npm run story:check -- --templates <library>` and it checks a story's slides against its template's beats.
+Each category is a job someone needs a deck for, with the rules good decks of that kind follow. Each template is a proven structure, named for the famous deck it comes from; its example is a live rebuild on pitchunfairly.com. Pick the category from the job, then the template whose shape fits the story. The ids work with `npm run story:check -- --template <id>`.
 
 ## Pitch decks (`pitch`)
 
@@ -119,6 +119,20 @@ Asia is just west. Probably. Example: https://pitchunfairly.com/templates/columb
 11. **Risks:** Name every objection before the room does.
 12. **The ask:** Who pays, who gets paid, and the titles on the door.
 
+### Pied Piper: The TechCrunch Disrupt pitch (`pied-piper`, Demo day pitch deck)
+
+Hooli tied the score, so Richard rewrote it overnight. Example: https://pitchunfairly.com/templates/pied-piper/
+
+1. **Manifesto cover:** One sentence you believe, plus a glimpse of the product: no logo slide, no tagline.
+2. **The problem:** The pain shown in the customer's own interface, not as bullets.
+3. **The insight:** The one thing you see that the incumbents don't, drawn as a single picture.
+4. **Live demo:** The product working on an input you didn't choose, with the result on screen.
+5. **Proof vs. the incumbent:** One metric on one scale: you against the best alternative, and how the metric is defined.
+6. **Why now:** What just changed in the world, ideally something the incumbent did, that makes this the moment.
+7. **Market:** Bottoms-up: customers times price with the math visible, then the bigger rings you earn later.
+8. **Team:** Why these people, plus who backed them and what they turned down.
+9. **The ask:** The amount, what it is for, and the milestones it buys, with dates. It stays up during questions.
+
 ## Sales (`sales`)
 
 **Use when:** Winning a deal: first calls, champion decks forwarded internally, business cases, customer reviews.
@@ -228,6 +242,67 @@ Nine war machines. Also, painting. Example: https://pitchunfairly.com/templates/
 7. **The flagship offer:** The one signature project, with its milestones laid out as a plan.
 8. **The ask:** A demonstration on the client's terms: what, where, and when they choose.
 
+### Sterling Cooper: The Carousel pitch to Kodak (`carousel`, Sales narrative deck)
+
+Kodak brought a wheel. Don sold them a time machine. Example: https://pitchunfairly.com/templates/carousel/
+
+1. **Cover:** The reframe in one line: what the buyer thinks they have, and what you will sell it as.
+2. **The shift:** Name an undeniable change in the buyer's world, one they already feel, before you mention the product.
+3. **Winners and losers:** Show who wins and who loses in that shift, so standing still has a visible cost.
+4. **The promised land:** Describe the future the buyer wins in, in the buyer's terms, not yours.
+5. **The magic gift:** Introduce the product as the gift that gets them there: same facts, framed as outcomes, ideally with a new name.
+6. **The demo:** Let them feel the gift working before you explain it.
+7. **Proof in the room:** Evidence from a buyer like this one that the story lands: what they did, not what they said.
+8. **Proof on the record:** Dated, sourced facts that the promised land is real and lasting.
+9. **Objections:** The doubts they were about to raise, in their words, each with a short answer.
+10. **Mutual action plan:** The next steps with an owner on each side and a date on every line. Never end on "Thank you".
+
+### Fyre Festival: The sponsorship prospectus (`fyre-festival`, Sponsorship prospectus)
+
+A private island, as promised. A cheese sandwich, as delivered. Example: https://pitchunfairly.com/templates/fyre-festival/
+
+1. **Theme and dates:** The event, the place and the dates in one line, with a footnote on anything a guest could check.
+2. **At a glance:** Where, when, how people get there and who is on the bill, each line a claim the sponsor can verify.
+3. **The audience:** Who comes and how many, every number footnoted with its source, and "attendance is not guaranteed" in writing.
+4. **Why sponsor:** Reach next to attendance: impressions are what you sell, the room is what they pay for.
+5. **Tier matrix:** Tiers across the top with price and "X available", benefits down the side, an audited report in every tier.
+6. **Activations:** Where the sponsor's name lives on site, by place: stay, food, payments, stage.
+7. **The fine print:** Venue, talent, attendance, cancellation and paid-post disclosure, printed at reading size.
+8. **Past results:** Last event's numbers or the organizers' record, from sources the sponsor can look up.
+9. **Deadline and contact:** Dated steps with owners on both sides, the commitment deadline, the conditions to check, and who to call.
+
+### The Truman Show: The network media kit (`truman-show`, Media kit)
+
+5,000 hidden cameras, zero ad breaks, and nobody tells the star. Example: https://pitchunfairly.com/templates/truman-show/
+
+1. **Cover:** Who you are and the one line that sums up what an advertiser buys.
+2. **Mission and trust:** Why the audience trusts you, before a single number. Buyers are renting that trust.
+3. **Audience in numbers:** Three or four stat blocks, each with its source underneath. Leave out what you can't source.
+4. **Who watches:** When and where the audience shows up, by daypart, section or channel, so a buyer can pick a slot.
+5. **Inventory:** Where an ad can actually appear, shown as it looks on the page or screen.
+6. **Ad formats:** Each unit named plainly, from the cheapest to the premium integration.
+7. **On screen:** A real example of a placement in context, with its disclosure label.
+8. **Specs and rules:** What a buyer can and can't run, including how sponsored content is labeled.
+9. **Case study:** Brief, placement, result and what you learned, told straight.
+10. **Why we label:** The principle that protects the audience, and so the advertiser.
+11. **Rate card:** Prices per unit, what is included, and the one term you don't negotiate.
+12. **Prepared for:** "Prepared by [rep] for [client]": the package, the flight, and a dated next step on both sides.
+
+### Dunder Mifflin: The Scranton branch company overview (`dunder-mifflin`, Company overview deck)
+
+Ten clients walked out with their salesman. Then they walked back in. Example: https://pitchunfairly.com/templates/dunder-mifflin/
+
+1. **Cover:** Who you are and the one thing you do better than anyone, in a sentence.
+2. **Why us, in four checks:** The investment-style thesis: four claims a buyer can repeat to their boss, each with its evidence.
+3. **Company snapshot:** The facts that change: leaders, ownership, footprint, what is new. The slide you rewrite every quarter.
+4. **What we sell:** The products in a breath, then what comes with every order.
+5. **Who we serve:** The customer segments, each with a real account story, and the ideal customer in one line.
+6. **Proof:** Results and customers. The strongest proof is a customer choosing you twice.
+7. **How we compare:** An honest comparison with the main alternative that concedes where they win.
+8. **Where we operate:** Your territory and footprint on a map, and how it has changed.
+9. **The team:** The names and roles the buyer will actually deal with.
+10. **How to buy:** The next step with dates and owners on both sides, and when the deck gets refreshed.
+
 ## Board and investor updates (`board`)
 
 **Use when:** Board meetings, monthly or quarterly investor updates, crisis plans.
@@ -278,6 +353,21 @@ Success. Four flights Thursday morning. Inform press. Example: https://pitchunfa
 10. **What's next:** Next period's priorities with a target for each; they open next month's update.
 11. **Thanks:** Name the people who helped, then restate the one action you need.
 
+### Monsters, Inc.: The scream shortage quarterly review (`monsters-inc`, Quarterly business review)
+
+Screams: below plan. Laughs: ten times better. Example: https://pitchunfairly.com/templates/monsters-inc/
+
+1. **Cover:** The company, the period, and the quarter's one-line answer. Sent as a pre-read.
+2. **TL;DR and the asks:** The quarter in three lines, then the decisions you need, before any detail.
+3. **Last quarter's priorities:** Each priority you committed to last time, scored red, yellow or green against its target.
+4. **Scorecard:** Key metrics against plan and against trend, with the change shown as a pill. Never a number alone.
+5. **Lowlights:** What went wrong, plainly, before anything that went right. The board finds it anyway.
+6. **Highlights:** What went right, with the measure behind it. Shorter than the lowlights.
+7. **Customer insight:** What customers are telling you, in their words, and the one signal that changes the plan.
+8. **The strategic shift:** The evidence for the change in the simplest comparison you can show, and the new strategy in one sentence.
+9. **Next quarter's plan:** Three priorities, one owner each, with a target you can score at the next meeting.
+10. **Decisions needed:** The asks again as motions, each with a recommendation, and the date of the next review.
+
 ## Everyday work (`work`)
 
 **Use when:** Project status updates, executive briefings, roadmaps and the other recurring decks a team reads every week.
@@ -310,6 +400,37 @@ Sports car first. It pays for the rest. Example: https://pitchunfairly.com/templ
 9. **How we'll know:** The outcome metric that says the plan is working, with a baseline.
 10. **Internal vs customer view:** The same roadmap with confidence, dates and dependencies hidden for customers.
 11. **Next review:** End on the date of the next roadmap, never "Thank you".
+
+### Sports Management International: Jerry Maguire's mission statement (`jerry-maguire`, Read-ahead memo)
+
+Everyone applauded the memo. One person followed. Example: https://pitchunfairly.com/templates/jerry-maguire/
+
+1. **Designed cover:** The title is the claim, and the cover says it is a read-ahead and when to read it by.
+2. **The one paragraph:** The conclusion and the decision asked for, in the first paragraph, so a skimmer still knows what you want.
+3. **The situation:** A few facts the reader half-knows already, plus one story that makes them feel it.
+4. **What we believe:** The two or three principles the proposal follows from, so disagreement has somewhere to land.
+5. **The proposal:** Specific changes with an owner each, and the author goes first as the pilot.
+6. **What it costs:** The honest downside, shown plainly before anyone has to ask for it.
+7. **What changes on Monday:** The first week, line by line, with an owner and a date on each.
+8. **Objections:** The questions readers will ask, in their words, each answered in a line.
+9. **The decision:** Who decides, by when, and the options, including a smaller yes like a pilot.
+10. **The follow-up:** A week later, report who acted on it, not who applauded.
+
+### Danny Ocean: The Bellagio job kickoff (`oceans-eleven`, Project kickoff deck)
+
+Eleven specialists, one vault, one night. Every workstream has an owner. Example: https://pitchunfairly.com/templates/oceans-eleven/
+
+1. **Cover:** The project's name and its outcome in one line, so nobody mistakes what this is.
+2. **Objective:** The goal in one sentence, then what "done" means in three checks anyone can verify.
+3. **Why now:** The date that matters and why it can't move. A deadline set by someone else is the strongest kind.
+4. **Scope:** What is in and, just as plainly, what is out, with anything disputed flagged for a decision.
+5. **The team:** Everyone on the project, their specialty, and the one workstream each one owns.
+6. **Roles (RACI):** Who is responsible, accountable, consulted and informed for each workstream, with exactly one accountable name per row.
+7. **Plan and timeline:** Milestones planned backwards from the date, each with an owner; dates only where they are real.
+8. **Budget and funding:** Who pays, why they said yes, and an owner for every line of spend. No figures you can't source.
+9. **RAID:** Risks, assumptions, issues and dependencies on a heat map, each with an owner, a response and a status color with a fixed meaning.
+10. **How we talk and decide:** The status rhythm, the colors' meanings, who calls go or no-go, and the checklist that must be green first.
+11. **The decision:** The one decision you need today, who makes it, and what each person does next. Never "Questions?".
 
 ## Launches and keynotes (`launch`)
 
@@ -662,6 +783,39 @@ Two friends, a $5 course, and an old gas station. Example: https://pitchunfairly
 8. **Implications:** Three things that must now be true, and the stake if you act on them.
 9. **Recommendation and test:** The move, the date, and the signals with baselines that would prove you wrong.
 10. **What we'd check again:** The lesson to carry into the next analysis, stated as a rule.
+
+### Pawnee Parks and Recreation: The Harvest Festival marketing plan (`pawnee`, Marketing plan)
+
+Earn more than it costs, or Parks closes. Headliner: one tiny horse. Example: https://pitchunfairly.com/templates/pawnee/
+
+1. **Cover:** The goal and the stakes in one line, plus the plan's owner and period.
+2. **The landscape:** What changed in your market since last year, as three facts, before any goal.
+3. **The goal in one number:** One number everyone can check the day after, and what happens above and below it.
+4. **Audience:** The few segments you serve, what each wants and gets, and who you are not for.
+5. **The big idea:** The one sentence the campaign hangs on, short enough for a poster.
+6. **Channels:** Earned, partner and paid channels, with the mix and why; each paid dollar must beat a free one.
+7. **Program of work:** Workstreams on one timeline, each with an owner, ending on the date that matters.
+8. **Budget:** Where the money goes, and which lines are donated, earned or volunteered instead.
+9. **KPI scorecard:** Targets set in advance against results, with fixed green, amber and red meanings.
+10. **Risks with owners:** Every risk with an owner and a fix, updated when the landscape changes.
+11. **The decision:** What you need approved, by whom, on what terms, and what happens the day after yes.
+
+### Initech: The Bobs' restructuring readout (`office-space`, Consulting readout)
+
+Eight bosses, one glitch, and a promotion for the guy who stopped caring. Example: https://pitchunfairly.com/templates/office-space/
+
+1. **Cover:** The answer as a full sentence, the client, the date, and who it is prepared for.
+2. **Executive summary:** Situation, complication, resolution on one slide: the whole readout for someone who reads nothing else.
+3. **Scope and method:** Who you talked to, how, and what else you read, so the reader trusts how you know.
+4. **Issue tree:** The client's question split into branches that do not overlap, each ending in a question you answered.
+5. **Finding one:** The finding as the title, one exhibit that proves it, and a source line under it.
+6. **Finding two:** The next branch: a chart that walks from the total to the result, one labeled step at a time.
+7. **Finding three:** The last branch, often a reconciliation: the records side by side and where they disagree.
+8. **Options considered:** Every option on a 2x2 with the trade-off named, so the choice is visible, not asserted.
+9. **Recommendation:** A short list of moves, each a verb, an object, an owner, and the finding it answers.
+10. **Implementation roadmap:** Workstreams with owners and dates, firm for the near term, undated for later phases.
+11. **Risks:** Each risk with likelihood, impact, owner and mitigation; a blank mitigation is the warning.
+12. **Decisions and next steps:** What the client must decide, by when, then who does what this week. Never "Thank you".
 
 ## Just for fun (`fun`)
 

@@ -1,0 +1,66 @@
+/* A site's base: brand tokens applied to plain HTML, plus the classes the
+   page script (app.js) toggles. Layout and design belong to the site's own
+   styles.css; nothing here is a component. */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; -webkit-text-size-adjust: 100%; color-scheme: light; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); font-weight: var(--body-weight); letter-spacing: var(--body-tracking); line-height: var(--body-line); -webkit-font-smoothing: antialiased; overflow-x: clip; }
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: var(--display-weight); letter-spacing: var(--display-tracking); line-height: var(--display-line); text-transform: var(--display-case); color: var(--headline-color); margin: 0; text-wrap: balance; }
+p { margin: 0; }
+img, svg { max-width: 100%; height: auto; }
+img { display: block; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+::selection { background: var(--accent); color: var(--on-accent); }
+.hl { color: var(--hl-color); }
+.num, [data-v], [data-expr] { font-variant-numeric: tabular-nums; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Pickers ([data-picker]): without JS, and in print, every panel shows. */
+.js [data-picker] [role='tabpanel']:not(.is-on) { display: none; }
+
+/* Entrances: visible by default; lift in only when the script marks them. */
+.js .reveal { opacity: 0; transform: translateY(14px); transition: opacity 600ms var(--ease), transform 600ms var(--ease); }
+.js .reveal.is-in { opacity: 1; transform: none; }
+
+/* Line drawings (img[data-draw] with an SVG): a pen traces, then the ink fills. */
+.has-motion .to-draw { opacity: 0; }
+.drawing { display: block; }
+.drawing .ink { fill-opacity: 0; }
+.drawing .pen path { fill: none; stroke: currentColor; stroke-width: 1px; vector-effect: non-scaling-stroke; stroke-linecap: round; }
+.drawing.is-drawn .pen path { stroke-dashoffset: 0 !important; transition: stroke-dashoffset 850ms cubic-bezier(.4, 0, .2, 1) var(--d, 0ms); }
+.drawing.is-drawn .ink { fill-opacity: 1; transition: fill-opacity 900ms ease 1900ms; }
+.drawing.is-drawn .pen { opacity: 0; transition: opacity 600ms ease 2600ms; }
+
+/* A figure a calculator changed flashes the accent for a moment. */
+.is-changed { animation: site-changed 900ms ease-out; }
+@keyframes site-changed { 0% { color: var(--accent); } }
+
+/* Reading progress, appended to the first <header> that has class "top". */
+.top { position: sticky; top: 0; z-index: 10; }
+.progress { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--accent); transform: scaleX(0); transform-origin: left; pointer-events: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .js .reveal { opacity: 1; transform: none; transition: none; }
+  .has-motion .to-draw { opacity: 1; }
+  .drawing .ink { fill-opacity: 1; }
+  .drawing .pen { display: none; }
+  .is-changed { animation: none; }
+}
+@media print {
+  .progress { display: none; }
+  .js [data-picker] [role='tabpanel'] { display: block !important; }
+  .js [data-picker] [role='tablist'] { display: none; }
+  .js .reveal { opacity: 1 !important; transform: none !important; }
+  .has-motion .to-draw { opacity: 1 !important; }
+  .drawing .ink { fill-opacity: 1 !important; }
+  .drawing .pen { display: none; }
+  details > * { display: block; }
+  section { break-inside: auto; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
+/* .pdf-only shows only in the PDF export (which sets .is-pdf on <html>). */
+.pdf-only { display: none !important; }
+.is-pdf .pdf-only { display: revert !important; }

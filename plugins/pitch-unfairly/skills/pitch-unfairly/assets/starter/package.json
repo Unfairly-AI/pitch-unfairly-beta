@@ -24,6 +24,10 @@
     "brand:apply": "node bin/brand-apply.mjs",
     "brand:capture": "node bin/brand-capture.mjs",
     "brand:board": "node bin/brand-board.mjs",
+    "site:check": "node bin/site-check.mjs",
+    "site:build": "node bin/brand-apply.mjs && node bin/site-build.mjs",
+    "site:audit": "node bin/brand-apply.mjs && node bin/site-audit.mjs",
+    "site:manifest": "node bin/site-manifest.mjs",
     "test": "node --test 'test/*.test.mjs'"
   },
   "dependencies": {

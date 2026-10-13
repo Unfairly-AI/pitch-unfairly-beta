@@ -6,6 +6,8 @@ Make a deck that tells one clear story, with every slide designed for its own jo
 
 The difference from a template is the point: each slide is its own composition, not content poured into a shared layout. Templates make every slide look equal, so the slide that matters can't stand out.
 
+**A site instead of a deck.** When the reader will scroll and try numbers on their own rather than watch a presentation (a proposal a broker forwards, a business case, a pricing page for one customer), build a site: the same project, story, brand, and publishing, with sections written as HTML over a model of the numbers. Read the sites guide (`sites.md`) before writing any section, and follow it in place of steps 4 to 6.
+
 ## Workflow
 
 ### 0. Start setup first
@@ -80,7 +82,7 @@ Commercial fonts: use only files the user supplies or licenses; otherwise an ope
 
 ### 4. Compose each slide
 
-Each slide is one file in `src/slides/` with its own markup and scoped `<style>`, including its phone overrides. Design it on the fixed 1920×1080 stage in stage pixels, using the tokens for color, type, spacing, borders, and shadows; never a raw color (the audit fails on one). Use the brand's logo through `<BrandMark>` and its imagery from `src/brand/assets`, and compose in the brand's own manner: a photographic brand opens on its photography, an illustrated brand on its art, a monochrome brand on type and space.
+Each slide is one file in `src/slides/` with its own markup and scoped `<style>`, including its phone overrides. Design it on the fixed 1920×1080 stage in stage pixels, using the tokens for color, type, spacing, borders, and shadows; never a raw color (the audit fails on one). Use the brand's logo through `<BrandMark>` and its imagery from `src/brand/assets`, and compose in the brand's own manner: a photographic brand opens on its photography, an illustrated brand on its art, a monochrome brand on type and space. Reference any file in `public/` with a relative path (`./partners/sony.png`, `url(./logo.svg)`), never one that starts with `/`: the hosted deck is served from a folder, not the site root, so `/partners/sony.png` 404s there even though every local check passes, and publishing refuses it.
 
 For every slide, decide the one focal element first: the number, the chart, the screenshot, the quote. Then build everything else around it, quieter. Read the craft guide (`craft.md`) before composing, and hold every line of slide copy and every speaker note to the voice guide (`voice.md`); craft covers the slide patterns, type scale, color rhythm, motion, and the physical details that make slides feel made rather than generated. Give each slide one motion showpiece that animates its point, using the kit in `deck.css` and `src/components/motion/`.
 
