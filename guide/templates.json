@@ -27,7 +27,8 @@
         "snapchat",
         "linkedin",
         "shark-tank",
-        "columbus"
+        "columbus",
+        "pied-piper"
       ]
     },
     {
@@ -55,7 +56,11 @@
         "spanx",
         "darcy",
         "clueless",
-        "da-vinci"
+        "da-vinci",
+        "carousel",
+        "fyre-festival",
+        "truman-show",
+        "dunder-mifflin"
       ]
     },
     {
@@ -79,7 +84,8 @@
       ],
       "templates": [
         "jurassic-park",
-        "wright"
+        "wright",
+        "monsters-inc"
       ]
     },
     {
@@ -102,7 +108,9 @@
         "A roadmap of promised dates nobody believes"
       ],
       "templates": [
-        "tesla-master-plan"
+        "tesla-master-plan",
+        "jerry-maguire",
+        "oceans-eleven"
       ]
     },
     {
@@ -222,7 +230,9 @@
         "blockbuster",
         "prada",
         "ben-jerrys",
-        "new-coke"
+        "new-coke",
+        "pawnee",
+        "office-space"
       ]
     },
     {
@@ -2332,6 +2342,622 @@
         {
           "beat": "What we'd check again",
           "job": "The lesson to carry into the next analysis, stated as a rule."
+        }
+      ]
+    },
+    {
+      "id": "carousel",
+      "category": "sales",
+      "template": "Sales narrative deck",
+      "name": "Sterling Cooper: The Carousel pitch to Kodak",
+      "year": 1960,
+      "modelName": "the Carousel strategic narrative structure",
+      "hook": "Kodak brought a wheel. Don sold them a time machine.",
+      "example": "https://pitchunfairly.com/templates/carousel/",
+      "deck": "https://pitchunfairly.com/templates/carousel/deck/",
+      "original": "https://en.wikipedia.org/wiki/The_Wheel_(Mad_Men)",
+      "whatMakesItWork": [
+        "Rename the Wheel: One toggle, Wheel or Carousel, rewrites the same three facts in the ad proof from specs into gifts. The machine never changes; the name does all the work.",
+        "Turn the tray: Eight family slides in a tray you can step through, forward and back, or pick from the ring. A full turn ends at home.",
+        "The room meter: Walk the pitch step by step and watch the needle move from Polite to Sold, ending where the episode does: Kodak cancels its other meetings.",
+        "A dated mutual action plan: It ends on six steps with owners on both sides and a date on every line, the first already ticked off. Click to tick the rest. Never \"Thank you\"."
+      ],
+      "beats": [
+        {
+          "beat": "Cover",
+          "job": "The reframe in one line: what the buyer thinks they have, and what you will sell it as."
+        },
+        {
+          "beat": "The shift",
+          "job": "Name an undeniable change in the buyer's world, one they already feel, before you mention the product."
+        },
+        {
+          "beat": "Winners and losers",
+          "job": "Show who wins and who loses in that shift, so standing still has a visible cost."
+        },
+        {
+          "beat": "The promised land",
+          "job": "Describe the future the buyer wins in, in the buyer's terms, not yours."
+        },
+        {
+          "beat": "The magic gift",
+          "job": "Introduce the product as the gift that gets them there: same facts, framed as outcomes, ideally with a new name."
+        },
+        {
+          "beat": "The demo",
+          "job": "Let them feel the gift working before you explain it."
+        },
+        {
+          "beat": "Proof in the room",
+          "job": "Evidence from a buyer like this one that the story lands: what they did, not what they said."
+        },
+        {
+          "beat": "Proof on the record",
+          "job": "Dated, sourced facts that the promised land is real and lasting."
+        },
+        {
+          "beat": "Objections",
+          "job": "The doubts they were about to raise, in their words, each with a short answer."
+        },
+        {
+          "beat": "Mutual action plan",
+          "job": "The next steps with an owner on each side and a date on every line. Never end on \"Thank you\"."
+        }
+      ]
+    },
+    {
+      "id": "jerry-maguire",
+      "category": "work",
+      "template": "Read-ahead memo",
+      "name": "Sports Management International: Jerry Maguire's mission statement",
+      "year": 1996,
+      "modelName": "Jerry Maguire's read-ahead memo structure",
+      "hook": "Everyone applauded the memo. One person followed.",
+      "example": "https://pitchunfairly.com/templates/jerry-maguire/",
+      "deck": "https://pitchunfairly.com/templates/jerry-maguire/deck/",
+      "original": "https://en.wikipedia.org/wiki/Jerry_Maguire",
+      "whatMakesItWork": [
+        "Highlight the line that matters: The summary is one paragraph. Click a sentence and the highlighter says whether it is context or the ask; the decision is the one already marked.",
+        "Slide the cost: Drag from today's client list to the proposal and watch commission fall while attention and calls returned rise. The memo says the cost out loud.",
+        "Answers under the black bar: Four objections, the things people think and do not say, each answer redacted until you press the question. One of them is the client who wants to see the money.",
+        "Count who followed: Play the week: a copy on every desk, applause from every desk, then the lights go out on all but one. A follow-up counts who acted, not who clapped."
+      ],
+      "beats": [
+        {
+          "beat": "Designed cover",
+          "job": "The title is the claim, and the cover says it is a read-ahead and when to read it by."
+        },
+        {
+          "beat": "The one paragraph",
+          "job": "The conclusion and the decision asked for, in the first paragraph, so a skimmer still knows what you want."
+        },
+        {
+          "beat": "The situation",
+          "job": "A few facts the reader half-knows already, plus one story that makes them feel it."
+        },
+        {
+          "beat": "What we believe",
+          "job": "The two or three principles the proposal follows from, so disagreement has somewhere to land."
+        },
+        {
+          "beat": "The proposal",
+          "job": "Specific changes with an owner each, and the author goes first as the pilot."
+        },
+        {
+          "beat": "What it costs",
+          "job": "The honest downside, shown plainly before anyone has to ask for it."
+        },
+        {
+          "beat": "What changes on Monday",
+          "job": "The first week, line by line, with an owner and a date on each."
+        },
+        {
+          "beat": "Objections",
+          "job": "The questions readers will ask, in their words, each answered in a line."
+        },
+        {
+          "beat": "The decision",
+          "job": "Who decides, by when, and the options, including a smaller yes like a pilot."
+        },
+        {
+          "beat": "The follow-up",
+          "job": "A week later, report who acted on it, not who applauded."
+        }
+      ]
+    },
+    {
+      "id": "pied-piper",
+      "category": "pitch",
+      "template": "Demo day pitch deck",
+      "name": "Pied Piper: The TechCrunch Disrupt pitch",
+      "year": 2014,
+      "modelName": "Pied Piper's demo-day pitch structure",
+      "hook": "Hooli tied the score, so Richard rewrote it overnight.",
+      "example": "https://pitchunfairly.com/templates/pied-piper/",
+      "deck": "https://pitchunfairly.com/templates/pied-piper/deck/",
+      "original": "https://en.wikipedia.org/wiki/Optimal_Tip-to-Tip_Efficiency",
+      "whatMakesItWork": [
+        "Toggle middle-out: One file, two approaches: press Ends in and watch it pack from the edges in gray, then Middle-out and watch it pack from the center, tighter, in lime.",
+        "The demo runs on the judge's file: 132 GB of 3D video shrinks to 26.4 GB in a floating app window while the log scrolls and the Weissman score climbs to 5.2. Run it again as often as you like.",
+        "A scoreboard that plays: Hooli Nucleus 2.89, Pied Piper before 2.89, middle-out 3.8, the judge's file 5.2: the bars race in order, with the formula for the score beside them.",
+        "Deal the team: Five cards start in a stack and deal themselves out. Stack them again and flip through, with the $200K seed and the $10M offer they declined pinned above."
+      ],
+      "beats": [
+        {
+          "beat": "Manifesto cover",
+          "job": "One sentence you believe, plus a glimpse of the product: no logo slide, no tagline."
+        },
+        {
+          "beat": "The problem",
+          "job": "The pain shown in the customer's own interface, not as bullets."
+        },
+        {
+          "beat": "The insight",
+          "job": "The one thing you see that the incumbents don't, drawn as a single picture."
+        },
+        {
+          "beat": "Live demo",
+          "job": "The product working on an input you didn't choose, with the result on screen."
+        },
+        {
+          "beat": "Proof vs. the incumbent",
+          "job": "One metric on one scale: you against the best alternative, and how the metric is defined."
+        },
+        {
+          "beat": "Why now",
+          "job": "What just changed in the world, ideally something the incumbent did, that makes this the moment."
+        },
+        {
+          "beat": "Market",
+          "job": "Bottoms-up: customers times price with the math visible, then the bigger rings you earn later."
+        },
+        {
+          "beat": "Team",
+          "job": "Why these people, plus who backed them and what they turned down."
+        },
+        {
+          "beat": "The ask",
+          "job": "The amount, what it is for, and the milestones it buys, with dates. It stays up during questions."
+        }
+      ]
+    },
+    {
+      "id": "fyre-festival",
+      "category": "sales",
+      "template": "Sponsorship prospectus",
+      "name": "Fyre Festival: The sponsorship prospectus",
+      "year": 2017,
+      "modelName": "the honest Fyre Festival sponsorship prospectus",
+      "hook": "A private island, as promised. A cheese sandwich, as delivered.",
+      "example": "https://pitchunfairly.com/templates/fyre-festival/",
+      "deck": "https://pitchunfairly.com/templates/fyre-festival/deck/",
+      "original": "https://en.wikipedia.org/wiki/Fyre_Festival",
+      "whatMakesItWork": [
+        "Promised or Delivered: Every claim has a switch. Flip it and the private island is struck through, with \"a site at Rokers Point\" written in the margin; the chef's cloche becomes the sandwich.",
+        "Footnotes that open: Click any audience number to read its source. The fourth stat is \"No guarantee of attendance\": the line the best prospectuses print and this one didn't.",
+        "Reach meets the room: Four hundred launch-day tiles fill in one by one, then the ledger counts what showed up: about 5,000 tickets, about 500 people on site, zero headliners.",
+        "Tiers that sell out: Reserve a tier and its seats run out until the Sold out stamp lands. Then the commitment form won't let you sign until you've walked the site and seen the talent contracts."
+      ],
+      "beats": [
+        {
+          "beat": "Theme and dates",
+          "job": "The event, the place and the dates in one line, with a footnote on anything a guest could check."
+        },
+        {
+          "beat": "At a glance",
+          "job": "Where, when, how people get there and who is on the bill, each line a claim the sponsor can verify."
+        },
+        {
+          "beat": "The audience",
+          "job": "Who comes and how many, every number footnoted with its source, and \"attendance is not guaranteed\" in writing."
+        },
+        {
+          "beat": "Why sponsor",
+          "job": "Reach next to attendance: impressions are what you sell, the room is what they pay for."
+        },
+        {
+          "beat": "Tier matrix",
+          "job": "Tiers across the top with price and \"X available\", benefits down the side, an audited report in every tier."
+        },
+        {
+          "beat": "Activations",
+          "job": "Where the sponsor's name lives on site, by place: stay, food, payments, stage."
+        },
+        {
+          "beat": "The fine print",
+          "job": "Venue, talent, attendance, cancellation and paid-post disclosure, printed at reading size."
+        },
+        {
+          "beat": "Past results",
+          "job": "Last event's numbers or the organizers' record, from sources the sponsor can look up."
+        },
+        {
+          "beat": "Deadline and contact",
+          "job": "Dated steps with owners on both sides, the commitment deadline, the conditions to check, and who to call."
+        }
+      ]
+    },
+    {
+      "id": "truman-show",
+      "category": "sales",
+      "template": "Media kit",
+      "name": "The Truman Show: The network media kit",
+      "year": 1998,
+      "modelName": "the Truman Show media kit structure",
+      "hook": "5,000 hidden cameras, zero ad breaks, and nobody tells the star.",
+      "example": "https://pitchunfairly.com/templates/truman-show/",
+      "deck": "https://pitchunfairly.com/templates/truman-show/deck/",
+      "original": "https://en.wikipedia.org/wiki/The_Truman_Show",
+      "whatMakesItWork": [
+        "The audience around the clock: A 24-hour dial sweeps from the night shift to prime time; click any daypart to see what is on, who is watching, and which format fits that slot.",
+        "A wall of hidden-camera feeds: Six feeds from the car stereo to the painted sky. Pick one and the main monitor tells you what it can sell, and what it can't (he won't go near the water).",
+        "Spot the placement: Four products hide in his kitchen. Each one you find gets the \"Paid placement\" label it never had, which is what disclosure looks like.",
+        "Prepared for you: Type your brand and it merges into the headline, the proposal and the on-screen label, with a dated plan for both sides."
+      ],
+      "beats": [
+        {
+          "beat": "Cover",
+          "job": "Who you are and the one line that sums up what an advertiser buys."
+        },
+        {
+          "beat": "Mission and trust",
+          "job": "Why the audience trusts you, before a single number. Buyers are renting that trust."
+        },
+        {
+          "beat": "Audience in numbers",
+          "job": "Three or four stat blocks, each with its source underneath. Leave out what you can't source."
+        },
+        {
+          "beat": "Who watches",
+          "job": "When and where the audience shows up, by daypart, section or channel, so a buyer can pick a slot."
+        },
+        {
+          "beat": "Inventory",
+          "job": "Where an ad can actually appear, shown as it looks on the page or screen."
+        },
+        {
+          "beat": "Ad formats",
+          "job": "Each unit named plainly, from the cheapest to the premium integration."
+        },
+        {
+          "beat": "On screen",
+          "job": "A real example of a placement in context, with its disclosure label."
+        },
+        {
+          "beat": "Specs and rules",
+          "job": "What a buyer can and can't run, including how sponsored content is labeled."
+        },
+        {
+          "beat": "Case study",
+          "job": "Brief, placement, result and what you learned, told straight."
+        },
+        {
+          "beat": "Why we label",
+          "job": "The principle that protects the audience, and so the advertiser."
+        },
+        {
+          "beat": "Rate card",
+          "job": "Prices per unit, what is included, and the one term you don't negotiate."
+        },
+        {
+          "beat": "Prepared for",
+          "job": "\"Prepared by [rep] for [client]\": the package, the flight, and a dated next step on both sides."
+        }
+      ]
+    },
+    {
+      "id": "dunder-mifflin",
+      "category": "sales",
+      "template": "Company overview deck",
+      "name": "Dunder Mifflin: The Scranton branch company overview",
+      "year": 2005,
+      "modelName": "the Dunder Mifflin company overview structure",
+      "hook": "Ten clients walked out with their salesman. Then they walked back in.",
+      "example": "https://pitchunfairly.com/templates/dunder-mifflin/",
+      "deck": "https://pitchunfairly.com/templates/dunder-mifflin/deck/",
+      "original": "https://en.wikipedia.org/wiki/The_Office_(American_TV_series)",
+      "whatMakesItWork": [
+        "Refresh the snapshot: Press 2005, 2007, 2010 or 2013 and the one slide you rewrite every quarter updates: manager, owner, branch status, what changed. It plays through all four on entry.",
+        "Watch the clients leave and come back: Ten client folders slide from the Scranton branch to the Michael Scott Paper Company and back again after the buyout. Proof that the relationships are the asset.",
+        "Flip personal service against the big box: Five cards, five questions. The big box wins on price and online ordering, and the deck says so; flip them and Scranton wins the other three.",
+        "Redraw the branch map: A Northeast map with the 570 territory around Scranton. Step through the closures and watch Stamford, Buffalo and Binghamton go dark while their clients flow to Scranton."
+      ],
+      "beats": [
+        {
+          "beat": "Cover",
+          "job": "Who you are and the one thing you do better than anyone, in a sentence."
+        },
+        {
+          "beat": "Why us, in four checks",
+          "job": "The investment-style thesis: four claims a buyer can repeat to their boss, each with its evidence."
+        },
+        {
+          "beat": "Company snapshot",
+          "job": "The facts that change: leaders, ownership, footprint, what is new. The slide you rewrite every quarter."
+        },
+        {
+          "beat": "What we sell",
+          "job": "The products in a breath, then what comes with every order."
+        },
+        {
+          "beat": "Who we serve",
+          "job": "The customer segments, each with a real account story, and the ideal customer in one line."
+        },
+        {
+          "beat": "Proof",
+          "job": "Results and customers. The strongest proof is a customer choosing you twice."
+        },
+        {
+          "beat": "How we compare",
+          "job": "An honest comparison with the main alternative that concedes where they win."
+        },
+        {
+          "beat": "Where we operate",
+          "job": "Your territory and footprint on a map, and how it has changed."
+        },
+        {
+          "beat": "The team",
+          "job": "The names and roles the buyer will actually deal with."
+        },
+        {
+          "beat": "How to buy",
+          "job": "The next step with dates and owners on both sides, and when the deck gets refreshed."
+        }
+      ]
+    },
+    {
+      "id": "pawnee",
+      "category": "strategy",
+      "template": "Marketing plan",
+      "name": "Pawnee Parks and Recreation: The Harvest Festival marketing plan",
+      "year": 2011,
+      "modelName": "the Pawnee Harvest Festival marketing plan structure",
+      "hook": "Earn more than it costs, or Parks closes. Headliner: one tiny horse.",
+      "example": "https://pitchunfairly.com/templates/pawnee/",
+      "deck": "https://pitchunfairly.com/templates/pawnee/deck/",
+      "original": "https://en.wikipedia.org/wiki/Harvest_Festival_(Parks_and_Recreation)",
+      "whatMakesItWork": [
+        "The buzz meter: Toggle the lineup with and without Li'l Sebastian and watch the town go from polite interest to losing its mind.",
+        "Drag the channel mix: Slide budget from earned media to paid ads: reach barely moves, spend eats the profit target. Perd Hapley covers you for free.",
+        "A scorecard that runs live: Press Run the festival and each KPI fills in as the weekend happens: the lost horse, the curse, the blackout, and the number that went green.",
+        "The risk that flips red: Step the register from the plan to the day before to opening morning, as the risk nobody listed turns red and then resolved."
+      ],
+      "beats": [
+        {
+          "beat": "Cover",
+          "job": "The goal and the stakes in one line, plus the plan's owner and period."
+        },
+        {
+          "beat": "The landscape",
+          "job": "What changed in your market since last year, as three facts, before any goal."
+        },
+        {
+          "beat": "The goal in one number",
+          "job": "One number everyone can check the day after, and what happens above and below it."
+        },
+        {
+          "beat": "Audience",
+          "job": "The few segments you serve, what each wants and gets, and who you are not for."
+        },
+        {
+          "beat": "The big idea",
+          "job": "The one sentence the campaign hangs on, short enough for a poster."
+        },
+        {
+          "beat": "Channels",
+          "job": "Earned, partner and paid channels, with the mix and why; each paid dollar must beat a free one."
+        },
+        {
+          "beat": "Program of work",
+          "job": "Workstreams on one timeline, each with an owner, ending on the date that matters."
+        },
+        {
+          "beat": "Budget",
+          "job": "Where the money goes, and which lines are donated, earned or volunteered instead."
+        },
+        {
+          "beat": "KPI scorecard",
+          "job": "Targets set in advance against results, with fixed green, amber and red meanings."
+        },
+        {
+          "beat": "Risks with owners",
+          "job": "Every risk with an owner and a fix, updated when the landscape changes."
+        },
+        {
+          "beat": "The decision",
+          "job": "What you need approved, by whom, on what terms, and what happens the day after yes."
+        }
+      ]
+    },
+    {
+      "id": "office-space",
+      "category": "strategy",
+      "template": "Consulting readout",
+      "name": "Initech: The Bobs' restructuring readout",
+      "year": 1999,
+      "modelName": "the Office Space consulting readout structure",
+      "hook": "Eight bosses, one glitch, and a promotion for the guy who stopped caring.",
+      "example": "https://pitchunfairly.com/templates/office-space/",
+      "deck": "https://pitchunfairly.com/templates/office-space/deck/",
+      "original": "https://en.wikipedia.org/wiki/Office_Space",
+      "whatMakesItWork": [
+        "Read only the titles: One button collapses every slide to its tracker and action title, so you can scroll the readout as a story. If the titles alone hold up, the deck is built right.",
+        "Click through the interview log: Every interview the Bobs held, as a log: what each person said, the firm's read, and the verdict stamp. Milton's entry is the one with no interview.",
+        "Make one mistake: An org chart with eight bosses over one engineer. Press the button and watch all eight come by about the same TPS report.",
+        "The week, as a waterfall: A forty-hour week drains bar by bar while a clock counts down to fifteen minutes of real work. The split is labeled illustrative; only the fifteen minutes is from the interview."
+      ],
+      "beats": [
+        {
+          "beat": "Cover",
+          "job": "The answer as a full sentence, the client, the date, and who it is prepared for."
+        },
+        {
+          "beat": "Executive summary",
+          "job": "Situation, complication, resolution on one slide: the whole readout for someone who reads nothing else."
+        },
+        {
+          "beat": "Scope and method",
+          "job": "Who you talked to, how, and what else you read, so the reader trusts how you know."
+        },
+        {
+          "beat": "Issue tree",
+          "job": "The client's question split into branches that do not overlap, each ending in a question you answered."
+        },
+        {
+          "beat": "Finding one",
+          "job": "The finding as the title, one exhibit that proves it, and a source line under it."
+        },
+        {
+          "beat": "Finding two",
+          "job": "The next branch: a chart that walks from the total to the result, one labeled step at a time."
+        },
+        {
+          "beat": "Finding three",
+          "job": "The last branch, often a reconciliation: the records side by side and where they disagree."
+        },
+        {
+          "beat": "Options considered",
+          "job": "Every option on a 2x2 with the trade-off named, so the choice is visible, not asserted."
+        },
+        {
+          "beat": "Recommendation",
+          "job": "A short list of moves, each a verb, an object, an owner, and the finding it answers."
+        },
+        {
+          "beat": "Implementation roadmap",
+          "job": "Workstreams with owners and dates, firm for the near term, undated for later phases."
+        },
+        {
+          "beat": "Risks",
+          "job": "Each risk with likelihood, impact, owner and mitigation; a blank mitigation is the warning."
+        },
+        {
+          "beat": "Decisions and next steps",
+          "job": "What the client must decide, by when, then who does what this week. Never \"Thank you\"."
+        }
+      ]
+    },
+    {
+      "id": "oceans-eleven",
+      "category": "work",
+      "template": "Project kickoff deck",
+      "name": "Danny Ocean: The Bellagio job kickoff",
+      "year": 2001,
+      "modelName": "the Ocean's Eleven project kickoff structure",
+      "hook": "Eleven specialists, one vault, one night. Every workstream has an owner.",
+      "example": "https://pitchunfairly.com/templates/oceans-eleven/",
+      "deck": "https://pitchunfairly.com/templates/oceans-eleven/deck/",
+      "original": "https://en.wikipedia.org/wiki/Ocean%27s_Eleven",
+      "whatMakesItWork": [
+        "Deal the crew: Eleven playing cards come in face down and turn over one by one: each one's name, specialty and the single workstream they own. Click any card to flip it back.",
+        "Count down to fight night: The plan runs backwards from the date that can't move. Watch the clock count from T-21 days to the opening bell, or click any milestone to see it and its owner.",
+        "A risk heat map you can click: Eight risks, assumptions, issues and dependencies placed by likelihood and impact. Click a dot to open its owner, its response and its status, with the colors' meanings fixed.",
+        "Go only when every light is green: Eight gates, from Frank on the floor to Rusty's agreement, turn green one at a time. The light says No-go until the last one does."
+      ],
+      "beats": [
+        {
+          "beat": "Cover",
+          "job": "The project's name and its outcome in one line, so nobody mistakes what this is."
+        },
+        {
+          "beat": "Objective",
+          "job": "The goal in one sentence, then what \"done\" means in three checks anyone can verify."
+        },
+        {
+          "beat": "Why now",
+          "job": "The date that matters and why it can't move. A deadline set by someone else is the strongest kind."
+        },
+        {
+          "beat": "Scope",
+          "job": "What is in and, just as plainly, what is out, with anything disputed flagged for a decision."
+        },
+        {
+          "beat": "The team",
+          "job": "Everyone on the project, their specialty, and the one workstream each one owns."
+        },
+        {
+          "beat": "Roles (RACI)",
+          "job": "Who is responsible, accountable, consulted and informed for each workstream, with exactly one accountable name per row."
+        },
+        {
+          "beat": "Plan and timeline",
+          "job": "Milestones planned backwards from the date, each with an owner; dates only where they are real."
+        },
+        {
+          "beat": "Budget and funding",
+          "job": "Who pays, why they said yes, and an owner for every line of spend. No figures you can't source."
+        },
+        {
+          "beat": "RAID",
+          "job": "Risks, assumptions, issues and dependencies on a heat map, each with an owner, a response and a status color with a fixed meaning."
+        },
+        {
+          "beat": "How we talk and decide",
+          "job": "The status rhythm, the colors' meanings, who calls go or no-go, and the checklist that must be green first."
+        },
+        {
+          "beat": "The decision",
+          "job": "The one decision you need today, who makes it, and what each person does next. Never \"Questions?\"."
+        }
+      ]
+    },
+    {
+      "id": "monsters-inc",
+      "category": "board",
+      "template": "Quarterly business review",
+      "name": "Monsters, Inc.: The scream shortage quarterly review",
+      "year": 2001,
+      "modelName": "the Monsters, Inc. quarterly business review structure (TL;DR first, priorities scored, lowlights before highlights)",
+      "hook": "Screams: below plan. Laughs: ten times better.",
+      "example": "https://pitchunfairly.com/templates/monsters-inc/",
+      "deck": "https://pitchunfairly.com/templates/monsters-inc/deck/",
+      "original": "https://en.wikipedia.org/wiki/Monsters,_Inc.",
+      "whatMakesItWork": [
+        "The priorities light up: Last quarter's five priorities sit on a factory status board, and the lamps light one row at a time: two red, two yellow, one green.",
+        "Scrub plan versus actual: Drag across thirteen weeks of scream energy against plan and last quarter, and the delta pills recalculate for whichever week you land on.",
+        "Re-sort the leaderboard: The scare floor leaderboard ranks on screams, with Sulley on top. Sort by laughs and Mike, who was never scored, takes first.",
+        "Fill the canisters: Collect a scream and the canister gets a tenth full. Collect a laugh and it fills. Keep pressing; the ratio holds."
+      ],
+      "beats": [
+        {
+          "beat": "Cover",
+          "job": "The company, the period, and the quarter's one-line answer. Sent as a pre-read."
+        },
+        {
+          "beat": "TL;DR and the asks",
+          "job": "The quarter in three lines, then the decisions you need, before any detail."
+        },
+        {
+          "beat": "Last quarter's priorities",
+          "job": "Each priority you committed to last time, scored red, yellow or green against its target."
+        },
+        {
+          "beat": "Scorecard",
+          "job": "Key metrics against plan and against trend, with the change shown as a pill. Never a number alone."
+        },
+        {
+          "beat": "Lowlights",
+          "job": "What went wrong, plainly, before anything that went right. The board finds it anyway."
+        },
+        {
+          "beat": "Highlights",
+          "job": "What went right, with the measure behind it. Shorter than the lowlights."
+        },
+        {
+          "beat": "Customer insight",
+          "job": "What customers are telling you, in their words, and the one signal that changes the plan."
+        },
+        {
+          "beat": "The strategic shift",
+          "job": "The evidence for the change in the simplest comparison you can show, and the new strategy in one sentence."
+        },
+        {
+          "beat": "Next quarter's plan",
+          "job": "Three priorities, one owner each, with a target you can score at the next meeting."
+        },
+        {
+          "beat": "Decisions needed",
+          "job": "The asks again as motions, each with a recommendation, and the date of the next review."
         }
       ]
     },
