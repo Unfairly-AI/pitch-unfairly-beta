@@ -14,7 +14,10 @@ import { dirname } from 'node:path';
 import { parseArgs } from 'node:util';
 import { stateMap } from './site/map.mjs';
 
+// "--frame -79.6,..." starts with a minus, which parseArgs reads as a flag: join it.
+const args = process.argv.slice(2).map((a, i, all) => (all[i - 1] === '--frame' && /^-\d/.test(a) ? null : a === '--frame' && /^-\d/.test(all[i + 1] ?? '') ? `--frame=${all[i + 1]}` : a)).filter((a) => a !== null);
 const { values } = parseArgs({
+  args,
   options: {
     census: { type: 'string', default: 'site/data/census.json' },
     spec: { type: 'string' },

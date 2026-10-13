@@ -124,7 +124,7 @@ export function stateMap(spec) {
   const co = spec.callouts ?? {};
   const callouts = [
     ...labels.filter((l) => co[l.code]).map((l) => `<div class="sm-co" id="${id}-co-${l.code}" role="tooltip"><p class="sm-co-h">${esc(co[l.code].head)}</p><p>${esc(co[l.code].body)}</p></div>`),
-    ...(spec.other ? [`<div class="sm-co" id="${id}-co-other" role="tooltip"><p class="sm-co-h">${esc(`${spec.other.count} live in ${spec.other.states} other states`)}</p><p>${esc(spec.other.detail ?? '')}</p></div>`] : []),
+    ...(spec.other ? [`<div class="sm-co" id="${id}-co-other" role="tooltip"><p class="sm-co-h">${esc(`${spec.other.count} live in ${spec.other.states} other ${spec.other.states === 1 ? 'state' : 'states'}`)}</p><p>${esc(spec.other.detail ?? '')}</p></div>`] : []),
   ];
   const hoverRules = [...labels.map((l) => l.code), ...(spec.other ? ['other'] : [])]
     .map((c) => `.sm-block:has([aria-describedby="${id}-co-${c}"]:is(:hover, :focus)) #${id}-co-${c}`)
@@ -137,7 +137,7 @@ export function stateMap(spec) {
       ${buttons}
   </div>
   <div class="sm-foot">
-    ${spec.other ? `<button type="button" class="sm-other" aria-describedby="${id}-co-other"><b class="num">${spec.other.count}</b><span>in ${spec.other.states} other states</span></button>` : ''}
+    ${spec.other ? `<button type="button" class="sm-other" aria-describedby="${id}-co-other"><b class="num">${spec.other.count}</b><span>in ${spec.other.states} other ${spec.other.states === 1 ? 'state' : 'states'}</span></button>` : ''}
     ${callouts.length ? '<span class="sm-hint">Tap a state</span>' : ''}
   </div>
   ${callouts.length ? `<div class="sm-cos">\n    ${callouts.join('\n    ')}\n  </div>\n  <style>${hoverRules} { opacity: 1; visibility: visible; transform: none; }</style>` : ''}

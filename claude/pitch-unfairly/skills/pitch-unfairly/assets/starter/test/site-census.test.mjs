@@ -87,3 +87,15 @@ test('the state map: real outlines, a label per state, hatching by count, callou
   assert.match(html, /41 live in 15 other states/);
   assert.ok(!/<script/i.test(html), 'parts carry no scripts');
 });
+
+test('the map command takes a frame that starts with a minus', async () => {
+  const { execFileSync } = await import('node:child_process');
+  const { mkdtempSync, writeFileSync, readFileSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const { join } = await import('node:path');
+  const dir = mkdtempSync(join(tmpdir(), 'map-'));
+  writeFileSync(join(dir, 'census.json'), JSON.stringify({ census: { by_state: { VA: 46, DC: 31, MD: 15, PA: 7 } } }));
+  const bin = new URL('../bin/site-map.mjs', import.meta.url).pathname;
+  execFileSync('node', [bin, '--census', join(dir, 'census.json'), '--states', 'VA,DC,MD', '--frame', '-79.6,37.55,-75.35,39.78', '--out', join(dir, 'map.html')], { cwd: dir });
+  assert.match(readFileSync(join(dir, 'map.html'), 'utf8'), /in 1 other state</);
+});
