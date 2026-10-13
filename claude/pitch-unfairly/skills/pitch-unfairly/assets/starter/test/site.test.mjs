@@ -81,6 +81,27 @@ test('each section must report itself, and pages carry no scripts or em dashes',
   assert.ok(errors.some((e) => e.includes("assets/x.png doesn't exist")));
 });
 
+test('the engine pin: same major and at least the pinned minor builds; anything else is refused', async () => {
+  const { engineProblem } = await import('../bin/site/version.mjs');
+  assert.equal(engineProblem('sites@1.1', '1.1.0'), null);
+  assert.equal(engineProblem('sites@1.0', '1.3.0'), null);
+  assert.match(engineProblem('sites@1.4', '1.1.0'), /needs sites engine 1.4/);
+  assert.match(engineProblem('sites@2.0', '1.1.0'), /built for sites engine 2.x/);
+  assert.match(engineProblem('latest', '1.1.0'), /should look like/);
+  const { errors } = checkSite({ site: { ...SITE, engine: 'sites@9.0' }, sections: [{ name: '01-price.html', html: SECTION }] });
+  assert.ok(errors.some((e) => e.includes('engine')));
+});
+
+test('parts: a section can include a reusable part, filled like the section', async () => {
+  const { includeParts } = await import('../bin/site/fill.mjs');
+  const parts = { 'parts/price': '<p>{{weekly}} a week</p>{{> parts/note}}', 'parts/note': '<small>for {{facts.client.name}}</small>' };
+  const missing = [];
+  const html = includeParts('<section data-section="a">{{> parts/price}}{{> parts/gone}}</section>', (n) => parts[n] ?? null, missing);
+  assert.equal(html, '<section data-section="a"><p>{{weekly}} a week</p><small>for {{facts.client.name}}</small></section>');
+  assert.deepEqual(missing, ['{{> parts/gone}} (no site/parts/gone.html)']);
+  assert.match(fillTokens(html, SITE).html, /\$2,400.*Example Co/);
+});
+
 test('a sample site has to say so on the page', () => {
   const { errors } = checkSite({ site: { ...SITE, sample: true }, sections: [{ name: '01-price.html', html: SECTION }] });
   assert.ok(errors.some((e) => e.includes('sample')));

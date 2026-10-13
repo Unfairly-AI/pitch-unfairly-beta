@@ -15,7 +15,9 @@ import { existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { brandCss, fontFaceCss, validateKit } from './brand-lib.mjs';
-import { fillTokens, pageShell } from './site/fill.mjs';
+import { fillTokens, includeParts, pageShell } from './site/fill.mjs';
+import { readFileSync } from 'node:fs';
+import { engineProblem } from './site/version.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 
@@ -36,6 +38,8 @@ async function fontsourceCss(root, pkg) {
 export async function buildSite({ root = '.', out = 'dist-site' } = {}) {
   const at = (p) => join(root, p);
   const site = JSON.parse(await readFile(at('site/site.json'), 'utf8'));
+  const pinProblem = engineProblem(site.engine);
+  if (pinProblem) throw new Error(pinProblem);
   const kit = JSON.parse(await readFile(at('brand/brand.json'), 'utf8'));
   const kitErrors = validateKit(kit);
   if (kitErrors.length) throw new Error(`brand/brand.json: ${kitErrors.join('; ')}`);
@@ -45,7 +49,13 @@ export async function buildSite({ root = '.', out = 'dist-site' } = {}) {
   const part = async (p) => (existsSync(at(p)) ? readFile(at(p), 'utf8') : '');
   const sections = await Promise.all(names.map((n) => readFile(at(`site/sections/${n}`), 'utf8')));
   const raw = `${await part('site/header.html')}\n<main id="top">\n${sections.join('\n')}\n</main>\n${await part('site/footer.html')}`;
-  const { html: body, missing } = fillTokens(raw, site);
+  const partsMissing = [];
+  const readPart = (name) => {
+    const path = at(`site/${name.replace(/\.html$/, '')}.html`);
+    return existsSync(path) ? readFileSync(path, 'utf8') : null;
+  };
+  const { html: body, missing: tokenMissing } = fillTokens(includeParts(raw, readPart, partsMissing), site);
+  const missing = [...partsMissing, ...tokenMissing];
 
   const outDir = at(out);
   await rm(outDir, { recursive: true, force: true });

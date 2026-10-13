@@ -265,6 +265,13 @@ function motion($, $$) {
   };
   const below = (el) => el.getBoundingClientRect().top > innerHeight * 0.92;
 
+  // The motion kit (base.css) plays in a section the first time a quarter of it is on screen.
+  const kit = new IntersectionObserver(
+    (entries) => entries.forEach((en) => en.isIntersecting && (kit.unobserve(en.target), en.target.classList.add('is-active'))),
+    { threshold: 0.25 },
+  );
+  $$('[data-section]').forEach((s) => kit.observe(s));
+
   // Each section's blocks lift in as they arrive (those below the fold).
   const reveal = $$('[data-section] > *').filter(below);
   reveal.forEach((el) => el.classList.add('reveal'));

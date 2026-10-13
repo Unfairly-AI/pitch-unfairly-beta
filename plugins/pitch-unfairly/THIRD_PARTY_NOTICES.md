@@ -13,3 +13,7 @@ The "Design floor" section of the craft guide (`guide/craft.md` in the plugin's 
 Impeccable's own notices credit ehmo's `platform-design-skills` (MIT) for its iOS and Android references. Pitch Unfairly does not include those files.
 
 "Impeccable" is Paul Bakaus's project name. Its use here is attribution only and does not mean he endorses Pitch Unfairly.
+
+## U.S. Census Bureau ZCTA Gazetteer
+
+The census tool's ZIP code centroids (`assets/starter/bin/site/data/zcta/`) are taken from the U.S. Census Bureau's 2023 Gazetteer file for ZIP Code Tabulation Areas, trimmed to each ZIP code's latitude and longitude. It is a work of the U.S. government and in the public domain. The Census Bureau does not endorse Pitch Unfairly.

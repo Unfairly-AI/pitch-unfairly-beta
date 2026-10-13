@@ -11,6 +11,18 @@ import { runModel, displayValues, evaluate, format } from './model.mjs';
 
 export const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
+/** Inline {{> parts/name}} from `read(name)`, up to three levels deep. Missing parts are reported. */
+export function includeParts(html, read, missing = [], depth = 0) {
+  return html.replace(/\{\{>\s*([\w./-]+)\s*\}\}/g, (whole, name) => {
+    const text = depth < 3 ? read(name) : null;
+    if (text == null) {
+      missing.push(`${whole} (no site/${name.replace(/\.html$/, '')}.html)`);
+      return '';
+    }
+    return includeParts(text, read, missing, depth + 1);
+  });
+}
+
 const TOKEN = /\{\{\s*(=\s*[^}|]+?(?:\|\s*\w+)?|[\w.]+)\s*\}\}/g;
 
 /** Fill every token in html. Returns the html and the tokens that didn't resolve. */

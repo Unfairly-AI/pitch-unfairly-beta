@@ -159,6 +159,8 @@ if (process.argv[1]?.endsWith('site-audit.mjs')) {
         if (document.documentElement.scrollWidth > vw + 1) out.push(`the page scrolls sideways (${document.documentElement.scrollWidth}px wide in ${vw}px)`);
         for (const el of document.querySelectorAll('main *')) {
           const r = el.getBoundingClientRect();
+          // Shapes inside an SVG are judged by the SVG itself, which clips them.
+          if (el.ownerSVGElement) continue;
           if (r.width && (r.right > vw + 1 || r.left < -1) && !el.closest('.table-wrap, [data-scroll]') && getComputedStyle(el).position !== 'fixed') {
             const sec = el.closest('[data-section]')?.dataset.section;
             out.push(`<${el.tagName.toLowerCase()}${el.className && typeof el.className === 'string' ? ` class="${el.className}"` : ''}> in section "${sec}" runs off the screen`);
@@ -187,6 +189,9 @@ if (process.argv[1]?.endsWith('site-audit.mjs')) {
 
       // Every section, one screenshot each, without a sticky header laid over its top.
       const unstick = await page.addStyleTag({ content: 'body > header, header.top { position: static !important; }' });
+      // Anything fixed to the screen (a booking bar) isn't part of a section.
+      await page.evaluate(() => document.querySelectorAll('body *').forEach((el) => getComputedStyle(el).position === 'fixed' && el.setAttribute('data-shot-hidden', '')));
+      const hideFixed = await page.addStyleTag({ content: '[data-shot-hidden] { visibility: hidden !important; }' });
       const n = await page.$$eval('[data-section]', (s) => s.length);
       for (let i = 0; i < n; i++) {
         const el = (await page.$$('[data-section]'))[i];
@@ -194,6 +199,7 @@ if (process.argv[1]?.endsWith('site-audit.mjs')) {
         await el.screenshot({ path: join(dir, `${String(i + 1).padStart(2, '0')}-${String(name).replace(/[^\w-]/g, '')}.png`) });
       }
       await unstick.evaluate((n) => n.remove());
+      await hideFixed.evaluate((n) => n.remove());
 
       // Work every control and watch for errors.
       await page.evaluate(async () => {

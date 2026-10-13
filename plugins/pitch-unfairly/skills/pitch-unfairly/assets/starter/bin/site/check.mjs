@@ -2,6 +2,7 @@
 // audit; warnings are judgment calls to read and decide on.
 import { runModel } from './model.mjs';
 import { fillTokens } from './fill.mjs';
+import { ENGINE, engineProblem } from './version.mjs';
 
 const text = (html) =>
   html
@@ -31,6 +32,9 @@ export function checkSite({ site, sections, header = '', footer = '', exists = (
   const warnings = [];
   if (!site.title) errors.push('site.json: add a "title".');
   if (!site.description) warnings.push('site.json: add a "description" (it shows in link previews).');
+  if (!site.engine) warnings.push(`site.json: pin the engine with "engine": "sites@${ENGINE.split('.').slice(0, 2).join('.')}", so the site keeps building the same way as the engine moves on.`);
+  const pinProblem = engineProblem(site.engine);
+  if (pinProblem) errors.push(pinProblem);
   try {
     runModel(site.model ?? {});
   } catch (e) {
@@ -39,8 +43,9 @@ export function checkSite({ site, sections, header = '', footer = '', exists = (
   if (!sections.length) errors.push('site/sections has no .html files.');
 
   const ids = new Set();
-  for (const { name, html } of sections) {
+  for (const { name, html, missingParts = [] } of sections) {
     const where = `sections/${name}`;
+    for (const m of missingParts) errors.push(`${where}: ${m} doesn't exist.`);
     const roots = html.match(/<section\b[^>]*>/gi) ?? [];
     const marked = roots.filter((t) => /\sdata-section(=|\s|>)/.test(t));
     if (marked.length !== 1) errors.push(`${where}: needs exactly one <section data-section="name"> (found ${marked.length}). Views are counted per section.`);

@@ -64,3 +64,70 @@ button { font: inherit; color: inherit; }
 /* .pdf-only shows only in the PDF export (which sets .is-pdf on <html>). */
 .pdf-only { display: none !important; }
 .is-pdf .pdf-only { display: revert !important; }
+
+/* ---------- Motion kit ----------
+   The deck kit, for sites: a section gets .is-active the first time it comes
+   into view, and these play then. Each class's resting style is its finished
+   state, so the PDF, reduced motion, and no-JS all show the end. Stagger with
+   --d (a delay, e.g. style="--d: 120ms").
+     .rise   lift in            .pop    scale in
+     .draw   trace an SVG stroke (give the path pathLength="1")
+     .wipe   reveal left to right (a bar growing to its value)
+     .grow   grow up from the bottom (a column; SVG rects too)
+     .type   type a single line (set --chars)
+     .breathe  the one ambient loop */
+.has-motion [data-section]:not(.is-active) :is(.rise, .pop) { opacity: 0; }
+.has-motion [data-section]:not(.is-active) .draw { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.has-motion [data-section]:not(.is-active) .wipe { clip-path: inset(0 100% 0 0); }
+.has-motion [data-section]:not(.is-active) .grow { transform: scaleY(0); }
+.grow { transform-box: fill-box; transform-origin: 50% 100%; }
+.has-motion .is-active .rise { animation: kit-rise var(--dur-enter, 600ms) var(--ease) var(--d, 0ms) both; }
+.has-motion .is-active .pop { animation: kit-pop 480ms var(--ease-pop, var(--ease)) var(--d, 0ms) both; }
+.has-motion .is-active .draw { animation: kit-draw var(--dur-draw, 1400ms) var(--ease) var(--d, 0ms) both; }
+.has-motion .is-active .wipe { animation: kit-wipe 900ms var(--ease) var(--d, 0ms) both; }
+.has-motion .is-active .grow { animation: kit-grow 800ms var(--ease) var(--d, 0ms) both; }
+.has-motion .is-active .type { display: inline-block; overflow: hidden; white-space: nowrap; vertical-align: bottom; animation: kit-type calc(var(--chars, 20) * 28ms) steps(var(--chars, 20), end) var(--d, 0ms) both; }
+.breathe { animation: kit-breathe 3.6s ease-in-out infinite; }
+@keyframes kit-rise { from { opacity: 0; transform: translateY(16px); } }
+@keyframes kit-pop { from { opacity: 0; transform: scale(.85); } }
+@keyframes kit-draw { from { stroke-dasharray: 1; stroke-dashoffset: 1; } to { stroke-dasharray: 1; stroke-dashoffset: 0; } }
+@keyframes kit-wipe { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes kit-grow { from { transform: scaleY(0); } }
+@keyframes kit-type { from { width: 0; } to { width: calc(var(--chars, 20) * 1ch); } }
+@keyframes kit-breathe { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+@media (prefers-reduced-motion: reduce) { .breathe { animation: none; } }
+
+/* ---------- The state map (bin/site-map.mjs) ----------
+   Ink outlines drawn by the kit's .draw, hatching denser where more people
+   live, a label per state, and a callout under the map on hover or tap. */
+.sm-block { display: grid; gap: 12px; align-content: start; }
+.sm { position: relative; }
+.sm-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden; }
+/* The map runs off the page rather than stopping at a box. */
+.sm-svg { -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent), linear-gradient(transparent, #000 7%, #000 93%, transparent); -webkit-mask-composite: source-in; mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent), linear-gradient(transparent, #000 7%, #000 93%, transparent); mask-composite: intersect; }
+.sm-h { fill: none; stroke: var(--accent); stroke-width: .8; stroke-linecap: round; opacity: .55; }
+.sm-ctx { fill: none; stroke: color-mix(in oklab, var(--ink) 30%, transparent); stroke-width: .7; stroke-linejoin: round; }
+.sm-o { fill: none; stroke: var(--ink); stroke-width: 1.15; stroke-linejoin: round; stroke-linecap: round; }
+.sm-o2 { fill: none; stroke: var(--ink); stroke-width: .6; opacity: .45; stroke-linejoin: round; }
+.sm-solid { fill: var(--ink); stroke: var(--ink); stroke-width: 1; }
+.sm-lead { fill: none; stroke: var(--ink); stroke-width: 1; stroke-dasharray: 2 3; }
+.sm { --dur-draw: 2200ms; }
+.has-motion [data-section]:not(.is-active) .sm :is(.sm-hatch, .sm-solid, .sm-lead, .sm-st) { opacity: 0; }
+.has-motion [data-section].is-active .sm :is(.sm-hatch, .sm-solid, .sm-lead) { opacity: 1; transition: opacity 900ms ease 1.5s; }
+.has-motion [data-section].is-active .sm .sm-st { opacity: 1; transition: opacity 600ms ease 1.9s, background 160ms, box-shadow 160ms; }
+.sm-st { position: absolute; transform: translate(-50%, -50%); display: grid; justify-items: center; gap: 2px; min-width: 60px; min-height: 48px; padding: 6px 10px; border: 0; border-radius: 14px; background: color-mix(in oklab, var(--paper) 85%, transparent); cursor: pointer; color: var(--ink); font: inherit; }
+.sm-st b { font: var(--display-weight) 30px/1 var(--font-display); letter-spacing: -.02em; }
+.sm-st span { font: 600 10px/1.3 var(--font-body); letter-spacing: .14em; text-transform: uppercase; color: var(--ink-muted); }
+.sm-st:hover, .sm-st:focus-visible, .sm-other:hover, .sm-other:focus-visible { background: var(--paper); box-shadow: 0 0 0 1.5px var(--ink); outline: none; }
+.sm-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.sm-other { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px; border: 1px solid var(--border-color); border-radius: 999px; background: var(--paper); cursor: pointer; font: 500 14px/1 var(--font-body); color: var(--ink); }
+.sm-other b { font: var(--display-weight) 20px/1 var(--font-display); }
+.sm-hint { font-size: 13px; color: var(--ink-muted); }
+.sm-cos { display: grid; }
+.sm-co { grid-area: 1 / 1; padding: 16px 20px; background: var(--surface); border: 1px solid var(--border-color); border-radius: 18px; opacity: 0; visibility: hidden; transform: translateY(4px); transition: opacity 180ms, transform 180ms, visibility 0s 180ms; }
+.sm-co-h { font: var(--display-weight) 19px/1.25 var(--font-display); color: var(--ink); margin-bottom: 4px; }
+.sm-co p:not(.sm-co-h) { font-size: 15px; color: var(--ink-muted); }
+.sm-block:has(.sm-st:is(:hover, :focus), .sm-other:is(:hover, :focus)) .sm-hint { visibility: hidden; }
+@media (max-width: 720px) { .sm-st { min-width: 48px; padding: 4px 8px; } .sm-st b { font-size: 22px; } .sm-st span { font-size: 9px; } }
+.is-pdf .sm-hint, .is-pdf .sm-cos { display: none !important; }
+.is-pdf .sm :is(.sm-hatch, .sm-solid, .sm-lead, .sm-st) { opacity: 1 !important; }
