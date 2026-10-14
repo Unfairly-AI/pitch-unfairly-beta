@@ -11,14 +11,17 @@ const text = (html) =>
     .replace(/<!--[\s\S]*?-->/g, ' ')
     .replace(/<[^>]+>/g, ' ');
 
+const CALENDAR = /^(January|February|March|April|May|June|July|August|September|October|November|December|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)$/;
+
 /** Every string fact worth matching ([path, value]), longest first. */
 function factStrings(facts, prefix = '') {
   const out = [];
   for (const [k, v] of Object.entries(facts ?? {})) {
     const path = prefix ? `${prefix}.${k}` : k;
     if (v && typeof v === 'object' && !Array.isArray(v)) out.push(...factStrings(v, path));
-    // A bare number (a year) matches too much ordinary text to police.
-    else if (typeof v === 'string' && v.length >= 4 && !/^\d+$/.test(v)) out.push([path, v]);
+    // A bare number (a year) or a month or weekday on its own matches too much
+    // ordinary text to police.
+    else if (typeof v === 'string' && v.length >= 4 && !/^\d+$/.test(v) && !CALENDAR.test(v)) out.push([path, v]);
   }
   return out.sort((a, b) => b[1].length - a[1].length);
 }
@@ -35,8 +38,9 @@ export function checkSite({ site, sections, header = '', footer = '', exists = (
   if (!site.engine) warnings.push(`site.json: pin the engine with "engine": "sites@${ENGINE.split('.').slice(0, 2).join('.')}", so the site keeps building the same way as the engine moves on.`);
   const pinProblem = engineProblem(site.engine);
   if (pinProblem) errors.push(pinProblem);
+  let values = {};
   try {
-    runModel(site.model ?? {});
+    values = runModel(site.model ?? {});
   } catch (e) {
     errors.push(`site.json model: ${e.message}`);
   }
@@ -71,6 +75,19 @@ export function checkSite({ site, sections, header = '', footer = '', exists = (
     const said = `${plain} ${[...untokened.matchAll(/\s(?:alt|title|aria-label|download|href)="([^"]*)"/g)].map((m) => decode(m[1])).join(' ')}`;
     const typed = plain.match(/[$€£]\s?\d[\d,.]*\s?[KkMmBb]?|\b\d[\d,.]*\s?%|\b\d+(\.\d+)?×/g) ?? [];
     for (const t of new Set(typed.filter((x) => !/^[$€£]\s?0$|^0\s?%$/.test(x.trim())))) errors.push(`${where}: "${t.trim()}" is typed in. Put it in site.json (model or facts) and use a {{token}}, so it updates when the site is copied.`);
+
+    // A plain number that equals a model value is usually that value typed in
+    // ("92 of 133 enrolled"): it won't follow when the site is copied. Years and
+    // one-digit numbers match too much ordinary text to call.
+    const byValue = new Map();
+    for (const [k, v] of Object.entries(values)) {
+      if (Number.isInteger(v) && v >= 10 && !(v >= 1900 && v <= 2100) && !byValue.has(v)) byValue.set(v, k);
+    }
+    const plainNoSvg = text(untokened.replace(/<svg[\s\S]*?<\/svg>/gi, ' '));
+    for (const n of new Set(plainNoSvg.match(/(?<![\w.,$€£-])\d{2,}(?![\w.,%×]|\.\d)/g) ?? [])) {
+      const name = byValue.get(Number(n));
+      if (name) warnings.push(`${where}: "${n}" is the model's ${name}. If that's what it means, write {{${name}}} so it follows a copy.`);
+    }
 
     // Names and other facts too: a copied site must not keep the last customer's name.
     for (const [path, value] of factStrings(site.facts)) {

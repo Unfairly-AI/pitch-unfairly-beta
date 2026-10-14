@@ -155,3 +155,32 @@ test('a copied site with new inputs recomputes every figure', async () => {
   const html = await readFile(join(copy, 'dist-site/index.html'), 'utf8');
   assert.match(html, /Lunch for Other Co is <span data-v="weekly">\$6,000<\/span>/);
 });
+
+test('a site builds from fonts saved in vendor/ when nothing is installed', async () => {
+  const { fontDir } = await import('../bin/site-build.mjs');
+  const { mkdtempSync, mkdirSync, writeFileSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const { join } = await import('node:path');
+  const root = mkdtempSync(join(tmpdir(), 'vendor-'));
+  assert.equal(fontDir(root, '@fontsource-variable/newsreader'), null);
+  mkdirSync(join(root, 'vendor/fonts/@fontsource-variable/newsreader'), { recursive: true });
+  writeFileSync(join(root, 'vendor/fonts/@fontsource-variable/newsreader/index.css'), '');
+  assert.equal(fontDir(root, '@fontsource-variable/newsreader'), join(root, 'vendor/fonts/@fontsource-variable/newsreader'));
+});
+
+test('a typed number equal to a model value is called out', async () => {
+  const { checkSite } = await import('../bin/site/check.mjs');
+  const site = { title: 't', description: 'd', engine: 'sites@1.1', model: { inputs: { enrolled: 133, eligible: 192 }, formulas: { waived: 'eligible - enrolled' } }, facts: {} };
+  const { warnings } = checkSite({ site, sections: [{ name: 'a.html', html: '<section id="a" data-section="a"><p>92 of 133 enrolled, and 59 waived, since 2026. {{enrolled}}</p></section>' }] });
+  assert.ok(warnings.some((w) => /"133" is the model's enrolled/.test(w)), warnings.join('\n'));
+  assert.ok(warnings.some((w) => /"59" is the model's waived/.test(w)));
+  assert.ok(!warnings.some((w) => /"92"|"2026"/.test(w)));
+});
+
+test('a month on its own as a fact is ordinary text, not a typed fact', async () => {
+  const { checkSite } = await import('../bin/site/check.mjs');
+  const site = { title: 't', description: 'd', engine: 'sites@1.1', model: {}, facts: { months: { live: 'January' }, broker: 'Meltzer Group' } };
+  const { errors } = checkSite({ site, sections: [{ name: 'a.html', html: '<section id="a" data-section="a"><p>Our rooms open in January. Meltzer Group knows.</p></section>' }] });
+  assert.ok(!errors.some((e) => /"January"/.test(e)), errors.join('\n'));
+  assert.ok(errors.some((e) => /"Meltzer Group" is typed in/.test(e)));
+});

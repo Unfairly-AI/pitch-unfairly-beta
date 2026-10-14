@@ -21,9 +21,15 @@ import { engineProblem } from './site/version.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 
+/** Where a Fontsource package is: installed, or saved in the project by site:vendor. */
+export function fontDir(root, pkg) {
+  for (const dir of [join(root, 'node_modules', pkg), join(root, 'vendor', 'fonts', pkg)]) if (existsSync(join(dir, 'index.css'))) return dir;
+  return null;
+}
+
 /** Fontsource CSS with its file URLs pointed at fonts/<package>/, and the files to copy. */
 async function fontsourceCss(root, pkg) {
-  const dir = join(root, 'node_modules', pkg);
+  const dir = fontDir(root, pkg);
   const css = await readFile(join(dir, 'index.css'), 'utf8');
   const name = pkg.replace(/^@/, '').replace(/\//g, '-');
   const files = new Set();
@@ -64,7 +70,7 @@ export async function buildSite({ root = '.', out = 'dist-site' } = {}) {
   // Fonts: Fontsource packages are bundled; font files in the kit are copied.
   let fontCss = '';
   for (const pkg of new Set(['display', 'body', 'mono'].map((r) => kit.typography?.[r]).filter((t) => t?.source === 'fontsource').map((t) => t.package))) {
-    if (!existsSync(at(join('node_modules', pkg, 'index.css')))) throw new Error(`Font package ${pkg} isn't installed. Run npm run brand:apply.`);
+    if (!fontDir(root, pkg)) throw new Error(`Font package ${pkg} isn't installed or saved in vendor/fonts. Run npm run brand:apply.`);
     const f = await fontsourceCss(root, pkg);
     fontCss += f.css;
     for (const file of f.files) await cp(join(f.dir, 'files', file), join(outDir, 'fonts', f.name, file));
@@ -83,12 +89,12 @@ export async function buildSite({ root = '.', out = 'dist-site' } = {}) {
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   try {
-    const r = await buildSite();
+    const r = await buildSite({ out: process.argv[2] ?? 'dist-site' });
     if (r.missing.length) {
       console.error(`✗ ${r.missing.length} token(s) didn't resolve:\n${r.missing.map((m) => `  ${m}`).join('\n')}`);
       process.exit(1);
     }
-    console.log(`Built dist-site/index.html: ${r.sections.length} sections.`);
+    console.log(`Built ${r.out}/index.html: ${r.sections.length} sections.`);
   } catch (e) {
     console.error(`✗ ${e.message}`);
     process.exit(1);

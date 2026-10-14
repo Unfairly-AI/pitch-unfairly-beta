@@ -32,7 +32,7 @@ Commands, from the project folder:
 
 ## Numbers come from the model
 
-Every figure on the page comes from `site.json`, never typed into a section. That's what keeps the page, the calculators, and the PDF agreeing, and it's what makes a site reusable: copy it, change the inputs, and every figure follows. `site:check` refuses dollar amounts, percentages, and multiples typed into a section, and any fact (a name, a date) typed instead of its token.
+Every figure on the page comes from `site.json`, never typed into a section. That's what keeps the page, the calculators, and the PDF agreeing, and it's what makes a site reusable: copy it, change the inputs, and every figure follows. `site:check` refuses dollar amounts, percentages, and multiples typed into a section, and any fact (a name, a date) typed instead of its token, and warns when a plain number in a section equals a model value ("92 of 133 enrolled"), since that's usually the value typed in.
 
 ```json
 {
@@ -100,10 +100,12 @@ A section can include a part: `{{> parts/where-map}}` puts `site/parts/where-map
 
 Two tools turn a customer's census into parts. Keep the raw census out of `site/`: it describes each employee, and the project's files are published with every version. The tools write only counts.
 
-- `npm run site:census -- <census.csv or .xlsx> --site "Downtown:20005" --out site/data/census.json` reads an enrollment census (one row per employee or dependent, with a ZIP code column) and writes the summary: enrolled and eligible counts, tiers, how many live in each state (`by_state`), and how many live within each distance of the sites (`--radii 5,10,20`). Sites come from `site/data/sites.json` (`{"sites": [{"name", "zip"}]}`) and from each `--site`; the employer's own places go first. Put the figures in `site.json` and write the sentences yourself.
+- `npm run site:census -- <census.csv or .xlsx> --site "Downtown:20005" --out site/data/census.json` reads an enrollment census (one row per employee or dependent, with a ZIP code column) and writes the summary: enrolled and eligible counts, tiers, how many live in each state (`by_state`), and how many live within each distance of the sites (`--radii 5,10,20`). Sites come from `site/data/sites.json` (`{"sites": [{"name", "zip"}]}`) and from each `--site`; the employer's own places go first. A state or ZIP code with fewer than three people is counted but never named (`small_states`), so the summary can't point at anyone. Put the figures in `site.json` and write the sentences yourself.
 - `npm run site:map -- --states VA,DC,MD` draws where people live as `site/parts/where-map.html`: real state outlines (from the Census Bureau's boundaries) drawn as an uneven pen line, hatched denser where more people live, with each state's count as a button that shows a callout on hover or tap, and the people elsewhere as one "in N other states" button. Callouts come from `site/data/map-callouts.json` (`{"VA": {"head", "body"}}`); `--frame west,south,east,north` sets the view. With no census summary, write the whole spec in `site/data/map.json` and run `npm run site:map -- --spec site/data/map.json`. A state too small to hold its label is inked solid with a leader to it. The map takes the brand's ink and accent, the kit draws it in, and the PDF shows it finished.
 
 Rerun a tool rather than editing what it wrote.
+
+`npm run site:vendor` saves the brand's fonts into `vendor/fonts/`, so the site then builds with plain Node and no `npm install` (`node bin/site-build.mjs <out-dir>`): from a plain copy of the project, or in a sandbox with no network.
 
 ## Design
 

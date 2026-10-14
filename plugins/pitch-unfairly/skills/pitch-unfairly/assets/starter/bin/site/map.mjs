@@ -143,3 +143,23 @@ export function stateMap(spec) {
   ${callouts.length ? `<div class="sm-cos">\n    ${callouts.join('\n    ')}\n  </div>\n  <style>${hoverRules} { opacity: 1; visibility: visible; transform: none; }</style>` : ''}
 </div>`;
 }
+
+/**
+ * A map spec from the census tool's summary: the chosen states (default: the
+ * three with the most people) are drawn, and everyone else is one "other
+ * states" button, including the states too small to name (small_states).
+ */
+export function mapSpec(census, { states, ...rest } = {}) {
+  const byState = census.by_state ?? {};
+  const ranked = Object.entries(byState).sort((a, b) => b[1] - a[1]);
+  const pick = states?.length ? states.map((s) => s.trim().toUpperCase()) : ranked.slice(0, 3).map(([s]) => s);
+  const counts = Object.fromEntries(pick.filter((s) => byState[s]).map((s) => [s, byState[s]]));
+  const others = ranked.filter(([s]) => !(s in counts));
+  const small = census.small_states ?? { states: 0, enrolled: 0 };
+  const named = others.slice(0, 8).map(([s, n]) => `${s} ${n}`);
+  const more = others.length - Math.min(others.length, 8) + small.states;
+  const total = others.reduce((t, [, n]) => t + n, 0) + small.enrolled;
+  const stateCount = others.length + small.states;
+  const detail = [named.join(', '), more ? `${more} more` : ''].filter(Boolean).join(', and ');
+  return { ...rest, counts, ...(stateCount ? { other: { count: total, states: stateCount, detail: `${detail}.` } } : {}) };
+}

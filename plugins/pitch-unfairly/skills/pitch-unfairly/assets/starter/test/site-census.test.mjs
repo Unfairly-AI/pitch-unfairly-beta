@@ -67,7 +67,7 @@ test('an Excel census reads the same as CSV, and the output is aggregates only',
     ['3', 'Waived', 'F', '2020-01-01', 'MD', '20814'],
   ]));
   const rows = await readCensus(join(dir, 'census.xlsx'));
-  const { census, proximity } = analyzeCensus(rows, { year: 2026, region: ['DC', 'MD', 'VA'], sites: [{ name: 'Your office', zip: '22209', home: true }], zips, sourceName: 'census.xlsx' });
+  const { census, proximity } = analyzeCensus(rows, { year: 2026, region: ['DC', 'MD', 'VA'], sites: [{ name: 'Your office', zip: '22209', home: true }], zips, sourceName: 'census.xlsx', minCount: 1 });
   assert.equal(census.eligible, 3);
   assert.equal(census.enrolled, 2);
   assert.equal(census.joined_this_year, 1);
@@ -98,4 +98,15 @@ test('the map command takes a frame that starts with a minus', async () => {
   const bin = new URL('../bin/site-map.mjs', import.meta.url).pathname;
   execFileSync('node', [bin, '--census', join(dir, 'census.json'), '--states', 'VA,DC,MD', '--frame', '-79.6,37.55,-75.35,39.78', '--out', join(dir, 'map.html')], { cwd: dir });
   assert.match(readFileSync(join(dir, 'map.html'), 'utf8'), /in 1 other state</);
+});
+
+test('a state or ZIP code with fewer than three people is counted but never named', () => {
+  const rows = [['Employee ID', 'Coverage Tier', 'Home State', 'Home Zip']];
+  for (let i = 0; i < 5; i++) rows.push([`v${i}`, 'EE', 'VA', '22209']);
+  rows.push(['t1', 'EE', 'TX', '73301'], ['w1', 'EE', 'WY', '82001'], ['w2', 'EE', 'WY', '82001']);
+  const { census, proximity } = analyzeCensus(parseCsv(rows.map((r) => r.join(',')).join('\n')), { year: 2026, sites: [], zips });
+  assert.deepEqual(census.by_state, { VA: 5 });
+  assert.deepEqual(census.small_states, { states: 2, enrolled: 3 });
+  assert.ok(!/TX|WY/.test(census.states.other.detail), census.states.other.detail);
+  assert.deepEqual(proximity.top_zips, [{ zip: '22209', enrolled: 5 }]);
 });

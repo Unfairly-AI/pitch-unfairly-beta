@@ -101,7 +101,7 @@ export function miles([lat1, lon1], [lat2, lon2]) {
 
 // ── The analysis ──
 export function analyzeCensus(rows, opts) {
-  const { year, region = [], radii = [3, 5, 10], sites = [], zips, sourceName = 'census file', asOf, topZips: topN = 4 } = opts;
+  const { year, region = [], radii = [3, 5, 10], sites = [], zips, sourceName = 'census file', asOf, topZips: topN = 4, minCount = 3 } = opts;
   const warnings = [];
   const [header, ...body] = rows;
   const col = matchColumns(header);
@@ -144,11 +144,17 @@ export function analyzeCensus(rows, opts) {
   // States: the state column, or the ZIP's state when it's missing.
   const byState = {};
   enrolled.forEach((p) => p.state && (byState[p.state] = (byState[p.state] ?? 0) + 1));
-  const ranked = Object.entries(byState).sort((a, b) => b[1] - a[1]);
+  // A state or ZIP with fewer than minCount people could point at someone, so
+  // those are counted together and never named.
+  const allRanked = Object.entries(byState).sort((a, b) => b[1] - a[1]);
+  const ranked = allRanked.filter(([, n]) => n >= minCount);
+  const small = allRanked.filter(([, n]) => n < minCount);
+  const smallTotal = small.reduce((t, [, n]) => t + n, 0);
   const inRegionStates = ranked.filter(([s]) => region.includes(s));
-  const others = ranked.filter(([s]) => !region.includes(s));
-  const shown = others.slice(0, 8).map(([s, n]) => `${s} ${n}`);
-  const otherDetail = others.length > 8 ? `${shown.join(', ')}, and ${others.length - 8} more` : shown.join(', ');
+  const others = allRanked.filter(([s]) => !region.includes(s));
+  const named = others.filter(([, n]) => n >= minCount).slice(0, 8);
+  const unnamed = others.length - named.length;
+  const otherDetail = [named.map(([s, n]) => `${s} ${n}`).join(', '), unnamed ? `${unnamed} more state${unnamed === 1 ? '' : 's'} with fewer than ${minCount} each` : ''].filter(Boolean).join(', and ');
 
   // Distances from each enrolled employee's home ZIP centroid to each site.
   const missingZip = new Set();
@@ -168,7 +174,7 @@ export function analyzeCensus(rows, opts) {
 
   const zipCounts = {};
   enrolled.forEach((p) => p.zip && (zipCounts[p.zip] = (zipCounts[p.zip] ?? 0) + 1));
-  const topZips = Object.entries(zipCounts).sort((a, b) => b[1] - a[1]).slice(0, topN);
+  const topZips = Object.entries(zipCounts).filter(([, n]) => n >= minCount).sort((a, b) => b[1] - a[1]).slice(0, topN);
 
   const census = {
     as_of: asOf,
@@ -178,8 +184,9 @@ export function analyzeCensus(rows, opts) {
     ...(women === null ? {} : { women }),
     ...(joined === null ? {} : { joined_this_year: joined }),
     ...(Object.keys(plans).length ? { plans: Object.entries(plans).sort((a, b) => b[1] - a[1]).map(([name, n]) => ({ name, enrolled: n })) } : {}),
-    // Every state's enrolled count, for maps (aggregates only, never people).
+    // Each state's enrolled count, for maps; states under minCount only as small_states.
     by_state: Object.fromEntries(ranked),
+    ...(small.length ? { small_states: { states: small.length, enrolled: smallTotal } } : {}),
     states: {
       top: inRegionStates.map(([s, n]) => ({ name: STATE_NAMES[s] ?? s, enrolled: n })),
       ...(others.length ? { other: { count: others.length, enrolled: others.reduce((t, [, n]) => t + n, 0), detail: otherDetail } } : {}),

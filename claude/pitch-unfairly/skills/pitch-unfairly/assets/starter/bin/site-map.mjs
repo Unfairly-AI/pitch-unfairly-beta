@@ -12,7 +12,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { parseArgs } from 'node:util';
-import { stateMap } from './site/map.mjs';
+import { mapSpec, stateMap } from './site/map.mjs';
 
 // "--frame -79.6,..." starts with a minus, which parseArgs reads as a flag: join it.
 const args = process.argv.slice(2).map((a, i, all) => (all[i - 1] === '--frame' && /^-\d/.test(a) ? null : a === '--frame' && /^-\d/.test(all[i + 1] ?? '') ? `--frame=${all[i + 1]}` : a)).filter((a) => a !== null);
@@ -44,18 +44,14 @@ if (!existsSync(values.census)) {
   process.exit(2);
 }
 const { census } = JSON.parse(readFileSync(values.census, 'utf8'));
-const byState = census.by_state ?? {};
-const ranked = Object.entries(byState).sort((a, b) => b[1] - a[1]);
-const pick = values.states ? values.states.split(',').map((s) => s.trim().toUpperCase()) : ranked.slice(0, 3).map(([s]) => s);
-const counts = Object.fromEntries(pick.filter((s) => byState[s]).map((s) => [s, byState[s]]));
-const others = ranked.filter(([s]) => !pick.includes(s));
-const shown = others.slice(0, 8).map(([s, n]) => `${s} ${n}`);
-const html = stateMap({
-  id: values.id,
-  title: values.title,
-  counts,
-  frame: values.frame ? values.frame.split(',').map(Number) : undefined,
-  callouts: existsSync(values.callouts) ? JSON.parse(readFileSync(values.callouts, 'utf8')) : {},
-  other: others.length ? { count: others.reduce((t, [, n]) => t + n, 0), states: others.length, detail: `${shown.join(', ')}${others.length > 8 ? `, and ${others.length - 8} more` : ''}.` } : undefined,
-});
-write(html, `: ${Object.entries(counts).map(([s, n]) => `${s} ${n}`).join(', ')}${others.length ? `; ${others.length} other states` : ''}`);
+const html = stateMap(
+  mapSpec(census, {
+    states: values.states?.split(','),
+    id: values.id,
+    title: values.title,
+    frame: values.frame ? values.frame.split(',').map(Number) : undefined,
+    callouts: existsSync(values.callouts) ? JSON.parse(readFileSync(values.callouts, 'utf8')) : {},
+  }),
+);
+const shownCounts = Object.entries(census.by_state ?? {}).filter(([st]) => html.includes(`id="${values.id}-co-${st}"`) || html.includes(`aria-describedby="${values.id}-co-${st}"`));
+write(html, `: ${shownCounts.map(([st, n]) => `${st} ${n}`).join(', ')}`);
