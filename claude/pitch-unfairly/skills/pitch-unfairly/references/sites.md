@@ -21,7 +21,7 @@ brand/brand.json        the brand kit, as for a deck
 story.md                the story: audience, the action, and one block per section
 ```
 
-`site.json` names the engine it was built with, `"engine": "sites@1.1"`. A site keeps building with any newer 1.x, and the check refuses an engine older than its pin or a different major version, so a copy made a year from now still builds the way it did. A new site gets the current pin; update an old one's only when you've rebuilt and looked at it.
+`site.json` names the engine it was built with, `"engine": "sites@1.2"`. A site keeps building with any newer 1.x, and the check refuses an engine older than its pin or a different major version, so a copy made a year from now still builds the way it did. A new site gets the current pin; update an old one's only when you've rebuilt and looked at it.
 
 Commands, from the project folder:
 
@@ -59,6 +59,10 @@ In a section:
 - Tokens work inside attributes too (`alt="{{facts.client.name}}"`), as plain text.
 
 A headline that makes a claim has to stay true when the inputs change. "Pays for itself in year one" is only safe if the model says so; when it might not, write a claim the model guarantees, or show the line only `data-when="ret1 >= 1"`.
+
+## Copy is held to the deck rules
+
+A site's words get the same review a deck's do (`voice.md`), read off the page with its tokens filled in. `site:check` refuses an em dash (or a spaced en dash or double hyphen used as one), fragments strung together with middle dots, and a line that opens with a bold label and a colon. It warns, for you to read and decide, on generated-sounding words (unlock, seamless, empower, streamline, leverage and the like), "not just X but Y", a "Title: subtitle" headline, a headline over 110 characters, and an eyebrow or label that only says "Overview" or "Next steps". Quoted words in a `<blockquote>` are someone else's and aren't checked. The blocking rules came with `sites@1.2`; a site pinned to 1.1 sees them as warnings until it's re-pinned.
 
 ## Interactivity is attributes
 

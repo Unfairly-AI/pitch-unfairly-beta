@@ -3,6 +3,7 @@
 import { runModel } from './model.mjs';
 import { fillTokens } from './fill.mjs';
 import { ENGINE, engineProblem } from './version.mjs';
+import { copyFindings } from './copy.mjs';
 
 const text = (html) =>
   html
@@ -45,6 +46,16 @@ export function checkSite({ site, sections, header = '', footer = '', exists = (
     errors.push(`site.json model: ${e.message}`);
   }
   if (!sections.length) errors.push('site/sections has no .html files.');
+  // The copy rules that block came with engine 1.2; a site pinned earlier gets
+  // them as warnings until it's rebuilt and re-pinned, as its pin promises.
+  const pinnedMinor = /^sites@1\.(\d+)/.exec(String(site.engine ?? ''))?.[1];
+  const copyBlocks = pinnedMinor === undefined || Number(pinnedMinor) >= 2;
+  const copy = (where, html) => {
+    const { blocking, advisory } = copyFindings(fillTokens(html, site).html);
+    // Before 1.2 the em dash was already an error of its own (below).
+    for (const b of blocking) if (copyBlocks) errors.push(`${where}: ${b}`); else if (!b.startsWith('has an em dash')) warnings.push(`${where}: ${b}`);
+    for (const a of advisory) warnings.push(`${where}: ${a}`);
+  };
 
   const ids = new Set();
   for (const { name, html, missingParts = [] } of sections) {
@@ -93,7 +104,8 @@ export function checkSite({ site, sections, header = '', footer = '', exists = (
     for (const [path, value] of factStrings(site.facts)) {
       if (said.includes(value)) errors.push(`${where}: "${value}" is typed in. Use {{facts.${path}}}.`);
     }
-    if (/—/.test(plain)) errors.push(`${where}: has an em dash. Rewrite the sentence.`);
+    if (/—/.test(plain) && !copyBlocks) errors.push(`${where}: has an em dash. Rewrite the sentence.`);
+    copy(where, html);
     if (/<script\b/i.test(html)) errors.push(`${where}: has a <script>. Interactivity comes from data attributes (see the sites guide).`);
     if (/\son\w+\s*=/i.test(html)) errors.push(`${where}: has an inline event handler. Use data attributes instead.`);
     if (/<img\b(?![^>]*\salt=)/i.test(html)) errors.push(`${where}: an <img> has no alt (use alt="" for decoration).`);
@@ -116,6 +128,7 @@ export function checkSite({ site, sections, header = '', footer = '', exists = (
     const raw = html.replace(/\{\{[\s\S]*?\}\}/g, ' ');
     const words = `${text(raw)} ${[...raw.matchAll(/\s(?:alt|title|aria-label|download|href)="([^"]*)"/g)].map((m) => { try { return decodeURIComponent(m[1]); } catch { return m[1]; } }).join(' ')}`;
     for (const [path, value] of factStrings(site.facts)) if (words.includes(value)) errors.push(`${name}: "${value}" is typed in. Use {{facts.${path}}}.`);
+    copy(name, html);
     for (const [, href] of html.matchAll(/href="#([^"]+)"/g)) if (href !== 'top' && !ids.has(href)) warnings.push(`${name}: links to #${href}, which no section has.`);
   }
   if (site.sample && !sections.some(({ html }) => /sample/i.test(text(html)))) errors.push('site.json says sample, but no section tells the reader it is one.');

@@ -81,6 +81,39 @@ test('each section must report itself, and pages carry no scripts or em dashes',
   assert.ok(errors.some((e) => e.includes("assets/x.png doesn't exist")));
 });
 
+test('ACCEPTANCE: site copy is held to the deck rules, read with its tokens filled', () => {
+  const html = `<section data-section="a">
+  <span class="eyebrow">Overview</span>
+  <h2>Our catering platform: lunch for {{facts.client.name}} that unlocks a seamless week of eating together at the office, five days a week</h2>
+  <p>20 minutes · video · with the chef</p>
+  <p><strong>Delivery:</strong> every weekday by noon.</p>
+  <p>It's not just lunch, but a reason to stop.</p>
+  <blockquote>“Best lunch we’ve had — truly.”</blockquote>
+</section>`;
+  const { errors, warnings } = checkSite({ site: SITE, sections: [{ name: '01-a.html', html }] });
+  assert.ok(errors.some((e) => /middle dots \("20 minutes · video · with the chef"\)/.test(e)), errors.join('\n'));
+  assert.ok(errors.some((e) => e.includes('bold label and a colon ("Delivery:")')));
+  assert.ok(!errors.some((e) => e.includes('em dash')), 'a blockquote is someone else’s words');
+  assert.ok(warnings.some((w) => w.includes('"unlocks"') && w.includes('Example Co')), 'read with the fact filled in');
+  assert.ok(warnings.some((w) => w.includes('"not X but Y"')));
+  assert.ok(warnings.some((w) => /headline runs 1\d\d characters/.test(w)));
+  assert.ok(warnings.some((w) => w.includes('"Title: subtitle"')));
+  assert.ok(warnings.some((w) => w.includes('the label "Overview"')));
+  // A spaced en dash used as one is an em dash; a numeric range is not.
+  const ranges = checkSite({ site: SITE, sections: [{ name: '01-a.html', html: '<section data-section="a"><p>Open 9–5, Monday to Friday.</p><p>Lunch – then a nap.</p></section>' }] });
+  assert.equal(ranges.errors.filter((e) => e.includes('em dash')).length, 1);
+  assert.match(ranges.errors.find((e) => e.includes('em dash')), /then a nap/);
+});
+
+test('a site pinned before sites@1.2 gets the new copy rules as warnings, as its pin promises', () => {
+  const html = '<section data-section="a"><p>20 minutes · video</p><p>One — two</p></section>';
+  const { errors, warnings } = checkSite({ site: { ...SITE, engine: 'sites@1.1' }, sections: [{ name: '01-a.html', html }] });
+  assert.ok(!errors.some((e) => e.includes('middle dots')));
+  assert.ok(warnings.some((w) => w.includes('middle dots')));
+  assert.equal(errors.filter((e) => e.includes('em dash')).length, 1, 'the em dash already blocked in 1.1');
+  assert.ok(!warnings.some((w) => w.includes('em dash')));
+});
+
 test('the engine pin: same major and at least the pinned minor builds; anything else is refused', async () => {
   const { engineProblem } = await import('../bin/site/version.mjs');
   assert.equal(engineProblem('sites@1.1', '1.1.0'), null);
