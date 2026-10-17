@@ -67,4 +67,17 @@ test('formats', () => {
   assert.equal(format(0.694, 'pct'), '69%');
   assert.equal(format(27.4, 'money_exact'), '$27.4');
   assert.equal(format(1541.5, 'money'), '$1,542');
+  assert.equal(format(0.075, 'pct1'), '7.5%');
+  assert.equal(format(0.132, 'pct1'), '13.2%');
+});
+
+test('ACCEPTANCE: a dated path places today from the viewer\'s clock', async () => {
+  const { pathProgress } = await import('../bin/site/model.mjs');
+  const path = ['2026-10-15', '2026-11-20', '2026-12-01', '2026-12-15', '2027-01-01'];
+  assert.deepEqual(pathProgress(path, '2026-10-15'), { current: 0, progress: 0 });
+  assert.deepEqual(pathProgress(path, '2026-10-16'), { current: 0, progress: 0.03 }, 'a day later, still the first step, the line a little past it');
+  assert.deepEqual(pathProgress(path, '2026-11-26'), { current: 1, progress: 1.55 });
+  assert.deepEqual(pathProgress(path, '2026-10-01'), { current: -1, progress: 0 }, 'before the path: no step is current');
+  assert.deepEqual(pathProgress(path, '2027-03-01'), { current: 4, progress: 4 }, 'after it: the last step');
+  assert.equal(pathProgress(['Nov 20'], '2026-11-20'), null);
 });

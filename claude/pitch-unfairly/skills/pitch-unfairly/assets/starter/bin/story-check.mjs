@@ -81,6 +81,11 @@ export function checkStory(story, library) {
       if (LABELS.has(head.toLowerCase())) errors.push(`${where}: "${f.headline}" is a topic label. State the point as a claim.`);
       else if (words(head).length < 3 && i > 0) warnings.push(`${where}: "${f.headline}" is very short. Is it a claim the audience could repeat?`);
       if (words(head).length > 16) warnings.push(`${where}: the headline has ${words(head).length} words. Tighten it to about 12 so it fits in three lines.`);
+      // Simple copy (voice.md): one idea per sentence, no clauses stacked on clauses.
+      const commas = (head.match(/,/g) ?? []).length;
+      if (commas >= 3 || /;/.test(head)) warnings.push(`${where}: the headline stacks clauses ("${f.headline}"). Say one thing; move the rest to the proof or the notes.`);
+      const said = head.split(/(?<=[.?!])\s+/).filter(Boolean).length;
+      if (said > 2 || (said > 1 && i > 0)) warnings.push(`${where}: the headline is ${said} sentences. Keep one claim${i === 0 ? ' (a cover can carry two short parts)' : ''}.`);
     }
     if (!f.proof && i > 0) errors.push(`${where}: add "Proof:", the one visual or fact that makes the headline believable. No proof usually means it's a speaker line, not a slide.`);
     if (f.proof && !f.source && /\d{2,}|[$%€£]|\d(?:\.\d+)?\s?[kmb]\b/i.test(`${f.proof} ${f.headline ?? ''}`)) warnings.push(`${where}: numbers with no "Source:". Cite it, or mark it "example" and label it on the slide.`);

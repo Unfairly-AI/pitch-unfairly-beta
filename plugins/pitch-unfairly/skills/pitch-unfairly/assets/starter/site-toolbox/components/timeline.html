@@ -1,0 +1,21 @@
+<!-- Timeline: four to six dated milestones. Each has a date, an owner and one line. Give
+     each step data-date (an ISO day): at load the page marks the step today falls in
+     (is-now), the ones before it (is-done) and the next (is-next) from the viewer's
+     clock, fills the line to today, and moves the data-today marker into that step.
+     Write the classes for the day you build too: they stand without script. The step
+     the reader acts on is is-key; the last is-end. On a phone it turns into a stepper. -->
+<section id="timeline" class="tb-band" data-tone="paper" data-section="timeline">
+  <div class="tb-wrap">
+    <div class="tb-head">
+      <p class="tb-eyebrow">The path to {{facts.start_day}}</p>
+      <h2 class="tb-h2">Pick a plan by {{facts.decide}}, and vans run the new routes on {{facts.start}}.</h2>
+    </div>
+    <ol class="tb-timeline" data-in data-dates style="--n:5; --now:0">
+      <li class="tb-step is-now" data-date="2026-10-16"><p class="tb-step-when" data-date-label>Oct 16 <span class="tb-today" data-today>You are here</span></p><span class="tb-step-dot" aria-hidden="true"></span><h3>Read the proposal</h3><p class="tb-step-who">{{facts.client.short}}</p><p class="tb-step-line">Try the numbers and send us questions.</p></li>
+      <li class="tb-step is-key" data-date="2026-11-20"><p class="tb-step-when" data-date-label>Nov 20</p><span class="tb-step-dot" aria-hidden="true"></span><h3>Pick a plan</h3><p class="tb-step-who">{{facts.client.short}}</p><p class="tb-step-line">One signature, and we book the setup.</p></li>
+      <li class="tb-step" data-date="2026-12-01"><p class="tb-step-when" data-date-label>Dec 1</p><span class="tb-step-dot" aria-hidden="true"></span><h3>Connect and map</h3><p class="tb-step-who">{{facts.vendor.name}}</p><p class="tb-step-line">We connect your booking tool and map the depots.</p></li>
+      <li class="tb-step" data-date="2026-12-14"><p class="tb-step-when" data-date-label>Dec 14</p><span class="tb-step-dot" aria-hidden="true"></span><h3>Train dispatch</h3><p class="tb-step-who">Both teams</p><p class="tb-step-line">One hour with the dispatchers, on your own jobs.</p></li>
+      <li class="tb-step is-end" data-date="2027-01-04"><p class="tb-step-when" data-date-label>{{facts.start_day}}</p><span class="tb-step-dot" aria-hidden="true"></span><h3>First routed day</h3><p class="tb-step-who">Both teams</p><p class="tb-step-line">Every van starts the day on the new routes.</p></li>
+    </ol>
+  </div>
+</section>

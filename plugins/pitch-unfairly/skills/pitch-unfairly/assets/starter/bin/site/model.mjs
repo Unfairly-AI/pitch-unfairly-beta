@@ -165,6 +165,8 @@ export const FORMATS = {
   money_exact: (n) => (n < 0 ? '−$' : '$') + Math.abs(n).toLocaleString('en-US', { maximumFractionDigits: 2 }),
   money_k: (n) => (n < 0 ? '−$' : '$') + Math.round(Math.abs(n) / 1000) + 'K',
   pct: (n) => Math.round(n * 100) + '%',
+  // A share to one decimal (7.5%), for published averages.
+  pct1: (n) => Math.round(n * 1000) / 10 + '%',
   mult: (n) => (Math.round(n * 10) / 10).toFixed(1) + '×',
   int: (n) => commas(n),
   number: (n) => String(Math.round(n * 100) / 100),
@@ -181,4 +183,26 @@ export function displayValues(model, env) {
   const out = {};
   for (const [k, v] of Object.entries(env)) if (typeof v === 'number') out[k] = format(v, model.formats?.[k]);
   return out;
+}
+
+/**
+ * Where today falls on a dated path. dates: ISO days ("2026-11-20") in order;
+ * today: an ISO day. Returns { current, progress }: current is the last step
+ * dated on or before today (-1 before the path starts), and progress is where
+ * today sits along the path in steps (2.5 is halfway from the third step to the
+ * fourth), for a line that fills to today. null if any date doesn't parse.
+ */
+export function pathProgress(dates, today) {
+  const day = (iso) => {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(iso));
+    return m ? Date.UTC(Number(m[1]), Number(m[2]) - 1, Number(m[3])) / 864e5 : NaN;
+  };
+  const days = dates.map(day);
+  const t = day(today);
+  if (!days.length || days.some(Number.isNaN) || Number.isNaN(t)) return null;
+  let current = -1;
+  days.forEach((d, i) => d <= t && (current = i));
+  let progress = Math.max(0, current);
+  if (current >= 0 && current < days.length - 1) progress = current + Math.min(1, (t - days[current]) / Math.max(1, days[current + 1] - days[current]));
+  return { current, progress: Math.round(progress * 100) / 100 };
 }

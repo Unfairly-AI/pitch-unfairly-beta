@@ -1,0 +1,22 @@
+<!-- Comparison table: the options in columns, the recommended one lit (is-rec on its
+     header and cells), sources as small tags. Five to seven rows, the price first. On a
+     phone each row becomes a card labelled from data-label. -->
+<section id="options" class="tb-band" data-tone="surface" data-section="options">
+  <div class="tb-wrap">
+    <div class="tb-head">
+      <p class="tb-eyebrow">The plans</p>
+      <h2 class="tb-h2">{{facts.vendor.plan_names.p1}} adds live re-routing, which is where most of the time comes back.</h2>
+    </div>
+    <div class="tb-compare-wrap" data-scroll><table class="tb-compare">
+      <thead><tr><th scope="col"><span class="sr">What you get</span></th><th scope="col">{{facts.vendor.plan_names.p0}}</th><th scope="col" class="is-rec"><span class="tb-rec">Recommended</span>{{facts.vendor.plan_names.p1}}</th><th scope="col">{{facts.vendor.plan_names.p2}}</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">A technician, a month</th><td data-label="{{facts.vendor.plan_names.p0}}"><p>{{= prices[0] | money}}</p><span class="tb-tag">List price</span></td><td class="is-rec" data-label="{{facts.vendor.plan_names.p1}}, recommended"><p>{{= prices[1] | money}}</p><span class="tb-tag">List price</span></td><td data-label="{{facts.vendor.plan_names.p2}}"><p>{{= prices[2] | money}}</p><span class="tb-tag">List price</span></td></tr>
+        <tr><th scope="row">Overnight route planning</th><td data-label="{{facts.vendor.plan_names.p0}}"><span class="tb-yes">Included</span></td><td class="is-rec" data-label="{{facts.vendor.plan_names.p1}}, recommended"><span class="tb-yes">Included</span></td><td data-label="{{facts.vendor.plan_names.p2}}"><span class="tb-yes">Included</span></td></tr>
+        <tr><th scope="row">Live re-routing</th><td data-label="{{facts.vendor.plan_names.p0}}"><span class="tb-no">Not included</span></td><td class="is-rec" data-label="{{facts.vendor.plan_names.p1}}, recommended"><span class="tb-yes">Included</span></td><td data-label="{{facts.vendor.plan_names.p2}}"><span class="tb-yes">Included</span></td></tr>
+        <tr><th scope="row">Arrival texts to customers</th><td data-label="{{facts.vendor.plan_names.p0}}"><span class="tb-no">Not included</span></td><td class="is-rec" data-label="{{facts.vendor.plan_names.p1}}, recommended"><span class="tb-yes">Included</span></td><td data-label="{{facts.vendor.plan_names.p2}}"><span class="tb-yes">Included</span></td></tr>
+        <tr><th scope="row">A named success manager</th><td data-label="{{facts.vendor.plan_names.p0}}"><span class="tb-no">Not included</span></td><td class="is-rec" data-label="{{facts.vendor.plan_names.p1}}, recommended"><span class="tb-no">Not included</span></td><td data-label="{{facts.vendor.plan_names.p2}}"><span class="tb-yes">Included</span></td></tr>
+        <tr><th scope="row">Year one for {{techs}} technicians</th><td data-label="{{facts.vendor.plan_names.p0}}"><p>{{fee_0}}</p></td><td class="is-rec" data-label="{{facts.vendor.plan_names.p1}}, recommended"><p>{{fee_1}}</p><span class="tb-tag tb-tag-ex">Estimate</span></td><td data-label="{{facts.vendor.plan_names.p2}}"><p>{{fee_2}}</p></td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>

@@ -1,0 +1,18 @@
+<!-- Hero: who it's for, a short two-part headline, one sentence, one primary action and
+     one text link, and the art. Nothing else: the decision and the numbers live in the
+     glance band right below it (components/glance.html, in the same file). -->
+<section id="hero" class="tb-hero" data-section="hero">
+  {{> parts/sample}}
+  <div class="tb-wrap tb-hero-grid">
+    <div class="tb-hero-copy">
+      <p class="tb-for"><span>Prepared for</span> <b>{{facts.client.name}}</b> <span class="tb-for-with">by {{facts.vendor.name}}, {{facts.date}}</span></p>
+      <h1><span>Your technicians, back on the road.</span> <span class="hl">An hour back each day.</span></h1>
+      <p class="tb-lede">A scheduling plan for {{facts.client.possessive}} {{techs}} field technicians, live by {{facts.start}}.</p>
+      <div class="tb-hero-actions" data-pdf-hide>
+        <a class="tb-btn tb-btn-primary tb-btn-big" href="#next" data-cta="hero">Book a call</a>
+        <a class="tb-link" href="#calculator">See the numbers <span aria-hidden="true">&rarr;</span></a>
+      </div>
+    </div>
+    <figure class="tb-hero-art"><img data-draw src="assets/drawing.svg" alt="A line drawing of a van on a winding road between stops" width="800" height="600"></figure>
+  </div>
+</section>

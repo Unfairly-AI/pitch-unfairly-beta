@@ -93,6 +93,7 @@ Generated copy gives a deck away faster than generated design. [voice.md](voice.
 38. **No subtitles.** Nothing under a headline that restates or teases it, and no "Title: subtitle" headlines. A line under the headline adds a fact (a number, a date, who it's for) or goes.
 39. **No formulas.** No "It's not X, it's Y", no "Not just X, but Y", no colon reveals ("The result: 3x"), no rhythm-by-threes, no "unlock", "seamless", "elevate", "reimagine", or the rest of the list in voice.md.
 40. **Say it the way the company would.** Specific names and numbers, contractions, the company's own words for its product. Read each headline aloud; if you wouldn't say it to the person across the table, rewrite it.
+41. **Simplify the copy.** Every line in its shortest true form: one idea per sentence, plain words, no stacked clauses, a headline of 12 words or fewer, body lines short enough to read in a glance. Cut until it sounds like you explaining it (voice.md, "Simplify the copy", has the limits).
 
 ## Slide patterns
 

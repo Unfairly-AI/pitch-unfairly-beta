@@ -1,0 +1,16 @@
+<!-- Glance band: the decision in one sentence, then three or four numbers. It sits in the
+     hero's file, after the hero's </section>, with no data-section of its own, so it lifts
+     over the seam on the web and shares the hero's page in the PDF. -->
+<section class="tb-glance-band" aria-label="The proposal at a glance">
+  <div class="tb-wrap">
+    <div class="tb-glance" data-in>
+      <p class="tb-glance-ask"><span class="tb-glance-l">The decision</span> Choose a plan by {{facts.decide}}, and the first routed day is {{facts.start}}.</p>
+      <div class="tb-glance-nums" style="--n:4">
+        <div class="tb-g"><p class="tb-g-label">Year-one fee</p><p class="tb-g-n" data-count>{{fee}}</p><p class="tb-g-c">{{techs}} technicians at {{price}} a month</p></div>
+        <div class="tb-g is-focal"><p class="tb-g-label">Time back, a year</p><p class="tb-g-n" data-count>{{value}}</p><p class="tb-g-c">{{hours}} hours at {{hourly}} an hour</p></div>
+        <div class="tb-g"><p class="tb-g-label">Pays back in</p><p class="tb-g-n"><span data-count>{{payback}}</span> mo</p><p class="tb-g-c">at the adoption we assume</p></div>
+        <div class="tb-g"><p class="tb-g-label">First routed day</p><p class="tb-g-n">{{facts.start_day}}</p><p class="tb-g-c">{{facts.start_year}}, and nothing in your dispatch software changes</p></div>
+      </div>
+    </div>
+  </div>
+</section>

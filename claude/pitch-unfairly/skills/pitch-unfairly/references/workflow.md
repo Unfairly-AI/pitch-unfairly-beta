@@ -6,7 +6,7 @@ Make a deck that tells one clear story, with every slide designed for its own jo
 
 The difference from a template is the point: each slide is its own composition, not content poured into a shared layout. Templates make every slide look equal, so the slide that matters can't stand out.
 
-**A site instead of a deck.** When the reader will scroll and try numbers on their own rather than watch a presentation (a proposal a broker forwards, a business case, a pricing page for one customer), build a site: the same project, story, brand, and publishing, with sections written as HTML over a model of the numbers. Read the sites guide (`sites.md`) before writing any section, and follow it in place of steps 4 to 6.
+**A site instead of a deck.** When the reader will scroll and try numbers on their own rather than watch a presentation (a proposal a broker forwards, a business case, a pricing page for one customer), build a site: the same project, story, brand, and publishing, with sections written as HTML over a model of the numbers. Read the sites guide (`sites.md`) before writing any section, and follow it in place of steps 4 to 6. Start from its toolbox and proposal templates (`npm run site:new -- data-proposal`), not a blank page.
 
 ## Workflow
 

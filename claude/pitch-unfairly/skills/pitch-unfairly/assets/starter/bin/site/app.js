@@ -1,7 +1,7 @@
 // Brings a built site to life: pickers, toggles, and calculators that rerun
 // the site's model (the same model.mjs the build used), plus the motion and
 // the section reporting that gives a hosted site its views.
-import { runModel, displayValues, evaluate, format } from './model.mjs';
+import { runModel, displayValues, evaluate, format, pathProgress } from './model.mjs';
 
 export function hydrate(root, model) {
   document.documentElement.classList.add('js');
@@ -78,6 +78,33 @@ export function hydrate(root, model) {
     );
   });
 
+  // ── Dated paths ([data-dates]): steps carry data-date="2026-11-20". At load,
+  // from the viewer's clock (or ?today=2026-11-25), the last step on or before
+  // today gets is-now, earlier ones is-done, the next one is-next; the path gets
+  // --now (today's position in steps, for a line that fills to today); and a
+  // [data-today] marker moves into the current step's [data-date-label] (it hides
+  // before the path starts). Without script, the classes written in the page stand.
+  const asked = new URLSearchParams(location.search).get('today');
+  const now = new Date();
+  const todayIso = /^\d{4}-\d{2}-\d{2}$/.test(asked ?? '') ? asked : `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+  $$('[data-dates]').forEach((path) => {
+    const steps = [...path.querySelectorAll('[data-date]')];
+    const at = pathProgress(steps.map((s) => s.dataset.date), todayIso);
+    if (!at) return;
+    steps.forEach((s, i) => {
+      s.classList.toggle('is-done', i < at.current);
+      s.classList.toggle('is-now', i === at.current);
+      s.classList.toggle('is-next', i === at.current + 1);
+    });
+    path.style.setProperty('--now', String(at.progress));
+    const marker = path.querySelector('[data-today]');
+    if (marker) {
+      const host = steps[at.current];
+      marker.hidden = !host;
+      if (host) (host.querySelector('[data-date-label]') ?? host.firstElementChild ?? host).appendChild(marker);
+    }
+  });
+
   // ── The model: inputs the reader can change, and everything that follows ──
   const base = { ...(model.inputs ?? {}) };
   const overrides = {};
@@ -112,13 +139,20 @@ export function hydrate(root, model) {
     $$('[data-scale]').forEach((group) => {
       const bars = [...group.querySelectorAll('[data-bar]')];
       const vals = bars.map((b) => Math.max(0, Number(env[b.dataset.bar]) || 0));
-      const max = Math.max(1e-9, ...vals);
+      // data-scale-to="name" measures against a model value instead of the largest bar,
+      // so a chart grows and shrinks as a whole when its input moves.
+      const to = Number(env[group.dataset.scaleTo]);
+      const max = Math.max(1e-9, ...(group.dataset.scaleTo && to > 0 ? [to] : vals));
       bars.forEach((b, i) => {
         const f = vals[i] / max;
         if (b instanceof SVGRectElement) {
           const h = f * Number(b.dataset.max ?? 180);
+          const y = Number(b.dataset.base ?? 190) - h;
           b.setAttribute('height', h.toFixed(1));
-          b.setAttribute('y', (Number(b.dataset.base ?? 190) - h).toFixed(1));
+          b.setAttribute('y', y.toFixed(1));
+          // As style too, so a CSS transition on height and y glides the column when an input moves.
+          b.style.height = h.toFixed(1) + 'px';
+          b.style.y = y.toFixed(1) + 'px';
         } else b.style.width = (f * 100).toFixed(1) + '%';
       });
     });
@@ -157,7 +191,8 @@ export function hydrate(root, model) {
     inp.addEventListener('input', () => {
       overrides[inp.dataset.input] = Number(inp.value);
       showRange(inp);
-      $$('[data-preset]').forEach((b) => b.classList.remove('is-on'));
+      // A slider clears only its own calculator's presets ([data-calc]), or the page's.
+      [...(inp.closest('[data-calc]') ?? root).querySelectorAll('[data-preset]')].forEach((b) => b.classList.remove('is-on'));
       update();
     }),
   );
@@ -167,17 +202,38 @@ export function hydrate(root, model) {
       const own = runModel(model);
       const values = Object.fromEntries(Object.entries(JSON.parse(b.dataset.preset)).map(([k, v]) => [k, typeof v === 'string' ? evaluate(v, own) : v]));
       // A preset starts from the model's own inputs, then applies its values.
-      for (const inp of ranges) delete overrides[inp.dataset.input];
+      // Inside a [data-calc] it resets and marks only that calculator's sliders
+      // and presets, so two calculators on one page leave each other alone.
+      const scope = b.closest('[data-calc]') ?? root;
+      const mine = ranges.filter((inp) => scope.contains(inp));
+      for (const inp of mine) delete overrides[inp.dataset.input];
       Object.assign(overrides, values);
-      ranges.forEach((inp) => {
+      mine.forEach((inp) => {
         const k = inp.dataset.input;
         inp.value = overrides[k] ?? base[k];
         showRange(inp);
       });
-      $$('[data-preset]').forEach((x) => x.classList.toggle('is-on', x === b));
+      [...scope.querySelectorAll('[data-preset]')].forEach((x) => x.classList.toggle('is-on', x === b));
       update();
     }),
   );
+
+  // Choices ([data-choice]): a group of buttons with data-set='{"plan_i":1}'.
+  // A click sets those inputs and nothing else (sliders keep their values) and
+  // marks itself on within its group: a segmented control for an option.
+  $$('[data-choice]').forEach((group) => {
+    const buttons = [...group.querySelectorAll('button[data-set]')];
+    buttons.forEach((b) =>
+      b.addEventListener('click', () => {
+        Object.assign(overrides, JSON.parse(b.dataset.set));
+        buttons.forEach((x) => {
+          x.classList.toggle('is-on', x === b);
+          x.setAttribute('aria-pressed', String(x === b));
+        });
+        update();
+      }),
+    );
+  });
 
   // ── On pitchunfairly.com the site runs in the badged frame. Report each
   // section as it comes into view, the way a deck reports slides, so views
@@ -201,6 +257,17 @@ export function hydrate(root, model) {
     );
     sections.forEach((s) => io.observe(s));
     report(0);
+  }
+  // Calls to action: a click on a [data-cta] element (id "accept", "book_meeting", or
+  // the site's own short id) posts deck:cta to the frame, the same way sections post
+  // deck:slide, just before its link opens in a new tab. The frame records it.
+  // Upstreamed from the WeishFest (v1.2.1) and Mainstay (v1.3.6) kits.
+  if (window.parent !== window) {
+    root.addEventListener('click', (e) => {
+      const el = e.target.closest?.('[data-cta]');
+      if (!el || !/^[A-Za-z0-9_-]{1,40}$/.test(el.dataset.cta)) return;
+      window.parent.postMessage({ type: 'deck:cta', id: el.dataset.cta }, '*');
+    }, true);
   }
   const jump = location.hash.match(/^#(\d{1,3})$/);
   if (jump && sections[Number(jump[1]) - 1]) {

@@ -1,0 +1,37 @@
+<!-- Tiers: two to four plans as cards, the recommended one lit (is-rec, with the
+     Recommended pill) and the only one with a button. Each card: the name, the price
+     with its unit, who it's for in one line, three to five lines of what it adds, and the
+     year-one total. For terms worth comparing row by row, use compare instead. -->
+<section id="plans" class="tb-band" data-tone="paper" data-section="plans">
+  <div class="tb-wrap">
+    <div class="tb-head">
+      <p class="tb-eyebrow">The plans</p>
+      <h2 class="tb-h2">Three plans. {{facts.vendor.plan_names.p1}} is the one we'd choose for {{facts.client.short}}.</h2>
+    </div>
+    <ol class="tb-tiers" style="--n:3">
+      <li class="tb-tier rise">
+        <h3>{{facts.vendor.plan_names.p0}}</h3>
+        <p class="tb-tier-price"><b class="tb-tier-n tb-num" data-count>{{= prices[0] | money}}</b> <span>a technician, a month</span></p>
+        <p class="tb-tier-for">Routes planned overnight, nothing more.</p>
+        <ul><li>Overnight route planning</li><li>Your booking tool, connected</li></ul>
+        <p class="tb-tier-total">Year one, {{techs}} technicians: <b class="tb-num">{{fee_0}}</b></p>
+      </li>
+      <li class="tb-tier is-rec rise" style="--d:120ms">
+        <span class="tb-rec">Recommended</span>
+        <h3>{{facts.vendor.plan_names.p1}}</h3>
+        <p class="tb-tier-price"><b class="tb-tier-n tb-num" data-count>{{= prices[1] | money}}</b> <span>a technician, a month</span></p>
+        <p class="tb-tier-for">For teams whose jobs run long or move.</p>
+        <ul><li>Everything in {{facts.vendor.plan_names.p0}}</li><li>Live re-routing through the day</li><li>Arrival texts to customers</li></ul>
+        <p class="tb-tier-total">Year one, {{techs}} technicians: <b class="tb-num">{{fee_1}}</b></p>
+        <a class="tb-btn tb-btn-primary" href="#next" data-cta="choose_plan">Choose {{facts.vendor.plan_names.p1}}</a>
+      </li>
+      <li class="tb-tier rise" style="--d:240ms">
+        <h3>{{facts.vendor.plan_names.p2}}</h3>
+        <p class="tb-tier-price"><b class="tb-tier-n tb-num" data-count>{{= prices[2] | money}}</b> <span>a technician, a month</span></p>
+        <p class="tb-tier-for">For teams that want a named person on call.</p>
+        <ul><li>Everything in {{facts.vendor.plan_names.p1}}</li><li>A named success manager</li></ul>
+        <p class="tb-tier-total">Year one, {{techs}} technicians: <b class="tb-num">{{fee_2}}</b></p>
+      </li>
+    </ol>
+  </div>
+</section>

@@ -17,3 +17,11 @@ Impeccable's own notices credit ehmo's `platform-design-skills` (MIT) for its iO
 ## U.S. Census Bureau ZCTA Gazetteer
 
 The census tool's ZIP code centroids (`assets/starter/bin/site/data/zcta/`) are taken from the U.S. Census Bureau's 2023 Gazetteer file for ZIP Code Tabulation Areas, trimmed to each ZIP code's latitude and longitude. It is a work of the U.S. government and in the public domain. The Census Bureau does not endorse Pitch Unfairly.
+
+## Sora and DM Sans
+
+The site toolbox's sample banner sets Unfairly's own name in Sora and DM Sans, so a sample reads as Unfairly's and not the page's brand. The two latin variable font files (`skills/pitch-unfairly/assets/starter/site-toolbox/assets/fonts/`) are unmodified copies from Fontsource (`@fontsource-variable/sora`, `@fontsource-variable/dm-sans`).
+
+- Sora: Copyright 2019 The Sora Project Authors (https://github.com/sora-xor/sora-font)
+- DM Sans: Copyright 2014 The DM Sans Project Authors (https://github.com/googlefonts/dm-fonts)
+- License: SIL Open Font License 1.1, full texts in `skills/pitch-unfairly/assets/starter/site-toolbox/licenses/`

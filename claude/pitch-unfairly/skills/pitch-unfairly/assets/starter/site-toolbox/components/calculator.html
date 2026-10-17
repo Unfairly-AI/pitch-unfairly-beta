@@ -1,0 +1,43 @@
+<!-- Calculator: a control panel (a choice, presets, two or three sliders), one big live
+     answer with a one-line consequence, a chart, and the detail behind a toggle. On a
+     phone the answer leads and stays in view while the reader works the controls. -->
+<section id="calculator" class="tb-band" data-tone="paper" data-section="calculator">
+  <div class="tb-wrap">
+    <div class="tb-head">
+      <p class="tb-eyebrow">Try your numbers</p>
+      <h2 class="tb-h2">On the plan we recommend, the time back is worth {{ret_rec}} the fee.</h2>
+    </div>
+    <div class="tb-calc" data-calc>
+      <div class="tb-calc-controls" data-pdf-hide>
+        <div><p class="tb-ctl-label">Plan</p>
+          <div class="tb-seg" data-choice role="group" aria-label="Plan"><button type="button" data-set='{"plan_i":0}' aria-pressed="false">{{facts.vendor.plan_names.p0}}</button><button type="button" class="is-on" data-set='{"plan_i":1}' aria-pressed="true">{{facts.vendor.plan_names.p1}}</button><button type="button" data-set='{"plan_i":2}' aria-pressed="false">{{facts.vendor.plan_names.p2}}</button></div>
+        </div>
+        <div><p class="tb-ctl-label">Start from</p>
+          <div class="tb-presets" role="group" aria-label="Scenario"><button type="button" class="is-on" data-preset='{}'>What we expect</button><button type="button" data-preset='{"adoption":0.5,"minutes":5}'>A slow start</button></div>
+        </div>
+        <label class="tb-slider"><span class="tb-slider-top"><span>Team using it</span><output data-out="adoption">{{adoption}}</output></span><input type="range" min="0.3" max="1" step="0.05" value="0.8" data-input="adoption" data-format="pct"></label>
+        <label class="tb-slider"><span class="tb-slider-top"><span>Minutes saved a job</span><output data-out="minutes">{{minutes}}</output></span><input type="range" min="2" max="20" step="1" value="8" data-input="minutes" data-format="int"></label>
+        <label class="tb-slider"><span class="tb-slider-top"><span>Cost of a technician hour</span><output data-out="hourly">{{hourly}}</output></span><input type="range" min="25" max="90" step="1" value="48" data-input="hourly" data-format="money"></label>
+      </div>
+      <div class="tb-calc-out">
+        <div class="tb-answer">
+          <p class="tb-answer-k">Net to {{facts.client.short}} in year one</p>
+          <p class="tb-answer-n" data-count>{{net}}</p>
+          <p class="tb-answer-line">{{value}} of time back against a {{fee}} fee. It pays back in {{payback}} months.</p>
+        </div>
+        <p class="tb-flag" data-when="net < 0" hidden>At this pace the fee costs more than the time it saves. Try the {{facts.vendor.plan_names.p0}} plan, or start with one crew.</p>
+        <div class="tb-chart" data-scale role="img" aria-label="The fee against the value of the time back">
+          <div class="tb-hbar"><span>Year-one fee</span><span class="tb-hbar-track"><i class="is-base wipe" data-bar="fee"></i></span><span class="tb-hbar-v">{{fee}}</span></div>
+          <div class="tb-hbar is-focal"><span>Time back</span><span class="tb-hbar-track"><i class="wipe" style="--d:150ms" data-bar="value"></i></span><span class="tb-hbar-v">{{value}}</span></div>
+        </div>
+        <details class="tb-more" data-pdf-open><summary>Every plan, side by side</summary>
+          <div class="tb-table-wrap" data-scroll><table class="tb-table">
+            <thead><tr><th scope="col">Plan</th><th scope="col">A technician, a month</th><th scope="col">Year-one fee</th></tr></thead>
+            <tbody><tr><th scope="row">{{facts.vendor.plan_names.p0}}</th><td>{{= prices[0] | money}}</td><td>{{fee_0}}</td></tr><tr class="is-col"><th scope="row">{{facts.vendor.plan_names.p1}}</th><td>{{= prices[1] | money}}</td><td>{{fee_1}}</td></tr><tr><th scope="row">{{facts.vendor.plan_names.p2}}</th><td>{{= prices[2] | money}}</td><td>{{fee_2}}</td></tr></tbody>
+          </table></div>
+        </details>
+      </div>
+    </div>
+    <details class="tb-more"><summary>The assumptions</summary><div class="tb-more-body"><p>{{jobs}} jobs a technician a day over {{= days | int}} working days. Minutes saved is drive time cut per job, from our customers' first year. The hour is wages plus van costs.</p></div></details>
+  </div>
+</section>

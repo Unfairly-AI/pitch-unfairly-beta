@@ -14,6 +14,19 @@ The design review checks every slide for each of them and blocks the deck until 
 4. **No formula contrasts.** "It's not X, it's Y." "Not just X, but Y." "X isn't a feature. It's a movement." "Less X, more Y." State the claim directly.
 5. **Plain words.** These read as generated wherever they appear: unlock, unleash, seamless, effortless, elevate, empower, supercharge, revolutionize, game-changer, cutting-edge, next-generation, harness, leverage (as a verb), robust, delve, landscape, journey, synergy, reimagine, transform, world-class, best-in-class, "in today's fast-paced world". Say what the thing does.
 
+## Simplify the copy
+
+This holds for every build, decks and sites alike. Write the line, then cut it to its shortest true form. A reader skims a slide in seconds and a site on a phone; a short sentence survives that, and a long one gets skipped.
+
+- **Shortest true form.** Cut every word that doesn't change the meaning. "We are pleased to present a proposal that will help Example Co reduce the time its technicians spend driving" becomes "Your technicians drive an hour less a day."
+- **One idea per sentence.** If a sentence has an "and" joining two claims, make it two sentences, or cut the weaker one.
+- **No stacked clauses.** No sentence that runs clause, comma, clause, comma, clause. Three commas in a headline means three ideas.
+- **Plain words.** "Use," not "utilize"; "about," not "approximately"; "start," not "commence"; "help," not "facilitate".
+- **Say it once.** The headline makes the point; the copy under it adds a fact the headline doesn't have, or goes.
+- **Length limits.** Headlines: 12 words or fewer on a slide or a site's hero, 18 on a site section. A hero's lede: one sentence, 30 words or fewer. A section's lede: 35 words. A body paragraph: 60 words, three sentences at most. A sentence: 30 words. Detail past these goes in the speaker notes, behind a toggle, or out.
+
+`npm run story:check` warns on headlines that stack clauses or run to several sentences, and `npm run site:check` warns past each limit above. The warnings are prompts, not verdicts: cut, or keep the line on purpose.
+
 ## The quieter tells
 
 - **Rhythm by threes.** Lists of three adjectives or three short clauses ("fast, simple, and secure") are there for cadence, not meaning. Keep a list of three only when there really are three things, and you'd name them the same way out loud.

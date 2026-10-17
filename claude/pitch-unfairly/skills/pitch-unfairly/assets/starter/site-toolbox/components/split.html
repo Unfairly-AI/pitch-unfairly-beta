@@ -1,0 +1,18 @@
+<!-- Split: the problem or context. The headline makes the point on the left; one short
+     paragraph and the proof (two or three compare bars) sit on the right. -->
+<section id="context" class="tb-band" data-tone="paper" data-section="context">
+  <div class="tb-wrap tb-split">
+    <div>
+      <p class="tb-eyebrow">Where the day goes</p>
+      <h2 class="tb-h2">Each technician loses about {{hours_tech_week}} hours a week to drive time that better routes would cut.</h2>
+    </div>
+    <div class="tb-split-body">
+      <p>Jobs are booked in the order customers call. Routes follow the bookings, so vans cross town twice a day.</p>
+      <div class="tb-bars" data-scale>
+        <div class="tb-bar-row"><p class="tb-bar-top"><span>Drive time that routing could cut, a year</span><b class="tb-num" data-count>{{lost}}</b></p><div class="tb-bar-track"><i class="wipe" data-bar="lost"></i></div></div>
+        <div class="tb-bar-row is-focal"><p class="tb-bar-top"><span>What we expect to win back</span><b class="tb-num" data-count>{{value}}</b></p><div class="tb-bar-track"><i class="wipe" style="--d:200ms" data-bar="value"></i></div></div>
+      </div>
+      <details class="tb-more" data-pdf-open><summary>How we counted it</summary><div class="tb-more-body"><p>{{techs}} technicians, {{jobs}} jobs a day, {{minutes}} minutes saved a job, {{= days | int}} working days, at {{hourly}} an hour. We expect {{adoption}} of the team to use it in year one.</p></div></details>
+    </div>
+  </div>
+</section>

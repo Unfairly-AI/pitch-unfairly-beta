@@ -1,0 +1,17 @@
+<!-- Versus: the risk or edge case, as two outcomes side by side, the one in the reader's
+     favor lit. A headline that depends on the numbers carries data-when, with the other
+     outcome's headline ready and hidden, so the page never says something untrue. -->
+<section id="edge" class="tb-band" data-tone="night" data-section="edge">
+  <div class="tb-wrap">
+    <div class="tb-head">
+      <p class="tb-eyebrow">If adoption is slow</p>
+      <h2 class="tb-h2" data-when="net_half >= 0">Even if only half the team uses it, the time back still covers the fee.</h2>
+      <h2 class="tb-h2" data-when="net_half < 0" hidden>If only half the team uses it, the fee costs more than the time back.</h2>
+    </div>
+    <div class="tb-vs" data-in>
+      <div class="tb-vs-col"><p class="tb-vs-k">Half the team</p><p class="tb-vs-n" data-count>{{net_half}}</p><p class="tb-vs-t">net in year one, on {{value_half}} of time back</p></div>
+      <div class="tb-vs-col is-focal"><p class="tb-vs-k">The team we planned for</p><p class="tb-vs-n" data-count>{{net}}</p><p class="tb-vs-t">net in year one, with {{adoption}} of technicians on it</p></div>
+    </div>
+    <p class="tb-fine">Both follow the plan and the inputs you set in the calculator above.</p>
+  </div>
+</section>

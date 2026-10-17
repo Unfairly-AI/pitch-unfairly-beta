@@ -69,3 +69,14 @@ test('every library template has beats and a known category', () => {
   }
 });
 
+
+test('ACCEPTANCE: a headline that stacks clauses or sentences is a warning (simple copy)', () => {
+  const stacked = { Beat: 'Problem', Job: 'show the pain', Headline: 'Hotels cost a fortune, show you nothing, ignore locals, and charge for wifi.', Proof: 'a receipt', Source: 'example' };
+  const two = { Beat: 'Problem', Job: 'show more pain', Headline: 'Hotels cost a fortune. They show you nothing.', Proof: 'a receipt', Source: 'example' };
+  const { warnings, errors } = checkStory(parseStory(story([good[0], stacked, two])), library);
+  assert.deepEqual(errors, []);
+  assert.ok(warnings.some((w) => w.startsWith('Slide 02') && w.includes('stacks clauses')));
+  assert.ok(warnings.some((w) => w.startsWith('Slide 03') && w.includes('is 2 sentences')));
+  const cover = checkStory(parseStory(story([{ ...good[0], Headline: 'Book rooms with locals. Skip the hotel.' }, good[1]])), library);
+  assert.ok(!cover.warnings.some((w) => w.startsWith('Slide 01') && w.includes('sentences')), 'a cover keeps its two-part headline');
+});

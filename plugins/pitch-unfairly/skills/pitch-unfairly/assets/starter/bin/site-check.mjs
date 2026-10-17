@@ -25,7 +25,7 @@ export async function loadSite(root = '.') {
     if (ref.startsWith('brand/')) return existsSync(join(root, ref));
     return false;
   };
-  return { site, sections, header: await opt('site/header.html'), footer: await opt('site/footer.html'), exists };
+  return { site, sections, header: await opt('site/header.html'), footer: await opt('site/footer.html'), styles: await opt('site/styles.css'), exists };
 }
 
 if (process.argv[1]?.endsWith('site-check.mjs')) {

@@ -1,0 +1,99 @@
+# Site toolbox
+
+The components a proposal site reaches for every time, already built: the hero, the glance band, what you asked for, the calculator, the comparison table, plan cards, the scope, stats, quotes, the team, a statement, the timeline, the FAQ, the close, the sticky header, the sample line, and the viewer panel. Start from these instead of inventing a component. Every section is still written for its reader: copy the component, then change the words, the tokens, the count of items, and the layout where the point needs it.
+
+- `toolbox.css`: every component's styles. It reads only the brand kit's tokens (`--paper`, `--surface`, `--ink`, `--ink-muted`, `--accent`, `--accent-dark`, `--night`, `--on-night`, `--accent-on-night`, `--font-display`, `--font-body`, `--radius-base`, `--radius-button`), so it takes any brand. Copy it to `site/toolbox.css`: the build loads it after the brand and before `site/styles.css`, where the site adapts it. Every class starts with `tb-`.
+- `components/*.html`: one snippet per component, with the engine's attributes and `{{tokens}}` from `example.json`. The comment at the top of each says what it's for.
+- `example.json`: the worked example's model and facts (a made-up scheduling vendor, Northline, proposing to a made-up client). Rename the tokens to your model's.
+- `templates.json`: the two proposal templates, as lists of components in page order.
+- `npm run site:new -- <template>` writes `site/` from a template; `npm run site:new -- --list` shows them.
+- `npm run site:gallery` builds every component on one page in this project's brand (`dist-gallery/`), each labelled with its name and what it's for. Run it once a customer's brand is in, before choosing components, and again after a change to `toolbox.css`.
+
+Every component lays out for a phone at 390 wide (one column, 44px controls, nothing scrolls sideways; a wide table scrolls inside its `data-scroll` wrapper) and for the PDF (`.is-pdf` rules; `data-pdf-hide` on web-only controls; `data-pdf-open` on detail worth printing).
+
+## The rules every component keeps
+
+- **One job per screen.** A screen holds one point, made in its headline, with its proof beside or below it. If a section needs a second point, it's a second section.
+- **One primary action per screen.** Everything else is a text link.
+- **Numbers live in the model.** Every figure is a `{{token}}`; nothing is typed.
+- **Detail is one click away.** Assumptions, methods, full tables and sources go in `<details class="tb-more">`, never in the reader's path.
+- **Real words, real colors.** A quote is a fact with who said it, word for word (`facts.quotes`); every color is a brand token. `site:check` warns on a quote typed into the page and on a raw color in a section or `styles.css`.
+- **Simple copy.** Headlines under 18 words (12 in the hero), ledes under 35, paragraphs under 60, one idea per sentence (voice guide, "Simplify the copy"). `npm run site:check` warns past each limit.
+
+## Motion for charts
+
+Mainstay's sites are the reference: every number and chart moves, quietly, three ways. The components already do all of it; keep it when you adapt them.
+
+- **It enters once.** A headline figure counts up (`data-count`) when it comes into view. Bars `wipe`, columns `grow`, lines `draw` (with `pathLength="1"`), each staggered with `--d` (0, 120, 240ms). The glance band's accent rules and the timeline's steps arrive one after another.
+- **It glides when an input changes.** Every element bound with `data-bar` transitions its width, or its height and y for an SVG column, over 450ms, so a chart follows a slider instead of jumping. Changed figures roll to their new value.
+- **What changed flashes.** A figure the calculator changed flashes the accent; on the accent answer and on night it gets a soft wash instead, so it still shows.
+- **Was and now.** Where the page replaces one figure with another (the renewal against the worst case, a laser against none), put the old one in `tb-was` and the new one in `tb-now` inside a `data-in` parent: the old one is struck through, then the new one lifts in, as on Mainstay's prices.
+- **Today, from the viewer's clock.** A timeline with `data-dates` and a `data-date` on each step marks the current, past and next steps at load, fills its line to today, and moves the `data-today` marker. The classes written in the page are the fallback without script.
+
+Reduced motion and the PDF show every finished state. `site:check` warns on a `data-bar` with no `wipe` or `grow` and on a glance, stat, answer or versus figure without `data-count`.
+
+## Components
+
+### hero
+**Use it** to open every proposal. **Hierarchy:** who it's for (the `tb-for` chip) → a two-part headline (the second part `.hl`, in the accent) → one sentence → one primary button and one text link ("See the numbers") → the art (a line drawing as `<img data-draw>`, the brand's illustration, or a photo). **Limits:** headline 12 words or fewer, about 5 and 5; lede one sentence, 30 words or fewer; two figures at most; about 80 words in all. **Mistakes:** the decision, the price, or a row of numbers in the hero (they go in the glance band); a second and third button ("Save as PDF" belongs in the close and the footer); a lede that lists who it's for, who it's from, and the date (the chip says who; the footer says when).
+
+### glance
+**Use it** right below the hero, in the hero's own file, after its `</section>` and with no `data-section` of its own, so it lifts over the seam on the web and shares the hero's page in the PDF. **Hierarchy:** "The decision" pill and the decision in one sentence → three or four numbers, each a short label, the figure, and a caption under ten words. Mark the number that carries the case `is-focal`. Set `--n` to the count. **Mistakes:** a fifth number; a caption that's a sentence of argument; numbers that aren't in the model.
+
+### heard
+**Use it** early, right after the hero, so the page reads as a reply: three to five things the reader asked for, each answered by the plan in one line. The ask is a short title in the reader's terms (`h3`), the answer one sentence beside it; mark the ask that decides the deal `is-focal`. **Limits:** ask under 7 words, answer under 25. **Mistakes:** asks nobody made ("Best-in-class support"); an answer that's a feature list; quoting the reader without the exact words in the facts.
+
+### split
+**Use it** for the problem or context: the headline on the left, one short paragraph and the proof on the right (two or three `tb-bar-row` compare bars, a `tb-stats` block, or an image). **Limits:** one paragraph, under 40 words. **Mistakes:** three paragraphs explaining the market; bars without their figures printed.
+
+### cards
+**Use it** for how it works: three (at most four) steps or pillars, each a number or icon, a short title, and one line. Mark the one that matters most `is-focal`. **Limits:** title under 7 words, line under 20. **Mistakes:** bullet lists inside cards; five cards.
+
+### calculator
+**Use it** when the reader has a choice to make or wants to try their own numbers. **Hierarchy:** a control panel (a `data-choice` segmented control for the option, `data-preset` buttons for named scenarios, two or three sliders) → one big live answer (`tb-answer-n`) with a one-line consequence → a chart (`tb-hbar` rows in a `data-scale` parent) → the detail table behind `<details class="tb-more">`. A `tb-flag` with `data-when` (start it `hidden`) says when the numbers turn against the reader. Put the whole thing in a `data-calc` so its presets reset only its own sliders. On a phone the answer leads and stays pinned while the reader works the controls. **Limits:** three sliders, four presets, one answer. **Mistakes:** two big numbers fighting for the eye; the assumptions as a paragraph under the chart; a headline the sliders can make false (say what the model guarantees, or show it only `data-when`).
+
+### versus
+**Use it** for the risk or edge case: two outcomes side by side, the one in the reader's favor lit (`is-focal`). **Hierarchy:** a label, one big figure, one line each. When the headline depends on the numbers, write both versions with `data-when` and start the second `hidden`. **Mistakes:** a third column; a headline that's true only at the default inputs.
+
+### compare
+**Use it** to compare terms or plans. Options in columns, the recommended one lit: `is-rec` on its header cell and every cell in its column, with `<span class="tb-rec">Recommended</span>` in the header. Price first, then five or six terms; `tb-yes` and `tb-no` for included and not; a `tb-tag` under a cell names its source ("List price", "Typical market term"); `tb-tag-ex` marks an example. Give each cell `data-label`. On a phone the option names stay as columns and each term's label spans above its values; for a comparison of sentences rather than marks and prices, add `is-text` and each term stacks instead, the lit option first and the other muted below it. **Mistakes:** paragraphs in cells (one line each); more than four columns; a recommendation the table doesn't support.
+
+### tiers
+**Use it** for two to four plans as cards, when each plan is easier to read whole than row by row. The recommended plan is lit (`is-rec`, the `tb-rec` pill) and is the only one with a button. Each card: the name, the price with its unit (`tb-tier-price`, the figure with `data-count`), who it's for in one line, three to five lines of what it adds, and the year-one total. On a phone the recommended card comes first. **Mistakes:** a button on every card; a fifth plan; prices typed in. For terms that need comparing line by line, use compare.
+
+### scope
+**Use it** when what's left out matters as much as what's in: a scope of work, an implementation, a pilot. Two lists side by side, included (`is-in`, with marks) and not included (`is-out`, muted), four to seven plain phrases a side. **Mistakes:** a sentence of argument per line; an empty "not included" list (cut the component instead); hiding a cost the reader will meet later.
+
+### stats
+**Use it** for proof: three or four big numbers, each with a short label and its exact qualifier (what was measured, over what, when) in `tb-stat-q`. The first number takes the accent. **Mistakes:** rounding a published figure ("about 95%" for 94%); dropping the qualifier; a stat without a source in the facts.
+
+### quotes
+**Use it** for testimonials. One large pull quote (`tb-pull`: an oversized quotation mark, the quote in the display face, then a hairline and the attribution: a monogram or logo, name, title and company), then optionally a row of two or three cards (`tb-quotes`, `--n` set to the count). **Rules:** quote the shortest verbatim excerpt that carries the point, word for word, with the attribution as published. Never stack several long quotes; never invent or tidy one. Quotes sit in `<blockquote>`, so the copy check leaves their words alone. **Mistakes:** five quotes in a column; a quote with no title or company; italics for the whole quote.
+
+### team
+**Use it** for the two to four people the reader will actually work with: a photo (an `<img>` in `tb-person-face`) or a monogram, name, role, and one line on what they do on this account. Names, roles and lines are facts (`facts.team`). **Mistakes:** the whole leadership team; bios; stock photos.
+
+### statement
+**Use it** once, for the turn in the argument: the belief the plan rests on, or the line the reader should repeat to their boss. One sentence (`h2.tb-statement-line`) with its second part in the accent, and at most one short line under it. Night or surface tone. **Limits:** 18 words or fewer. **Mistakes:** a slogan the page doesn't prove; two statements on one page; a figure (that's stats or the glance band).
+
+### timeline
+**Use it** for the dated path from now to the start. Four to six steps, each a date, a title, an owner (`tb-step-who`), and one line. Set `--n` to the count and `--now` to today's step (0 is the first); give that step `is-now` and a `tb-today` pill, steps before it `is-done`, the last `is-end`, and the one step the reader acts on (the decision) `is-key`, so it carries the weight. On a wide screen it's horizontal with the path so far filled in the accent; on a phone it's a vertical stepper. **Limits:** one line of 12 words or fewer a step. **Mistakes:** steps with no date or no owner; "Q1" for a date; a sixth step that's a detail of the fifth.
+
+### faq
+**Use it** for the four to eight questions the reader asks before saying yes, in their words. `details.tb-qa`; add `data-pdf-open` to the ones worth printing. Answers run two or three sentences. **Mistakes:** questions nobody asks ("Why choose us?"); answers that repeat a section.
+
+### close
+**Use it** to end. **Hierarchy:** the ask as the headline (what to do, by when) → two or three numbered steps after yes → one primary button and a "Save as PDF" text link → a contact card (name, role, email). The card replaces the button in the PDF. The primary button carries `data-cta="accept"` (or `book_meeting` for a booking link) and opens in a new tab, so a hosted page reports the click (`deck:cta`); the hero's button carries its own short id. **Mistakes:** three buttons; no named person; a close that summarizes the page again.
+
+### header
+**Use it** on any page longer than five screens: the sender's mark, a nav of five to seven sections (it hides under 1100px; the engine marks the section being read and draws a reading-progress hairline), and one button. **Mistakes:** a nav item per section; two buttons.
+
+### sample band (the `sample` component: the band in `components/header.html`, the PDF strip in `parts/sample.html`)
+**Use it** on every sample or spec (`"sample": true` in `site.json`): one slim band at the top of the sticky header, in the Pitch Unfairly house palette (a yellow, cyan or pink band with ink type and a 2px ink rule, a magenta booking pill, the three-dot mark and wordmark set in Sora, the line in DM Sans) whatever the page's brand, so it can't be mistaken for the provider's page. It says what's fictional in one line and carries two calls to action: **Book 30 minutes** (`data-cta="book_meeting"`, a scheduling link) and **Email us** (`data-cta="talk_to_us"`, a mailto with a subject). Both open in a new tab, so the hosted page reports the click. The wordmark is Unfairly's, set as text; the links and labels are facts (`facts.sample.book_label`, `book_href`, `book_print`, `email_label`, `email_href`, `email`), and the palette is tokens (`--tb-sample-paper`, `-ink`, `-magenta`, `-magenta-dark`, `-periwinkle`, `-yellow`, `-cyan`, `-pink`, `--tb-sample-display`, `--tb-sample-body`, and the roles they fill: `--tb-sample-band`, `-pill`, `-pill-ink`, `-pill-hover`, `-close`, `-close-ink`, `-close-hl`), so another kit or sender sets its own. **The clash rule:** the band must never share a hue with the provider. `sampleTone(brand)` in `sample-tone.mjs` reads the provider's saturated colors and returns `{ tone, pill }` for `data-sample-tone` and `data-sample-pill` on the band: the band is whichever of yellow, cyan and pink sits farthest in hue from every provider color (yellow unless another beats it by more than 10 degrees, so a yellow and teal brand gets pink), and the pill is magenta unless a provider color is within 35 degrees of it, then periwinkle, then ink. A purple brand like ParetoHealth keeps magenta (65 degrees apart); a red brand gets periwinkle. Every pair is 4.5:1 or better: ink on each band tone, cream on magenta, ink on periwinkle, and in the close the highlight is a yellow marker behind ink type, because yellow type on magenta is only 3.7:1. Its fonts ship in `assets/fonts/` (OFL, licenses in `licenses/`). On a phone it is one line and the booking button (44px); the PDF, which has no header, carries `parts/sample.html` on its first page with the links written out. The close of an Unfairly sample (`tb-sample-close` on its section) is the house close: magenta with cream type, Sora 800 headline, step chips in yellow, cyan and pink, a cream booking pill, and the same two calls to action (`tb-sample-ctas`); it follows the pill choice, so a periwinkle or ink pill makes a periwinkle or ink close. **Limits:** one line of copy, under 20 words. **Mistakes:** the provider's colors (then it reads as their UI); a modal or overlay that blocks the proposal; a third button. A real proposal for a real client drops the band and `"sample": true`; `site:check` warns on a sample without the band.
+
+### viewers
+**Use it** only on an Unfairly sample, to show the sender what a page like this reports: who opened their named link, what they read, for how long, when, on what device, and how far. Always label the rows as illustrative, and never claim it shows which options anyone clicked.
+
+## Templates
+
+`npm run site:new -- data-proposal` for a proposal where the reader compares options and tries numbers; `npm run site:new -- proposal` for a standard one (hero, what you asked for, how it works, the scope, the team, quotes, the timeline, the FAQ, the close). A template is a starting order, not a page: cut what this reader doesn't need, and swap in tiers or a statement where the point calls for it. The sites guide (`deck_guide` topic `sites`, "Proposal templates") says what goes in each section and what doesn't.

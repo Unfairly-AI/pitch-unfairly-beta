@@ -1,0 +1,39 @@
+{
+  "$comment": "Proposal templates: which toolbox components make each page, in order. npm run site:new -- <template> writes them into site/. Each entry is one section file; an entry with several names joins them in one file (the glance band shares the hero's).",
+  "data-proposal": {
+    "for": "A proposal where the reader compares options and tries numbers: a pricing or savings case, a plan with tiers, a business case a buyer forwards.",
+    "sections": [
+      [
+        "hero",
+        "glance"
+      ],
+      "split",
+      "cards",
+      "calculator",
+      "versus",
+      "compare",
+      "stats",
+      "quotes",
+      "timeline",
+      "faq",
+      "close"
+    ]
+  },
+  "proposal": {
+    "for": "A standard proposal with no calculator: a scope of work, a partnership, a service with one price.",
+    "sections": [
+      [
+        "hero",
+        "glance"
+      ],
+      "heard",
+      "cards",
+      "scope",
+      "team",
+      "quotes",
+      "timeline",
+      "faq",
+      "close"
+    ]
+  }
+}

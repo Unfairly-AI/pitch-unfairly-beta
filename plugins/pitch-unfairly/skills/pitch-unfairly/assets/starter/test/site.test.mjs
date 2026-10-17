@@ -217,3 +217,97 @@ test('a month on its own as a fact is ordinary text, not a typed fact', async ()
   assert.ok(!errors.some((e) => /"January"/.test(e)), errors.join('\n'));
   assert.ok(errors.some((e) => /"Meltzer Group" is typed in/.test(e)));
 });
+
+// ── Simple copy (voice.md): long lines and a crowded hero are warnings with clear messages ──
+const MODEL_SITE = { ...SITE, model: { ...SITE.model, inputs: { ...SITE.model.inputs, fee: 900, saved: 4000 }, formats: { ...SITE.model.formats, fee: 'money', saved: 'money' } } };
+const CALM_HERO = `<section id="hero" data-section="hero">
+  <p class="for">Prepared for {{facts.client.name}}</p>
+  <h1>Lunch, handled. <span class="hl">Every weekday.</span></h1>
+  <p class="lede">A catering plan for {{facts.client.name}}'s {{people}} people, from {{per_head}} a head.</p>
+  <a class="tb-btn tb-btn-primary" href="#next">Book a tasting</a> <a class="tb-link" href="#price">See the numbers</a>
+</section>
+<section class="tb-glance-band"><p>Year one: {{yearly}}, {{weekly}} a week, {{fee}} to start, {{saved}} saved.</p></section>`;
+const CROWDED_HERO = `<section id="hero" data-section="hero">
+  <h1>Lunch for {{facts.client.name}} every weekday, delivered hot, without the volatility of ordering in.</h1>
+  <p class="lede">For the {{people}} people at {{facts.client.name}}, here is a plan that feeds everyone well. It costs {{weekly}} a week and {{yearly}} a year.</p>
+  <p>What we're asking you to decide: start on Monday at {{per_head}} a head.</p>
+  <a class="pill pill-solid" href="#a">Say yes</a> <a class="pill" href="#b">See the price</a> <a class="pill pill-ghost" href="deck.pdf">Save as PDF</a>
+</section>`;
+const heroWarnings = (html) => checkSite({ site: MODEL_SITE, sections: [{ name: '01-hero.html', html }, { name: '02-price.html', html: SECTION }] }).warnings.filter((w) => w.startsWith('sections/01-hero'));
+
+test('ACCEPTANCE: a crowded hero is called out: its headline, lede, buttons and figures', () => {
+  const w = heroWarnings(CROWDED_HERO);
+  assert.ok(w.some((x) => /the headline has 14 words/.test(x)), w.join('\n'));
+  assert.ok(w.some((x) => /the hero lede is 2 sentences/.test(x)));
+  assert.ok(w.some((x) => /the hero has 3 buttons\. Keep one primary action/.test(x)));
+  assert.ok(w.some((x) => /the hero shows 4 figures\. Keep it to 2 or fewer and put the numbers that matter in a glance band/.test(x)));
+});
+
+test('a calm hero passes, and the glance band beside it can hold the numbers', () => {
+  assert.deepEqual(heroWarnings(CALM_HERO), []);
+});
+
+test('long headlines, ledes, paragraphs and sentences are warnings, not errors', () => {
+  const long = (n, w = 'word') => Array.from({ length: n }, () => w).join(' ');
+  const html = `<section id="a" data-section="a"><h2>${long(20)}.</h2><p class="lede">${long(40)}.</p><p>${long(70)}.</p><p>${long(34)}. Short one.</p><details><p>${long(120)}.</p></details><blockquote><p>${long(90)}.</p></blockquote></section>`;
+  const { errors, warnings } = checkSite({ site: SITE, sections: [{ name: '01-price.html', html: SECTION }, { name: '02-a.html', html }] });
+  assert.deepEqual(errors, []);
+  const mine = warnings.filter((w) => w.startsWith('sections/02-a'));
+  assert.ok(mine.some((w) => /the headline has 20 words.*Cut it to 18/.test(w)));
+  assert.ok(mine.some((w) => /the lede has 40 words.*under 35/.test(w)));
+  assert.ok(mine.some((w) => /a paragraph has 70 words.*under 60/.test(w)));
+  assert.ok(mine.some((w) => /a sentence has 34 words.*one idea per sentence/.test(w)));
+  assert.ok(mine.some((w) => /a quote is typed into the page/.test(w)), 'a quote belongs in the facts');
+  assert.equal(mine.filter((w) => !/quote is typed/.test(w)).length, 4, 'the detail in a toggle and a quote are not held to the limits');
+});
+
+test('choices and presets: the page script scopes presets to their calculator and ships data-choice', async () => {
+  const app = await readFile(new URL('../bin/site/app.js', import.meta.url), 'utf8');
+  assert.match(app, /closest\('\[data-calc\]'\)/);
+  assert.match(app, /\[data-choice\]/);
+  const audit = await readFile(new URL('../bin/site-audit.mjs', import.meta.url), 'utf8');
+  assert.match(audit, /\[data-choice\] button/, 'the audit works every choice button');
+});
+
+test('words marked data-copy-ok (a verbatim quote with its own dash) are not held to the copy rules', () => {
+  const html = `<section id="a" data-section="a"><p>As one customer put it, <span data-copy-ok>“it was easy – just a new card”</span>.</p></section>`;
+  const { errors } = checkSite({ site: SITE, sections: [{ name: '01-price.html', html: SECTION }, { name: '02-a.html', html }] });
+  assert.deepEqual(errors, []);
+  const bad = checkSite({ site: SITE, sections: [{ name: '01-price.html', html: SECTION }, { name: '02-a.html', html: html.replace(' data-copy-ok', '') }] });
+  assert.ok(bad.errors.some((e) => e.includes('em dash')));
+});
+
+test('ACCEPTANCE: charts and big figures without motion are called out; a bad step date is refused', () => {
+  const html = `<section id="m" data-section="m"><div data-scale><i data-bar="weekly"></i><i class="wipe" data-bar="yearly"></i></div>
+    <p class="tb-answer-n">{{weekly}}</p><p class="tb-stat-n" data-count>{{yearly}}</p><p class="tb-g-n">{{facts.client.name}}</p><p class="tb-vs-n">$0</p>
+    <ol data-dates><li data-date="2026-11-20"></li><li data-date="Dec 1"></li></ol></section>`;
+  const { errors, warnings } = checkSite({ site: SITE, sections: [{ name: '01-price.html', html: SECTION }, { name: '02-m.html', html }] });
+  const mine = warnings.filter((w) => w.startsWith('sections/02-m'));
+  assert.ok(mine.some((w) => /chart bar \(weekly\) has no entrance/.test(w)));
+  assert.ok(!mine.some((w) => /\(yearly\)/.test(w)), 'a bar with wipe is fine');
+  assert.ok(mine.some((w) => /the figure "\$2,400" doesn't count up/.test(w)));
+  assert.equal(mine.filter((w) => /count up/.test(w)).length, 1, 'counted figures and words are left alone');
+  assert.ok(errors.some((e) => /data-date="Dec 1"/.test(e)));
+});
+
+test('the page script tweens SVG columns by style and places the dated path', async () => {
+  const app = await readFile(new URL('../bin/site/app.js', import.meta.url), 'utf8');
+  assert.match(app, /b\.style\.height = /);
+  assert.match(app, /\[data-dates\]/);
+  assert.match(app, /pathProgress/);
+  assert.match(app, /dataset\.scaleTo/, 'a chart can scale against a model value, so it grows as a whole');
+});
+
+test('ACCEPTANCE: calls to action report deck:cta to the frame (the decks contract), and bad ids are refused', async () => {
+  const app = await readFile(new URL('../bin/site/app.js', import.meta.url), 'utf8');
+  const block = app.slice(app.indexOf('// Calls to action'), app.indexOf('const jump'));
+  assert.match(block, /if \(window\.parent !== window\)/, 'only when framed');
+  assert.match(block, /e\.target\.closest\?\.\('\[data-cta\]'\)/);
+  assert.match(block, /\/\^\[A-Za-z0-9_-\]\{1,40\}\$\//, 'the contract\'s id rule');
+  assert.match(block, /postMessage\(\{ type: 'deck:cta', id: el\.dataset\.cta \}, '\*'\)/);
+  assert.match(block, /\}, true\);/, 'a capturing listener, so it posts before the link opens');
+  const html = `<section id="c" data-section="c"><a data-cta="accept" href="mailto:a@b.example">Yes</a><a data-cta="book a call" href="#x">Book</a></section>`;
+  const { errors, warnings } = checkSite({ site: SITE, sections: [{ name: '01-price.html', html: SECTION }, { name: '02-c.html', html }] });
+  assert.ok(errors.some((e) => /data-cta="book a call" isn't a valid id/.test(e)));
+  assert.ok(warnings.some((w) => /"accept" leaves the page in the same tab/.test(w)));
+});

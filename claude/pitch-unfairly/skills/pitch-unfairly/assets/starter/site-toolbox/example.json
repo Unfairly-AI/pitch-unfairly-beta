@@ -1,0 +1,158 @@
+{
+  "$comment": "The toolbox's worked example: a made-up scheduling vendor's proposal to a made-up client. Every component's tokens refer to this model. npm run site:new copies it to site/site.json; change the inputs, formulas and facts to yours, and rename tokens in the sections to match.",
+  "engine": "sites@1.3",
+  "title": "Northline scheduling for Harlow Services (sample)",
+  "description": "A sample proposal: route planning and scheduling for Harlow Services's field technicians.",
+  "sample": true,
+  "model": {
+    "inputs": {
+      "techs": 40,
+      "jobs": 5,
+      "minutes": 8,
+      "hourly": 48,
+      "days": 230,
+      "adoption": 0.8,
+      "prices": [
+        79,
+        119,
+        169
+      ],
+      "plan_i": 1,
+      "rec_i": 1
+    },
+    "formulas": {
+      "price": "prices[plan_i]",
+      "fee": "techs * price * 12",
+      "hours": "techs * adoption * jobs * minutes / 60 * days",
+      "value": "hours * hourly",
+      "net": "value - fee",
+      "ret": "value / fee",
+      "payback": "round(fee / value * 12 * 10) / 10",
+      "hours_tech_week": "round(jobs * minutes / 60 * 5)",
+      "lost": "techs * jobs * minutes / 60 * days * hourly",
+      "fee_rec": "techs * prices[rec_i] * 12",
+      "value_half": "value * 0.5 / adoption",
+      "net_half": "value_half - fee",
+      "fee_0": "techs * prices[0] * 12",
+      "fee_1": "techs * prices[1] * 12",
+      "fee_2": "techs * prices[2] * 12",
+      "ret_rec": "value / fee_rec"
+    },
+    "formats": {
+      "hourly": "money",
+      "price": "money",
+      "fee": "money",
+      "value": "money",
+      "net": "money",
+      "ret": "mult",
+      "payback": "number",
+      "hours": "int",
+      "hours_tech_week": "int",
+      "lost": "money",
+      "fee_rec": "money",
+      "value_half": "money",
+      "net_half": "money",
+      "adoption": "pct",
+      "fee_0": "money",
+      "fee_1": "money",
+      "fee_2": "money",
+      "techs": "int",
+      "minutes": "int",
+      "jobs": "int",
+      "ret_rec": "mult"
+    }
+  },
+  "facts": {
+    "vendor": {
+      "name": "Northline",
+      "plan_names": {
+        "p0": "Basic",
+        "p1": "Standard",
+        "p2": "Plus"
+      }
+    },
+    "client": {
+      "name": "Harlow Services",
+      "short": "Harlow",
+      "possessive": "Harlow Services’"
+    },
+    "contact": {
+      "name": "Jordan Reyes",
+      "first": "Jordan",
+      "role": "Head of partnerships",
+      "email": "jordan@northline.example"
+    },
+    "team": {
+      "t1": {
+        "name": "Jordan Reyes",
+        "role": "Head of partnerships",
+        "mono": "JR",
+        "line": "Your contact through signature, and on the first call after it."
+      },
+      "t2": {
+        "name": "Priya Nair",
+        "role": "Implementation lead",
+        "mono": "PN",
+        "line": "Connects your booking tool and runs both dispatch trainings."
+      },
+      "t3": {
+        "name": "Marcus Bell",
+        "role": "Success manager",
+        "mono": "MB",
+        "line": "Sends the monthly report and checks the routes with dispatch."
+      }
+    },
+    "date": "October 2026",
+    "decide": "November 20, 2026",
+    "start": "January 4, 2027",
+    "start_day": "Jan 4",
+    "start_year": "2027",
+    "pdf_name": "Northline proposal for Harlow Services (sample).pdf",
+    "proof": {
+      "teams": "300+",
+      "teams_l": "field teams scheduled on Northline",
+      "teams_q": "Customers at the end of June 2026",
+      "miles": "18%",
+      "miles_l": "fewer miles driven per job",
+      "miles_q": "Median across customers in their first year, 2025",
+      "renew": "94%",
+      "renew_l": "of customers renew",
+      "renew_q": "Logo retention, trailing 12 months",
+      "live": "3 weeks",
+      "live_l": "from signature to the first routed day",
+      "live_q": "Median go-live, 2025"
+    },
+    "quotes": {
+      "q1": {
+        "text": "We got a full hour back per tech on day one. Dispatch stopped being a guessing game.",
+        "name": "Dana Ortiz",
+        "role": "Operations director",
+        "org": "Ridgeway Plumbing",
+        "mono": "DO"
+      },
+      "q2": {
+        "text": "The board stopped asking why overtime kept climbing.",
+        "name": "Sam Patel",
+        "role": "COO",
+        "org": "Brightline HVAC",
+        "mono": "SP"
+      },
+      "q3": {
+        "text": "Setup took three weeks, and nobody needed training.",
+        "name": "Lee Huang",
+        "role": "Field manager",
+        "org": "Cobalt Electric",
+        "mono": "LH"
+      }
+    },
+    "sample": {
+      "book_label": "Book 30 minutes",
+      "book_href": "https://calendly.com/bob-unfairly/30min",
+      "book_print": "calendly.com/bob-unfairly/30min",
+      "email_label": "Email us",
+      "email_href": "mailto:bob@unfairly.ai?subject=A%20proposal%20page%20like%20this%20sample",
+      "email": "bob@unfairly.ai"
+    }
+  },
+  "icon": "assets/icon.svg"
+}

@@ -204,7 +204,7 @@ if (process.argv[1]?.endsWith('site-audit.mjs')) {
       // Work every control and watch for errors.
       await page.evaluate(async () => {
         const wait = () => new Promise((r) => setTimeout(r, 30));
-        for (const b of document.querySelectorAll('[role="tab"], [data-toggle] button, [data-preset], [data-step]')) { b.click(); await wait(); }
+        for (const b of document.querySelectorAll('[role="tab"], [data-toggle] button, [data-choice] button, [data-preset], [data-step]')) { b.click(); await wait(); }
         for (const inp of document.querySelectorAll('input[data-input]')) {
           const v = inp.value;
           inp.value = inp.type === 'range' ? inp.max : String(Number(v) + 10);

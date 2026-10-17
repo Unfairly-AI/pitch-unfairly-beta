@@ -5,6 +5,7 @@
 //   site/header.html       optional, before the sections
 //   site/sections/*.html   the page, one <section data-section> per file, in file-name order
 //   site/footer.html       optional, after the sections
+//   site/toolbox.css       optional: the site toolbox's components (site-toolbox/), loaded before styles.css
 //   site/styles.css        the site's own design (brand tokens are already set)
 //   site/assets/           images and drawings, referenced as assets/...
 //
@@ -80,7 +81,7 @@ export async function buildSite({ root = '.', out = 'dist-site' } = {}) {
   }
   if (existsSync(at('site/assets'))) await cp(at('site/assets'), join(outDir, 'assets'), { recursive: true });
 
-  const css = [fontCss, brandCss(kit, fontFaceCss(kit, 'brand/')), await readFile(join(here, 'site/base.css'), 'utf8'), await part('site/styles.css')].join('\n');
+  const css = [fontCss, brandCss(kit, fontFaceCss(kit, 'brand/')), await readFile(join(here, 'site/base.css'), 'utf8'), await part('site/toolbox.css'), await part('site/styles.css')].join('\n');
   await writeFile(join(outDir, 'index.html'), pageShell({ site, body, css, model: site.model ?? {} }));
   await cp(join(here, 'site/app.js'), join(outDir, 'js/app.js'));
   await cp(join(here, 'site/model.mjs'), join(outDir, 'js/model.mjs'));

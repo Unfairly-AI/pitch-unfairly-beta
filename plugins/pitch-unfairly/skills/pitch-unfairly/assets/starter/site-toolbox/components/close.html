@@ -1,0 +1,26 @@
+<!-- Close: one action, who to contact, and Save as PDF. Two or three numbered steps say
+     what happens after yes. The contact card replaces the button in the PDF. -->
+<section id="next" class="tb-band tb-close" data-tone="night" data-section="close">
+  <div class="tb-wrap tb-close-grid">
+    <div>
+      <p class="tb-eyebrow">Next</p>
+      <h2>Say yes by {{facts.decide}}, and the first routed day is {{facts.start}}.</h2>
+      <ol class="tb-close-steps">
+        <li><span><b>Reply with the plan you want</b><span>We send the order form the same day.</span></span></li>
+        <li><span><b>We connect your booking tool</b><span>About a week, with one call from your side.</span></span></li>
+        <li><span><b>Dispatch runs the new routes</b><span>From {{facts.start}}, with us on call.</span></span></li>
+      </ol>
+      <div class="tb-close-actions" data-pdf-hide>
+        <a class="tb-btn tb-btn-primary tb-btn-big" data-cta="accept" target="_blank" rel="noopener" href="mailto:{{facts.contact.email}}?subject={{facts.vendor.name}}%20for%20{{facts.client.short}}">Reply to {{facts.contact.first}}</a>
+        <a class="tb-link" href="deck.pdf" download="{{facts.pdf_name}}" data-cta="save_pdf">Save as PDF</a>
+      </div>
+    </div>
+    <aside class="tb-contact" aria-label="Who to contact">
+      <p class="tb-contact-k">Your contact</p>
+      <p class="tb-contact-name">{{facts.contact.name}}</p>
+      <p class="tb-contact-role">{{facts.contact.role}}, {{facts.vendor.name}}</p>
+      <p class="tb-contact-mail">{{facts.contact.email}}</p>
+      <p class="tb-contact-alt">Prefer to talk first? {{facts.contact.first}} can walk your team through this page in twenty minutes.</p>
+    </aside>
+  </div>
+</section>

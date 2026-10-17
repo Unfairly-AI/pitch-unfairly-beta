@@ -3,7 +3,7 @@
 import { runModel } from './model.mjs';
 import { fillTokens } from './fill.mjs';
 import { ENGINE, engineProblem } from './version.mjs';
-import { copyFindings } from './copy.mjs';
+import { copyFindings, simplicityFindings, LIMITS } from './copy.mjs';
 
 const text = (html) =>
   html
@@ -12,7 +12,21 @@ const text = (html) =>
     .replace(/<!--[\s\S]*?-->/g, ' ')
     .replace(/<[^>]+>/g, ' ');
 
+const RAW_COLOR = /#(?:[0-9a-f]{8}|[0-9a-f]{6}|[0-9a-f]{3,4})\b|\b(?:rgba?|hsla?|oklch|oklab)\([^)]*\)/gi;
+
 const CALENDAR = /^(January|February|March|April|May|June|July|August|September|October|November|December|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)$/;
+
+/** The element that opens at `at` (a <tag ...>), through its matching close tag. */
+function element(html, at, tag) {
+  const re = new RegExp(`<(/?)${tag}\\b[^>]*>`, 'gi');
+  re.lastIndex = at;
+  let depth = 0;
+  for (let m; (m = re.exec(html)); ) {
+    depth += m[1] ? -1 : 1;
+    if (depth === 0) return html.slice(at, re.lastIndex);
+  }
+  return html.slice(at);
+}
 
 /** Every string fact worth matching ([path, value]), longest first. */
 function factStrings(facts, prefix = '') {
@@ -31,7 +45,7 @@ function factStrings(facts, prefix = '') {
  * site: parsed site.json. sections: [{ name, html }]. extras: header/footer html.
  * exists(path): whether a local file referenced by the page exists.
  */
-export function checkSite({ site, sections, header = '', footer = '', exists = () => true }) {
+export function checkSite({ site, sections, header = '', footer = '', styles = '', exists = () => true }) {
   const errors = [];
   const warnings = [];
   if (!site.title) errors.push('site.json: add a "title".');
@@ -58,7 +72,9 @@ export function checkSite({ site, sections, header = '', footer = '', exists = (
   };
 
   const ids = new Set();
-  for (const { name, html, missingParts = [] } of sections) {
+  // The hero is the section named hero, or the first one.
+  const heroAt = Math.max(0, sections.findIndex(({ html }) => /<section\b[^>]*\sdata-section="hero"/i.test(html)));
+  for (const [at, { name, html, missingParts = [] }] of sections.entries()) {
     const where = `sections/${name}`;
     for (const m of missingParts) errors.push(`${where}: ${m} doesn't exist.`);
     const roots = html.match(/<section\b[^>]*>/gi) ?? [];
@@ -106,6 +122,43 @@ export function checkSite({ site, sections, header = '', footer = '', exists = (
     }
     if (/—/.test(plain) && !copyBlocks) errors.push(`${where}: has an em dash. Rewrite the sentence.`);
     copy(where, html);
+    // Simple copy (voice.md): long headlines, ledes, paragraphs and sentences, and a crowded hero.
+    const hero = at === heroAt;
+    // In the hero's file, only the hero itself is held to the hero's limits: a
+    // glance band beside it (a <section> with no data-section) is where numbers go.
+    const own = hero ? (/<section\b[^>]*\sdata-section[\s\S]*?<\/section>/i.exec(html)?.[0] ?? html) : html;
+    const rest = hero ? html.replace(own, ' ') : '';
+    for (const w of simplicityFindings(fillTokens(own, site).html, { hero })) warnings.push(`${where}: ${w}`);
+    if (rest.trim()) for (const w of simplicityFindings(fillTokens(rest, site).html)) warnings.push(`${where}: ${w}`);
+    if (hero) {
+      const figures = [...own.replace(/<details[\s\S]*?<\/details>/gi, ' ').matchAll(/\{\{\s*(=?)\s*([\w.]+)/g)].filter(([, expr, k]) => expr || (!k.startsWith('facts.') && k in values));
+      if (figures.length > LIMITS.heroFigures) warnings.push(`${where}: the hero shows ${figures.length} figures. Keep it to ${LIMITS.heroFigures} or fewer and put the numbers that matter in a glance band right below it (see the site toolbox).`);
+    }
+    // Motion for charts and figures (the sites guide, "Motion for charts").
+    for (const [tag] of html.matchAll(/<[a-z]+\b[^>]*\sdata-bar="[^"]*"[^>]*>/gi)) {
+      if (!/\bclass="[^"]*\b(?:wipe|grow)\b/.test(tag)) warnings.push(`${where}: a chart bar (${/data-bar="([^"]*)"/.exec(tag)[1]}) has no entrance. Give it class "wipe" (a bar) or "grow" (a column), with a staggered --d.`);
+    }
+    for (const m of html.matchAll(/<(\w+)\b([^>]*\bclass="[^"]*\b(?:tb-g-n|tb-stat-n|tb-answer-n|tb-vs-n)\b[^"]*"[^>]*)>([\s\S]*?)<\/\1>/g)) {
+      if (/data-count/.test(m[2] + m[3])) continue;
+      const shown = text(fillTokens(m[3], site).html).trim();
+      // Zero has nothing to count up from.
+      if (/^[+\u2212-]?[$€£]?\d[\d,.]*\s?(?:[%×KMBkmb+]|mo)?$/.test(shown) && /[1-9]/.test(shown)) warnings.push(`${where}: the figure "${shown}" doesn't count up. Add data-count so it counts in when it comes into view.`);
+    }
+    // Calls to action (deck:cta): a short id, and a link out that opens in a new tab so the frame can report it.
+    for (const [tag] of html.matchAll(/<[a-z]+\b[^>]*\sdata-cta="[^"]*"[^>]*>/gi)) {
+      const id = /data-cta="([^"]*)"/.exec(tag)[1];
+      if (!/^[A-Za-z0-9_-]{1,40}$/.test(id)) errors.push(`${where}: data-cta="${id}" isn't a valid id (letters, digits, _ and -, up to 40; "accept" and "book_meeting" are the standard ones).`);
+      const href = /\shref="([^"]*)"/.exec(tag)?.[1] ?? '';
+      if (/^(https?:|mailto:)/.test(href) && !/\starget="_blank"/.test(tag)) warnings.push(`${where}: the call to action "${id}" leaves the page in the same tab, so the frame can't report it. Add target="_blank" rel="noopener".`);
+    }
+    for (const [, d] of html.matchAll(/\sdata-date="([^"]*)"/g)) if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) errors.push(`${where}: data-date="${d}" should be an ISO day like "2026-11-20".`);
+    // A quote is someone's real words: it lives in the facts with who said it, so it
+    // can be checked against the source and never gets tidied in the page.
+    for (const [, inner] of html.matchAll(/<blockquote\b[^>]*>([\s\S]*?)<\/blockquote>/gi)) {
+      if (/[A-Za-z]{3}/.test(text(inner.replace(/\{\{[\s\S]*?\}\}/g, ' ')))) warnings.push(`${where}: a quote is typed into the page ("${text(inner).trim().slice(0, 60)}"). Put the exact words in site.json's facts with who said it, and use {{facts.quotes...}}.`);
+    }
+    // Colors come from the brand: a raw color in the page is a color the brand doesn't have.
+    for (const raw of new Set([...html.matchAll(/\sstyle="([^"]*)"|<style\b[^>]*>([\s\S]*?)<\/style>/gi)].flatMap((m) => (m[1] ?? m[2]).match(RAW_COLOR) ?? []))) warnings.push(`${where}: ${raw} is a color the brand kit doesn't name. Use a brand token (var(--accent), var(--ink), var(--surface)...).`);
     if (/<script\b/i.test(html)) errors.push(`${where}: has a <script>. Interactivity comes from data attributes (see the sites guide).`);
     if (/\son\w+\s*=/i.test(html)) errors.push(`${where}: has an inline event handler. Use data attributes instead.`);
     if (/<img\b(?![^>]*\salt=)/i.test(html)) errors.push(`${where}: an <img> has no alt (use alt="" for decoration).`);
@@ -131,6 +184,12 @@ export function checkSite({ site, sections, header = '', footer = '', exists = (
     copy(name, html);
     for (const [, href] of html.matchAll(/href="#([^"]+)"/g)) if (href !== 'top' && !ids.has(href)) warnings.push(`${name}: links to #${href}, which no section has.`);
   }
+  for (const raw of new Set(String(styles).replace(/\/\*[\s\S]*?\*\//g, ' ').replace(/url\("?data:[^)]*\)/g, ' ').match(RAW_COLOR) ?? [])) warnings.push(`styles.css: ${raw} is a color the brand kit doesn't name. Use a brand token, or add the color to the brand kit.`);
   if (site.sample && !sections.some(({ html }) => /sample/i.test(text(html)))) errors.push('site.json says sample, but no section tells the reader it is one.');
+  // A sample carries a sample band with a way to reach whoever built it (the toolbox's
+  // sample component: data-sample, with a data-cta inside), so the reader knows it's
+  // not the provider's own page and has somewhere to go.
+  const banded = [header, ...sections.map(({ html }) => html), footer].some((html) => [...html.matchAll(/<([a-z]+)\b[^>]*\sdata-sample\b[^>]*>/gi)].some((m) => /\sdata-cta="/.test(element(html, m.index, m[1]))));
+  if (site.sample && !banded) warnings.push('site.json says sample, but the page has no sample band with a call to action. Use the toolbox\'s sample band (header.html): data-sample, with "Book 30 minutes" and "Email us" as data-cta links.');
   return { errors, warnings };
 }
