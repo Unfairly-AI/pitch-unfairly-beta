@@ -14,6 +14,9 @@ const text = (html) =>
 
 const RAW_COLOR = /#(?:[0-9a-f]{8}|[0-9a-f]{6}|[0-9a-f]{3,4})\b|\b(?:rgba?|hsla?|oklch|oklab)\([^)]*\)/gi;
 
+/** "#e7751e is a color" or "4 colors (#e7751e, #b83828, #7132a1 and 1 more) are colors". */
+const colorList = (raw) => (raw.length === 1 ? `${raw[0]} is a color` : `${raw.length} colors (${raw.slice(0, 3).join(', ')}${raw.length > 3 ? ` and ${raw.length - 3} more` : ''}) are colors`);
+
 const CALENDAR = /^(January|February|March|April|May|June|July|August|September|October|November|December|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)$/;
 
 /** The element that opens at `at` (a <tag ...>), through its matching close tag. */
@@ -158,7 +161,8 @@ export function checkSite({ site, sections, header = '', footer = '', styles = '
       if (/[A-Za-z]{3}/.test(text(inner.replace(/\{\{[\s\S]*?\}\}/g, ' ')))) warnings.push(`${where}: a quote is typed into the page ("${text(inner).trim().slice(0, 60)}"). Put the exact words in site.json's facts with who said it, and use {{facts.quotes...}}.`);
     }
     // Colors come from the brand: a raw color in the page is a color the brand doesn't have.
-    for (const raw of new Set([...html.matchAll(/\sstyle="([^"]*)"|<style\b[^>]*>([\s\S]*?)<\/style>/gi)].flatMap((m) => (m[1] ?? m[2]).match(RAW_COLOR) ?? []))) warnings.push(`${where}: ${raw} is a color the brand kit doesn't name. Use a brand token (var(--accent), var(--ink), var(--surface)...).`);
+    const rawInPage = [...new Set([...html.matchAll(/\sstyle="([^"]*)"|<style\b[^>]*>([\s\S]*?)<\/style>/gi)].flatMap((m) => (m[1] ?? m[2]).match(RAW_COLOR) ?? []))];
+    if (rawInPage.length) warnings.push(`${where}: ${colorList(rawInPage)} the brand kit doesn't name. Use brand tokens (var(--accent), var(--ink), var(--surface)...).`);
     if (/<script\b/i.test(html)) errors.push(`${where}: has a <script>. Interactivity comes from data attributes (see the sites guide).`);
     if (/\son\w+\s*=/i.test(html)) errors.push(`${where}: has an inline event handler. Use data attributes instead.`);
     if (/<img\b(?![^>]*\salt=)/i.test(html)) errors.push(`${where}: an <img> has no alt (use alt="" for decoration).`);
@@ -184,7 +188,9 @@ export function checkSite({ site, sections, header = '', footer = '', styles = '
     copy(name, html);
     for (const [, href] of html.matchAll(/href="#([^"]+)"/g)) if (href !== 'top' && !ids.has(href)) warnings.push(`${name}: links to #${href}, which no section has.`);
   }
-  for (const raw of new Set(String(styles).replace(/\/\*[\s\S]*?\*\//g, ' ').replace(/url\("?data:[^)]*\)/g, ' ').match(RAW_COLOR) ?? [])) warnings.push(`styles.css: ${raw} is a color the brand kit doesn't name. Use a brand token, or add the color to the brand kit.`);
+  // One line for the whole stylesheet: it's the site's (or kit's) own file, not something a fill can fix.
+  const rawInStyles = [...new Set(String(styles).replace(/\/\*[\s\S]*?\*\//g, ' ').replace(/url\("?data:[^)]*\)/g, ' ').match(RAW_COLOR) ?? [])];
+  if (rawInStyles.length) warnings.push(`styles.css: ${colorList(rawInStyles)} the brand kit doesn't name. Use brand tokens, or add the colors to the brand kit.`);
   if (site.sample && !sections.some(({ html }) => /sample/i.test(text(html)))) errors.push('site.json says sample, but no section tells the reader it is one.');
   // A sample carries a sample band with a way to reach whoever built it (the toolbox's
   // sample component: data-sample, with a data-cta inside), so the reader knows it's

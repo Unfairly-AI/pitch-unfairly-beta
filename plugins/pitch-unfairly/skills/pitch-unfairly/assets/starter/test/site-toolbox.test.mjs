@@ -163,10 +163,10 @@ test('a quote typed into the page and a color the brand doesn\'t name are called
   scaffold(root, 'proposal');
   const loaded = await loadSite(root);
   const extra = { name: '99-extra.html', html: '<section id="x" class="tb-band" data-section="x" style="background: #ff3366"><div class="tb-wrap"><figure><blockquote><p>Best vendor we ever hired.</p></blockquote></figure></div></section>' };
-  const { warnings } = checkSite({ ...loaded, sections: [...loaded.sections, extra], styles: '.tb-hero { color: rgb(10, 20, 30); background: var(--surface); } /* #abcdef in a comment is fine */' });
+  const { warnings } = checkSite({ ...loaded, sections: [...loaded.sections, extra], styles: '.tb-hero { color: rgb(10, 20, 30); background: var(--surface); } .a { color: #e7751e } .b { color: #b83828 } .c { color: #e7751e } /* #abcdef in a comment is fine */' });
   assert.ok(warnings.some((w) => /99-extra\.html: a quote is typed into the page/.test(w)));
   assert.ok(warnings.some((w) => /99-extra\.html: #ff3366 is a color the brand kit doesn't name/.test(w)));
-  assert.ok(warnings.some((w) => /styles\.css: rgb\(10, 20, 30\) is a color/.test(w)));
+  assert.deepEqual(warnings.filter((w) => w.startsWith('styles.css')), ["styles.css: 3 colors (rgb(10, 20, 30), #e7751e, #b83828) are colors the brand kit doesn't name. Use brand tokens, or add the colors to the brand kit."], 'one line for the whole stylesheet');
   assert.ok(!warnings.some((w) => /#abcdef/.test(w)));
   assert.ok(!checkSite(loaded).warnings.some((w) => /quote is typed|color the brand/.test(w)), 'the toolbox\'s own quotes and colors pass');
 });
