@@ -193,6 +193,10 @@ A proposal follows a shape the reader already knows, so start from one of these.
 
 **Keep any one screen from overwhelming the reader.** One point and one focal element per screen: the answer in the calculator, the lit column in the comparison, the pull quote. Three to four of anything (numbers, cards, steps of the close), never seven. Detail goes behind `<details>`. If a section needs more than a screen and a half at 1280 wide, it's two sections, or its detail belongs in a toggle. Write the copy short first (voice guide, "Simplify the copy"), then design; `site:check` warns where a line runs long.
 
+## Locking a site for production
+
+Before a site goes to its real reader, run `npm run site:variants -- lock`. Each toolbox component the site uses is copied into `site/variants/` as it is in this engine, and the build reads only those copies from then on, so a later toolbox change can't move a page the reader has seen. `npm run site:variants -- status` says which components have changed upstream since; `upgrade <component>` takes one on purpose, keeping the site's own adaptations (its skin, below the marker in that variant's file). Check the sections that use an upgraded component before you publish again.
+
 ## The PDF
 
 The PDF reads like a deck: each section on its own 16:9 page, in the site's own design, with toggles as the web shows them (closed). A section taller than a page is scaled down to fit, and the audit warns when that drops below 60%: fold the detail into a toggle, or split the section. Two attributes shape it:

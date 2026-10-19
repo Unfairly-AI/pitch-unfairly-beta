@@ -11,6 +11,14 @@ The components a proposal site reaches for every time, already built: the hero, 
 
 Every component lays out for a phone at 390 wide (one column, 44px controls, nothing scrolls sideways; a wide table scrolls inside its `data-scroll` wrapper) and for the PDF (`.is-pdf` rules; `data-pdf-hide` on web-only controls; `data-pdf-open` on detail worth printing).
 
+## Locking a site for production
+
+While a site is being built it reads the live toolbox, so improvements to a component reach it. When the site goes to a real reader, lock it: `npm run site:variants -- lock`. Every component its sections use becomes a variant in `site/variants/`: that component's rules (with its phone and PDF rules) as they are in this engine, then a place for the site's own skin. From then on `site:build` reads only `site/variants/`, so a later toolbox change never moves a page someone has already seen.
+
+- `npm run site:variants -- status` lists the locked components whose toolbox version has changed since (`--json` for one machine-readable line).
+- `npm run site:variants -- upgrade <component>` re-locks one variant to the current toolbox and keeps its skin. Rebuild and compare the sections that use it before publishing.
+- Put a site's adaptations of a locked component in that variant's skin, below its marker, rather than in `styles.css`, so they travel with the component they change.
+
 ## The rules every component keeps
 
 - **One job per screen.** A screen holds one point, made in its headline, with its proof beside or below it. If a section needs a second point, it's a second section.

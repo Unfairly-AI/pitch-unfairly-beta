@@ -32,6 +32,7 @@
     "site:build": "node bin/brand-apply.mjs && node bin/site-build.mjs",
     "site:audit": "node bin/brand-apply.mjs && node bin/site-audit.mjs",
     "site:manifest": "node bin/site-manifest.mjs",
+    "site:variants": "node bin/site-variants.mjs",
     "site:gallery": "node bin/brand-apply.mjs && node bin/site-gallery.mjs",
     "test": "node --test 'test/*.test.mjs'"
   },

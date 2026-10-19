@@ -19,6 +19,7 @@ import { brandCss, fontFaceCss, validateKit } from './brand-lib.mjs';
 import { fillTokens, includeParts, pageShell } from './site/fill.mjs';
 import { readFileSync } from 'node:fs';
 import { engineProblem } from './site/version.mjs';
+import { isLocked, variantCss } from './site/variants.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 
@@ -81,7 +82,9 @@ export async function buildSite({ root = '.', out = 'dist-site' } = {}) {
   }
   if (existsSync(at('site/assets'))) await cp(at('site/assets'), join(outDir, 'assets'), { recursive: true });
 
-  const css = [fontCss, brandCss(kit, fontFaceCss(kit, 'brand/')), await readFile(join(here, 'site/base.css'), 'utf8'), await part('site/toolbox.css'), await part('site/styles.css')].join('\n');
+  // A site in production reads its locked variants (site/variants); one still being built, the live toolbox.
+  const toolbox = isLocked(at('site/variants')) ? variantCss(at('site/variants')) : await part('site/toolbox.css');
+  const css = [fontCss, brandCss(kit, fontFaceCss(kit, 'brand/')), await readFile(join(here, 'site/base.css'), 'utf8'), toolbox, await part('site/styles.css')].join('\n');
   await writeFile(join(outDir, 'index.html'), pageShell({ site, body, css, model: site.model ?? {} }));
   await cp(join(here, 'site/app.js'), join(outDir, 'js/app.js'));
   await cp(join(here, 'site/model.mjs'), join(outDir, 'js/model.mjs'));
