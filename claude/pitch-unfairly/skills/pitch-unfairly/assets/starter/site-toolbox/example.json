@@ -1,6 +1,6 @@
 {
   "$comment": "The toolbox's worked example: a made-up scheduling vendor's proposal to a made-up client. Every component's tokens refer to this model. npm run site:new copies it to site/site.json; change the inputs, formulas and facts to yours, and rename tokens in the sections to match.",
-  "engine": "sites@1.3",
+  "engine": "sites@1.4",
   "title": "Northline scheduling for Harlow Services (sample)",
   "description": "A sample proposal: route planning and scheduling for Harlow Services's field technicians.",
   "sample": true,
@@ -23,6 +23,7 @@
     "formulas": {
       "price": "prices[plan_i]",
       "fee": "techs * price * 12",
+      "fee_mo": "techs * price",
       "hours": "techs * adoption * jobs * minutes / 60 * days",
       "value": "hours * hourly",
       "net": "value - fee",
@@ -59,7 +60,8 @@
       "techs": "int",
       "minutes": "int",
       "jobs": "int",
-      "ret_rec": "mult"
+      "ret_rec": "mult",
+      "fee_mo": "money"
     }
   },
   "facts": {

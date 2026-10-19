@@ -2,7 +2,7 @@
 
 A site is a scrolling page published like a deck: the same link, password, named links, gallery, versions, and views (one per section instead of one per slide). Use one when the reader will scroll, compare, and try numbers on their own, such as a proposal a broker forwards, a pricing page for one customer, or a business case. Use a deck when someone will present it.
 
-Start from the toolbox, not a blank page. The starter carries a toolbox of proven components (hero, glance band, what you asked for, calculator, comparison table, plan cards, scope, stats, quotes, team, statement, timeline, FAQ, close, sticky header, sample band) and two proposal templates built from them. They are the default for every common job: copy the component that does the job, then write it for this reader and this point, and adapt its layout where the point needs it. Invent a component only for a job the toolbox doesn't do. Under the components, the starter gives you the machinery that has to be right every time: the numbers, the brand, the controls, the checks, and publishing.
+Start from the toolbox, not a blank page. The starter carries a toolbox of proven components (hero, glance band, what you asked for, calculator, comparison table, plan cards, price builder, scope, tabs, stats, quotes, team, statement, timeline, FAQ, close, sticky header, sample band) and two proposal templates built from them. They are the default for every common job: copy the component that does the job, then write it for this reader and this point, and adapt its layout where the point needs it. Invent a component only for a job the toolbox doesn't do. Under the components, the starter gives you the machinery that has to be right every time: the numbers, the brand, the controls, the checks, and publishing.
 
 ## The project
 
@@ -155,9 +155,11 @@ A sample (`"sample": true`) carries the sample band: one slim band above the hea
 | Try the numbers | `calculator` | Choice, presets and sliders; one big live answer and its consequence; a chart; the detail in a toggle |
 | The risk or edge case | `versus` | Two outcomes side by side, the reader's lit |
 | Compare terms or plans | `compare` | Options in columns, the recommended one lit, sources as small tags |
+| One price, and how it's built | `price` | The figure and what it includes; beside it the arithmetic from the reader's own count (a stepper) to the month and year |
 | Plans as cards | `tiers` | Two to four plans, the recommended one lit and the only one with a button |
 | Proof | `stats` | Three or four big numbers, each with its exact qualifier |
 | Testimonials | `quotes` | One large pull quote, then a row of two or three |
+| Facets of one idea | `tabs` | Three to five tabs beside the open panel; each panel a headline, ticked points, one closing line; the PDF prints them all |
 | Who they'll work with | `team` | Two to four people: face or monogram, name, role, one line on this account |
 | The turn in the argument | `statement` | One sentence set big, once a page |
 | The path to the start | `timeline` | Four to six dated steps with owners, today marked |
@@ -187,7 +189,7 @@ A proposal follows a shape the reader already knows, so start from one of these.
 | 10 | FAQ | `faq` | The questions asked before a yes | Restating sections |
 | 11 | Close | `close` | The ask by a date, the steps after yes, a named contact, the PDF | A summary of the page |
 
-**The standard proposal** (`npm run site:new -- proposal`), with no calculator: a scope of work, a partnership, a service with one price. Hero and glance, what you asked for (`heard`), how it works (`cards`), the scope, the team, quotes, timeline, FAQ, close.
+**The standard proposal** (`npm run site:new -- proposal`), with no calculator: a scope of work, a partnership, a service with one price. Hero and glance, what you asked for (`heard`), how it works (`cards`), the scope, the price (`price`), the team, quotes, timeline, FAQ, close.
 
 **Keep any one screen from overwhelming the reader.** One point and one focal element per screen: the answer in the calculator, the lit column in the comparison, the pull quote. Three to four of anything (numbers, cards, steps of the close), never seven. Detail goes behind `<details>`. If a section needs more than a screen and a half at 1280 wide, it's two sections, or its detail belongs in a toggle. Write the copy short first (voice guide, "Simplify the copy"), then design; `site:check` warns where a line runs long.
 

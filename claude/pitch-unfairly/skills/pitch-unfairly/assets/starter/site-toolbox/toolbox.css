@@ -474,7 +474,6 @@ html { scroll-padding-top: calc(var(--tb-top-h) + 12px); }
 .tb-step.is-next .tb-step-dot { border-color: var(--accent); }
 [data-tone='night'] .tb-step.is-next .tb-step-dot { border-color: var(--accent-on-night); }
 
-/* ── Tablet ── */
 /* ── Statement: one idea set big ── */
 .tb-statement .tb-wrap { display: grid; gap: 0; }
 .tb-statement-line { font-size: calc(clamp(40px, 5.6vw, 84px) * var(--display-scale, 1)); line-height: 1.02; letter-spacing: -.025em; max-width: 18ch; text-wrap: balance; }
@@ -532,6 +531,62 @@ html { scroll-padding-top: calc(var(--tb-top-h) + 12px); }
 .tb-person-role { font-size: 14px; color: var(--ink-muted); }
 .tb-person-line { margin-top: 8px; font-size: 16px; line-height: 1.5; color: var(--ink); max-width: 34ch; }
 
+/* ── Tabs: facets of one idea, the reader picks one; every panel prints ── */
+.tb-tabs { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.3fr); border: 1px solid var(--tb-rule); border-radius: var(--tb-radius); background: var(--paper); overflow: hidden; }
+[data-tone='paper'] .tb-tabs { background: var(--surface); }
+.tb-tablist { display: grid; align-content: start; border-right: 1px solid var(--tb-rule); }
+.tb-tab { position: relative; display: grid; gap: 4px; align-content: start; min-height: 44px; padding: 22px 26px; border: 0; border-bottom: 1px solid var(--tb-rule); background: transparent; color: var(--ink); font: inherit; text-align: left; cursor: pointer; transition: background 160ms, color 160ms; }
+.tb-tab:last-child { border-bottom: 0; }
+.tb-tab:hover { background: var(--tb-tint); }
+.tb-tab:focus-visible { outline: 2px solid var(--accent); outline-offset: -4px; }
+.tb-tab.is-on { background: var(--night); color: var(--on-night); }
+.tb-tab.is-on::after { content: ''; position: absolute; right: -1px; top: 50%; width: 14px; height: 14px; background: inherit; transform: translate(50%, -50%) rotate(45deg); z-index: 1; }
+.tb-tab:has(.tb-tab-ic) { grid-template-columns: 44px minmax(0, 1fr); column-gap: 16px; }
+.tb-tab-ic { grid-row: span 2; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; border: 1px solid currentColor; }
+.tb-tab-ic svg { width: 22px; height: 22px; }
+.tb-tab.is-on .tb-tab-ic { border-color: var(--accent-on-night); color: var(--accent-on-night); }
+.tb-tab-k { font: var(--tb-label); letter-spacing: .14em; text-transform: uppercase; color: var(--accent-dark); }
+.tb-tab.is-on .tb-tab-k { color: var(--accent-on-night); }
+.tb-tab-t { font: var(--display-weight) 20px/1.25 var(--font-display); }
+.tb-tabpanels { display: grid; padding: clamp(28px, 3.5vw, 44px); }
+.tb-tabpanel { display: grid; gap: 16px; align-content: start; }
+.js .tb-tabpanel:not(.is-on) { display: none; }
+.has-motion .tb-tabpanel.is-on { animation: kit-rise 360ms var(--ease) both; }
+@media (prefers-reduced-motion: reduce) { .has-motion .tb-tabpanel.is-on { animation: none; } }
+.tb-tabpanel-k { font: var(--tb-label); letter-spacing: .14em; text-transform: uppercase; color: var(--accent-dark); }
+.tb-tabpanel h3 { font-size: clamp(24px, 2.4vw, 32px); line-height: 1.15; }
+.tb-tabpanel-foot { padding-top: 18px; border-top: 1px solid var(--tb-rule); font: var(--display-weight) clamp(18px, 1.7vw, 21px)/1.3 var(--font-display); color: var(--ink); }
+.tb-ticks { list-style: none; margin: 4px 0 8px; padding: 0; display: grid; gap: 12px; font-size: 17px; line-height: 1.5; color: var(--ink); }
+.tb-ticks li { position: relative; padding-left: 30px; }
+.tb-ticks li::before { content: ''; position: absolute; left: 0; top: .2em; width: 18px; height: 18px; border-radius: 50%; background: var(--accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 12.5 4 4 8-9'/%3E%3C/svg%3E") center / 11px no-repeat; }
+[data-tone='night'] .tb-ticks { color: var(--on-night); }
+[data-tone='night'] .tb-ticks li::before { background: none; border: 1.5px solid var(--accent-on-night); }
+
+/* ── Price: one price, and the arithmetic from the reader's own count ── */
+.tb-price { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 16px; align-items: stretch; }
+.tb-price-card { display: grid; gap: 14px; align-content: start; padding: clamp(28px, 3.5vw, 44px); border-radius: var(--tb-radius); }
+.tb-price-k { font: var(--tb-label); letter-spacing: .14em; text-transform: uppercase; color: var(--accent-dark); }
+[data-tone='night'] .tb-price-k { color: var(--accent-on-night); }
+.tb-price-big { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; }
+.tb-price-n { font: var(--display-weight) clamp(56px, 6vw, 84px)/1 var(--font-display); letter-spacing: -.03em; color: var(--ink); }
+[data-tone='night'] .tb-price-n { color: var(--on-night); }
+.tb-price-unit, .tb-price-after { font-size: 16px; color: var(--ink-muted); }
+[data-tone='night'] :is(.tb-price-unit, .tb-price-after) { color: var(--tb-night-muted); }
+.tb-price-card details.tb-more { margin-top: 8px; }
+.tb-build { display: grid; align-content: start; padding: clamp(28px, 3.5vw, 44px); border: 1px solid var(--tb-rule); border-radius: var(--tb-radius); background: var(--paper); }
+[data-tone='paper'] .tb-build { background: var(--surface); border-color: transparent; }
+.tb-build-k { margin-bottom: 10px; font: var(--tb-label); letter-spacing: .14em; text-transform: uppercase; color: var(--accent-dark); }
+.tb-build-row { display: grid; grid-template-columns: minmax(150px, auto) minmax(0, 1fr); gap: 20px; align-items: center; padding: 16px 0; border-top: 1px solid var(--tb-rule); font-size: 16px; color: var(--ink-muted); }
+.tb-build-n { font: var(--display-weight) clamp(24px, 2.4vw, 30px)/1.1 var(--font-display); color: var(--ink); white-space: nowrap; }
+.tb-build-row.is-total .tb-build-n { color: var(--accent-dark); }
+.tb-stepper { display: inline-flex; align-items: center; justify-self: start; border: 1px solid var(--tb-rule-strong); border-radius: var(--radius-button, 999px); background: var(--paper); overflow: hidden; }
+.tb-step-b { width: 44px; height: 44px; border: 0; background: transparent; color: var(--ink); font: 500 20px/1 var(--font-body); cursor: pointer; transition: background 160ms; }
+.tb-step-b:hover { background: var(--tb-tint); }
+.tb-stepper input { width: 4.5em; height: 44px; border: 0; border-inline: 1px solid var(--tb-rule); background: transparent; color: var(--ink); font: var(--display-weight) 22px/1 var(--font-display); text-align: center; -moz-appearance: textfield; appearance: textfield; }
+.tb-stepper input::-webkit-inner-spin-button, .tb-stepper input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.tb-build button.tb-link { justify-self: start; margin-top: 8px; padding: 0; border: 0; background: none; font: inherit; font-weight: 600; cursor: pointer; }
+
+/* ── Tablet ── */
 @media (max-width: 1100px) {
   .tb-nav { display: none; }
   .tb-hero-grid, .tb-split, .tb-calc, .tb-faq, .tb-close-grid { grid-template-columns: minmax(0, 1fr); }
@@ -578,6 +633,12 @@ html { scroll-padding-top: calc(var(--tb-top-h) + 12px); }
   .tb-g-n { font-size: clamp(26px, 8vw, 34px); }
   .tb-g-c { font-size: 13px; }
   .tb-cards, .tb-vs, .tb-quotes, .tb-tiers, .tb-team, .tb-scope, .tb-heard-row { grid-template-columns: minmax(0, 1fr); }
+  .tb-tabs, .tb-price { grid-template-columns: minmax(0, 1fr); }
+  .tb-tablist { border-right: 0; border-bottom: 1px solid var(--tb-rule); }
+  .tb-tab { padding: 16px 20px; }
+  .tb-tab.is-on::after { display: none; }
+  .tb-tabpanels { padding: 24px 20px; }
+  .tb-build-row { grid-template-columns: minmax(0, 1fr); gap: 6px; }
   .tb-heard-row { gap: 6px; padding: 20px 0 20px 16px; }
   .tb-statement-line { font-size: clamp(34px, 10vw, 46px); }
   .tb-scope-col, .tb-tier { padding: 22px; }
@@ -698,3 +759,11 @@ html { scroll-padding-top: calc(var(--tb-top-h) + 12px); }
 .is-pdf .tb-tier .tb-btn { display: none; }
 .is-pdf :is(.tb-tier, .tb-person, .tb-heard-row, .tb-scope-col) { break-inside: avoid; }
 .is-pdf .tb-statement-line { font-size: 64px; }
+.is-pdf .tb-tabs { grid-template-columns: minmax(0, 1fr); }
+.is-pdf .tb-tablist { display: none; }
+.is-pdf .tb-tabpanels { grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: 32px; }
+.is-pdf .tb-tabpanel { display: grid !important; break-inside: avoid; }
+.is-pdf .tb-step-b, .is-pdf .tb-build button.tb-link { display: none !important; }
+.is-pdf .tb-stepper { border: 0; }
+.is-pdf .tb-stepper input { width: auto; border: 0; text-align: left; }
+.is-pdf .tb-price-card, .is-pdf .tb-build { break-inside: avoid; }

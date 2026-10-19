@@ -1,0 +1,37 @@
+<!-- Price: one price, and how it's built. A card with the figure, its unit, what it
+     includes and what the fee covers (behind a toggle); beside it the arithmetic, one line
+     at a time, from the reader's own count (a stepper they can change) to the month and
+     the year. Use it when there is one price; use tiers or compare for several plans.
+     The stepper's input is a model input (data-input), so every total follows it. -->
+<section id="price" class="tb-band" data-tone="paper" data-section="price">
+  <div class="tb-wrap">
+    <div class="tb-head">
+      <p class="tb-eyebrow">The price</p>
+      <h2 class="tb-h2">{{price}} a technician a month, one fee for the whole team.</h2>
+    </div>
+    <div class="tb-price">
+      <div class="tb-price-card" data-tone="night">
+        <p class="tb-price-k">{{facts.vendor.plan_names.p1}}</p>
+        <p class="tb-price-big"><span class="tb-price-n tb-num" data-count>{{price}}</span> <span class="tb-price-unit">a month</span></p>
+        <p class="tb-price-after">per technician, billed monthly, no setup fee.</p>
+        <ul class="tb-ticks"><li>Route planning and live re-routing</li><li>Arrival texts to your customers</li><li>Training for dispatch, in two sessions</li></ul>
+        <details class="tb-more" data-pdf-open><summary>What the fee covers</summary><div class="tb-more-body"><p>Everything in {{facts.vendor.plan_names.p1}}, for every technician on the plan. A technician who doesn't log in that month isn't billed.</p></div></details>
+      </div>
+      <div class="tb-build">
+        <p class="tb-build-k">How your price is built</p>
+        <div class="tb-build-row">
+          <div class="tb-stepper">
+            <button type="button" class="tb-step-b" data-step="-1" data-for="techs" aria-label="One fewer technician">&minus;</button>
+            <input class="tb-num" data-input="techs" type="number" inputmode="numeric" min="1" max="5000" value="{{= techs | int}}" aria-label="Technicians">
+            <button type="button" class="tb-step-b" data-step="1" data-for="techs" aria-label="One more technician">+</button>
+          </div>
+          <p>technicians on the plan</p>
+        </div>
+        <div class="tb-build-row"><p class="tb-build-n tb-num">&times; {{price}}</p><p>a technician a month</p></div>
+        <div class="tb-build-row is-total"><p class="tb-build-n tb-num">= {{fee_mo}}</p><p>a month</p></div>
+        <div class="tb-build-row is-total"><p class="tb-build-n tb-num">{{fee}}</p><p>a year</p></div>
+        <button type="button" class="tb-link" data-reset="techs" hidden>Back to the team in this proposal</button>
+      </div>
+    </div>
+  </div>
+</section>

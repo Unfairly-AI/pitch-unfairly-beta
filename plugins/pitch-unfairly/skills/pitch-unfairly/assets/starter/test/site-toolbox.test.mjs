@@ -170,3 +170,32 @@ test('a quote typed into the page and a color the brand doesn\'t name are called
   assert.ok(!warnings.some((w) => /#abcdef/.test(w)));
   assert.ok(!checkSite(loaded).warnings.some((w) => /quote is typed|color the brand/.test(w)), 'the toolbox\'s own quotes and colors pass');
 });
+
+test('ACCEPTANCE: tabs: every tab names a panel that exists, one is open, and the PDF prints every panel', async () => {
+  const html = await readFile(join(TOOLBOX, 'components', 'tabs.html'), 'utf8');
+  assert.match(html, /class="tb-tabs" data-picker/);
+  const tabs = [...html.matchAll(/role="tab" id="([^"]+)" aria-controls="([^"]+)"/g)];
+  assert.ok(tabs.length >= 3);
+  for (const [, tab, panel] of tabs) assert.match(html, new RegExp(`role="tabpanel" id="${panel}" aria-labelledby="${tab}"`));
+  assert.equal((html.match(/class="tb-tab is-on"/g) ?? []).length, 1);
+  assert.equal((html.match(/class="tb-tabpanel is-on"/g) ?? []).length, 1);
+  assert.match(css, /\.js \.tb-tabpanel:not\(\.is-on\) \{ display: none; \}/, 'without script every panel shows');
+  assert.match(css, /\.is-pdf \.tb-tablist \{ display: none; \}/);
+  assert.match(css, /\.is-pdf \.tb-tabpanel \{ display: grid !important;/);
+});
+
+test('ACCEPTANCE: price: the stepper drives a model input, every total is a model value, and the PDF drops the buttons', async () => {
+  const html = await readFile(join(TOOLBOX, 'components', 'price.html'), 'utf8');
+  const example = JSON.parse(await readFile(join(TOOLBOX, 'example.json'), 'utf8'));
+  const input = /data-input="(\w+)" type="number"/.exec(html)?.[1];
+  assert.ok(input && input in example.model.inputs, 'the stepper is a model input');
+  assert.equal([...html.matchAll(new RegExp(`data-step="-?1" data-for="${input}"`, 'g'))].length, 2);
+  assert.match(html, new RegExp(`data-reset="${input}"`));
+  for (const [, token] of html.matchAll(/class="tb-build-n tb-num">[^{]*\{\{(\w+)\}\}/g)) assert.ok(token in example.model.formulas || token in example.model.inputs, token);
+  assert.match(html, /class="tb-price-card" data-tone="night"/);
+  assert.match(css, /\.is-pdf \.tb-step-b, \.is-pdf \.tb-build button\.tb-link \{ display: none !important; \}/);
+});
+
+test('the standard proposal template includes the price', () => {
+  assert.ok(templates().proposal.sections.includes('price'));
+});

@@ -1,0 +1,39 @@
+<!-- Tabs: three to five facets of one idea, the reader picks which to read. The tabs sit
+     beside the open panel on a wide screen and above it on a phone; the PDF prints every
+     panel side by side. Each panel: a label, a headline, two to four ticked points, and one
+     closing line. Each tab's aria-controls names its panel's id. -->
+<section id="roles" class="tb-band" data-tone="surface" data-section="roles">
+  <div class="tb-wrap">
+    <div class="tb-head">
+      <p class="tb-eyebrow">Who it helps</p>
+      <h2 class="tb-h2">One plan for {{facts.client.short}}, three people whose day gets easier.</h2>
+    </div>
+    <div class="tb-tabs" data-picker style="--n:3">
+      <div class="tb-tablist" role="tablist" aria-label="Who it helps">
+        <button type="button" role="tab" id="roles-t0" aria-controls="roles-p0" aria-selected="true" class="tb-tab is-on"><span class="tb-tab-k">Dispatch</span><span class="tb-tab-t">Routes ready before the first call</span></button>
+        <button type="button" role="tab" id="roles-t1" aria-controls="roles-p1" aria-selected="false" class="tb-tab"><span class="tb-tab-k">Technicians</span><span class="tb-tab-t">Less driving, more jobs</span></button>
+        <button type="button" role="tab" id="roles-t2" aria-controls="roles-p2" aria-selected="false" class="tb-tab"><span class="tb-tab-k">Customers</span><span class="tb-tab-t">A window they can plan around</span></button>
+      </div>
+      <div class="tb-tabpanels">
+        <div role="tabpanel" id="roles-p0" aria-labelledby="roles-t0" class="tb-tabpanel is-on">
+          <p class="tb-tabpanel-k">Dispatch</p>
+          <h3>Routes ready before the first call</h3>
+          <ul class="tb-ticks"><li>Every day's routes are planned overnight.</li><li>A job that runs long re-plans the rest of the day.</li><li>Bookings keep coming in through your booking tool.</li></ul>
+          <p class="tb-tabpanel-foot">Dispatch sets the day, not the order the phone rang.</p>
+        </div>
+        <div role="tabpanel" id="roles-p1" aria-labelledby="roles-t1" class="tb-tabpanel">
+          <p class="tb-tabpanel-k">Technicians</p>
+          <h3>Less driving, more jobs</h3>
+          <ul class="tb-ticks"><li>Jobs grouped by area, so vans cross town less.</li><li>The next stop and its notes on the phone.</li><li>No calls to the office to ask where next.</li></ul>
+          <p class="tb-tabpanel-foot">About an hour back in a technician's day.</p>
+        </div>
+        <div role="tabpanel" id="roles-p2" aria-labelledby="roles-t2" class="tb-tabpanel">
+          <p class="tb-tabpanel-k">Customers</p>
+          <h3>A window they can plan around</h3>
+          <ul class="tb-ticks"><li>A two-hour window when they book.</li><li>A text when the van is on its way.</li><li>One tap to move the visit.</li></ul>
+          <p class="tb-tabpanel-foot">Fewer missed visits, and fewer calls asking when.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
