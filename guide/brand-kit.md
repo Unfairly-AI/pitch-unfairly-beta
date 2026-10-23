@@ -5,7 +5,7 @@ A deck looks like its brand because every slide reads one kit: `brand/brand.json
 ## Getting a kit
 
 1. **The user's saved kit.** When the deck hosting tools are connected, call `brand_kit_get`. If the user has a saved kit, use it unless they ask for another brand.
-2. **Capture from a website.** `npm run brand:capture -- https://brand.com [https://brand.com/about]` writes a draft kit and evidence in `brand/capture/` (computed colors by area, button and card styles, type samples, font files the site loads, logo candidates, screenshots). It also saves the logo, large images, and transparent screenshots of illustrations drawn with SVG, canvas, or animation players.
+2. **Capture from a website.** `npm run brand:capture -- https://brand.com [https://brand.com/about]` writes a draft kit and evidence in `brand/capture/` (computed colors by area, button and card styles, type samples, font files the site loads, logo candidates, screenshots). It retains a small desktop/phone reference set with provenance in `brand/references/` for the existing source bundle and future revisions. It also saves the logo, large images, and transparent screenshots of illustrations drawn with SVG, canvas, or animation players.
 3. **From brand guidelines or files the user gives you.** Fill the kit by hand from their guide, logo files, and font files.
 
 ## Reviewing a captured draft
@@ -15,13 +15,15 @@ The capture measures; you judge. Open every screenshot in `brand/capture/` and c
 - **Roles.** The capture guesses `accent` from buttons and links; check it is the brand's signature color, not a secondary link blue. Fill `accent_dark`, `accent_secondary`, `highlight`, `positive`, and `extras` from what the site actually uses.
 - **Dark sections.** Set `night`, `on_night`, and `accent_on_night` for slides with `tone="ink"`. Default is ink on paper reversed, which is wrong for brands whose text color is mid-gray or whose paper is already dark.
 - **Emphasis.** `style.emphasis: "contrast"` for monochrome brands (headline muted, key phrase full strength); `"color"` otherwise.
-- **Type.** If the brand face is open (on Fontsource or Google Fonts), the capture installs it. If it is commercial, pick the closest open face by eye (width, x-height, terminals, weight) and keep `license: "stand-in"` with `stand_in_for`. Match weight, tracking, and case from the screenshots, and set `display.scale` so headlines fit (wide faces below 1).
+- **Type.** If the brand face is open (on Fontsource or Google Fonts), the capture installs it. If it is commercial, the capture matches it by pixels: it renders the brand face on the site, scores about 60 open faces against it, picks the weight by stroke thickness, and writes the winner with `license: "stand-in"`, `stand_in_for`, weight, tracking and `display.scale`. Check `brand/capture/font-display.png` (the brand face above the top three) and `sources.typography.stand_ins` (confidence and alternatives). Swap in an alternative if it reads closer in the screenshots. At low confidence no open face is close (often an extended or condensed design): ask for the font files rather than ship the stand-in.
 - **Physical style.** `radius`, `button_shape`, `border_width`, `shadow` (`none`, `soft`, `hard`, `drop`), `shadow_offset`, `texture`, `density`, `motion` (`calm`, `crisp`, `playful`), `tilt` (0 for serious brands, 1 for playful ones).
 - **Imagery.** Look at each captured image. Keep only on-brand ones and give them roles: `hero` (a full-bleed cover photo), `illustration` (art for the cover and visuals), `product`, `people`, `texture`, or `reference` (shown on the brand board, not used in slides). Delete the rest.
 - **Logos.** `primary` must read on `paper`; add `on_ink` and `on_accent` variants (recolor the SVG fill) when the primary would vanish on those backgrounds.
 - **Words.** Write `photo_treatment`, `illustration_style`, `layout_notes`, `voice`, and `rules` from what you see. They guide your composition; be specific.
 
-Then `npm run brand:apply`, `npm run dev`, and `npm run brand:board`. Show `artifacts/brand-board.png` to the user as an image in the sign-off message, alongside the story, and get a yes before composing slides.
+Before adapting the brand to new content, privately reproduce representative source sections at matching desktop and phone viewports (see the sites guide). Record observed composition and imagery rules in the kit's existing style fields, then compare against the original screenshots. The reference is the brand's actual work, not just a board generated from your own inferred tokens. Keep source copy subject to the voice guide; visual fidelity does not excuse generic marketing language.
+
+Then `npm run brand:apply`, `npm run dev`, and `npm run brand:board`. Show `artifacts/brand-board.png` to the user as an image in the sign-off message, alongside the story, when sign-off is required by the workflow. For an authorized end-to-end build, perform the comparison internally and include the brand in the hand-over; do not add a customer checkpoint.
 
 ## Fonts and licensing
 

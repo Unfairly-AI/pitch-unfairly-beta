@@ -34,6 +34,8 @@ Run every npm command in the deck as `. ~/.pitch-unfairly/env.sh && npm run <scr
 - **Recent decks and their stories:** reuse the claims, sources, and structure that already worked, keep numbers consistent with them, and say so when this deck deliberately changes one.
 - **Facts from the organization's vaults** that match the topic: positioning, metrics, customer proof. Prefer these to anything invented, and cite the vault document as the source.
 
+**Become the company's seller before writing.** For a real company's proposal, use the research-first method in the sites guide before choosing an angle or writing copy. Read the existing company, positioning, competition, ICP, brand and buyer playbooks first; research only gaps or stale claims. Keep the seller, recipient and Unfairly sample wrapper distinct. A proposal sent for independent reading uses the sites engine and existing customer kit, not the presentation starter. This work is internal; do not add a brand-board approval stop to an otherwise authorized build.
+
 Then turn the user's kernel into a story before writing any markup. Read the story method (`deck_guide` with topic `story`) and follow its steps:
 
 1. **Intake.** Ask only what you can't infer: who is in the room, what they should do after the last slide, the one sentence they should repeat, what's at stake, and what proof exists. Settle whether the deck is presented, sent, or both.
@@ -71,7 +73,7 @@ Every deck is built in one brand: its fonts, colors, logo, imagery, illustration
 - Another real company: capture it from its website: `npm run brand:capture -- https://brand.com`.
 - A new or imagined company with no site (a startup idea, "a taco truck"): write an art direction before anything else, in a few sentences: who it's for, three adjectives, and one concrete visual reference (for example "a 1970s Mexican street-food poster: hand-painted signage, sun-faded red and turquoise, chunky condensed type"). Build the kit from it: a palette from that reference, a type pairing from Fontsource that fits it and isn't the starter's, the physical style (radius, borders, shadows, texture), and how imagery or illustration will look. Show the brand board and the art direction in the sign-off message (step 1.6), or in the hand-over when sign-off is skipped.
 
-For a captured brand, review every screenshot in `brand/capture/` and correct the draft. The capture measures; you decide the roles, dark sections, stand-in fonts, physical style, which imagery is on brand, and the logo variants.
+For a captured brand, reproduce representative source sections privately before composing new ones (the sites guide describes the fidelity rehearsal). Review every screenshot in `brand/capture/` and correct the draft. The capture measures; you decide the roles, dark sections, stand-in fonts, physical style, which imagery is on brand, and the logo variants.
 
 Then, for every brand:
 
@@ -127,6 +129,8 @@ Publish it with the plugin's `unfairly-decks` tools, which host it at an unliste
 The publish result has two different destinations. Always give the user both: the unlisted `pitchunfairly.com` presentation link is what they share with viewers, and the signed-in `app.unfairly.ai` link opens that exact deck in their workspace so they can manage it, inspect its story and versions, and find it again later. Do not collapse these into one link or describe the app link as public.
 
 Free decks show a small "Made with Unfairly" badge. Only publish decks the user made. If the hosting tools aren't available, say so plainly and give them the `dist/` folder: it works on any static host.
+
+**Bounded repair, honest completion.** Build fully, inspect desktop, phone and PDF together, repair the findings in one batch, and confirm once. A blocking issue still present is an incomplete build; preserve the draft and report the issue. Never turn a failed brand or copy check into approval because the repair budget ran out. A review outage is unverified, not a pass. Do not require the customer to prod you between internal steps.
 
 ### 7. Hand it over
 

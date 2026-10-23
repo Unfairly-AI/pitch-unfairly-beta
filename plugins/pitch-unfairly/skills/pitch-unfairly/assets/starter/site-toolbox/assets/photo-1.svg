@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000" role="img" aria-label="Sample photo: a street of houses at morning">
+  <defs><linearGradient id="s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9dde3"/><stop offset="1" stop-color="#eef0f2"/></linearGradient></defs>
+  <rect width="1600" height="1000" fill="url(#s)"/>
+  <circle cx="1240" cy="250" r="90" fill="#f4f1ea"/>
+  <path d="M0 640 L260 470 L520 640 Z" fill="#b9bfc8"/><rect x="60" y="600" width="400" height="300" fill="#c9ced5"/>
+  <path d="M560 660 L860 420 L1160 660 Z" fill="#a9b0ba"/><rect x="620" y="620" width="480" height="300" fill="#bcc2ca"/>
+  <rect x="780" y="720" width="90" height="200" fill="#8f97a3"/><rect x="680" y="690" width="70" height="70" fill="#e7eaee"/><rect x="960" y="690" width="70" height="70" fill="#e7eaee"/>
+  <path d="M1200 650 L1420 500 L1600 640 L1600 920 L1200 920 Z" fill="#c4c9d0"/>
+  <rect x="0" y="900" width="1600" height="100" fill="#9aa1ab"/>
+  <rect x="1060" y="800" width="380" height="150" rx="28" fill="#6f7884"/><rect x="1300" y="760" width="140" height="90" rx="18" fill="#6f7884"/><rect x="1318" y="776" width="104" height="54" rx="8" fill="#d6dae0"/>
+  <circle cx="1140" cy="955" r="38" fill="#3e4550"/><circle cx="1370" cy="955" r="38" fill="#3e4550"/>
+</svg>

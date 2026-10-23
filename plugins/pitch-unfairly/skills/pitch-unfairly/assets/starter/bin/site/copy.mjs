@@ -10,6 +10,13 @@ const BLOCK = /<\/?(?:p|li|h[1-6]|div|section|header|footer|td|th|caption|figcap
 // dash), aren't the site's copy: the rules below leave them alone, as they do a <blockquote>.
 const theirs = (html) => html.replace(/<(\w+)\b[^>]*\sdata-copy-ok\b[^>]*>[\s\S]*?<\/\1>/gi, ' ');
 
+/** A copy exemption records a real quotation's source, never a blanket website-copy waiver. */
+export function copyExemptionProblems(html) {
+  return [...html.matchAll(/<\w+\b([^>]*\sdata-copy-ok\b[^>]*)>/gi)]
+    .filter(([, attrs]) => !/\bdata-copy-source\s*=\s*["']https?:\/\/[^"']+["']/i.test(attrs))
+    .map(() => 'data-copy-ok needs data-copy-source="https://..." for an attributed verbatim quotation. Rewrite inherited marketing copy instead of exempting it.');
+}
+
 const strip = (html) =>
   theirs(html)
     .replace(/<script[\s\S]*?<\/script>/gi, ' ')
@@ -52,7 +59,9 @@ export const HEADLINE_MAX = 110;
  * html: a section (or header/footer) with its tokens filled. Returns
  * { blocking, advisory }: lines saying what's wrong and how to fix it.
  */
-export function copyFindings(html) {
+export function copyFindings(html, { requireAttribution = false } = {}) {
+  if (requireAttribution) html = html.replace(/<\w+\b[^>]*\sdata-copy-ok\b[^>]*>/gi, (tag) =>
+    /\bdata-copy-source\s*=\s*["']https?:\/\/[^"']+["']/i.test(tag) ? tag : tag.replace(/\sdata-copy-ok\b(?:=(?:"[^"]*"|'[^']*'|[^\s>]+))?/i, ''));
   const blocking = [];
   const advisory = [];
   const lines = copyLines(html);

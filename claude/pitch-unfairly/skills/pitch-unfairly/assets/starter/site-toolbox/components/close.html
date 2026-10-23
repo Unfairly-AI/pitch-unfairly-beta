@@ -1,5 +1,5 @@
 <!-- Close: one action, who to contact, and Save as PDF. Two or three numbered steps say
-     what happens after yes. The contact card replaces the button in the PDF. -->
+     what happens after yes. The contact card replaces the button in the PDF (data-pdf-contact). -->
 <section id="next" class="tb-band tb-close" data-tone="night" data-section="close">
   <div class="tb-wrap tb-close-grid">
     <div>
@@ -15,7 +15,7 @@
         <a class="tb-link" href="deck.pdf" download="{{facts.pdf_name}}" data-cta="save_pdf">Save as PDF</a>
       </div>
     </div>
-    <aside class="tb-contact" aria-label="Who to contact">
+    <aside class="tb-contact" aria-label="Who to contact" data-pdf-contact>
       <p class="tb-contact-k">Your contact</p>
       <p class="tb-contact-name">{{facts.contact.name}}</p>
       <p class="tb-contact-role">{{facts.contact.role}}, {{facts.vendor.name}}</p>

@@ -154,6 +154,24 @@
       "email_label": "Email us",
       "email_href": "mailto:bob@unfairly.ai?subject=A%20proposal%20page%20like%20this%20sample",
       "email": "bob@unfairly.ai"
+    },
+    "photos": {
+      "p1": {
+        "src": "assets/photo-1.svg",
+        "alt": "A service van parked outside a client's home at the start of a job",
+        "caption": "First stop of the day, booked the night before."
+      },
+      "p2": {
+        "src": "assets/photo-2.svg",
+        "alt": "A technician checking the day's route on a tablet",
+        "caption": "The route, on the tablet before the van leaves."
+      },
+      "p3": {
+        "src": "assets/photo-3.svg",
+        "alt": "Two technicians finishing a repair in a kitchen",
+        "caption": "Two-person jobs, scheduled as one."
+      },
+      "credit": "Photos: Harlow Services (sample illustrations)."
     }
   },
   "icon": "assets/icon.svg"

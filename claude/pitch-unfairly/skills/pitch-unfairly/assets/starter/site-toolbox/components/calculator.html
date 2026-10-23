@@ -1,6 +1,7 @@
 <!-- Calculator: a control panel (a choice, presets, two or three sliders), one big live
      answer with a one-line consequence, a chart, and the detail behind a toggle. On a
-     phone the answer leads and stays in view while the reader works the controls. -->
+     phone the answer leads and stays in view while the reader works the controls. The PDF
+     drops the controls, so a printed summary (data-pdf-summary) says which numbers it shows. -->
 <section id="calculator" class="tb-band" data-tone="paper" data-section="calculator">
   <div class="tb-wrap">
     <div class="tb-head">
@@ -19,6 +20,7 @@
         <label class="tb-slider"><span class="tb-slider-top"><span>Minutes saved a job</span><output data-out="minutes">{{minutes}}</output></span><input type="range" min="2" max="20" step="1" value="8" data-input="minutes" data-format="int"></label>
         <label class="tb-slider"><span class="tb-slider-top"><span>Cost of a technician hour</span><output data-out="hourly">{{hourly}}</output></span><input type="range" min="25" max="90" step="1" value="48" data-input="hourly" data-format="money"></label>
       </div>
+      <p class="pdf-only tb-calc-summary" data-pdf-summary>Printed for the {{facts.vendor.plan_names.p1}} plan, with {{adoption}} of the team using it, {{minutes}} minutes saved a job and a technician hour at {{hourly}}.</p>
       <div class="tb-calc-out">
         <div class="tb-answer">
           <p class="tb-answer-k">Net to {{facts.client.short}} in year one</p>

@@ -1,57 +1,149 @@
 // Capture a brand from its live website into a draft kit.
-// Usage: node bin/brand-capture.mjs <url> [more urls...]
-// Writes brand/capture/ (evidence: capture.json, screenshots) and a draft
-// brand/brand.json plus brand/logos/ and brand/imagery/. The draft is a
-// starting point: read the screenshots, correct the roles and style, then
-// confirm the brand board with the user before composing.
+// Usage: node bin/brand-capture.mjs <url> [more urls...] [--evidence-only]
+// Writes brand/capture/ (evidence: capture.json, screenshots), brand/references/
+// (the retained reference set and its index.json), and a draft brand/brand.json
+// plus brand/logos/ and brand/imagery/. The draft is a starting point: read the
+// screenshots, correct the roles and style, then confirm the brand board with
+// the user before composing.
+//
+// --evidence-only refreshes the evidence alone, for a brand that is already
+// curated: it writes brand/capture/ and adds to brand/references/, and never
+// touches brand/brand.json, logos, imagery, or any other brand asset.
 import puppeteer from 'puppeteer';
 import { execFileSync } from 'node:child_process';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { copyFile, mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { withTransparentBackground } from './brand-capture-evidence.mjs';
 import { refuseInCodexSandbox } from './browser-guard.mjs';
+import { captureReference, categoryOf, matchFont, proofPng, standInEntry } from './font-match.mjs';
 
-refuseInCodexSandbox('Capturing the brand');
-
-const urls = process.argv.slice(2).filter((a) => /^https?:\/\//.test(a));
-if (!urls.length) {
-  console.error('Usage: node bin/brand-capture.mjs https://example.com [https://example.com/about]');
-  process.exit(2);
+/**
+ * Which parts of brand/ a capture may write. Evidence (capture/ and references/)
+ * is always written; the kit, logos and imagery only by a full capture.
+ */
+export function capturePlan({ evidenceOnly = false } = {}) {
+  return { evidenceOnly, evidence: ['capture', 'references'], kit: !evidenceOnly, logos: !evidenceOnly, imagery: !evidenceOnly };
 }
-const OUT = 'brand';
-await mkdir(join(OUT, 'capture'), { recursive: true });
-await mkdir(join(OUT, 'logos'), { recursive: true });
-await mkdir(join(OUT, 'imagery'), { recursive: true });
 
-const browser = await puppeteer.launch({ headless: true });
+/** Whether the plan lets a capture write this path (relative to brand/, with "/"). */
+export function mayWrite(plan, rel) {
+  const top = rel.split('/')[0];
+  if (plan.evidence.includes(top) && rel.includes('/')) return true;
+  if (rel === 'brand.json') return plan.kit;
+  if (top === 'logos') return plan.logos;
+  if (top === 'imagery') return plan.imagery;
+  return false;
+}
+
+/** References kept by an earlier capture, minus the files this one replaces. */
+export function mergeReferences(existing, fresh) {
+  const replaced = new Set(fresh.map((r) => r.file));
+  return [...(Array.isArray(existing) ? existing : []).filter((r) => r && !replaced.has(r.file)), ...fresh];
+}
+
+/** Find an open release of a family on Fontsource (npm), or null. */
+function npmFontsourcePackage(candidates) {
+  for (const pkg of candidates) {
+    try {
+      execFileSync('npm', ['view', pkg, 'name'], { stdio: ['ignore', 'pipe', 'ignore'] });
+      return pkg;
+    } catch { /* not published */ }
+  }
+  return null;
+}
+
+export async function captureBrand(urls, {
+  out: OUT = 'brand',
+  evidenceOnly = false,
+  launch = () => puppeteer.launch({ headless: true }),
+  fetchImpl = fetch,
+  findFontPackage = npmFontsourcePackage,
+  now = () => new Date(),
+  pause = (ms) => new Promise((r) => setTimeout(r, ms)),
+  log = console.log,
+  // A commercial heading or body font is matched to the closest open stand-in (bin/font-match.mjs).
+  fonts = { reference: captureReference, match: matchFont, proof: proofPng },
+} = {}) {
+const plan = capturePlan({ evidenceOnly });
+// Every write goes through here, so an evidence-only run can't touch the curated kit.
+const allowed = (path) => {
+  const rel = path.slice(OUT.length + 1).split('\\').join('/');
+  if (!path.startsWith(`${OUT}`) || !mayWrite(plan, rel)) throw new Error(`brand capture${evidenceOnly ? ' --evidence-only' : ''} may not write ${path}`);
+  return path;
+};
+const put = (path, data) => writeFile(allowed(path), data);
+await mkdir(join(OUT, 'capture'), { recursive: true });
+if (plan.logos) await mkdir(join(OUT, 'logos'), { recursive: true });
+if (plan.imagery) await mkdir(join(OUT, 'imagery'), { recursive: true });
+
+// Fonts: prefer an open release on Fontsource; otherwise the closest open
+// stand-in, matched by pixels while the site is open (bin/font-match.mjs).
+const firstFamily = (stack) => (stack ?? '').split(',')[0].trim().replace(/^["']|["']$/g, '');
+// Framework font loaders mangle names (__GeistSans_a1b2c3, geistSans
+// Fallback): strip them and try a few spellings before giving up.
+const familyIds = (family) => {
+  const clean = family.replace(/^_+/, '').replace(/_[a-f0-9]{5,}$/i, '').replace(/\s*Fallback$/i, '');
+  const spaced = clean.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/[_-]+/g, ' ').trim();
+  const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const base = slug(spaced);
+  const trimmed = slug(spaced.replace(/\s+(display|text|variable|vf|web)$/i, ''));
+  const noSans = slug(spaced.replace(/\s+sans$/i, ''));
+  return [...new Set([base, trimmed, noSans].filter(Boolean))];
+};
+const fontsourceLookups = new Map();
+const fontsourcePackage = (family) => {
+  if (!fontsourceLookups.has(family)) fontsourceLookups.set(family, findFontPackage(familyIds(family).flatMap((id) => [`@fontsource-variable/${id}`, `@fontsource/${id}`])));
+  return fontsourceLookups.get(family);
+};
+const browser = await launch();
 const pages = [];
+const fontMatches = {};
 try {
   for (const [i, url] of urls.entries()) {
     const page = await browser.newPage();
     await page.setViewport({ width: 1440, height: 900 });
     await page.goto(url, { waitUntil: 'networkidle2', timeout: 45000 });
     await page.evaluate(() => document.fonts.ready);
-    await new Promise((r) => setTimeout(r, 800));
+    await pause(800);
     const data = await page.evaluate(extract);
     data.url = url;
+    // A heading or body font that isn't open gets matched below; render it now, in its own page.
+    if (i === 0 && plan.kit) {
+      data.fontRefs = {};
+      for (const [role, sample] of [['display', data.type.heading], ['body', data.type.body]]) {
+        const family = firstFamily(sample?.fontFamily);
+        if (!family || fontsourcePackage(family)) continue;
+        data.fontRefs[role] = await fonts.reference(page, {
+          family,
+          weight: Number(sample.fontWeight) || (role === 'display' ? 700 : 400),
+          style: sample.fontStyle === 'italic' ? 'italic' : 'normal',
+          text: sample.text,
+          uppercase: sample.textTransform === 'uppercase',
+        }).catch(() => null);
+      }
+    }
     // Large visuals that aren't plain image files (inline SVG, canvas,
     // animation players): keep a transparent screenshot of each.
     data.visualShots = [];
-    if (i === 0) {
+    if (i === 0 && plan.imagery) {
       // Drop page backgrounds so visuals come out on transparency, not the site's white.
-      await page.addStyleTag({ content: 'html, body { background: transparent !important; } body * { background-color: transparent !important; }' });
-      await page.evaluate(() => window.scrollTo(0, 0));
-      const handles = await page.$$('svg, canvas, video, lottie-player, dotlottie-player, [class*="illustration" i], [class*="lottie" i], picture');
-      let n = 0;
-      for (const handle of handles) {
-        if (n >= 4) break;
-        const box = await handle.boundingBox();
-        if (!box || box.width < 280 || box.height < 220 || box.y > 1800 || box.width > 1400) continue;
-        const inLogoArea = box.y < 120 && box.x < 400;
-        if (inLogoArea) continue;
-        const file = join(OUT, 'imagery', `visual-${++n}.png`);
-        await handle.screenshot({ path: file, omitBackground: true, captureBeyondViewport: false }).catch(() => { n--; });
-        if (n > 0) data.visualShots.push({ path: `imagery/visual-${n}.png`, width: Math.round(box.width), height: Math.round(box.height) });
-      }
+      await withTransparentBackground(page, async () => {
+        await page.evaluate(() => window.scrollTo(0, 0));
+        const handles = await page.$$('svg, canvas, video, lottie-player, dotlottie-player, [class*="illustration" i], [class*="lottie" i], picture');
+        let n = 0;
+        for (const handle of handles) {
+          if (n >= 4) break;
+          const box = await handle.boundingBox();
+          if (!box || box.width < 280 || box.height < 220 || box.y > 1800 || box.width > 1400) continue;
+          const inLogoArea = box.y < 120 && box.x < 400;
+          if (inLogoArea) continue;
+          const file = allowed(join(OUT, 'imagery', `visual-${++n}.png`));
+          await handle.screenshot({ path: file, omitBackground: true, captureBeyondViewport: false }).catch(() => { n--; });
+          if (n > 0) data.visualShots.push({ path: `imagery/visual-${n}.png`, width: Math.round(box.width), height: Math.round(box.height) });
+        }
+        // Asset cutouts must not alter the visual evidence used to judge the brand.
+      });
     }
     data.fontFiles = await page.evaluate(() =>
       performance.getEntriesByType('resource').map((e) => e.name).filter((n) => /\.(woff2?|ttf|otf)(\?|$)/i.test(n)));
@@ -60,16 +152,67 @@ try {
     data.screenshots = [];
     for (let s = 0; s < Math.min(4, Math.ceil(height / 900)); s++) {
       await page.evaluate((y) => window.scrollTo(0, y), s * 900);
-      await new Promise((r) => setTimeout(r, 400));
-      const file = join(OUT, 'capture', `page${i + 1}-screen${s + 1}.jpg`);
+      await pause(400);
+      const file = allowed(join(OUT, 'capture', `page${i + 1}-screen${s + 1}.jpg`));
       await page.screenshot({ path: file, type: 'jpeg', quality: 80, captureBeyondViewport: false });
       data.screenshots.push(file);
+    }
+    // Responsive identity is evidence too; retain the same unmodified page at phone width.
+    await page.setViewport({ width: 390, height: 844 });
+    await page.evaluate(() => document.fonts.ready);
+    data.mobileScreenshots = [];
+    for (let screen = 0; screen < 2; screen++) {
+      await page.evaluate((y) => window.scrollTo(0, y), screen * 844);
+      await pause(400);
+      const file = allowed(join(OUT, 'capture', `page${i + 1}-mobile-screen${screen + 1}.jpg`));
+      await page.screenshot({ path: file, type: 'jpeg', quality: 80, captureBeyondViewport: false });
+      data.mobileScreenshots.push(file);
     }
     pages.push(data);
     await page.close();
   }
+  for (const [role, ref] of Object.entries(pages[0]?.fontRefs ?? {})) {
+    if (!ref) continue;
+    const sample = role === 'display' ? pages[0].type.heading : pages[0].type.body;
+    try {
+      fontMatches[role] = await fonts.match(browser, ref, { category: categoryOf(sample.fontFamily, ref.family) });
+      if (fontMatches[role]) await put(join(OUT, 'capture', `font-${role}.png`), await fonts.proof(browser, fontMatches[role]));
+    } catch (err) {
+      log(`  Couldn't match the ${role} font (${err.message}); using the default stand-in.`);
+    }
+  }
 } finally {
   await browser.close();
+}
+
+// Keep the selected reference set in brand/references: the existing source
+// bundle excludes transient brand/capture, but retains this small reusable set.
+await mkdir(join(OUT, 'references'), { recursive: true });
+const selected = [
+  { page: 0, field: 'screenshots', screen: 0, name: 'page1-screen1.jpg', width: 1440, height: 900 },
+  { page: 0, field: 'screenshots', screen: 1, name: 'page1-screen2.jpg', width: 1440, height: 900 },
+  { page: 1, field: 'screenshots', screen: 0, name: 'page2-screen1.jpg', width: 1440, height: 900 },
+  { page: 0, field: 'mobileScreenshots', screen: 0, name: 'page1-mobile-screen1.jpg', width: 390, height: 844 },
+];
+const references = [];
+const capturedAt = now().toISOString();
+// A full capture replaces the reference set; evidence-only adds to it.
+if (!evidenceOnly) for (const ref of selected) await rm(allowed(join(OUT, 'references', ref.name)), { force: true });
+for (const ref of selected) {
+  const file = pages[ref.page]?.[ref.field]?.[ref.screen];
+  if (!file) continue;
+  const target = allowed(join(OUT, 'references', ref.name));
+  await copyFile(file, target);
+  references.push({ file: ref.name, source_url: pages[ref.page].url, viewport: { width: ref.width, height: ref.height }, bytes: (await stat(target)).size, captured_at: capturedAt });
+}
+const previous = evidenceOnly ? JSON.parse(await readFile(join(OUT, 'references', 'index.json'), 'utf8').catch(() => '[]')) : [];
+await put(join(OUT, 'references', 'index.json'), JSON.stringify(mergeReferences(previous, references), null, 2));
+
+if (evidenceOnly) {
+  await put(join(OUT, 'capture', 'evidence-only.json'), `${JSON.stringify({ urls, evidence_only: true, captured_at: capturedAt, screenshots: pages.flatMap((p) => p.screenshots) }, null, 2)}\n`);
+  log(`Evidence for ${urls.join(', ')} → brand/references/ (${references.length} new reference${references.length === 1 ? '' : 's'}) and brand/capture/.`);
+  log('brand/brand.json, logos and imagery were left as they are.');
+  return { plan, references, kit: null };
 }
 
 // ---------- Merge evidence across pages ----------
@@ -116,28 +259,6 @@ const shadows = cards.map((c) => c.shadow).filter((s) => s && s !== 'none');
 const hardShadow = shadows.some((s) => /\b0px\s*(?:0px\s*)?(?:rgb|#)|\s0px\)?$/.test(s.replace(/rgba?\([^)]*\)/g, '').trim()) && !/\d+px \d+px [1-9]\d*px/.test(s));
 const shadow = !shadows.length ? 'none' : hardShadow ? 'hard' : 'soft';
 
-// Fonts: prefer an open release on Fontsource; otherwise a stand-in.
-const firstFamily = (stack) => (stack ?? '').split(',')[0].trim().replace(/^["']|["']$/g, '');
-// Framework font loaders mangle names (__GeistSans_a1b2c3, geistSans
-// Fallback): strip them and try a few spellings before giving up.
-const familyIds = (family) => {
-  const clean = family.replace(/^_+/, '').replace(/_[a-f0-9]{5,}$/i, '').replace(/\s*Fallback$/i, '');
-  const spaced = clean.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/[_-]+/g, ' ').trim();
-  const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-  const base = slug(spaced);
-  const trimmed = slug(spaced.replace(/\s+(display|text|variable|vf|web)$/i, ''));
-  const noSans = slug(spaced.replace(/\s+sans$/i, ''));
-  return [...new Set([base, trimmed, noSans].filter(Boolean))];
-};
-const fontsourcePackage = (family) => {
-  for (const pkg of familyIds(family).flatMap((id) => [`@fontsource-variable/${id}`, `@fontsource/${id}`])) {
-    try {
-      execFileSync('npm', ['view', pkg, 'name'], { stdio: ['ignore', 'pipe', 'ignore'] });
-      return pkg;
-    } catch { /* not published */ }
-  }
-  return null;
-};
 const typeFor = (sample, role, fallbackFamily, fallbackPkg) => {
   const family = firstFamily(sample?.fontFamily);
   const pkg = family ? fontsourcePackage(family) : null;
@@ -152,6 +273,7 @@ const typeFor = (sample, role, fallbackFamily, fallbackPkg) => {
     const registered = pkg.split('/')[1].split('-').map((w) => w[0].toUpperCase() + w.slice(1)).join(' ');
     return { family: registered, source: 'fontsource', package: pkg, license: 'open', ...base };
   }
+  if (family && fontMatches[role]) return standInEntry(role, family, base, fontMatches[role]);
   return {
     family: fallbackFamily, source: 'fontsource', package: fallbackPkg, license: 'stand-in',
     stand_in_for: family || null, ...base,
@@ -166,18 +288,18 @@ const body = typeFor(home.type.body, 'body', 'Inter', '@fontsource-variable/inte
 const EXT_BY_TYPE = { 'image/svg+xml': 'svg', 'image/png': 'png', 'image/jpeg': 'jpg', 'image/webp': 'webp', 'image/avif': 'avif', 'image/gif': 'gif' };
 const download = async (url, stem) => {
   try {
-    const res = await fetch(url, { headers: { 'user-agent': 'Mozilla/5.0 brand-capture' } });
+    const res = await fetchImpl(url, { headers: { 'user-agent': 'Mozilla/5.0 brand-capture' } });
     if (!res.ok) return null;
     const ext = EXT_BY_TYPE[(res.headers.get('content-type') ?? '').split(';')[0].trim()];
     if (!ext) return null;
     const file = `${stem}.${ext}`;
-    await writeFile(join(OUT, file), Buffer.from(await res.arrayBuffer()));
+    await put(join(OUT, file), Buffer.from(await res.arrayBuffer()));
     return file;
   } catch { return null; }
 };
 const logos = {};
 if (home.logo?.svg) {
-  await writeFile(join(OUT, 'logos', 'primary.svg'), home.logo.svg);
+  await put(join(OUT, 'logos', 'primary.svg'), home.logo.svg);
   logos.primary = 'logos/primary.svg';
 } else if (home.logo?.src) {
   const file = await download(home.logo.src, 'logos/primary');
@@ -226,7 +348,14 @@ const kit = {
   rules: [],
   sources: {
     palette: { from: `computed styles on ${urls.join(', ')}`, confidence: 'medium' },
-    typography: { from: 'computed styles on headings and body text', confidence: display.license === 'stand-in' ? 'low' : 'high' },
+    typography: {
+      from: 'computed styles on headings and body text',
+      confidence: display.license !== 'stand-in' ? 'high' : fontMatches.display?.confidence ?? 'low',
+      ...(Object.keys(fontMatches).length ? { stand_ins: Object.fromEntries(Object.entries(fontMatches).map(([role, m]) => [role, {
+        matched: `${m.family} ${m.weight}`, confidence: m.confidence, score: Number(m.score.toFixed(3)), alternatives: m.alternatives,
+        ...(m.confidence === 'low' ? { ask: 'Ask for the font files: no open font is close enough.' } : {}),
+      }])) } : {}),
+    },
     style: { from: 'buttons and cards', confidence: 'medium' },
     unreviewed: ['style.illustration_style', 'style.photo_treatment', 'style.motion', 'style.tilt', 'voice', 'rules'],
   },
@@ -242,18 +371,33 @@ const evidence = {
   cards: cards.slice(0, 12),
   type: pages.map((p) => p.type),
   fontFiles: [...new Set(pages.flatMap((p) => p.fontFiles))],
+  fontMatches: Object.fromEntries(Object.entries(fontMatches).map(([role, { proof, ...m }]) => [role, { ...m, proof: `capture/font-${role}.png` }])),
   logoCandidates: home.logoCandidates,
   screenshots: pages.flatMap((p) => p.screenshots),
 };
-await writeFile(join(OUT, 'capture', 'capture.json'), `${JSON.stringify(evidence, null, 2)}\n`);
-await writeFile(join(OUT, 'brand.json'), `${JSON.stringify(kit, null, 2)}\n`);
+await put(join(OUT, 'capture', 'capture.json'), `${JSON.stringify(evidence, null, 2)}\n`);
+await put(join(OUT, 'brand.json'), `${JSON.stringify(kit, null, 2)}\n`);
 
-console.log(`Draft kit for ${kit.identity.name} → brand/brand.json`);
-console.log(`  palette: paper ${kit.palette.paper}, ink ${kit.palette.ink}, accent ${kit.palette.accent}`);
-console.log(`  display: ${display.family}${display.stand_in_for ? ` (stand-in for ${display.stand_in_for})` : ''}; body: ${body.family}${body.stand_in_for ? ` (stand-in for ${body.stand_in_for})` : ''}`);
-console.log(`  style: radius ${kit.style.radius}px, border ${kit.style.border_width}px, shadow ${shadow}`);
-console.log(`  logo: ${logos.primary ?? 'not found'}; imagery: ${imagery.length} files`);
-console.log(`Evidence and screenshots: brand/capture/. Review them, fix the kit, then npm run brand:apply && npm run brand:board.`);
+log(`Draft kit for ${kit.identity.name} → brand/brand.json`);
+log(`  palette: paper ${kit.palette.paper}, ink ${kit.palette.ink}, accent ${kit.palette.accent}`);
+const typeLine = (t, role) => `${t.family}${t.stand_in_for ? ` (stand-in for ${t.stand_in_for}${fontMatches[role] ? `, ${fontMatches[role].confidence} confidence` : ', default'})` : ''}`;
+log(`  display: ${typeLine(display, 'display')}; body: ${typeLine(body, 'body')}`);
+for (const [role, m] of Object.entries(fontMatches)) if (m.confidence === 'low') log(`  ${role}: no open font is close to ${role === 'display' ? display.stand_in_for : body.stand_in_for}; ask for the font files.`);
+log(`  style: radius ${kit.style.radius}px, border ${kit.style.border_width}px, shadow ${shadow}`);
+log(`  logo: ${logos.primary ?? 'not found'}; imagery: ${imagery.length} files`);
+log(`Evidence and screenshots: brand/capture/. Review them, fix the kit, then npm run brand:apply && npm run brand:board.`);
+return { plan, references, kit };
+}
+
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  refuseInCodexSandbox('Capturing the brand');
+  const urls = process.argv.slice(2).filter((a) => /^https?:\/\//.test(a));
+  if (!urls.length) {
+    console.error('Usage: node bin/brand-capture.mjs https://example.com [https://example.com/about] [--evidence-only]');
+    process.exit(2);
+  }
+  await captureBrand(urls, { evidenceOnly: process.argv.includes('--evidence-only') });
+}
 
 // ---------- Runs in the page ----------
 function extract() {
@@ -307,7 +451,7 @@ function extract() {
     const el = [...document.querySelectorAll(sel)].find((e) => visible(e) && e.textContent.trim().length > 3);
     if (!el) return null;
     const cs = getComputedStyle(el);
-    return { text: el.textContent.trim().slice(0, 60), fontFamily: cs.fontFamily, fontWeight: cs.fontWeight, fontSize: cs.fontSize, letterSpacing: cs.letterSpacing === 'normal' ? '0px' : cs.letterSpacing, lineHeight: cs.lineHeight === 'normal' ? `${parseFloat(cs.fontSize) * 1.2}px` : cs.lineHeight, textTransform: cs.textTransform };
+    return { text: el.textContent.trim().slice(0, 60), fontFamily: cs.fontFamily, fontWeight: cs.fontWeight, fontStyle: cs.fontStyle, fontSize: cs.fontSize, letterSpacing: cs.letterSpacing === 'normal' ? '0px' : cs.letterSpacing, lineHeight: cs.lineHeight === 'normal' ? `${parseFloat(cs.fontSize) * 1.2}px` : cs.lineHeight, textTransform: cs.textTransform };
   };
 
   // Logo: an SVG or image in the header/nav that links home or says "logo".

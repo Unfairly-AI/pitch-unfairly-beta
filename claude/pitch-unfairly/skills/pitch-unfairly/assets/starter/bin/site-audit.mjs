@@ -14,6 +14,8 @@ import { loadSite } from './site-check.mjs';
 import { buildSite } from './site-build.mjs';
 import { serveDir } from './serve.mjs';
 import { refuseInCodexSandbox } from './browser-guard.mjs';
+import { exerciseControls, printStateProblems, selectPdfState } from './site/interact.mjs';
+import { EXTRA_WIDTHS, brandDiff, layoutProblems, motionProblems, previewProblems, qualifierProblems, visualSlop } from './site/page-lint.mjs';
 
 const STAMP = 'artifacts/site-audit-pass.json';
 const OUT = 'artifacts/site';
@@ -52,12 +54,16 @@ export async function siteAuditBlocker() {
 // tall one. <html> carries class is-pdf meanwhile, so a site can design its
 // pages on purpose. Toggles stay closed unless marked data-pdf-open.
 export const PDF_PAGE = { width: 1280, height: 720, margin: 56, maxScale: 1.25 };
-export async function writeDeckPdf(browser, base, path) {
+// report collects the print-state checks: an interactive page with no result,
+// web-only instructions, no way to act (site/interact.mjs).
+export async function writeDeckPdf(browser, base, path, report = { errors: [], warnings: [] }) {
   const page = await browser.newPage();
   await page.setViewport({ width: PDF_PAGE.width, height: PDF_PAGE.height, deviceScaleFactor: 1 });
   await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
   await page.goto(`${base}/?static`, { waitUntil: 'networkidle0' });
   await page.emulateMediaType('screen');
+  // data-pdf-state picks the scenario a section prints, before the page is cut into pages.
+  const state = await selectPdfState(page);
   const fits = await page.evaluate(({ width, height, margin, maxScale }) => {
     document.documentElement.classList.add('is-pdf');
     // data-pdf-open opens a toggle on the page; data-pdf-hide leaves out what only works on the web.
@@ -120,6 +126,11 @@ export async function writeDeckPdf(browser, base, path) {
       return { name, scale, pages: Math.round((natural / room) * 10) / 10 };
     });
   }, PDF_PAGE);
+  const print = await printStateProblems(page);
+  for (const r of [state, print]) {
+    report.errors.push(...r.errors);
+    report.warnings.push(...r.warnings);
+  }
   await page.pdf({ path, width: `${PDF_PAGE.width}px`, height: `${PDF_PAGE.height}px`, printBackground: true, preferCSSPageSize: true });
   await page.close();
   return fits.filter((f) => f.scale < 0.7);
@@ -128,7 +139,16 @@ export async function writeDeckPdf(browser, base, path) {
 if (process.argv[1]?.endsWith('site-audit.mjs')) {
   refuseInCodexSandbox('The site audit');
   await rm(STAMP, { force: true });
-  const source = checkSite(await loadSite());
+  const loaded = await loadSite();
+  const source = checkSite(loaded);
+  // The browser checks that came with engine 1.8 (controls, the PDF's story, page
+  // lint) block on a site that's unpinned or pinned 1.8+, and warn on an older
+  // pin, as its pin promises. A lead sample is held to motion too.
+  const pinnedMinor = /^sites@1\.(\d+)/.exec(String(loaded.site.engine ?? ''))?.[1];
+  const strict = pinnedMinor === undefined || Number(pinnedMinor) >= 8;
+  const lead = !!loaded.site.sample?.lead;
+  const kit = JSON.parse(await readFile('brand/brand.json', 'utf8').catch(() => 'null'));
+  const references = JSON.parse(await readFile('brand/references/index.json', 'utf8').catch(() => 'null'));
   source.warnings.forEach((w) => console.log(`  ! ${w}`));
   if (source.errors.length) {
     source.errors.forEach((e) => console.error(`  ✗ ${e}`));
@@ -140,7 +160,13 @@ if (process.argv[1]?.endsWith('site-audit.mjs')) {
   const browser = await puppeteer.launch({ headless: true });
   await rm(OUT, { recursive: true, force: true });
   const problems = [];
+  const gate = (label, r) => {
+    const say = (m) => (m.startsWith(label) ? m : `${label}: ${m}`);
+    for (const e of r.errors) if (strict) problems.push(say(e)); else console.log(`  ! ${say(e)}`);
+    for (const w of r.warnings) console.log(`  ! ${say(w)}`);
+  };
   try {
+    gate('link preview', await previewProblems('dist-site'));
     for (const mode of MODES) {
       const dir = join(OUT, mode.name);
       await mkdir(dir, { recursive: true });
@@ -217,11 +243,37 @@ if (process.argv[1]?.endsWith('site-audit.mjs')) {
       });
       const broken = await page.$$eval('[data-v], [data-expr]', (els) => els.filter((e) => /NaN|undefined|Infinity/.test(e.textContent)).map((e) => e.dataset.v || e.dataset.expr));
       broken.forEach((b) => problems.push(`${mode.name}: ${b} shows a broken number after a control changed`));
+      // At one width, hold every control to what it promises: each input moves an
+      // answer, all-off still reads, reset restores, presets are stable, and a
+      // "Calculate" computes (site/interact.mjs). It reloads the page as it goes.
+      if (mode.name === 'laptop') {
+        // The page as a whole, at a laptop width (site/page-lint.mjs): the AI-template
+        // tells counted, the brand's fonts actually rendering, and motion. Each may reload.
+        gate('slop', await visualSlop(page, kit));
+        gate('brand', await brandDiff(page, kit, references));
+        gate('motion', await motionProblems(page, { strict: lead }));
+        gate('controls', await exerciseControls(page));
+      }
+      if (mode.mobile) gate(mode.name, await layoutProblems(page, { width: mode.width, height: mode.height }));
+      // A proposed promise and a partial total keep their qualifier in view at every width.
+      gate(mode.name, await qualifierProblems(page));
       errs.forEach((e) => problems.push(`${mode.name}: ${e}`));
 
       await page.close();
     }
-    const small = await writeDeckPdf(browser, server.url, 'dist-site/deck.pdf');
+    // The widths between and beyond the screenshot modes: layout only.
+    for (const width of EXTRA_WIDTHS) {
+      const page = await browser.newPage();
+      await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
+      await page.setViewport({ width, height: width < 600 ? 800 : 1000, isMobile: width < 600, hasTouch: width < 600, deviceScaleFactor: 1 });
+      await page.goto(`${server.url}/`, { waitUntil: 'networkidle0' });
+      gate(`${width}px`, await layoutProblems(page, { width }));
+      gate(`${width}px`, await qualifierProblems(page));
+      await page.close();
+    }
+    const pdfReport = { errors: [], warnings: [] };
+    const small = await writeDeckPdf(browser, server.url, 'dist-site/deck.pdf', pdfReport);
+    gate('PDF', pdfReport);
     small.forEach((x) => console.log(`  ! PDF: section "${x.name}" is ${x.pages} screens tall, so its page is scaled to ${Math.round(x.scale * 100)}%. Lay it out for the page with .is-pdf rules, fold detail into a toggle, or split the section.`));
   } finally {
     await browser.close();
@@ -232,6 +284,8 @@ if (process.argv[1]?.endsWith('site-audit.mjs')) {
     console.error(`${problems.length} problem(s). Screenshots: ${OUT}/`);
     process.exit(1);
   }
-  await writeFile(STAMP, JSON.stringify({ fingerprint: await siteFingerprint(), sections: built.sections, at: new Date().toISOString() }, null, 2));
-  console.log(`All modes clean: ${built.sections.length} sections at ${MODES.map((m) => m.width).join(', ')}px. Look at every screenshot in ${OUT}/ before publishing. PDF: dist-site/deck.pdf`);
+  // The section screenshots this clean pass took, per device, so a review can prove it saw exactly these.
+  const { screenshotHashes } = await import('./design-review.mjs');
+  await writeFile(STAMP, JSON.stringify({ fingerprint: await siteFingerprint(), sections: built.sections, shots: await screenshotHashes(OUT), at: new Date().toISOString() }, null, 2));
+  console.log(`All modes clean: ${built.sections.length} sections at ${[...MODES.map((m) => m.width), ...EXTRA_WIDTHS].sort((a, b) => a - b).join(', ')}px. Look at every screenshot in ${OUT}/ before publishing. PDF: dist-site/deck.pdf`);
 }

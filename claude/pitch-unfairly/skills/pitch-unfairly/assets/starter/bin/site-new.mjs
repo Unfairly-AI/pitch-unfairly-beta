@@ -7,6 +7,7 @@
 import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { ENGINE } from './site/version.mjs';
 
 export const TOOLBOX = join(dirname(fileURLToPath(import.meta.url)), '..', 'site-toolbox');
 
@@ -39,6 +40,7 @@ export function scaffold(root, name, { force = false, toolbox = TOOLBOX } = {}) 
   for (const f of readdirSync(sectionsDir)) if (f.endsWith('.html')) rmSync(join(sectionsDir, f));
   for (const { file, html } of sections) writeFileSync(join(sectionsDir, file), html);
   const { $comment, ...example } = JSON.parse(readFileSync(join(toolbox, 'example.json'), 'utf8'));
+  example.engine = `sites@${ENGINE.split('.').slice(0, 2).join('.')}`;
   writeFileSync(join(site, 'site.json'), `${JSON.stringify(example, null, 2)}\n`);
   // The header's nav keeps only the sections this template has.
   const ids = new Set(sections.flatMap(({ html }) => [...html.matchAll(/<section\b[^>]*\sid="([^"]+)"/g)].map((m) => m[1])));

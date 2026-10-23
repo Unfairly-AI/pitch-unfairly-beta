@@ -2,7 +2,36 @@
 
 A site is a scrolling page published like a deck: the same link, password, named links, gallery, versions, and views (one per section instead of one per slide). Use one when the reader will scroll, compare, and try numbers on their own, such as a proposal a broker forwards, a pricing page for one customer, or a business case. Use a deck when someone will present it.
 
-Start from the toolbox, not a blank page. The starter carries a toolbox of proven components (hero, glance band, what you asked for, calculator, comparison table, plan cards, price builder, scope, tabs, stats, quotes, team, statement, timeline, FAQ, close, sticky header, sample band) and two proposal templates built from them. They are the default for every common job: copy the component that does the job, then write it for this reader and this point, and adapt its layout where the point needs it. Invent a component only for a job the toolbox doesn't do. Under the components, the starter gives you the machinery that has to be right every time: the numbers, the brand, the controls, the checks, and publishing.
+Start from the toolbox, not a blank page. The starter carries a toolbox of proven components (hero, glance band, what you asked for, calculator, comparison table, plan cards, price builder, scope, tabs, stats, quotes, team, photos, statement, timeline, FAQ, close, sticky header, sample band) and two proposal templates built from them. They are the default for every common job: copy the component that does the job, then write it for this reader and this point, and adapt its layout where the point needs it. Invent a component only for a job the toolbox doesn't do. Under the components, the starter gives you the machinery that has to be right every time: the numbers, the brand, the controls, the checks, and publishing.
+
+## Understand the company before writing
+
+Use the existing workflow, company Brain, customer kit, layered context and review engine. This is preparation for those tools, not another proposal generator. First identify the seller, buyer, sender, format and sample wrapper. Prefer the customer's promoted kit and its pinned engine. Read `deck_context`, the company/positioning/competition/ICP/brand docs, segment playbooks and accepted lessons. For a prospect sample, keep the prospect's seller research in that prospect's scoped account/project; never seed it as Unfairly's own company context.
+
+Research the website deeply, then go beyond it. Read relevant product, pricing, customer proof, implementation, founder and brand pages. Search the market, buyers and alternatives; open the competitors' own product/pricing pages and credible independent sources. Learn enough to explain:
+
+- What they sell, how they make money, their founder thesis, delivery constraints and what they cannot promise.
+- Best-fit and poor-fit ICPs, users, champions, economic buyers, buying committees, triggers, procurement, objections and the cost of doing nothing.
+- Market dynamics, direct competitors, substitutes, internal/manual work and the status quo; where each alternative wins and what differentiation the evidence actually supports.
+- Customer proof, qualified outcomes, pricing uncertainty, category language and distinctive voice.
+
+Keep findings in the existing Company/Playbooks/Deals layers; a local authoring project can keep a public-only synthesis in `brand/seller-understanding.md`, which the existing source bundle retains. Record source URL, access date, publication date when known, claim/qualifier, confidence, and fact versus hypothesis. Preserve contradictions and questions. Do not manufacture TAM, ROI, superiority or buyer motives. Competitor comparisons must be current and cite the competitor, not merely the seller's claims about it. Private account context stays in the Brain, outside the public authoring bundle.
+
+Before writing, make an internal readiness decision: can you explain the offer, who buys and why, the alternatives, the defensible difference, the proof and the constraints? Answer each from evidence, identify its uncertainty, and name what the proposal will omit. Missing critical positioning or an unresolved contradiction stops unsupported copy. A nonessential gap can remain explicit. A failed search is a gap, never evidence of no competition. Refresh stale research instead of starting over for every proposal.
+
+## Reproduce the brand before adapting it
+
+A logo and token palette are the beginning. Capture the home page and two representative product/campaign pages with `brand:capture`; inspect their original desktop and phone screenshots. Prefer approved brand guidelines when supplied. Record representative compositions in `brand/brand.json`'s existing `style.layout_notes`, `illustration_style`, `photo_treatment`, `voice`, `rules` and source evidence: type scale and wrapping, grid proportions, spacing, section rhythm, imagery, borders, buttons, diagrams and meaningful motion. Name required assets and unresolved font substitutions. Never silently treat a stand-in as an exact match.
+
+Once the kit is curated, refresh the evidence with `npm run brand:capture -- --evidence-only <urls>`. It adds reference screenshots to `brand/references/` (with URL, viewport and date) and never rewrites `brand.json`, logos or imagery.
+
+Privately reproduce a hero, an ordinary content section and one distinctive visual section using the existing site files and engine. Match the actual composition first: preserve proportions, alignment, scale, whitespace, image crop and visual treatment. Compare source and reproduction at the same viewport. This is the Hampton lesson: a section-by-section reconstruction was closer than a redesign wearing the same colors. The rehearsal is internal and never becomes a customer proposal by accident. Do not copy an entire application, tracking scripts or source-site forms.
+
+Only then adapt the visual grammar to the buyer's decision. The toolbox supplies mechanics and common structure; it must not flatten every brand into the same cards. Choose custom composition or a missing component where the source evidence calls for it. For each proposal section record the buying question, evidence, focal visual and useful interaction in `story.md`'s existing Job/Proof/Source fields. Keep sources/assumptions accessible without turning the page into a report.
+
+Visual fidelity does not require repeating bad marketing copy. Keep factual meaning, named products, category terms, genuine voice and attributed quotes. Rewrite interchangeable promises, jargon, repetitive slogans and empty superlatives even when they came from the customer's site. Never replace vague copy with invented results. Use the voice guide and existing copy checks on rendered copy, including inherited website wording. `data-copy-ok` is only for an attributed verbatim quote, with `data-copy-source="https://..."`; it is not a blanket exemption for copied headlines or whole sections.
+
+Run the existing site audit and evaluator with the brand kit and representative references. Brand fidelity, persuasion and technical correctness are separate judgments; passing layout checks proves only layout. Review against the source images, not just the kit you inferred. Inspect once across desktop, phone, alternate interaction states and PDF, repair in a batch and confirm once. A remaining material defect stays incomplete. Preserve accepted brand changes in the existing kit release and durable lessons in their existing scoped home.
 
 ## The project
 
@@ -29,7 +58,7 @@ Commands, from the project folder:
 - `npm run site:new -- data-proposal` (or `proposal`) writes `site/` from a proposal template: its sections from the toolbox in order, the header and footer, `toolbox.css`, and the example model. `--list` shows the templates.
 - `npm run site:gallery` builds every toolbox component on one page in this project's brand (`dist-gallery/`), each labelled. Look at it once the brand is in, before choosing components.
 - `npm run site:check` checks the source in a second. Run it often.
-- `npm run site:build` builds `dist-site/`, a static folder that works on any host.
+- `npm run site:build` builds `dist-site/`, a static folder that works on any host. Beside `index.html` it writes `index.txt`, the page as plain text for AI agents, from the same filled sections. Once published, the host serves it at `<link>/index.txt` behind the link's own gates and points agents at it from the page; decorative text that would only add noise (a marquee repeating a heading) can be marked `data-text="skip"`.
 - `npm run site:audit` checks, builds, opens the page at 390, 1280, and 1920 wide, screenshots every section into `artifacts/site/`, works every control, checks tap targets on the phone, and writes the PDF (`dist-site/deck.pdf`). Publishing needs a clean audit newer than every edit.
 - `npm run -s site:manifest` prints the arguments for `deck_upload_start`.
 
@@ -65,7 +94,7 @@ A headline that makes a claim has to stay true when the inputs change. "Pays for
 
 ## Copy is held to the deck rules
 
-A site's words get the same review a deck's do (`voice.md`), read off the page with its tokens filled in. `site:check` refuses an em dash (or a spaced en dash or double hyphen used as one), fragments strung together with middle dots, and a line that opens with a bold label and a colon. It warns, for you to read and decide, on generated-sounding words (unlock, seamless, empower, streamline, leverage and the like), "not just X but Y", a "Title: subtitle" headline, a headline over 110 characters, and an eyebrow or label that only says "Overview" or "Next steps". Quoted words in a `<blockquote>`, or in any element marked `data-copy-ok` (a verbatim quote that keeps its own dash), are someone else's and aren't checked. The blocking rules came with `sites@1.2`; a site pinned to 1.1 sees them as warnings until it's re-pinned.
+A site's words get the same review a deck's do (`voice.md`), read off the page with its tokens filled in. `site:check` refuses an em dash (or a spaced en dash or double hyphen used as one), fragments strung together with middle dots, and a line that opens with a bold label and a colon. It warns, for you to read and decide, on generated-sounding words (unlock, seamless, empower, streamline, leverage and the like), "not just X but Y", a "Title: subtitle" headline, a headline over 110 characters, and an eyebrow or label that only says "Overview" or "Next steps". Attributed quoted words in a `<blockquote>`, or in an element marked `data-copy-ok` and `data-copy-source="https://..."` (a verbatim quote that keeps its own dash), are someone else's and aren't checked. The blocking rules came with `sites@1.2`; a site pinned to 1.1 sees them as warnings until it's re-pinned.
 
 The voice guide's "Simplify the copy" rule is measured too, as warnings: a hero headline over 12 words, a hero lede over 30 words or longer than one sentence, a hero with more than one button or more than two figures, a section headline over 18 words, a lede over 35, a paragraph over 60, and a sentence over 30. Detail inside `<details>`, tables and quotes doesn't count: one click away is where it belongs. Read each warning, then cut, or keep the line on purpose.
 
@@ -161,6 +190,7 @@ A sample (`"sample": true`) carries the sample band: one slim band above the hea
 | Testimonials | `quotes` | One large pull quote, then a row of two or three |
 | Facets of one idea | `tabs` | Three to five tabs beside the open panel; each panel a headline, ticked points, one closing line; the PDF prints them all |
 | Who they'll work with | `team` | Two to four people: face or monogram, name, role, one line on this account |
+| The client's world | `photos` | One lead photo and two beside it, captioned, from the client's own site; stock only for a gap, credited |
 | The turn in the argument | `statement` | One sentence set big, once a page |
 | The path to the start | `timeline` | Four to six dated steps with owners, today marked |
 | Questions | `faq` | Four to eight questions in an accordion |
@@ -189,9 +219,69 @@ A proposal follows a shape the reader already knows, so start from one of these.
 | 10 | FAQ | `faq` | The questions asked before a yes | Restating sections |
 | 11 | Close | `close` | The ask by a date, the steps after yes, a named contact, the PDF | A summary of the page |
 
-**The standard proposal** (`npm run site:new -- proposal`), with no calculator: a scope of work, a partnership, a service with one price. Hero and glance, what you asked for (`heard`), how it works (`cards`), the scope, the price (`price`), the team, quotes, timeline, FAQ, close.
+**The standard proposal** (`npm run site:new -- proposal`), with no calculator: a scope of work, a partnership, a service with one price. Hero and glance, what you asked for (`heard`), how it works (`cards`), the client's photos (`photos`), the scope, the price (`price`), the team, quotes, timeline, FAQ, close.
 
 **Keep any one screen from overwhelming the reader.** One point and one focal element per screen: the answer in the calculator, the lit column in the comparison, the pull quote. Three to four of anything (numbers, cards, steps of the close), never seven. Detail goes behind `<details>`. If a section needs more than a screen and a half at 1280 wide, it's two sections, or its detail belongs in a toggle. Write the copy short first (voice guide, "Simplify the copy"), then design; `site:check` warns where a line runs long.
+
+## Commitments, sources and partial totals
+
+From engine 1.8 (pinned `sites@1.8` or unpinned). Older pins get these as warnings.
+
+- **Dates and terms.** Every `data-date` or `data-commitment` element carries `data-basis`:
+  - `sourced`: a vendor term. Add `data-source="<fact path>"`, with that fact's published entry in `sources`. The element shows `{{facts.<that path>}}` and types no term beside it, so the page says exactly what the source says.
+  - `supplied`: a deal fact the seller gave. Add `data-source` naming a supplied entry: `{ "supplied_by": "<who>", "received": "YYYY-MM-DD", "note"? }`. The element shows that fact's token, so the evidence vouches for exactly what's on the page. A real, approved schedule stays as it is.
+  - `proposed`: a scenario assumption. A visible `[data-conditional]` note must sit in the same section file ("Proposed: the dates move with contract signature"). A footer disclaimer can't qualify a promise.
+  - Unknowns never become promises. With no real dates, order the steps by dependency, not on a calendar.
+- **`sources`** in site.json: `{ "<fact path>": { "url": "https://…", "accessed": "YYYY-MM-DD", "verbatim": true|false, "qualifier"?, "scope"? } }`. An entry for an ancestor path covers the facts under it. A fact quoted in a `<blockquote>` must be `"verbatim": true`. Dated proof (ranks, awards, ratings, reports, surveys) read more than 30 days ago warns: re-verify it on publish day.
+- **`fictional`** in site.json lists the fact-path prefixes and model inputs that are the fictional buyer's example data, so they need no source. A fictional fact that carries a date, duration or trial must still be a proposed commitment with its conditional.
+- **Qualifiers must stay visible.** A `data-conditional` or `data-excludes` must show on the screen and in the PDF.
+  - One element can do both, or one each: a `data-pdf-hide` note for the web plus a `.pdf-only` one for the paper.
+  - `hidden`, `sr-only`, `display:none` and a closed `<details>` don't count.
+  - The audit also checks it's visible, in its section and near its promise, at every width and on each PDF page.
+- **`model.types`**: `{ name: "cash"|"capacity"|"time"|"count"|"rate" }`. A capacity, time or count figure formatted as money is an error, inline `{{= … | money}}` expressions included: that's capacity shown as cash. A count or time multiplied by a `cash` or `rate` figure is money (seats × price), so it passes.
+- **`model.excludes`**: `{ name: "what this total leaves out" }`. Where such a figure shows, a visible `data-excludes="name"` line must sit in the same section, naming what it leaves out.
+- **Scroll links.** A link that only scrolls never starts with Run, Calculate, Compute, Estimate or "Get results": say where it goes ("See the numbers"). Those verbs belong on a control that computes in place.
+
+## Lead samples
+
+A sample built to show a prospect what their own proposal could look like declares `"sample": { "lead": true, "seller": "<Company>", "buyer": "<a health plan>", "exclude_names": [<other prospects>] }` in site.json. Plan it first: `story.md` in site format with `Mode: lead` (see the story guide). In lead mode:
+
+- **The sample band.** The band says "Example: a proposal <seller> could send <buyer>" and carries one call to action, "Made by Unfairly". The page names Unfairly at most twice on screen (the band and the footer), so drop the toolbox band's wordmark.
+- **No pitch on the page.** Outside the band there is no link to Unfairly's sites, and no copy that names us as maker or sender ("A note from Unfairly", "from Unfairly"); our pitch goes in the note. The seller's own calls to action and offer copy ("Email us for a hospitality quote", "Book 30 minutes", "within 48 hours") are fine. There is also no guarantee or savings projection in our own words, and no other prospect's name.
+- **Every claim sourced.** Every `{{facts.*}}` the page uses has a `sources` entry or is `fictional`. A plain number typed into the copy (two or more digits, not a year, not in a link or button label) is an error. Every money figure in the model, inputs included, declares its type. The evaluator flags prose claims about the seller that nothing on the page attributes.
+- **No typed commitments.** A date, duration or trial typed as text ("a 30-day evaluation", "Nov 20 kickoff") is an error unless it's a marked commitment.
+- **Motion is required.** In lead mode a page with no motion is an error, not a warning.
+- **A real buyer, a real showpiece, real numbers.**
+  - The fictional buyer needs a real-sounding name ("Quillan Ridge Foods"), never "Example manufacturer". Label it fictional once, in the band or the footer.
+  - At least one section gives the buyer two controls that move its figures (their numbers and a choice), not one input times a fixed rate.
+  - Money prints as whole dollars (`money`) or cents (`money_exact` always prints two digits), never "$158.4".
+- **Conviction.** More than four hedges ("illustrative", "not a forecast", "actual results vary") on a page earns a warning: keep one qualifier beside each figure and say the rest plainly. In the plan, a headline that invites ("Explore…", "Discover…") instead of claiming fails.
+
+## What the audit checks beyond the screenshots
+
+From engine 1.8, `site:audit` also:
+
+- **Works every control**, at laptop width, and watches the rest of the page while it does: a control that blanks a date, a CTA or a figure in another section fails too. each input must move an answer in its section. With everything at its lowest or off, the page must still read (no blank, NaN or negative-duration figure). Reset must restore the page exactly. A preset must give the same state on its second click. A "Calculate" must compute something.
+- **Lays the page out** at 320, 430, 768 and 2560 as well. On a phone it must not hide a `data-cta`, `data-conditional` or `data-excludes`.
+- **Counts AI-template tells**: default fonts, unchosen purple, gradient text, glows, a centered hero with a badge, icon-card grids, eyebrows on most sections, stat tiles, one skeleton for every section. Four or more is an error and two or three a warning. A color or font the brand kit names doesn't count.
+- **Checks the brand fonts actually rendered**, and warns when every section has the same background.
+- **Checks the link preview and page weight**: title, description, `og:title`/`og:description` (and `og:image` from `site.image`). Over 15 MB is an error.
+- **Holds the PDF to the rules above.**
+  - Before export it marks each interactive section `data-pdf-interactive`: `kept`, or what the export removes.
+  - A section whose controls or results are removed must print a `data-pdf-summary` that carries at least one live figure, stating the result and what it assumes.
+- **Checks presets that own a label**, if the site opts in. Mark the label with `data-preset-label`; it must not follow inputs the preset doesn't set ("half the published rate" worked from the reader's own numbers fails).
+
+Only public files publish:
+- From `brand/`, that means images and fonts, never `brand.json`, notes, `brand/capture/` or `brand/references/`.
+- `site/assets/` takes only images, fonts, mp4, webm, mp3 and pdf.
+- A name like research, story, facts, buyers, notes, seller-understanding, references or capture, anywhere in a path, never publishes. Neither does a dotfile, `..`, an absolute path or a backslash.
+- `site:manifest` and the upload refuse a `dist-site` holding anything else.
+
+A design review comes from the server, never from the builder: `artifacts/review.json` must be the JSON `deck_review` returned, with its `review_id`. `site:manifest` sends that id and the engine version to `deck_upload_start`, and a site on engine 1.8 is refused unless the server holds that finished review for you with no blocking verdict. A builder's own review file is refused locally too.
+
+A design review covers one exact audit:
+- `review-files --site` refuses unless laptop and phone hold the same, complete set of section screenshots, byte-identical to the audit stamp.
+- Publishing refuses if any audited screenshot, or any copy sent for review, has changed since.
 
 ## Locking a site for production
 
@@ -204,6 +294,10 @@ The PDF reads like a deck: each section on its own 16:9 page, in the site's own 
 - `data-pdf-open` on a `<details>` opens it in the PDF (a year-by-year table the reader would want on paper).
 - `data-pdf-hide` leaves an element out of the PDF (controls that only work on the web, like a slider panel or a booking widget).
 - `class="pdf-only"` shows an element only in the PDF (the contacts in place of a booking widget).
+- `data-pdf-state="<id>"` on a section prints the state after clicking `#<id>` in it (a preset, tab or choice), so the PDF shows a representative scenario rather than only the default.
+- `data-pdf-summary` is a printed sentence stating an interactive section's result and what it assumes. Every PDF page with controls must show a result: this, or a live figure.
+- `data-pdf-contact` marks the printed contact or next step for when the web CTA is `data-pdf-hide`. The PDF must keep one way to act: a visible `a[data-cta]`, a `mailto:` or `tel:` link, or a `data-pdf-contact`.
+- No page may carry a web-only instruction ("move the slider", "click", "tap", "use the toggle"). Hide it, or say what the printed figure assumes.
 - While it exports, `<html>` has class `is-pdf`: write `.is-pdf` rules in `styles.css` to lay a section out for the page (side by side instead of stacked, tighter rows, a shorter photo). Each page is laid out at 1280×720 with an even margin and scaled to fill it, so design the page rather than shrinking the web one.
 
 The page also has print styles for someone who prints from the browser; the PDF doesn't use them.
@@ -220,6 +314,7 @@ Every published version keeps its project files. To make a new site from one tha
 ## Publish
 
 1. `npm run site:audit` until it says "All modes clean", then look at every screenshot in `artifacts/site/` (phone, laptop, wide) as you would a deck's.
-2. `npm run -s source:pack`.
-3. `npm run -s site:manifest > artifacts/site-start.json`. Pass it to `deck_upload_start` with the workspace, the source size, and a password if the content is confidential. Save the reply as `artifacts/uploads.json`.
-4. `node bin/upload.mjs artifacts/uploads.json dist-site`, then `deck_publish`. Named links (`deck_link`) and the password (`deck_password`) work as for decks.
+2. `npm run -s review-files -- --site` (after a clean audit of the current source) records the exact source state the review covers (fingerprint, story, engine, every laptop and phone section) and prepares the laptop and phone sections plus brand evidence for the existing `deck_review_start` / `deck_review` tools. Upload its file list through that protocol and save the returned review JSON as `artifacts/review.json`. Review at most 16 sections per call. Fix blockers in one batch, rerun the audit and confirm once. Sites pinned to `sites@1.7` or newer require a current site-format review covering every section; the upload command refuses a missing, stale or blocked review. If more than 16 sections are necessary, do not omit any from the review: keep the draft unpublished until complete review coverage is available.
+3. `npm run -s source:pack`.
+4. `npm run -s site:manifest > artifacts/site-start.json`. Pass it to `deck_upload_start` with the workspace, the source size, and a password if the content is confidential. Save the reply as `artifacts/uploads.json`.
+5. `node bin/upload.mjs artifacts/uploads.json dist-site`, then `deck_publish`. Named links (`deck_link`) and the password (`deck_password`) work as for decks.

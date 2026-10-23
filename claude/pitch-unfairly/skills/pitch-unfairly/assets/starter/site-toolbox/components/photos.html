@@ -1,0 +1,18 @@
+<!-- Photos: the client's own world in their own photos, so the page reads as about them.
+     One lead photo and two beside it, each with a one-line caption. In a proposal the
+     photos come from the client's website (the request's photos[], fetched by the engine),
+     and stock only fills a gap: then the credit line names each photographer and Pexels. -->
+<section id="photos" class="tb-band" data-tone="paper" data-section="photos">
+  <div class="tb-wrap">
+    <div class="tb-head">
+      <p class="tb-eyebrow">Where the work happens</p>
+      <h2 class="tb-h2">Built around the jobs your crews already run.</h2>
+    </div>
+    <div class="tb-photos">
+      <figure class="tb-photo is-lead rise"><img src="{{facts.photos.p1.src}}" alt="{{facts.photos.p1.alt}}" width="1600" height="1000" loading="lazy"><figcaption>{{facts.photos.p1.caption}}</figcaption></figure>
+      <figure class="tb-photo rise" style="--d:120ms"><img src="{{facts.photos.p2.src}}" alt="{{facts.photos.p2.alt}}" width="1200" height="900" loading="lazy"><figcaption>{{facts.photos.p2.caption}}</figcaption></figure>
+      <figure class="tb-photo rise" style="--d:240ms"><img src="{{facts.photos.p3.src}}" alt="{{facts.photos.p3.alt}}" width="1200" height="900" loading="lazy"><figcaption>{{facts.photos.p3.caption}}</figcaption></figure>
+    </div>
+    <p class="tb-photo-credit">{{facts.photos.credit}}</p>
+  </div>
+</section>

@@ -65,7 +65,8 @@ test('formats', () => {
   assert.equal(format(-16275, 'money'), '−$16,275');
   assert.equal(format(31920, 'money_k'), '$32K');
   assert.equal(format(0.694, 'pct'), '69%');
-  assert.equal(format(27.4, 'money_exact'), '$27.4');
+  assert.equal(format(27.4, 'money_exact'), '$27.40', 'cents always print two digits');
+  assert.equal(format(27, 'money_exact'), '$27');
   assert.equal(format(1541.5, 'money'), '$1,542');
   assert.equal(format(0.075, 'pct1'), '7.5%');
   assert.equal(format(0.132, 'pct1'), '13.2%');

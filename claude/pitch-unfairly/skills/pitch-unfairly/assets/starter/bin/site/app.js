@@ -403,8 +403,10 @@ async function drawIn(img) {
   const cs = getComputedStyle(img);
   Object.assign(svg.style, { width: '100%', height: 'auto', aspectRatio: cs.aspectRatio, objectFit: cs.objectFit });
   const vb = svg.viewBox.baseVal;
-  if (vb && cs.aspectRatio && cs.aspectRatio !== 'auto') {
-    const [w, h] = cs.aspectRatio.split('/').map(Number);
+  // aspect-ratio computes as "16 / 9" or "auto 16 / 9"; read the two numbers, whatever comes first.
+  const ratio = /([\d.]+)\s*\/\s*([\d.]+)/.exec(cs.aspectRatio ?? '');
+  if (vb && vb.width && vb.height && ratio && Number(ratio[1]) && Number(ratio[2])) {
+    const [w, h] = [Number(ratio[1]), Number(ratio[2])];
     const pos = cs.objectPosition.split(' ').map((v) => parseFloat(v) / 100);
     const newH = (vb.width * h) / w;
     if (newH < vb.height) svg.setAttribute('viewBox', `0 ${(vb.height - newH) * (pos[1] ?? 0.5)} ${vb.width} ${newH}`);

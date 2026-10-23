@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" role="img" aria-label="Sample photo: hands holding a tablet with a route map">
+  <rect width="1200" height="900" fill="#e3e6ea"/>
+  <rect x="0" y="620" width="1200" height="280" fill="#c7ccd3"/>
+  <rect x="300" y="170" width="600" height="440" rx="34" fill="#4a525d"/>
+  <rect x="330" y="200" width="540" height="380" rx="12" fill="#eef0f3"/>
+  <path d="M380 520 C 470 430, 520 470, 590 380 S 740 300, 820 250" fill="none" stroke="#7d8692" stroke-width="14" stroke-linecap="round" stroke-dasharray="2 30"/>
+  <circle cx="380" cy="520" r="20" fill="#5d6672"/><circle cx="590" cy="380" r="20" fill="#5d6672"/><circle cx="820" cy="250" r="20" fill="#5d6672"/>
+  <path d="M220 900 C 240 700, 300 600, 330 560 L 380 600 C 360 680, 330 780, 340 900 Z" fill="#b3a99c"/>
+  <path d="M980 900 C 960 700, 900 600, 870 560 L 820 600 C 840 680, 870 780, 860 900 Z" fill="#b3a99c"/>
+</svg>

@@ -1,6 +1,6 @@
 // The arguments for deck_upload_start when publishing a site:
 //   node bin/site-manifest.mjs > artifacts/site-start.json
-// {"kind":"site","title","story","files":[{path,size,sha256}]}. Add the
+// {"kind":"site","title","story","review_id","engine","files":[{path,size,sha256}]}. Add the
 // workspace (and a slug, if you want one) before passing it on; then save the
 // reply as artifacts/uploads.json and run: node bin/upload.mjs artifacts/uploads.json dist-site
 import { createHash } from 'node:crypto';
@@ -8,6 +8,8 @@ import { existsSync } from 'node:fs';
 import { readdir, readFile } from 'node:fs/promises';
 import { join, relative, sep } from 'node:path';
 import { siteAuditBlocker } from './site-audit.mjs';
+import { distFileProblem } from './site/public-files.mjs';
+import { ENGINE } from './site/version.mjs';
 
 const blocker = await siteAuditBlocker();
 if (blocker) {
@@ -31,6 +33,15 @@ for await (const f of walk('dist-site')) {
   files.push({ path: relative('dist-site', f).split(sep).join('/'), size: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex') });
 }
 files.sort((a, b) => a.path.localeCompare(b.path));
+// Defense in depth: the build copies only public files, but a stale dist-site or a
+// hand-copied file would otherwise publish as is (site/public-files.mjs).
+const refused = files.map((f) => distFileProblem(f.path)).filter(Boolean);
+if (refused.length) {
+  console.error(`✗ Not publishing: dist-site/ holds files a site never publishes:\n${refused.map((r) => `  ${r}`).join('\n')}\nRun npm run site:audit to rebuild dist-site from the project, and keep research, the story and brand evidence out of site/assets.`);
+  process.exit(1);
+}
 const site = JSON.parse(await readFile('site/site.json', 'utf8'));
 const story = await readFile('story.md', 'utf8').catch(() => '');
-console.log(JSON.stringify({ kind: 'site', title: `${site.sample ? 'Sample: ' : ''}${site.title}`, story, files }, null, 2));
+// The host checks the review it issued (review_id) and the engine that built the site.
+const review = JSON.parse(await readFile('artifacts/review.json', 'utf8').catch(() => '{}'));
+console.log(JSON.stringify({ kind: 'site', title: `${site.sample ? 'Sample: ' : ''}${site.title}`, story, review_id: review.review_id ?? null, engine: ENGINE, files }, null, 2));

@@ -73,6 +73,9 @@ export function pageShell({ site, body, css, model }) {
 <meta name="robots" content="noindex, nofollow">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(site.description ?? '')}">
+<meta property="og:title" content="${esc(title)}">
+<meta property="og:description" content="${esc(site.description ?? '')}">
+${site.image ? `<meta property="og:image" content="${esc(site.image)}">` : ''}
 ${site.icon ? `<link rel="icon" href="${esc(site.icon)}">` : ''}
 <style>${css}</style>
 </head>

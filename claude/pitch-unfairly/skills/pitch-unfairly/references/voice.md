@@ -8,7 +8,7 @@ The test for any line is to say it out loud to the person across the table. If y
 
 The design review checks every slide for each of them and blocks the deck until they're fixed.
 
-1. **No em dashes.** Not in headlines, body lines, captions, notes, or the chat. An en dash or a double hyphen standing in for one counts too. Use a period, a comma, a colon, or parentheses. For a range, write "2019 to 2024" or use a plain hyphen ("9-5"). The only exception is a real quote that has one; mark its element `data-copy-ok`.
+1. **No em dashes.** Not in headlines, body lines, captions, notes, or the chat. An en dash or a double hyphen standing in for one counts too. Use a period, a comma, a colon, or parentheses. For a range, write "2019 to 2024" or use a plain hyphen ("9-5"). The only exception is a real quote that has one; mark its element `data-copy-ok` with `data-copy-source="https://..."` pointing to its source.
 2. **Write whole sentences.** A headline or body line has a subject and a verb. Stacked fragments are the most common tell: "One link. Every screen." becomes "One link works on every screen." "Faster. Smarter. Simpler." becomes the one claim you can prove ("Reports that took a day now take ten minutes."). Labels aren't copy: chips, axis labels, button text, table headers, and mono eyebrows can be short phrases.
 3. **No subtitles.** A headline stands alone. Don't put a line under it that restates it, softens it, or teases the next slide, and don't write "Title: subtitle" headlines ("Fizz Soda: The Future of Soda"). If a line under the headline earns its place, it adds a fact the headline doesn't have: who it's for, a number, a date, a source. The cover is the same: the promise, then the company name or the date, not a tagline under a tagline.
 4. **No formula contrasts.** "It's not X, it's Y." "Not just X, but Y." "X isn't a feature. It's a movement." "Less X, more Y." State the claim directly.
@@ -39,7 +39,7 @@ This holds for every build, decks and sites alike. Write the line, then cut it t
 
 ## Sound like the company
 
-- Use the words the company uses. `deck_context` returns its voice, its lessons ("we say GTM engineer, never growth agent"), and earlier decks; their phrasing beats yours.
+- Use the words the company uses. `deck_context` returns its voice, its lessons ("we say GTM engineer, never growth agent"), and earlier decks; their established terminology beats generic wording. Website copy still goes through these guards: rewrite interchangeable promises, formula contrasts, jargon and repetition while preserving factual meaning and distinctive voice. Source-site wording is not automatically approved copy. Keep a real quotation verbatim and attributed; never mark a whole headline or section as a quote to bypass review.
 - Use contractions the way people talk: "we're," "it's," "don't."
 - Be specific. Name the customer, the city, the number, the month. A specific line sounds written by someone who was there; a general one sounds generated.
 - Keep the joke rare. One light line in a deck reads as personality; a pun on every slide reads as a template.

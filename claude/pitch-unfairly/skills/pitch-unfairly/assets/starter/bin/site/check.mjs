@@ -3,7 +3,8 @@
 import { runModel } from './model.mjs';
 import { fillTokens } from './fill.mjs';
 import { ENGINE, engineProblem } from './version.mjs';
-import { copyFindings, simplicityFindings, LIMITS } from './copy.mjs';
+import { copyExemptionProblems, copyFindings, simplicityFindings, LIMITS } from './copy.mjs';
+import { element, isLead, leadFindings } from './lead.mjs';
 
 const text = (html) =>
   html
@@ -18,18 +19,6 @@ const RAW_COLOR = /#(?:[0-9a-f]{8}|[0-9a-f]{6}|[0-9a-f]{3,4})\b|\b(?:rgba?|hsla?
 const colorList = (raw) => (raw.length === 1 ? `${raw[0]} is a color` : `${raw.length} colors (${raw.slice(0, 3).join(', ')}${raw.length > 3 ? ` and ${raw.length - 3} more` : ''}) are colors`);
 
 const CALENDAR = /^(January|February|March|April|May|June|July|August|September|October|November|December|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)$/;
-
-/** The element that opens at `at` (a <tag ...>), through its matching close tag. */
-function element(html, at, tag) {
-  const re = new RegExp(`<(/?)${tag}\\b[^>]*>`, 'gi');
-  re.lastIndex = at;
-  let depth = 0;
-  for (let m; (m = re.exec(html)); ) {
-    depth += m[1] ? -1 : 1;
-    if (depth === 0) return html.slice(at, re.lastIndex);
-  }
-  return html.slice(at);
-}
 
 /** Every string fact worth matching ([path, value]), longest first. */
 function factStrings(facts, prefix = '') {
@@ -47,8 +36,9 @@ function factStrings(facts, prefix = '') {
 /**
  * site: parsed site.json. sections: [{ name, html }]. extras: header/footer html.
  * exists(path): whether a local file referenced by the page exists.
+ * today: an ISO day, for how old dated proof is (defaults to today).
  */
-export function checkSite({ site, sections, header = '', footer = '', styles = '', exists = () => true }) {
+export function checkSite({ site, sections, header = '', footer = '', styles = '', exists = () => true, today }) {
   const errors = [];
   const warnings = [];
   if (!site.title) errors.push('site.json: add a "title".');
@@ -68,7 +58,9 @@ export function checkSite({ site, sections, header = '', footer = '', styles = '
   const pinnedMinor = /^sites@1\.(\d+)/.exec(String(site.engine ?? ''))?.[1];
   const copyBlocks = pinnedMinor === undefined || Number(pinnedMinor) >= 2;
   const copy = (where, html) => {
-    const { blocking, advisory } = copyFindings(fillTokens(html, site).html);
+    const requireAttribution = pinnedMinor === undefined || Number(pinnedMinor) >= 7;
+    for (const problem of copyExemptionProblems(html)) (requireAttribution ? errors : warnings).push(`${where}: ${problem}`);
+    const { blocking, advisory } = copyFindings(fillTokens(html, site).html, { requireAttribution });
     // Before 1.2 the em dash was already an error of its own (below).
     for (const b of blocking) if (copyBlocks) errors.push(`${where}: ${b}`); else if (!b.startsWith('has an em dash')) warnings.push(`${where}: ${b}`);
     for (const a of advisory) warnings.push(`${where}: ${a}`);
@@ -191,11 +183,19 @@ export function checkSite({ site, sections, header = '', footer = '', styles = '
   // One line for the whole stylesheet: it's the site's (or kit's) own file, not something a fill can fix.
   const rawInStyles = [...new Set(String(styles).replace(/\/\*[\s\S]*?\*\//g, ' ').replace(/url\("?data:[^)]*\)/g, ' ').match(RAW_COLOR) ?? [])];
   if (rawInStyles.length) warnings.push(`styles.css: ${colorList(rawInStyles)} the brand kit doesn't name. Use brand tokens, or add the colors to the brand kit.`);
-  if (site.sample && !sections.some(({ html }) => /sample/i.test(text(html)))) errors.push('site.json says sample, but no section tells the reader it is one.');
+  // A lead sample ("sample": { "lead": true }) has rules of its own (lead.mjs): its band says
+  // "Example: a proposal" and carries one "Made by Unfairly" link, never our booking pitch.
+  const lead = isLead(site);
+  if (site.sample && !lead && !sections.some(({ html }) => /sample/i.test(text(html)))) errors.push('site.json says sample, but no section tells the reader it is one.');
   // A sample carries a sample band with a way to reach whoever built it (the toolbox's
   // sample component: data-sample, with a data-cta inside), so the reader knows it's
   // not the provider's own page and has somewhere to go.
   const banded = [header, ...sections.map(({ html }) => html), footer].some((html) => [...html.matchAll(/<([a-z]+)\b[^>]*\sdata-sample\b[^>]*>/gi)].some((m) => /\sdata-cta="/.test(element(html, m.index, m[1]))));
-  if (site.sample && !banded) warnings.push('site.json says sample, but the page has no sample band with a call to action. Use the toolbox\'s sample band (header.html): data-sample, with "Book 30 minutes" and "Email us" as data-cta links.');
+  if (site.sample && !lead && !banded) warnings.push('site.json says sample, but the page has no sample band with a call to action. Use the toolbox\'s sample band (header.html): data-sample, with "Book 30 minutes" and "Email us" as data-cta links.');
+  // The one-shot rules came with engine 1.8: blocking unpinned or pinned 1.8+, warnings before.
+  const files = [{ where: 'header.html', html: header, section: false }, ...sections.map(({ name, html }) => ({ where: `sections/${name}`, html, section: true })), { where: 'footer.html', html: footer, section: false }].filter((f) => f.html);
+  const found = leadFindings({ site, files, blocks: pinnedMinor === undefined || Number(pinnedMinor) >= 8, ...(today ? { today } : {}) });
+  errors.push(...found.errors);
+  warnings.push(...found.warnings);
   return { errors, warnings };
 }

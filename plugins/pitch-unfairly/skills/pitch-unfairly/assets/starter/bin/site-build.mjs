@@ -1,5 +1,6 @@
 // Build a site: site/ (hand-written sections, styles, model, assets) plus the
-// brand kit, into dist-site/, a static folder that works on any host.
+// brand kit, into dist-site/, a static folder that works on any host, with
+// index.txt beside index.html: the page as plain text for AI agents (site/text.mjs).
 //
 //   site/site.json         title, description, sample, model, facts
 //   site/header.html       optional, before the sections
@@ -7,7 +8,7 @@
 //   site/footer.html       optional, after the sections
 //   site/toolbox.css       optional: the site toolbox's components (site-toolbox/), loaded before styles.css
 //   site/styles.css        the site's own design (brand tokens are already set)
-//   site/assets/           images and drawings, referenced as assets/...
+//   site/assets/           images and drawings, referenced as assets/... (no notes or data: the build refuses them)
 //
 // A site is self-contained: copy the site/ folder into another project, change
 // the inputs and facts in site.json, and every figure follows.
@@ -20,8 +21,22 @@ import { fillTokens, includeParts, pageShell } from './site/fill.mjs';
 import { readFileSync } from 'node:fs';
 import { engineProblem } from './site/version.mjs';
 import { isLocked, variantCss } from './site/variants.mjs';
+import { siteText } from './site/text.mjs';
+import { brandFileProblem, siteAssetProblem } from './site/public-files.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
+
+/** Every file under a folder, as paths relative to it with "/", skipping dotfiles. */
+async function filesUnder(dir, prefix = '') {
+  if (!existsSync(dir)) return [];
+  const out = [];
+  for (const e of await readdir(dir, { withFileTypes: true })) {
+    if (e.name.startsWith('.')) continue;
+    if (e.isDirectory()) out.push(...await filesUnder(join(dir, e.name), `${prefix}${e.name}/`));
+    else if (e.isFile()) out.push(`${prefix}${e.name}`);
+  }
+  return out.sort();
+}
 
 /** Where a Fontsource package is: installed, or saved in the project by site:vendor. */
 export function fontDir(root, pkg) {
@@ -65,6 +80,9 @@ export async function buildSite({ root = '.', out = 'dist-site' } = {}) {
   const { html: body, missing: tokenMissing } = fillTokens(includeParts(raw, readPart, partsMissing), site);
   const missing = [...partsMissing, ...tokenMissing];
 
+  const assetProblems = (await filesUnder(at('site/assets'))).map(siteAssetProblem).filter(Boolean);
+  if (assetProblems.length) throw new Error(`Not building: site/assets/ is published as is, and it holds private files:\n${assetProblems.map((p) => `  ${p}`).join('\n')}`);
+
   const outDir = at(out);
   await rm(outDir, { recursive: true, force: true });
   await mkdir(join(outDir, 'js'), { recursive: true });
@@ -77,15 +95,20 @@ export async function buildSite({ root = '.', out = 'dist-site' } = {}) {
     fontCss += f.css;
     for (const file of f.files) await cp(join(f.dir, 'files', file), join(outDir, 'fonts', f.name, file));
   }
-  if (existsSync(at('brand'))) {
-    await cp(at('brand'), join(outDir, 'brand'), { recursive: true, filter: (src) => !src.includes(`${join('brand', 'capture')}`) });
+  // Only public kinds leave the project (site/public-files.mjs): brand/ images and
+  // fonts, and site/assets/ without notes or data. brand.json, capture and
+  // references stay behind; they travel in the private source bundle.
+  for (const rel of await filesUnder(at('brand'))) {
+    if (!brandFileProblem(rel)) await cp(join(at('brand'), rel), join(outDir, 'brand', rel));
   }
-  if (existsSync(at('site/assets'))) await cp(at('site/assets'), join(outDir, 'assets'), { recursive: true });
+  for (const rel of await filesUnder(at('site/assets'))) await cp(join(at('site/assets'), rel), join(outDir, 'assets', rel));
 
   // A site in production reads its locked variants (site/variants); one still being built, the live toolbox.
   const toolbox = isLocked(at('site/variants')) ? variantCss(at('site/variants')) : await part('site/toolbox.css');
   const css = [fontCss, brandCss(kit, fontFaceCss(kit, 'brand/')), await readFile(join(here, 'site/base.css'), 'utf8'), toolbox, await part('site/styles.css')].join('\n');
   await writeFile(join(outDir, 'index.html'), pageShell({ site, body, css, model: site.model ?? {} }));
+  // The page as plain text for agents; the host serves it at <link>/index.txt behind the link's gates.
+  await writeFile(join(outDir, 'index.txt'), siteText({ site, body }));
   await cp(join(here, 'site/app.js'), join(outDir, 'js/app.js'));
   await cp(join(here, 'site/model.mjs'), join(outDir, 'js/model.mjs'));
   return { site, sections: names, missing, out: outDir };

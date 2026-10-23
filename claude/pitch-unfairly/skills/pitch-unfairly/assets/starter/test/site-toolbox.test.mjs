@@ -199,3 +199,23 @@ test('ACCEPTANCE: price: the stepper drives a model input, every total is a mode
 test('the standard proposal template includes the price', () => {
   assert.ok(templates().proposal.sections.includes('price'));
 });
+
+test('ACCEPTANCE: photos: every photo is a fact with alt text and a caption, the art ships, and phone and PDF lay it out', async () => {
+  const html = await readFile(join(TOOLBOX, 'components', 'photos.html'), 'utf8');
+  const example = JSON.parse(await readFile(join(TOOLBOX, 'example.json'), 'utf8'));
+  const figures = [...html.matchAll(/<figure class="tb-photo[^"]*"[^>]*><img src="\{\{facts\.photos\.(p\d)\.src\}\}" alt="\{\{facts\.photos\.\1\.alt\}\}"[^>]*><figcaption>\{\{facts\.photos\.\1\.caption\}\}<\/figcaption><\/figure>/g)];
+  assert.equal(figures.length, 3);
+  assert.equal((html.match(/class="tb-photo is-lead/g) ?? []).length, 1, 'one lead photo');
+  for (const [, p] of figures) {
+    const photo = example.facts.photos[p];
+    assert.ok(photo.alt && photo.caption, p);
+    assert.ok(existsSync(join(TOOLBOX, photo.src)), photo.src);
+  }
+  assert.match(html, /\{\{facts\.photos\.credit\}\}/, 'a credit line, which stock photos need');
+  assert.match(css, /@media \(max-width: 720px\) \{[\s\S]*\.tb-photo\.is-lead \{ grid-row: auto; grid-column: 1 \/ -1; \}/);
+  assert.match(css, /\.is-pdf \.tb-photos \{ height: 420px; \}/);
+});
+
+test('the standard proposal template shows the client\'s photos', () => {
+  assert.ok(templates().proposal.sections.includes('photos'));
+});

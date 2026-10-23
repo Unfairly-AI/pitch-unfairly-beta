@@ -56,3 +56,65 @@ Run `npm run story:check -- --templates <url>`, with the path to `references/tem
 ## 6. Sign off
 
 Show the user the angle, the template, and every headline, numbered, with its one-line job, in the same message that asks for approval (not the whole file, and never just a path to it), and settle them before composing. Ask for the story and the brand in one checkpoint. Changing a headline now costs a sentence; later it costs a slide.
+
+## A proposal site's story plan
+
+A proposal site's `story.md` says `Format: site`. It is checked before any component is chosen, and the kit or toolbox never decides the section order:
+`npm run story:check -- [--buyers buyers.json] [--against <folder of other plans>] story.md`.
+The starter's `story-site.example.md` shows every field, using fictional companies. Don't adapt it.
+
+**Header.** Name the decision before anything else:
+- `Audience:` the buyer and who reads it. `Decider:` the role that decides.
+- `Decision:` what they choose between, doing nothing included.
+- `Motion:` the company's real sales motion: self-serve, quoted purchase, consultative, evaluation or partnership. `Stage:` where this buyer is now.
+- `Next step:` the buyer's next step with the seller, never Unfairly's. `Commits them to:` what acting commits them to. "Nothing yet" is fine, but say it. `Prerequisites:` quote, eligibility, security, data access, approvals ("none" if none).
+- `Angle:` the tension. `Showpiece:` the one interactive piece, named by its unit ("a model of weekly driver hours", never "a savings model").
+- `Example:` the real proposal or RFP response the page follows. `Mode: lead` for an unattended sample, which has no approval stop; `user` for a seller's real deal.
+
+**Pick the scenario first.** `Scenario 1:` to `Scenario 3:` must differ in buyer, use case and decision, not just wording. `Chosen:` names one and says why, from the evidence. When the evidence is thin, choose a modest next decision.
+
+**Commitments.** Every date, duration, trial and term on the page is a line:
+`Commitment: <what> | kind: sourced|supplied|proposed|unknown | source: <url or fact id>`.
+- Sourced and supplied commitments need a source.
+- An unknown one can't go on the page: drop it or make it a prerequisite.
+- A proposed one is sequenced by dependency ("after the security review"), not by calendar.
+
+**Figures.** Every financial figure is a structured assumption:
+`Assumption: <name> | type: cash|capacity|time|count|rate | source: … | excludes: … | from: <date it counts from>`.
+Capacity and time are never shown as cash.
+
+**Objections and restraint.**
+- `Objection: <objection> | answered in: NN` takes a section number, or `open`. Read the plan as the champion, the economic buyer and procurement would.
+- `Cut: <what> because <why>` records what you left out.
+
+**Sections.** One `## NN name` block each:
+- `Job:` one job.
+- `Headline:` a claim, never a label. A headline that opens with an invitation (Explore, Discover, Learn, See, Consider, Imagine, Find out, Unlock, Meet, Introducing, Welcome) fails in a lead plan and warns otherwise: say what the seller does for this buyer, with the proof under it.
+- `Proof:` fact ids or a source URL. Repeatable; the first section may skip it.
+- `Buyer phrase:` the buyer's own words this section answers, from `buyers.json`.
+- An `Interactive:` section also says:
+  - `Changes:` what moves downstream (the headline, offer, CTA, dates).
+  - `Empty state:` what it reads with nothing entered, as a sentence.
+  - `Prints:` the state the PDF shows, with its assumptions and the next step, never "move the slider".
+
+**buyers.json** sits beside story.md: `{ "lexicon": [{ "phrase", "source" }], "roles", "triggers", "objections" }`. Every lexicon phrase carries the URL it came from: case studies, RFPs, job posts, reviews.
+
+**What fails:**
+- a missing header field or an invalid motion;
+- fewer than three scenarios;
+- a commitment with no kind, an unknown commitment, or a sourced or supplied one with no source;
+- an assumption with no type, or an objection pointing at a section that doesn't exist;
+- a section with no job, headline or proof, or an interactive section missing Changes, Empty state or Prints;
+- in a lead plan, a headline that invites ("Explore ...") instead of claiming;
+- an unsourced lexicon phrase.
+
+**What warns:**
+- near-duplicate scenarios;
+- a proposed commitment with a calendar date;
+- a showpiece with no unit, or one that names a single input (a lead showpiece needs at least two controls: name the inputs, choice, tabs or presets);
+- an invitation headline in a user plan (in a lead plan it fails);
+- fewer than two objections, or nothing cut;
+- a missing or unlisted buyer phrase;
+- a section order that matches another plan by more than 60% (`--against`).
+
+A lead plan that holds prints "Plan holds. Build from it." and the build goes on with no sign-off. A user plan still gets the sign-off in step 6: show the decision, the chosen scenario and every headline.

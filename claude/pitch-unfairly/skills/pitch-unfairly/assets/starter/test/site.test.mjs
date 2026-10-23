@@ -171,7 +171,20 @@ test('builds a self-contained page: brand tokens, the site styles, the model, an
   assert.match(html, /<main id="top">[\s\S]*data-section="price"/);
   assert.match(html, /"per_head":12/);
   assert.ok(!/https?:\/\/(?!www\.w3\.org)/.test(html), 'no third-party requests');
-  for (const f of ['js/app.js', 'js/model.mjs', 'assets/dot.svg', 'brand/brand.json']) assert.ok(existsSync(join(root, 'dist-site', f)), f);
+  for (const f of ['js/app.js', 'js/model.mjs', 'assets/dot.svg']) assert.ok(existsSync(join(root, 'dist-site', f)), f);
+  // The brand kit is written into index.html; the kit file itself is private (bin/site/public-files.mjs).
+  assert.ok(!existsSync(join(root, 'dist-site', 'brand/brand.json')), 'brand.json stays out of the published site');
+});
+
+test('ACCEPTANCE: the build writes index.txt, the page as plain text for agents, with every figure filled', async () => {
+  const root = await project();
+  await buildSite({ root });
+  const text = await readFile(join(root, 'dist-site/index.txt'), 'utf8');
+  const site = JSON.parse(await readFile(join(root, 'site/site.json'), 'utf8'));
+  assert.ok(text.startsWith(`# ${site.title}\n`), text.slice(0, 80));
+  assert.ok(!/\{\{/.test(text), 'no unfilled tokens');
+  assert.ok(!/<[a-z]/i.test(text), 'no markup');
+  assert.ok(!/hydrate|site-model/.test(text), 'no script');
 });
 
 test('a copied site with new inputs recomputes every figure', async () => {
@@ -270,7 +283,7 @@ test('choices and presets: the page script scopes presets to their calculator an
 });
 
 test('words marked data-copy-ok (a verbatim quote with its own dash) are not held to the copy rules', () => {
-  const html = `<section id="a" data-section="a"><p>As one customer put it, <span data-copy-ok>“it was easy – just a new card”</span>.</p></section>`;
+  const html = `<section id="a" data-section="a"><p>As one customer put it, <span data-copy-ok data-copy-source="https://example.com/customer">“it was easy – just a new card”</span>.</p></section>`;
   const { errors } = checkSite({ site: SITE, sections: [{ name: '01-price.html', html: SECTION }, { name: '02-a.html', html }] });
   assert.deepEqual(errors, []);
   const bad = checkSite({ site: SITE, sections: [{ name: '01-price.html', html: SECTION }, { name: '02-a.html', html: html.replace(' data-copy-ok', '') }] });
@@ -310,4 +323,19 @@ test('ACCEPTANCE: calls to action report deck:cta to the frame (the decks contra
   const { errors, warnings } = checkSite({ site: SITE, sections: [{ name: '01-price.html', html: SECTION }, { name: '02-c.html', html }] });
   assert.ok(errors.some((e) => /data-cta="book a call" isn't a valid id/.test(e)));
   assert.ok(warnings.some((w) => /"accept" leaves the page in the same tab/.test(w)));
+});
+
+
+test('ACCEPTANCE: source website slogans are checked; copy exemptions need provenance on the new engine', () => {
+  const wrap = (copy) => [{ name: '01-a.html', html: `<section id="a" data-section="a">${copy}</section>` }];
+  const site = { ...SITE, engine: 'sites@1.7' };
+  const copy = '<p data-copy-ok>Unlock seamless outcomes — for every team.</p>';
+  const bad = checkSite({ site, sections: wrap(copy) });
+  assert.ok(bad.errors.some((e) => e.includes('data-copy-source')));
+  assert.ok(bad.errors.some((e) => e.includes('em dash')));
+  assert.ok(bad.warnings.some((e) => e.includes('sounds generated')));
+  const quoted = checkSite({ site, sections: wrap('<p>A customer said <span data-copy-ok data-copy-source="https://example.com/customer">“It worked — for us.”</span></p>') });
+  assert.ok(!quoted.errors.some((e) => e.includes('em dash') || e.includes('data-copy-source')));
+  const old = checkSite({ site: { ...SITE, engine: 'sites@1.6' }, sections: wrap(copy) });
+  assert.ok(!old.errors.some((e) => e.includes('data-copy-source') || e.includes('em dash')), 'older pinned sites retain their copy behavior');
 });

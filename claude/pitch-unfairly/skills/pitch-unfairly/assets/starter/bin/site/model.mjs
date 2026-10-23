@@ -162,7 +162,11 @@ const commas = (n) => Math.abs(Math.round(n)).toLocaleString('en-US');
 export const FORMATS = {
   money: (n) => (Math.round(n) < 0 ? '−$' : '$') + commas(n),
   // Dollars to the cent where the input has them ($27.40 stays $27.4).
-  money_exact: (n) => (n < 0 ? '−$' : '$') + Math.abs(n).toLocaleString('en-US', { maximumFractionDigits: 2 }),
+  // Cents, always two of them when there are any ($158.40, never $158.4); whole dollars stay whole.
+  money_exact: (n) => {
+    const v = Math.round(Math.abs(n) * 100) / 100;
+    return (n < 0 ? '−$' : '$') + v.toLocaleString('en-US', { minimumFractionDigits: Number.isInteger(v) ? 0 : 2, maximumFractionDigits: 2 });
+  },
   money_k: (n) => (n < 0 ? '−$' : '$') + Math.round(Math.abs(n) / 1000) + 'K',
   pct: (n) => Math.round(n * 100) + '%',
   // A share to one decimal (7.5%), for published averages.

@@ -11,6 +11,8 @@ Make a deck that tells one clear story, with every slide designed for its own jo
 
 **Build locally whenever setup says this environment can.** That is the default and the richer loop, so use it even when the deck studio tools are also connected. Build in the deck studio instead when there is no shell at all (plain ChatGPT chat), or when setup reports `NETWORK_BLOCKED` (a sandbox that can't reach Unfairly, as in some chat apps): if the `studio_start` tool is available, build there (the workflow's "Building without a shell" section); do not send the user to another app. If `studio_start` is absent, explain that the Pitch Unfairly connector isn't connected in this chat and tell them to connect it from the plugin's Connectors tab (on Team and Enterprise plans an Owner adds it first); do not claim to have captured, saved, checked, or published anything.
 
+For proposals, follow the sites guide: research first, reuse the kit, rehearse brand fidelity, and check inherited copy.
+
 ## 1. Start setup
 
 The first run downloads what the workflow needs, so start it before anything else and talk with the user while it runs. Ask where to keep the deck if they haven't said (default: a new folder named for the deck in the current workspace), then run:
