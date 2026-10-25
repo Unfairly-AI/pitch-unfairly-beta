@@ -357,5 +357,5 @@ test('a plain site (no lead) gets commitment kinds as warnings and none of the l
   const r = checkSite({ site, sections: [{ name: '01-a.html', html }] });
   assert.ok(has(r.warnings, /no data-basis/));
   assert.ok(!has([...r.errors, ...r.warnings], /types a date|Example: a proposal|number typed into the copy/));
-  assert.ok(has(r.warnings, /Book 30 minutes/), 'a regular sample keeps its sample-band advice');
+  assert.ok(has(r.warnings, /no sample band/), 'a regular sample keeps its sample-band advice');
 });

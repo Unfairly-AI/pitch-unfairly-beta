@@ -447,11 +447,50 @@ function extract() {
     .map(styleOf).filter((c) => c.background || c.borderWidth > 0 || (c.shadow && c.shadow !== 'none')).slice(0, 24);
   const links = [...document.querySelectorAll('main a, article a, p a')].filter(visible).map((a) => getComputedStyle(a).color).slice(0, 40);
 
+  const describe = (el) => {
+    const cs = getComputedStyle(el);
+    return { text: el.textContent.trim().replace(/\s+/g, ' ').slice(0, 60), fontFamily: cs.fontFamily, fontWeight: cs.fontWeight, fontStyle: cs.fontStyle, fontSize: cs.fontSize, letterSpacing: cs.letterSpacing === 'normal' ? '0px' : cs.letterSpacing, lineHeight: cs.lineHeight === 'normal' ? `${parseFloat(cs.fontSize) * 1.2}px` : cs.lineHeight, textTransform: cs.textTransform };
+  };
   const sample = (sel) => {
     const el = [...document.querySelectorAll(sel)].find((e) => visible(e) && e.textContent.trim().length > 3);
-    if (!el) return null;
-    const cs = getComputedStyle(el);
-    return { text: el.textContent.trim().slice(0, 60), fontFamily: cs.fontFamily, fontWeight: cs.fontWeight, fontStyle: cs.fontStyle, fontSize: cs.fontSize, letterSpacing: cs.letterSpacing === 'normal' ? '0px' : cs.letterSpacing, lineHeight: cs.lineHeight === 'normal' ? `${parseFloat(cs.fontSize) * 1.2}px` : cs.lineHeight, textTransform: cs.textTransform };
+    return el ? describe(el) : null;
+  };
+  // Heading type is the style most of the page's large headings share, not the first h1/h2 (often
+  // a small eyebrow or a card title): each heading of 24px or more counts its size.
+  const headingSample = () => {
+    const groups = new Map();
+    for (const el of document.querySelectorAll('h1, h2, h3')) {
+      if (!visible(el) || el.textContent.trim().length < 4) continue;
+      const cs = getComputedStyle(el);
+      const size = parseFloat(cs.fontSize);
+      if (size < 24) continue;
+      const key = `${cs.fontFamily}|${cs.fontWeight}|${cs.fontStyle}|${cs.textTransform}`;
+      const group = groups.get(key) ?? { score: 0, size: 0, el };
+      group.score += size;
+      if (size > group.size) Object.assign(group, { size, el });
+      groups.set(key, group);
+    }
+    const best = [...groups.values()].sort((a, b) => b.score - a.score)[0];
+    return best ? describe(best.el) : sample('h1, h2');
+  };
+  // Body type is the style carrying the most running text, not the first <p>: a hero line is
+  // often a <p> set at headline size and weight.
+  const bodySample = () => {
+    const groups = new Map();
+    for (const el of document.querySelectorAll('p, li, dd, blockquote, div, span')) {
+      if (!visible(el)) continue;
+      const own = [...el.childNodes].filter((n) => n.nodeType === 3).map((n) => n.textContent).join(' ').replace(/\s+/g, ' ').trim();
+      if (own.length < 40) continue;
+      const cs = getComputedStyle(el);
+      const size = parseFloat(cs.fontSize);
+      if (size < 12 || size > 24) continue;
+      const key = `${cs.fontFamily}|${cs.fontWeight}|${cs.fontStyle}`;
+      const group = groups.get(key) ?? { chars: 0, el };
+      group.chars += own.length;
+      groups.set(key, group);
+    }
+    const best = [...groups.values()].sort((a, b) => b.chars - a.chars)[0];
+    return best ? describe(best.el) : sample('p');
   };
 
   // Logo: an SVG or image in the header/nav that links home or says "logo".
@@ -510,7 +549,7 @@ function extract() {
     buttons,
     cards,
     links,
-    type: { heading: sample('h1, h2'), body: sample('p'), label: sample('nav a, button') },
+    type: { heading: headingSample(), body: bodySample(), label: sample('nav a, button') },
     logo,
     logoCandidates: candidates.map((c) => c.tagName.toLowerCase() === 'svg' ? 'inline svg' : (c.currentSrc || c.src)),
     images,

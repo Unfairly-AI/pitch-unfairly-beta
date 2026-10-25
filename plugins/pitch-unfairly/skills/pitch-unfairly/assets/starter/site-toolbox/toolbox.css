@@ -145,6 +145,8 @@ html { scroll-padding-top: calc(var(--tb-top-h) + 12px); }
 .tb-sb-book:active { transform: translateY(1px) scale(.98); }
 .tb-sb-email { display: inline-flex; align-items: center; min-height: 32px; color: var(--tb-sample-ink); font: 700 13.5px/1 var(--tb-sample-body); text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1.5px; white-space: nowrap; }
 .tb-sb-email:hover { text-decoration-color: var(--tb-sample-magenta); }
+.tb-sb-made { display: inline-flex; align-items: center; min-height: 44px; color: var(--tb-sample-ink); font: 600 13px/1 var(--tb-sample-body); text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; white-space: nowrap; }
+.tb-sb-made:hover { text-decoration-thickness: 2px; }
 .tb-sample-bar :focus-visible, .tb-sample-ctas :focus-visible { outline: 2px solid var(--tb-sample-ink); outline-offset: 3px; }
 /* The PDF has no header: the first page carries the band, links written out. */
 .tb-sample-print { margin: calc(-1 * var(--tb-hero-top)) 0 clamp(28px, 4.5vw, 48px); padding: 12px 0; background: var(--tb-sample-band); color: var(--tb-sample-ink); border-bottom: 2px solid var(--tb-sample-ink); font: 500 14px/1.4 var(--tb-sample-body); }

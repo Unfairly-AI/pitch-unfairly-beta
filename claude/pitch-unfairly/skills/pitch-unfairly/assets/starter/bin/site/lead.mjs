@@ -185,7 +185,7 @@ const stripFacts = (p) => String(p).replace(/^facts\./, '');
  * footer (section: true for a section file). blocks: whether this pin makes
  * the rules blocking. Returns { errors, warnings }.
  */
-export function leadFindings({ site, files, blocks, today = new Date().toISOString().slice(0, 10) }) {
+export function leadFindings({ site, files, blocks, sampleBlocks = blocks, today = new Date().toISOString().slice(0, 10) }) {
   const errors = [];
   const warnings = [];
   const lead = isLead(site);
@@ -407,6 +407,43 @@ export function leadFindings({ site, files, blocks, today = new Date().toISOStri
     const marked = new Set([...onScreen].filter((n) => inPdf.has(n)));
     for (const name of Object.keys(excludes)) {
       if (here.has(name) && !marked.has(name)) must(`${where}: {{${name}}} is a partial total (it leaves out ${String(excludes[name]).replace(/\.$/, '')}), and nothing beside it says so. Put data-excludes="${name}" on the visible line that names what it leaves out, in the same section: a partial total names what it leaves out, next to the total.`);
+    }
+  }
+
+  // ── S. Every sample (engine 1.10): the page is the seller's, never our ad ──
+  // A sample is a proposal someone else could send. Unfairly's booking buttons, its
+  // "yours could look like this", the viewers demo and the house close are our pitch,
+  // and our pitch goes in the note. The band says what the page is; at most it links
+  // once to who made it ("Made by Unfairly").
+  if (site?.sample) {
+    const ad = (m) => (sampleBlocks ? errors : warnings).push(m);
+    const PITCH_BTN = /^(?:book_meeting|talk_to_us|book|email|contact)$/i;
+    const PITCH_LABEL = /\b(?:book|schedule|email|talk to us|get in touch|call us)\b/i;
+    for (const { where, html } of files) {
+      for (const band of elements(html, isBand)) {
+        const ctas = elements(band.html, (a) => !!attr(a, 'data-cta'));
+        const pitched = ctas.filter((c) => PITCH_BTN.test(attrValue(c.attrs, 'data-cta') ?? '') || PITCH_LABEL.test(words(filled(c.html))) || /^mailto:/i.test(attrValue(c.attrs, 'href') ?? ''));
+        for (const c of pitched) ad(`${where}: the sample band carries Unfairly's booking pitch ("${clip(words(filled(c.html))) || attrValue(c.attrs, 'data-cta')}"). A sample's band says what the page is and links at most once, to "Made by Unfairly"; booking and email go in the note.`);
+        if (!lead && ctas.length > 1) ad(`${where}: the sample band has ${ctas.length} calls to action. A sample's band carries one at most, "Made by Unfairly".`);
+        const bandWords = words(filled(drop(band.html, (a) => !!attr(a, 'data-cta'))));
+        if (/\b(?:book|email)\b|calendly\.com|@unfairly\.ai/i.test(bandWords)) ad(`${where}: the sample band asks the reader to book or email us ("${clip(bandWords)}"). It says what the page is; our pitch goes in the note.`);
+      }
+      const offBand = filled(drop(html, isBand));
+      const yours = /\b(?:yours could look like this|your team could send this|a page like this for your|want one like this)\b/i.exec(words(filled(html)));
+      if (yours) ad(`${where}: "${yours[0]}" pitches Unfairly inside the proposal. The page is the seller's; our pitch goes in the note.`);
+      if (elements(html, (a) => hasClass(a, /\btb-viewers\b/) || attrValue(a, 'data-section') === 'viewers' || attrValue(a, 'id') === 'viewers').length) ad(`${where}: the viewers demo (who read it, by named link) is Unfairly's product pitch, not part of the seller's proposal. Take it out; show it in the note or on our own site.`);
+      if (elements(html, (a) => hasClass(a, /\btb-sample-close\b/)).length) ad(`${where}: the house close (.tb-sample-close) is Unfairly's booking pitch. Close with the seller's own next step.`);
+      if (!lead) {
+        for (const [, href] of offBand.matchAll(/\shref="([^"]*)"/g)) {
+          const host = linkHost(decode(href));
+          if (host && OUR_HOST.test(host)) ad(`${where}: links to ${decode(href)}, which is Unfairly's. Outside the sample band every link is the seller's.`);
+        }
+      }
+    }
+    if (!lead) {
+      const screen = words(filled(files.map((f) => drop(f.html, (a) => isPdfOnly(a) || !!attr(a, 'hidden'))).join('\n')));
+      const ours = (screen.match(/\bUnfairly\b/g) ?? []).length;
+      if (ours > 2) ad(`"Unfairly" appears ${ours} times on screen. Twice at most: a "Made by Unfairly" link in the sample band and the footer.`);
     }
   }
 

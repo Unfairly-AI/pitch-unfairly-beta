@@ -171,7 +171,7 @@ The toolbox is in the project at `site-toolbox/`: `toolbox.css`, one snippet per
 
 The CSS reads only the brand kit's tokens, so it takes any brand, and every class starts with `tb-`, so the site's own `styles.css` adapts it without collisions. Each component already lays out for a phone at 390 and for the PDF.
 
-A sample (`"sample": true`) carries the sample band: one slim band above the header, in the Pitch Unfairly house palette whatever the page's (a yellow, cyan or pink band, a magenta pill, Sora and DM Sans), saying what's fictional, with "Book 30 minutes" and "Email us" as tracked calls to action. It's what makes a sample read as not the provider's own page, so it must never share the provider's hues: set `data-sample-tone` and `data-sample-pill` from `sampleTone(brand)` in `site-toolbox/sample-tone.mjs`, which picks the band tone and pill farthest from the brand's colors. `site:check` warns on a sample without it.
+A sample (`"sample": true`) carries the sample band: one slim band above the header, in the Pitch Unfairly house palette whatever the page's (a yellow, cyan or pink band in DM Sans), saying it is a sample and what's fictional, with at most one "Made by Unfairly" link. It must never share the provider's hues: set `data-sample-tone` and `data-sample-pill` from `sampleTone(brand)` in `site-toolbox/sample-tone.mjs`. **A sample is never an ad for us.** It is a proposal the seller could send, so the page carries none of Unfairly's pitch: no "Book 30 minutes" or "Email us" buttons of ours, no "yours could look like this", no who-read-it demo, no house close. Our pitch goes in the note that carries the link. From engine 1.10 `site:check` blocks these on every sample, lead or not (a warning on an older pin), and warns on a sample without the band.
 
 | Job | Component | What it holds |
 |---|---|---|
@@ -196,8 +196,7 @@ A sample (`"sample": true`) carries the sample band: one slim band above the hea
 | Questions | `faq` | Four to eight questions in an accordion |
 | The ask | `close` | One action, two or three steps, who to contact, Save as PDF |
 | Navigation | `header` | Mark, five to seven nav links, one button |
-| A sample | `sample` (the band in `header.html`, `parts/sample.html` for the PDF) | One slim band in the house palette, off the provider's hues: what's fictional, Book 30 minutes, Email us |
-| Who read it (Unfairly samples) | `viewers` | Illustrative views by named link |
+| A sample | `sample` (the band in `header.html`, `parts/sample.html` for the PDF) | One slim band in the house palette, off the provider's hues: it's a sample, what's fictional, at most a "Made by Unfairly" link |
 
 ## Proposal templates
 
@@ -246,7 +245,8 @@ From engine 1.8 (pinned `sites@1.8` or unpinned). Older pins get these as warnin
 
 A sample built to show a prospect what their own proposal could look like declares `"sample": { "lead": true, "seller": "<Company>", "buyer": "<a health plan>", "exclude_names": [<other prospects>] }` in site.json. Plan it first: `story.md` in site format with `Mode: lead` (see the story guide). In lead mode:
 
-- **The sample band.** The band says "Example: a proposal <seller> could send <buyer>" and carries one call to action, "Made by Unfairly". The page names Unfairly at most twice on screen (the band and the footer), so drop the toolbox band's wordmark.
+- **A proposal, not a pitch.** The page proposes one specific engagement to the named buyer, the way the seller's real proposals do: what they will do (scope, and what's out), what the buyer gets (deliverables), who does it (team roles), when (phases and their length in weeks, no calendar dates), what the fee depends on (a price only if the seller publishes one or the user supplies it, never invented), and what signing starts. These are `proposed` commitments with their conditional notes beside them, not withheld. Proof (case studies, awards, the seller's own results) supports the proposal in a section or two; it is never the spine. A page whose whole offer is "request a working session" that "commits you to nothing" is a pitch for a meeting, built like a deck, and fails this rule: a reader should finish knowing what they would be signing up for.
+- **The sample band.** The band says "Example: a proposal <seller> could send <buyer>" and carries one call to action, "Made by Unfairly". The page names Unfairly at most twice on screen (the band and the footer).
 - **No pitch on the page.** Outside the band there is no link to Unfairly's sites, and no copy that names us as maker or sender ("A note from Unfairly", "from Unfairly"); our pitch goes in the note. The seller's own calls to action and offer copy ("Email us for a hospitality quote", "Book 30 minutes", "within 48 hours") are fine. There is also no guarantee or savings projection in our own words, and no other prospect's name.
 - **Every claim sourced.** Every `{{facts.*}}` the page uses has a `sources` entry or is `fictional`. A plain number typed into the copy (two or more digits, not a year, not in a link or button label) is an error. Every money figure in the model, inputs included, declares its type. The evaluator flags prose claims about the seller that nothing on the page attributes.
 - **No typed commitments.** A date, duration or trial typed as text ("a 30-day evaluation", "Nov 20 kickoff") is an error unless it's a marked commitment.

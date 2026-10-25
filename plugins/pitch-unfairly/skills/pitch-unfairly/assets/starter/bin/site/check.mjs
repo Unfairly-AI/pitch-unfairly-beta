@@ -187,14 +187,15 @@ export function checkSite({ site, sections, header = '', footer = '', styles = '
   // "Example: a proposal" and carries one "Made by Unfairly" link, never our booking pitch.
   const lead = isLead(site);
   if (site.sample && !lead && !sections.some(({ html }) => /sample/i.test(text(html)))) errors.push('site.json says sample, but no section tells the reader it is one.');
-  // A sample carries a sample band with a way to reach whoever built it (the toolbox's
-  // sample component: data-sample, with a data-cta inside), so the reader knows it's
-  // not the provider's own page and has somewhere to go.
-  const banded = [header, ...sections.map(({ html }) => html), footer].some((html) => [...html.matchAll(/<([a-z]+)\b[^>]*\sdata-sample\b[^>]*>/gi)].some((m) => /\sdata-cta="/.test(element(html, m.index, m[1]))));
-  if (site.sample && !lead && !banded) warnings.push('site.json says sample, but the page has no sample band with a call to action. Use the toolbox\'s sample band (header.html): data-sample, with "Book 30 minutes" and "Email us" as data-cta links.');
-  // The one-shot rules came with engine 1.8: blocking unpinned or pinned 1.8+, warnings before.
+  // A sample says so in a slim band on screen (the toolbox's sample component, data-sample;
+  // the PDF strip doesn't count), so the
+  // reader knows it isn't the provider's own page. It carries no pitch of ours (lead.mjs, S).
+  const banded = [header, ...sections.map(({ html }) => html), footer].some((html) => [...html.matchAll(/<[a-z]+\b([^>]*\sdata-sample\b[^>]*)>/gi)].some((m) => !/\bpdf-only\b/.test(m[1])));
+  if (site.sample && !lead && !banded) warnings.push('site.json says sample, but the page has no sample band. Use the toolbox\'s sample band (header.html, data-sample): one line saying the client and its numbers are fictional, with at most one "Made by Unfairly" link.');
+  // The one-shot rules came with engine 1.8, the sample-pitch rules with 1.10: each blocks
+  // unpinned or pinned at its version or later, and warns on an older pin.
   const files = [{ where: 'header.html', html: header, section: false }, ...sections.map(({ name, html }) => ({ where: `sections/${name}`, html, section: true })), { where: 'footer.html', html: footer, section: false }].filter((f) => f.html);
-  const found = leadFindings({ site, files, blocks: pinnedMinor === undefined || Number(pinnedMinor) >= 8, ...(today ? { today } : {}) });
+  const found = leadFindings({ site, files, blocks: pinnedMinor === undefined || Number(pinnedMinor) >= 8, sampleBlocks: pinnedMinor === undefined || Number(pinnedMinor) >= 10, ...(today ? { today } : {}) });
   errors.push(...found.errors);
   warnings.push(...found.warnings);
   return { errors, warnings };

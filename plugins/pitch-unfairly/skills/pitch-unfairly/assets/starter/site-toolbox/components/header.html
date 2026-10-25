@@ -1,14 +1,15 @@
 <!-- Sticky header: the sender's mark, the section nav (hidden under 1100px), one button.
      Save as site/header.html. The nav names five to seven sections, in page order.
      A sample (site.json "sample": true) carries the sample band first: one slim band in
-     the Pitch Unfairly house palette with "Book 30 minutes" and "Email us". Set data-sample-tone
-     and data-sample-pill from sample-tone.mjs for the page's brand. A real proposal drops it. -->
+     the Pitch Unfairly house palette that says the page is a sample and what's fictional,
+     with at most one "Made by Unfairly" link. Never our booking buttons: the page is the
+     seller's, and our pitch goes in the note. Set data-sample-tone and data-sample-pill
+     from sample-tone.mjs for the page's brand. A real proposal drops it. -->
 <header class="top tb-top">
   <div class="tb-sample-bar" data-sample data-sample-tone="yellow" data-sample-pill="magenta" role="note" aria-label="About this sample">
     <div class="tb-wrap tb-sb-row">
-      <span class="tb-sb-mark"><span class="tb-sb-dots" aria-hidden="true"><i></i><i></i><i></i></span>Unfairly</span>
-      <p class="tb-sb-text"><span class="tb-sb-long">Sample proposal. {{facts.client.name}} and its numbers are fictional.<span class="tb-sb-tail"> Yours could look like this.</span></span><span class="tb-sb-short">A sample proposal.</span></p>
-      <div class="tb-sb-actions"><a class="tb-sb-book" href="{{facts.sample.book_href}}" target="_blank" rel="noopener" data-cta="book_meeting">{{facts.sample.book_label}}</a><a class="tb-sb-email" href="{{facts.sample.email_href}}" target="_blank" rel="noopener" data-cta="talk_to_us">{{facts.sample.email_label}}</a></div>
+      <p class="tb-sb-text"><span class="tb-sb-long">Sample proposal. {{facts.client.name}} and its numbers are fictional.</span><span class="tb-sb-short">A sample proposal.</span></p>
+      <div class="tb-sb-actions"><a class="tb-sb-made" href="{{facts.sample.made_by_href}}" target="_blank" rel="noopener" data-cta="made_by">{{facts.sample.made_by_label}}</a></div>
     </div>
   </div>
   <div class="tb-wrap tb-top-row">

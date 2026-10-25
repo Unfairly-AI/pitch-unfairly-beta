@@ -88,19 +88,20 @@ test('toolbox.css reads only brand tokens: no raw colors, and a phone and a PDF 
   assert.match(css, /prefers-reduced-motion: reduce\) \{\n  \[data-bar\], \.tb-bar-track i, \.tb-hbar-track i \{ transition: none !important; \}/, 'reduced motion stills every chart, the toolbox bars included');
 });
 
-test('ACCEPTANCE: the sample band is Unfairly\'s, reports both calls to action, and ships its fonts', async () => {
+test('ACCEPTANCE: the sample band says it is a sample in the house palette, carries none of our booking pitch, and ships its fonts', async () => {
   const header = await readFile(join(TOOLBOX, 'components', 'header.html'), 'utf8');
   assert.match(header, /class="tb-sample-bar" data-sample data-sample-tone="yellow" data-sample-pill="magenta"/);
-  assert.match(header, /data-cta="book_meeting"[^>]*>|<a[^>]*target="_blank"[^>]*data-cta="book_meeting"/);
-  assert.match(header, /href="\{\{facts\.sample\.book_href\}\}" target="_blank" rel="noopener" data-cta="book_meeting"/);
-  assert.match(header, /href="\{\{facts\.sample\.email_href\}\}" target="_blank" rel="noopener" data-cta="talk_to_us"/);
+  assert.match(header, /Sample proposal\. \{\{facts\.client\.name\}\} and its numbers are fictional\./);
+  assert.doesNotMatch(header, /book_meeting|talk_to_us|book_href|email_href|Yours could look like this/, 'no Unfairly booking pitch in a sample');
+  assert.equal((header.match(/data-cta="/g) ?? []).length, 1, 'one link at most: Made by Unfairly');
+  assert.match(header, /href="\{\{facts\.sample\.made_by_href\}\}" target="_blank" rel="noopener" data-cta="made_by"/);
   for (const [k, v] of Object.entries(HOUSE)) assert.match(css, new RegExp(`--tb-sample-${k}: ${v};`), k);
-  assert.match(css, /\.tb-sb-long, \.tb-sample-bar \.tb-sb-email \{ display: none; \}/, 'the phone drops Email us from the band only, never from the close');
   assert.doesNotMatch(css, /e8553a/i, 'no black-and-orange: the band is the colorful house palette');
   for (const f of ['unfairly-sora.woff2', 'unfairly-dm-sans.woff2']) assert.ok(existsSync(join(TOOLBOX, 'assets', 'fonts', f)), f);
   const part = await readFile(join(TOOLBOX, 'parts', 'sample.html'), 'utf8');
-  assert.match(part, /pdf-only/, 'the PDF carries the band with the links written out');
-  assert.match(part, /\{\{facts\.sample\.book_print\}\}[\s\S]*\{\{facts\.sample\.email\}\}/);
+  assert.match(part, /pdf-only/, 'the PDF carries the band');
+  assert.doesNotMatch(part, /book|email|calendly/i, 'and no booking pitch in print either');
+  assert.ok(!existsSync(join(TOOLBOX, 'components', 'viewers.html')), 'the viewers demo is not a toolbox component');
 });
 
 test('a sample site without a sample band is called out', async () => {
@@ -109,7 +110,7 @@ test('a sample site without a sample band is called out', async () => {
   const loaded = await loadSite(root);
   assert.ok(!checkSite(loaded).warnings.some((w) => /no sample band/.test(w)));
   loaded.header = loaded.header.replace(/<div class="tb-sample-bar"[\s\S]*?<\/header>/, '</header>');
-  assert.ok(checkSite(loaded).warnings.some((w) => /no sample band with a call to action/.test(w)));
+  assert.ok(checkSite(loaded).warnings.some((w) => /no sample band/.test(w)));
 });
 
 const lum = (hex) => {

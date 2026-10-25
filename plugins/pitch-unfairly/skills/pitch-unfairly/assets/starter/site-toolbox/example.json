@@ -148,12 +148,8 @@
       }
     },
     "sample": {
-      "book_label": "Book 30 minutes",
-      "book_href": "https://calendly.com/bob-unfairly/30min",
-      "book_print": "calendly.com/bob-unfairly/30min",
-      "email_label": "Email us",
-      "email_href": "mailto:bob@unfairly.ai?subject=A%20proposal%20page%20like%20this%20sample",
-      "email": "bob@unfairly.ai"
+      "made_by_label": "Made by Unfairly",
+      "made_by_href": "https://pitchunfairly.com"
     },
     "photos": {
       "p1": {
