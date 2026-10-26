@@ -637,6 +637,147 @@ export async function qualifierProblems(page) {
   });
 }
 
+// ---------- 3b. The sample band on a phone (engine 1.11) ----------
+
+/**
+ * A sample's band on a phone still says whose proposal it is: its visible text names
+ * the seller and the buyer (any of the names given), its text isn't cut off, and its
+ * link is in view (not display:none, zero-size, off screen or clipped by the band).
+ * The real failure: at 390 the band collapsed to "Example Salesforce plan." and hid
+ * its link. Reads the page at its current viewport; checks only a screen band.
+ * names: { seller: [...], buyer: [...] }.
+ */
+export async function sampleBandProblems(page, { seller = [], buyer = [] } = {}) {
+  await settle(page);
+  return inPage(page, (H, names_) => {
+    const errors = [];
+    const warnings = [];
+    const vw = document.documentElement.clientWidth;
+    const bands = [...document.querySelectorAll('[data-sample]')].filter((b) => !b.classList.contains('pdf-only') && !b.closest('.pdf-only'));
+    if (!bands.length) return { errors, warnings };
+    const band = bands.find(H.visible);
+    if (!band) {
+      errors.push(`${vw}px: the sample band is hidden. On a phone it still says, in one short line, whose proposal this is and that it's a sample`);
+      return { errors, warnings };
+    }
+    const said = (band.innerText || '').replace(/\s+/g, ' ').trim();
+    const norm = (t) => t.toLowerCase().replace(/[’']/g, "'");
+    const names = (list) => list.filter((n) => typeof n === 'string' && n.trim().length >= 2);
+    const missing = [];
+    for (const [role, list] of [['seller', names(names_.seller)], ['buyer', names(names_.buyer)]]) {
+      if (list.length && !list.some((n) => norm(said).includes(norm(n.trim())))) missing.push(`the ${role} (${list[0]})`);
+    }
+    if (missing.length) errors.push(`${vw}px: the sample band reads "${said.slice(0, 80)}", which doesn't name ${missing.join(' or ')}. On a phone the short line still says whose proposal it is, for whom ("Sample: ${names(names_.seller)[0] ?? '<seller>'} for ${names(names_.buyer)[0] ?? '<buyer>'}.")`);
+    // Text cut off with an ellipsis or by the band's own overflow reads as a different line.
+    for (const el of band.querySelectorAll('*')) {
+      if (!H.visible(el) || !H.ownText(el)) continue;
+      const s = getComputedStyle(el);
+      if (/hidden|clip/.test(s.overflowX + s.overflow) && el.scrollWidth > el.clientWidth + 1) {
+        errors.push(`${vw}px: the sample band's text is cut off ("${H.ownText(el).slice(0, 60)}"): it runs ${el.scrollWidth - el.clientWidth}px past its box. Let it wrap or shorten it`);
+        break;
+      }
+    }
+    // Its link (Made by Unfairly) stays in view.
+    for (const a of band.querySelectorAll('a[href]')) {
+      const label = `"${(a.textContent || '').trim().slice(0, 30)}"`;
+      if (!H.visible(a)) { errors.push(`${vw}px: the sample band hides its link ${label}. Keep it in view on a phone`); continue; }
+      const r = a.getBoundingClientRect();
+      if (r.width < 8 || r.height < 8) { errors.push(`${vw}px: the sample band's link ${label} is ${Math.round(r.width)}×${Math.round(r.height)}px. Keep it in view on a phone`); continue; }
+      if (r.left < -1 || r.right > vw + 1) { errors.push(`${vw}px: the sample band's link ${label} runs off the screen`); continue; }
+      for (let n = a.parentElement; n && n !== document.documentElement; n = n.parentElement) {
+        const s = getComputedStyle(n);
+        if (!/hidden|clip|auto|scroll/.test(`${s.overflowX} ${s.overflowY}`)) continue;
+        const b = n.getBoundingClientRect();
+        if (r.left < b.left - 1 || r.right > b.right + 1 || r.top < b.top - 1 || r.bottom > b.bottom + 1) {
+          errors.push(`${vw}px: the sample band's link ${label} is clipped by ${H.where(n)}. Keep it in view on a phone`);
+          break;
+        }
+        if (n === band) break;
+      }
+    }
+    return { errors: [...new Set(errors)], warnings };
+  }, { seller, buyer });
+}
+
+/** The seller's and the buyer's names a sample band can say, from site.json. */
+export function sampleNames(site) {
+  const f = site?.facts ?? {};
+  const s = site?.sample && typeof site.sample === 'object' ? site.sample : {};
+  const proper = (n) => typeof n === 'string' && /^[A-Z0-9]/.test(n.trim()) && !/^(?:A|An|The|Any|One|Some)\s/.test(n.trim());
+  return {
+    seller: [f.vendor?.name, f.vendor?.short, f.seller?.name, f.seller?.short, s.seller].filter(proper),
+    buyer: [f.client?.name, f.client?.short, f.buyer?.name, f.buyer?.short, s.buyer].filter(proper),
+  };
+}
+
+// ---------- 3c. Boxed text (engine 1.11) ----------
+
+/**
+ * Running text (more than BOXED_WORDS words) set inside a box: a container with a visible
+ * border on three or more sides, or a tinted panel that differs from what it sits on.
+ * It reads as a template's callout. Not a box: a card in a row of like cards, a figure,
+ * the product's own UI ([data-ui], a form or calculator with inputs, a table), a quote,
+ * a toggle, a full-width band (that's a section background). Warnings only, at a laptop width.
+ */
+export const BOXED_WORDS = 12;
+export async function boxedTextProblems(page) {
+  await settle(page);
+  return inPage(page, (H, { minWords }) => {
+    const { color, cs, visible, where } = H;
+    const warnings = [];
+    const main = document.querySelector('main') ?? document.body;
+    const vw = document.documentElement.clientWidth;
+    const words = (t) => (t.match(/[A-Za-z0-9$€£][\w$€£%'’.,-]*/g) ?? []).length;
+    const sides = (s) => ['Top', 'Right', 'Bottom', 'Left'].filter((k) => {
+      const w = parseFloat(s[`border${k}Width`]) || 0;
+      const c = color.parse(s[`border${k}Color`]);
+      return w >= 1 && s[`border${k}Style`] !== 'none' && c && c.alpha >= 0.25;
+    }).length;
+    const boxOf = (el) => {
+      const s = cs(el);
+      if (sides(s) >= 3) return 'a bordered box';
+      const bg = color.parse(s.backgroundColor);
+      if (!bg || bg.alpha < 0.5 || (s.backgroundImage && s.backgroundImage !== 'none')) return null;
+      const under = el.parentElement ? H.backdrop(el.parentElement) : null;
+      if (!under || under.image) return null;
+      const base = color.parse(under.color);
+      return base && color.dist(bg, base) > 0.03 ? 'a tinted panel' : null;
+    };
+    const exempt = (el) =>
+      el.matches('[data-section], section, header, footer, nav, figure, blockquote, details, summary, table, form, pre, code, button, a, label, [data-ui], [data-sample], [role="img"], [role="dialog"], [data-calc]') ||
+      el.closest('figure, blockquote, [data-ui], [data-sample], [data-calc], form, table, details, nav, header, footer') ||
+      el.querySelector('input, select, textarea, table, img, video, canvas, svg, [data-v], [data-expr]');
+    const sameBox = (a, b) => {
+      const x = cs(a);
+      const y = cs(b);
+      return a.tagName === b.tagName && x.backgroundColor === y.backgroundColor && x.borderTopWidth === y.borderTopWidth && x.borderTopColor === y.borderTopColor;
+    };
+    const reported = [];
+    for (const el of main.querySelectorAll('div, aside, p, article, li, ul, ol, dl')) {
+      if (!visible(el) || reported.some((r) => r.contains(el) || el.contains(r))) continue;
+      const r = el.getBoundingClientRect();
+      if (r.width >= vw * 0.9) continue; // a band across the page is the section's background
+      const kind = boxOf(el);
+      if (!kind || exempt(el)) continue;
+      const text = (el.innerText || '').replace(/\s+/g, ' ').trim();
+      const all = words(text);
+      // Running text: sentences (blocks of 8+ words) making up most of the box. A contact
+      // card or a stat with a caption is labels and names around one line.
+      const blocks = el.matches('p, li') ? [el] : [...el.querySelectorAll('p, li, dd')].filter((b) => visible(b) && !b.querySelector('p, li, dd'));
+      const n = blocks.map((b) => words((b.innerText || '').trim())).filter((k) => k >= 8).reduce((a, k) => a + k, 0);
+      if (n <= minWords || n < all * 0.7) continue;
+      // A card in a row of like cards is a card (a featured one that's styled apart included).
+      const first = (e) => (typeof e.className === 'string' ? e.className.trim().split(/\s+/)[0] : '') || null;
+      const kin = [...(el.parentElement?.children ?? [])].filter((k) => k !== el && visible(k) && k.tagName === el.tagName && (sameBox(k, el) || (first(k) && first(k) === first(el))));
+      if (kin.length >= 1) continue;
+      reported.push(el);
+      warnings.push(`boxed text: ${where(el)} sets ${n} words of running text in ${kind} ("${text.slice(0, 60)}${text.length > 60 ? '...' : ''}"). Say it in the section's own flow; keep a box for a card in a row, a figure or the product's own UI`);
+      if (reported.length >= 4) break;
+    }
+    return { errors: [], warnings };
+  }, { minWords: BOXED_WORDS });
+}
+
 // ---------- 4. Link preview and weight ----------
 
 async function* files(dir) {

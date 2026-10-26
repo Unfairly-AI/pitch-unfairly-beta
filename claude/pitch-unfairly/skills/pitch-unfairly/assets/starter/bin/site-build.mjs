@@ -45,7 +45,7 @@ export function fontDir(root, pkg) {
 }
 
 /** Fontsource CSS with its file URLs pointed at fonts/<package>/, and the files to copy. */
-async function fontsourceCss(root, pkg) {
+export async function fontsourceCss(root, pkg) {
   const dir = fontDir(root, pkg);
   const css = await readFile(join(dir, 'index.css'), 'utf8');
   const name = pkg.replace(/^@/, '').replace(/\//g, '-');

@@ -1,0 +1,2269 @@
+{
+  "group": "meta",
+  "checked": "2026-10-25",
+  "formats": [
+    {
+      "id": "instagram.feed.square",
+      "name": "Feed post, square",
+      "canvas": {
+        "w": 1080,
+        "h": 1080
+      },
+      "aspect": "1:1",
+      "platform": "instagram",
+      "surface": "organic",
+      "placement": "Feed",
+      "media": [
+        "image"
+      ],
+      "accepted_aspects": [
+        "1.91:1",
+        "1:1",
+        "4:5",
+        "3:4"
+      ],
+      "min": {
+        "w": 320,
+        "h": null
+      },
+      "max": {
+        "w": 1080,
+        "h": 1440
+      },
+      "text": {
+        "primary": {
+          "max": 2200,
+          "truncates_at": 125
+        },
+        "hashtags": {
+          "max": 5
+        },
+        "mentions": {
+          "max": 20
+        }
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": null
+      },
+      "crop_notes": "Profile grid shows posts as 3:4 tiles (since early 2025): 4:5 posts lose a little on the left/right, 1:1 posts are shown center-cropped, 3:4 posts show in full. Preview can be adjusted per post ('Adjust preview').",
+      "notes": "Instagram keeps photos 320-1080px wide at original resolution when aspect ratio is between 1.91:1 and 3:4 (1080 wide x 566-1440 high); unsupported ratios are cropped, wider images downscaled to 1080, narrower upscaled to 320. Hashtag cap is now 5 per post (Help Center; rolled out from Dec 2025) - the Graph API reference still says 30, treat 5 as binding. The 125-char 'more' fold is observed, not published (secondary). File size for app uploads is not published; the publishing API caps images at 8MB JPEG.",
+      "sources": [
+        {
+          "url": "https://help.instagram.com/1631821640426723",
+          "title": "Instagram Help Center: image resolution of photos shared on Instagram",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.instagram.com/351460621611097",
+          "title": "Instagram Help Center: use hashtags on Instagram",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://developers.facebook.com/docs/instagram-platform/instagram-graph-api/reference/ig-user/media",
+          "title": "Instagram Platform API reference: IG User Media (media specs, caption limits)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://www.kapwing.com/resources/instagrams-new-grid-layout-size-and-dimensions-2025/",
+          "title": "Kapwing: Instagram's new grid layout size and dimensions",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://www.socialmediatoday.com/news/instagram-implements-new-limits-on-hashtag-use/808309/",
+          "title": "Social Media Today: Instagram implements new limits on hashtag use (Dec 18, 2025)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "instagram.feed.portrait",
+      "name": "Feed post, portrait 4:5",
+      "canvas": {
+        "w": 1080,
+        "h": 1350
+      },
+      "aspect": "4:5",
+      "platform": "instagram",
+      "surface": "organic",
+      "placement": "Feed",
+      "media": [
+        "image"
+      ],
+      "accepted_aspects": [
+        "1.91:1",
+        "1:1",
+        "4:5",
+        "3:4"
+      ],
+      "min": {
+        "w": 320,
+        "h": null
+      },
+      "max": {
+        "w": 1080,
+        "h": 1440
+      },
+      "text": {
+        "primary": {
+          "max": 2200,
+          "truncates_at": 125
+        },
+        "hashtags": {
+          "max": 5
+        },
+        "mentions": {
+          "max": 20
+        }
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": null
+      },
+      "crop_notes": "Profile grid shows posts as 3:4 tiles (since early 2025): 4:5 posts lose a little on the left/right, 1:1 posts are shown center-cropped, 3:4 posts show in full. Preview can be adjusted per post ('Adjust preview').",
+      "notes": "Instagram keeps photos 320-1080px wide at original resolution when aspect ratio is between 1.91:1 and 3:4 (1080 wide x 566-1440 high); unsupported ratios are cropped, wider images downscaled to 1080, narrower upscaled to 320. Hashtag cap is now 5 per post (Help Center; rolled out from Dec 2025) - the Graph API reference still says 30, treat 5 as binding. The 125-char 'more' fold is observed, not published (secondary). File size for app uploads is not published; the publishing API caps images at 8MB JPEG.",
+      "sources": [
+        {
+          "url": "https://help.instagram.com/1631821640426723",
+          "title": "Instagram Help Center: image resolution of photos shared on Instagram",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.instagram.com/351460621611097",
+          "title": "Instagram Help Center: use hashtags on Instagram",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://developers.facebook.com/docs/instagram-platform/instagram-graph-api/reference/ig-user/media",
+          "title": "Instagram Platform API reference: IG User Media (media specs, caption limits)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://www.kapwing.com/resources/instagrams-new-grid-layout-size-and-dimensions-2025/",
+          "title": "Kapwing: Instagram's new grid layout size and dimensions",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://www.socialmediatoday.com/news/instagram-implements-new-limits-on-hashtag-use/808309/",
+          "title": "Social Media Today: Instagram implements new limits on hashtag use (Dec 18, 2025)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "instagram.feed.portrait_3x4",
+      "name": "Feed post, portrait 3:4 (tallest, matches grid)",
+      "canvas": {
+        "w": 1080,
+        "h": 1440
+      },
+      "aspect": "3:4",
+      "platform": "instagram",
+      "surface": "organic",
+      "placement": "Feed",
+      "media": [
+        "image"
+      ],
+      "accepted_aspects": [
+        "1.91:1",
+        "1:1",
+        "4:5",
+        "3:4"
+      ],
+      "min": {
+        "w": 320,
+        "h": null
+      },
+      "max": {
+        "w": 1080,
+        "h": 1440
+      },
+      "text": {
+        "primary": {
+          "max": 2200,
+          "truncates_at": 125
+        },
+        "hashtags": {
+          "max": 5
+        },
+        "mentions": {
+          "max": 20
+        }
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": null
+      },
+      "crop_notes": "Profile grid shows posts as 3:4 tiles (since early 2025): 4:5 posts lose a little on the left/right, 1:1 posts are shown center-cropped, 3:4 posts show in full. Preview can be adjusted per post ('Adjust preview').",
+      "notes": "Instagram keeps photos 320-1080px wide at original resolution when aspect ratio is between 1.91:1 and 3:4 (1080 wide x 566-1440 high); unsupported ratios are cropped, wider images downscaled to 1080, narrower upscaled to 320. Hashtag cap is now 5 per post (Help Center; rolled out from Dec 2025) - the Graph API reference still says 30, treat 5 as binding. The 125-char 'more' fold is observed, not published (secondary). File size for app uploads is not published; the publishing API caps images at 8MB JPEG.",
+      "sources": [
+        {
+          "url": "https://help.instagram.com/1631821640426723",
+          "title": "Instagram Help Center: image resolution of photos shared on Instagram",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.instagram.com/351460621611097",
+          "title": "Instagram Help Center: use hashtags on Instagram",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://developers.facebook.com/docs/instagram-platform/instagram-graph-api/reference/ig-user/media",
+          "title": "Instagram Platform API reference: IG User Media (media specs, caption limits)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://www.kapwing.com/resources/instagrams-new-grid-layout-size-and-dimensions-2025/",
+          "title": "Kapwing: Instagram's new grid layout size and dimensions",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://www.socialmediatoday.com/news/instagram-implements-new-limits-on-hashtag-use/808309/",
+          "title": "Social Media Today: Instagram implements new limits on hashtag use (Dec 18, 2025)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "instagram.feed.landscape",
+      "name": "Feed post, landscape",
+      "canvas": {
+        "w": 1080,
+        "h": 566
+      },
+      "aspect": "1.91:1",
+      "platform": "instagram",
+      "surface": "organic",
+      "placement": "Feed",
+      "media": [
+        "image"
+      ],
+      "accepted_aspects": [
+        "1.91:1",
+        "1:1",
+        "4:5",
+        "3:4"
+      ],
+      "min": {
+        "w": 320,
+        "h": null
+      },
+      "max": {
+        "w": 1080,
+        "h": 1440
+      },
+      "text": {
+        "primary": {
+          "max": 2200,
+          "truncates_at": 125
+        },
+        "hashtags": {
+          "max": 5
+        },
+        "mentions": {
+          "max": 20
+        }
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": null
+      },
+      "crop_notes": "Profile grid shows posts as 3:4 tiles (since early 2025): 4:5 posts lose a little on the left/right, 1:1 posts are shown center-cropped, 3:4 posts show in full. Preview can be adjusted per post ('Adjust preview').",
+      "notes": "Instagram keeps photos 320-1080px wide at original resolution when aspect ratio is between 1.91:1 and 3:4 (1080 wide x 566-1440 high); unsupported ratios are cropped, wider images downscaled to 1080, narrower upscaled to 320. Hashtag cap is now 5 per post (Help Center; rolled out from Dec 2025) - the Graph API reference still says 30, treat 5 as binding. The 125-char 'more' fold is observed, not published (secondary). File size for app uploads is not published; the publishing API caps images at 8MB JPEG.",
+      "sources": [
+        {
+          "url": "https://help.instagram.com/1631821640426723",
+          "title": "Instagram Help Center: image resolution of photos shared on Instagram",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.instagram.com/351460621611097",
+          "title": "Instagram Help Center: use hashtags on Instagram",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://developers.facebook.com/docs/instagram-platform/instagram-graph-api/reference/ig-user/media",
+          "title": "Instagram Platform API reference: IG User Media (media specs, caption limits)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://www.kapwing.com/resources/instagrams-new-grid-layout-size-and-dimensions-2025/",
+          "title": "Kapwing: Instagram's new grid layout size and dimensions",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://www.socialmediatoday.com/news/instagram-implements-new-limits-on-hashtag-use/808309/",
+          "title": "Social Media Today: Instagram implements new limits on hashtag use (Dec 18, 2025)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "instagram.feed.carousel",
+      "platform": "instagram",
+      "surface": "organic",
+      "placement": "Feed",
+      "name": "Carousel post (multiple photos/videos)",
+      "media": [
+        "carousel",
+        "image",
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1350
+      },
+      "aspect": "4:5",
+      "accepted_aspects": [
+        "1.91:1",
+        "1:1",
+        "4:5",
+        "3:4"
+      ],
+      "carousel": {
+        "min": 2,
+        "max": 20,
+        "card_aspects": [
+          "1.91:1",
+          "1:1",
+          "4:5",
+          "3:4"
+        ]
+      },
+      "text": {
+        "primary": {
+          "max": 2200,
+          "truncates_at": 125
+        },
+        "hashtags": {
+          "max": 5
+        }
+      },
+      "crop_notes": "Profile grid shows posts as 3:4 tiles (since early 2025): 4:5 posts lose a little on the left/right, 1:1 posts are shown center-cropped, 3:4 posts show in full. Preview can be adjusted per post ('Adjust preview'). Only the first card shows on the grid.",
+      "notes": "Up to 20 photos and videos, mixed, in one post (Help Center). Caption/location live on the post, not per card. Keep every card the same ratio: the app crops all cards to one frame (commonly reported; not stated on the help page). Reels cannot be carousel items via API.",
+      "sources": [
+        {
+          "url": "https://help.instagram.com/269314186824048",
+          "title": "Instagram Help Center: Share a post with multiple photos or videos on Instagram",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://developers.facebook.com/docs/instagram-platform/instagram-graph-api/reference/ig-user/media",
+          "title": "Instagram Platform API reference: IG User Media (media specs, caption limits)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.instagram.com/1631821640426723",
+          "title": "Instagram Help Center: image resolution of photos shared on Instagram",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.instagram.com/351460621611097",
+          "title": "Instagram Help Center: use hashtags on Instagram",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "instagram.reels",
+      "platform": "instagram",
+      "surface": "organic",
+      "placement": "Reels",
+      "name": "Reel",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1920
+      },
+      "aspect": "9:16",
+      "accepted_aspects": [
+        "1.91:1",
+        "9:16"
+      ],
+      "min": {
+        "w": 720,
+        "h": null
+      },
+      "video": {
+        "types": [
+          "mp4",
+          "mov"
+        ],
+        "codec": "H.264 (High profile, progressive, closed GOP, 4:2:0)",
+        "audio": "AAC, stereo, 48kHz",
+        "fps": [
+          30,
+          60
+        ],
+        "min_s": 3,
+        "max_s": 1200,
+        "recommended_s": null,
+        "max_mb": null,
+        "captions": "burned-in or auto captions recommended; sound-off viewing common"
+      },
+      "safe_zone": {
+        "top": 269,
+        "bottom": 672,
+        "left": 65,
+        "right": 65,
+        "units": "px at canvas",
+        "note": "No official organic Reels safe zone. Use Meta's ads guidance (14% top, 35% bottom, 6% sides) - caption, audio label and action buttons cover the bottom and right."
+      },
+      "crop_notes": "Profile grid shows the reel cover as a 3:4 tile (center of the 9:16 frame, roughly 1080x1440). Keep the cover's key content in that central band.",
+      "text": {
+        "primary": {
+          "max": 2200,
+          "truncates_at": null
+        },
+        "hashtags": {
+          "max": 5
+        }
+      },
+      "notes": "Help Center: upload 1.91:1 to 9:16, min 30fps, min 720px resolution; record/edit up to 20 minutes, but reels over 3 minutes are not recommended to non-followers (reported, see search). Publishing API: 3s-15min, 300MB, 23-60fps, max 1920px wide. fps upper bound 60 and min 3s are API figures. Hashtag cap 5.",
+      "sources": [
+        {
+          "url": "https://help.instagram.com/1038071743007909",
+          "title": "Instagram Help Center: Reel size & aspect ratios on Instagram",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.instagram.com/2720958398006062",
+          "title": "Instagram Help Center: Record a reel on Instagram",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://developers.facebook.com/docs/instagram-platform/instagram-graph-api/reference/ig-user/media",
+          "title": "Instagram Platform API reference: IG User Media (media specs, caption limits)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.instagram.com/351460621611097",
+          "title": "Instagram Help Center: use hashtags on Instagram",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "instagram.reels.cover",
+      "platform": "instagram",
+      "surface": "organic",
+      "placement": "Reels",
+      "name": "Reel cover image",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1920
+      },
+      "aspect": "9:16",
+      "accepted_aspects": [
+        "9:16",
+        "1:1.55"
+      ],
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 8
+      },
+      "crop_notes": "Grid shows the cover as a 3:4 tile; feed shares use the center; Reels tab uses the center 9:16. Design at 9:16 with title/subject inside the center 1080x1440 band.",
+      "notes": "Help Center still recommends 420x654 (1:1.55) and says the cover can't be edited after upload; the publishing API recommends 9:16 (middle 9:16 cropped for the Reels tab, middle 1:1 when shared to feed; 8MB JPEG). Render 1080x1920 - it satisfies both.",
+      "sources": [
+        {
+          "url": "https://help.instagram.com/1038071743007909",
+          "title": "Instagram Help Center: Reel size & aspect ratios on Instagram",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://developers.facebook.com/docs/instagram-platform/instagram-graph-api/reference/ig-user/media",
+          "title": "Instagram Platform API reference: IG User Media (media specs, caption limits)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://www.kapwing.com/resources/instagrams-new-grid-layout-size-and-dimensions-2025/",
+          "title": "Kapwing: Instagram's new grid layout size and dimensions",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "instagram.stories",
+      "platform": "instagram",
+      "surface": "organic",
+      "placement": "Stories",
+      "name": "Story (photo or video)",
+      "media": [
+        "image",
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1920
+      },
+      "aspect": "9:16",
+      "accepted_aspects": [
+        "9:16"
+      ],
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 8
+      },
+      "video": {
+        "types": [
+          "mp4",
+          "mov"
+        ],
+        "codec": "H.264 or HEVC",
+        "audio": "AAC",
+        "fps": [
+          23,
+          60
+        ],
+        "min_s": 3,
+        "max_s": 60,
+        "max_mb": 100,
+        "captions": "burned-in recommended"
+      },
+      "safe_zone": {
+        "top": 269,
+        "bottom": 672,
+        "left": 65,
+        "right": 65,
+        "units": "px at canvas",
+        "note": "No official organic Stories safe zone; Meta's Stories ads guidance (14% top, 35% bottom, 6% sides) is the safest proxy. Sprout cites a 1080x1610 safe area (secondary)."
+      },
+      "notes": "Image/video ratio and length figures come from the Instagram publishing API (9:16 recommended, video 3-60s, 100MB). In-app, longer videos are split into story segments. Story disappears after 24h unless added to Highlights.",
+      "sources": [
+        {
+          "url": "https://developers.facebook.com/docs/instagram-platform/instagram-graph-api/reference/ig-user/media",
+          "title": "Instagram Platform API reference: IG User Media (media specs, caption limits)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.instagram.com/1662869217365427",
+          "title": "Instagram Help Center: Stories",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://sproutsocial.com/insights/social-media-image-sizes-guide/",
+          "title": "Sprout Social: Social media image sizes guide (updated Oct 15, 2026)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "instagram.profile.photo",
+      "platform": "instagram",
+      "surface": "organic",
+      "placement": "Profile",
+      "name": "Profile photo",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 320,
+        "h": 320
+      },
+      "aspect": "1:1",
+      "accepted_aspects": [
+        "1:1"
+      ],
+      "crop_notes": "Displayed as a circle (about 110x110 in the app). Keep logos inside the inscribed circle.",
+      "notes": "No official Instagram Help Center spec found; 320x320 and 110x110 display are third-party figures. Upload larger (e.g. 1080x1080) for sharpness - it is downscaled.",
+      "sources": [
+        {
+          "url": "https://sproutsocial.com/insights/social-media-image-sizes-guide/",
+          "title": "Sprout Social: Social media image sizes guide (updated Oct 15, 2026)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "secondary"
+    },
+    {
+      "id": "instagram.profile.grid_preview",
+      "platform": "instagram",
+      "surface": "organic",
+      "placement": "Profile grid",
+      "name": "Profile grid tile (preview crop)",
+      "media": [
+        "image",
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1440
+      },
+      "aspect": "3:4",
+      "accepted_aspects": [
+        "3:4"
+      ],
+      "crop_notes": "Every feed post, carousel (first card) and reel cover is previewed as a 3:4 tile. From a 1080x1350 (4:5) post the visible tile is about 1012x1350 (sides trimmed); from 1:1 the tile is a center crop; from 9:16 reels the center 1080x1440.",
+      "notes": "Changed from 1:1 squares to 3:4 rectangles in early 2025 (announced by Adam Mosseri, Jan 2025). Users can tweak each tile with 'Adjust preview'. No official Instagram spec page found for the tile size.",
+      "sources": [
+        {
+          "url": "https://www.kapwing.com/resources/instagrams-new-grid-layout-size-and-dimensions-2025/",
+          "title": "Kapwing: Instagram's new grid layout size and dimensions",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://sproutsocial.com/insights/social-media-image-sizes-guide/",
+          "title": "Sprout Social: Social media image sizes guide (updated Oct 15, 2026)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "secondary"
+    },
+    {
+      "id": "facebook.feed.image",
+      "platform": "facebook",
+      "surface": "organic",
+      "placement": "Feed",
+      "name": "Feed post, image",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1350
+      },
+      "aspect": "4:5",
+      "accepted_aspects": [
+        "1.91:1",
+        "1:1",
+        "4:5"
+      ],
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": null
+      },
+      "text": {
+        "primary": {
+          "max": 63206,
+          "truncates_at": null
+        }
+      },
+      "notes": "No current official organic image spec found; Meta's ads guide (4:5, 1440x1800, min 600 wide) is the closest official reference - see facebook.ad.feed.image. 1080x1080 / 1440x1800 are Sprout figures. Post text max 63,206 characters (long-standing; no current Meta page states it). Truncation point varies by device - not published.",
+      "sources": [
+        {
+          "url": "https://sproutsocial.com/insights/social-media-image-sizes-guide/",
+          "title": "Sprout Social: Social media image sizes guide (updated Oct 15, 2026)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://www.nbcbayarea.com/news/local/facebook-limits-you-to-63206-characters/1906169/",
+          "title": "NBC Bay Area: Facebook limits you to 63,206 characters",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://www.facebook.com/business/ads-guide/update/image/facebook-feed",
+          "title": "Meta Ads Guide: Facebook Feed image",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "secondary"
+    },
+    {
+      "id": "facebook.feed.link_share",
+      "platform": "facebook",
+      "surface": "organic",
+      "placement": "Feed",
+      "name": "Link share image (og:image)",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1200,
+        "h": 630
+      },
+      "aspect": "1.91:1",
+      "accepted_aspects": [
+        "1.91:1"
+      ],
+      "min": {
+        "w": 600,
+        "h": 315
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 8
+      },
+      "crop_notes": "Images below 600x315 render as a small thumbnail beside the link instead of a large card; absolute floor 200x200.",
+      "notes": "Use at least 1200x630 for high-res devices; keep ratio near 1.91:1 to avoid cropping in Feed.",
+      "sources": [
+        {
+          "url": "https://developers.facebook.com/docs/sharing/webmasters/images/",
+          "title": "Meta for Developers: Images in link shares",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "facebook.reels",
+      "platform": "facebook",
+      "surface": "organic",
+      "placement": "Reels",
+      "name": "Reel",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1920
+      },
+      "aspect": "9:16",
+      "accepted_aspects": [
+        "9:16"
+      ],
+      "min": {
+        "w": 540,
+        "h": 960
+      },
+      "video": {
+        "types": [
+          "mp4"
+        ],
+        "codec": "H.264 or H.265 (VP9, AV1 also supported)",
+        "audio": "AAC-LC, 48kHz, 128kbps+, stereo",
+        "fps": [
+          24,
+          60
+        ],
+        "min_s": 3,
+        "max_s": 90,
+        "max_mb": null,
+        "captions": "burned-in recommended"
+      },
+      "safe_zone": {
+        "top": 269,
+        "bottom": 672,
+        "left": 65,
+        "right": 65,
+        "units": "px at canvas",
+        "note": "No official organic safe zone; use Meta's Reels ads guidance (14% top, 35% bottom, 6% sides)."
+      },
+      "notes": "Specs are from the Reels Publishing API (3-90s). Meta's creator blog has said Reels have no length/format restriction in-app - unverified for current app uploads; 90s is the safe cap for API publishing. A reel published as a Page story cannot exceed 60s.",
+      "sources": [
+        {
+          "url": "https://developers.facebook.com/documentation/video-api/guides/reels-publishing",
+          "title": "Meta for Developers: Reels Publishing API (video specifications)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "facebook.stories",
+      "platform": "facebook",
+      "surface": "organic",
+      "placement": "Stories",
+      "name": "Story (photo or video)",
+      "media": [
+        "image",
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1920
+      },
+      "aspect": "9:16",
+      "accepted_aspects": [
+        "9:16"
+      ],
+      "min": {
+        "w": 500,
+        "h": null
+      },
+      "video": {
+        "types": [
+          "mp4",
+          "mov"
+        ],
+        "max_s": 60,
+        "captions": "burned-in recommended"
+      },
+      "safe_zone": {
+        "top": 269,
+        "bottom": 672,
+        "left": 65,
+        "right": 65,
+        "units": "px at canvas",
+        "note": "No official organic spec; Meta's Stories ads guidance: 14% top, 35% bottom, 6% sides."
+      },
+      "notes": "No official organic Stories spec page found. 1080x1920 / min width 500 are Sprout figures (mirroring ads specs). 60s max is from the Reels API note for a reel shared as a Page story; other story video limits unverified.",
+      "sources": [
+        {
+          "url": "https://sproutsocial.com/insights/social-media-image-sizes-guide/",
+          "title": "Sprout Social: Social media image sizes guide (updated Oct 15, 2026)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://developers.facebook.com/documentation/video-api/guides/reels-publishing",
+          "title": "Meta for Developers: Reels Publishing API (video specifications)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "secondary"
+    },
+    {
+      "id": "facebook.page.cover",
+      "platform": "facebook",
+      "surface": "organic",
+      "placement": "Page cover photo",
+      "name": "Page cover photo",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 851,
+        "h": 315
+      },
+      "aspect": "2.7:1",
+      "accepted_aspects": [
+        "16:9",
+        "2.4:1"
+      ],
+      "min": {
+        "w": 400,
+        "h": 150
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 0.1
+      },
+      "safe_zone": {
+        "top": 0,
+        "bottom": 40,
+        "left": 0,
+        "right": 0,
+        "units": "px at canvas",
+        "note": "Profile picture overlaps the cover by about 40px on mobile and covers part of the left side; logo/text-heavy covers look better as PNG."
+      },
+      "crop_notes": "Help Center: on computers the cover left-aligns full-bleed at 16:9; on mobile it left-aligns full-bleed at 2.4:1; 'may be cropped and resized to fit different screens'. Keep text/logos in the centre and away from the lower-left. Third-party guides instead cite ~820x312 desktop / 640x360 mobile visible areas (secondary, conflicts with the help page wording).",
+      "notes": "Loads fastest as sRGB JPG, 851x315, under 100KB (max_mb here = that recommendation, not a hard limit). Minimum 400x150.",
+      "sources": [
+        {
+          "url": "https://www.facebook.com/help/125379114252045",
+          "title": "Facebook Help Center: Facebook Page profile picture and cover photo dimensions",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "facebook.page.profile_photo",
+      "platform": "facebook",
+      "surface": "organic",
+      "placement": "Page profile picture",
+      "name": "Page profile picture",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 320,
+        "h": 320
+      },
+      "aspect": "1:1",
+      "accepted_aspects": [
+        "1:1"
+      ],
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": null
+      },
+      "crop_notes": "Cropped to a circle. Displays at 176x176 on computers, 196x196 on smartphones, 36x36 on most feature phones.",
+      "notes": "Should be 320x320 for best quality; PNG recommended for logos/text.",
+      "sources": [
+        {
+          "url": "https://www.facebook.com/help/125379114252045",
+          "title": "Facebook Help Center: Facebook Page profile picture and cover photo dimensions",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "facebook.event.cover",
+      "platform": "facebook",
+      "surface": "organic",
+      "placement": "Event cover photo",
+      "name": "Event cover photo",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1920,
+        "h": 1005
+      },
+      "aspect": "1.91:1",
+      "accepted_aspects": [
+        "1.91:1"
+      ],
+      "min": {
+        "w": 400,
+        "h": 150
+      },
+      "notes": "No official Meta spec found. Sprout (Jan 2024) recommends 1920x1005 and calls it 16:9, but 1920x1005 is 1.91:1 - other guides cite 1200x628 (1.91:1). Render 1920x1005 and keep key content centred.",
+      "sources": [
+        {
+          "url": "https://sproutsocial.com/insights/facebook-event-cover-photos/",
+          "title": "Sprout Social: Facebook event photo size guide (updated Jan 30, 2024)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "secondary"
+    },
+    {
+      "id": "threads.post.image",
+      "platform": "threads",
+      "surface": "organic",
+      "placement": "Feed",
+      "name": "Post, image",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1350
+      },
+      "aspect": "4:5",
+      "accepted_aspects": [
+        "1:1",
+        "4:5",
+        "9:16"
+      ],
+      "min": {
+        "w": 320,
+        "h": null
+      },
+      "max": {
+        "w": 1440,
+        "h": null
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 8
+      },
+      "text": {
+        "primary": {
+          "max": 500,
+          "truncates_at": null
+        },
+        "attachment": {
+          "max": 10000
+        },
+        "links": {
+          "max": 5
+        },
+        "topic_tag": {
+          "max": 1,
+          "max_chars": 50
+        }
+      },
+      "crop_notes": "Feed display crop for tall images is not documented for organic posts (null). Aspect ratio limit 10:1.",
+      "notes": "Text post max 500 characters (emoji counted by UTF-8 bytes via API); optional text attachment up to 10,000 characters (Sep 2025); max 5 unique links per post (API, enforced from Dec 22, 2025); one topic tag of 1-50 chars. Image specs from the Threads API (320-1440 wide, scaled outside that; sRGB). 4:5 canvas is our recommendation, not a Meta spec.",
+      "sources": [
+        {
+          "url": "https://developers.facebook.com/docs/threads/overview",
+          "title": "Threads API overview: media specifications and limits",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://developers.facebook.com/docs/threads/posts",
+          "title": "Threads API: Posts (text, links, carousels, topic tags)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://about.fb.com/news/2025/09/attach-text-threads-posts-share-longer-perspectives/",
+          "title": "Meta Newsroom: Attach text to your Threads posts (Sep 4, 2025, updated Oct 22, 2025)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.instagram.com/788669719351544/",
+          "title": "Instagram Help Center: About Threads",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "threads.post.video",
+      "platform": "threads",
+      "surface": "organic",
+      "placement": "Feed",
+      "name": "Post, video",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1920
+      },
+      "aspect": "9:16",
+      "accepted_aspects": [
+        "9:16",
+        "4:5",
+        "1:1",
+        "16:9"
+      ],
+      "max": {
+        "w": 1920,
+        "h": null
+      },
+      "video": {
+        "types": [
+          "mp4",
+          "mov"
+        ],
+        "codec": "H.264 or HEVC (progressive, closed GOP, 4:2:0)",
+        "audio": "AAC, 48kHz max, 128kbps",
+        "fps": [
+          23,
+          60
+        ],
+        "min_s": 0,
+        "max_s": 300,
+        "max_mb": 1024,
+        "captions": "burned-in recommended"
+      },
+      "text": {
+        "primary": {
+          "max": 500,
+          "truncates_at": null
+        },
+        "attachment": {
+          "max": 10000
+        },
+        "links": {
+          "max": 5
+        },
+        "topic_tag": {
+          "max": 1,
+          "max_chars": 50
+        }
+      },
+      "notes": "Text post max 500 characters (emoji counted by UTF-8 bytes via API); optional text attachment up to 10,000 characters (Sep 2025); max 5 unique links per post (API, enforced from Dec 22, 2025); one topic tag of 1-50 chars. API recommends 9:16 to avoid cropping or blank space; allowed 0.01:1-10:1; max 1920px horizontal; VBR up to 100Mbps.",
+      "sources": [
+        {
+          "url": "https://developers.facebook.com/docs/threads/overview",
+          "title": "Threads API overview: media specifications and limits",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://developers.facebook.com/docs/threads/posts",
+          "title": "Threads API: Posts (text, links, carousels, topic tags)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://about.fb.com/news/2025/09/attach-text-threads-posts-share-longer-perspectives/",
+          "title": "Meta Newsroom: Attach text to your Threads posts (Sep 4, 2025, updated Oct 22, 2025)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "threads.post.carousel",
+      "platform": "threads",
+      "surface": "organic",
+      "placement": "Feed",
+      "name": "Post, carousel",
+      "media": [
+        "carousel",
+        "image",
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1350
+      },
+      "aspect": "4:5",
+      "carousel": {
+        "min": 2,
+        "max": 20,
+        "card_aspects": null
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 8
+      },
+      "text": {
+        "primary": {
+          "max": 500,
+          "truncates_at": null
+        },
+        "attachment": {
+          "max": 10000
+        },
+        "links": {
+          "max": 5
+        },
+        "topic_tag": {
+          "max": 1,
+          "max_chars": 50
+        }
+      },
+      "notes": "Text post max 500 characters (emoji counted by UTF-8 bytes via API); optional text attachment up to 10,000 characters (Sep 2025); max 5 unique links per post (API, enforced from Dec 22, 2025); one topic tag of 1-50 chars. Carousel holds 2-20 images/videos, mixed; each item follows the image/video specs. Per-card aspect handling not documented.",
+      "sources": [
+        {
+          "url": "https://developers.facebook.com/docs/threads/overview",
+          "title": "Threads API overview: media specifications and limits",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://developers.facebook.com/docs/threads/posts",
+          "title": "Threads API: Posts (text, links, carousels, topic tags)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "instagram.ad.feed.image",
+      "platform": "instagram",
+      "surface": "ad",
+      "placement": "Instagram Feed",
+      "name": "Feed image ad",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1440,
+        "h": 1800
+      },
+      "aspect": "4:5",
+      "accepted_aspects": [
+        "1.91:1",
+        "1:1",
+        "4:5"
+      ],
+      "min": {
+        "w": 500,
+        "h": null
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 30
+      },
+      "text": {
+        "primary": {
+          "max": 125
+        },
+        "headline": {
+          "max": 40
+        },
+        "hashtags": {
+          "max": 30
+        }
+      },
+      "notes": "Aspect ratio range 1.91:1 (191x100) to 4:5 (400x500), tolerance 1%. Ads guide still lists 30 hashtags even though organic posts are now capped at 5 - keep ad copy to 5 or fewer to be safe. Text values are recommendations.",
+      "sources": [
+        {
+          "url": "https://www.facebook.com/business/ads-guide/update/image/instagram-feed",
+          "title": "Meta Ads Guide: Instagram Feed image",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "instagram.ad.feed.video",
+      "platform": "instagram",
+      "surface": "ad",
+      "placement": "Instagram Feed",
+      "name": "Feed video ad",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1920
+      },
+      "aspect": "9:16",
+      "accepted_aspects": [
+        "9:16"
+      ],
+      "min": {
+        "w": 250,
+        "h": null
+      },
+      "video": {
+        "types": [
+          "mp4",
+          "mov"
+        ],
+        "codec": "H.264",
+        "audio": "AAC stereo 128kbps+",
+        "captions": "optional, recommended by Meta; sound optional, recommended",
+        "min_s": 1,
+        "max_s": 3600,
+        "max_mb": 4096
+      },
+      "text": {
+        "primary": {
+          "max": 125
+        },
+        "hashtags": {
+          "max": 30
+        }
+      },
+      "notes": "Meta video settings: H.264, square pixels, fixed frame rate, progressive scan, stereo AAC 128kbps+; no edit lists or special boxes in the file container. The ads guide currently recommends 9:16 at 1080x1920 for Instagram Feed video (tolerance 1%); Feed itself displays at most 4:5, so keep key content in the center 4:5 band. GIF also accepted.",
+      "sources": [
+        {
+          "url": "https://www.facebook.com/business/ads-guide/update/video/instagram-feed",
+          "title": "Meta Ads Guide: Instagram Feed video",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "instagram.ad.stories.image",
+      "platform": "instagram",
+      "surface": "ad",
+      "placement": "Instagram Stories",
+      "name": "Stories image ad",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1440,
+        "h": 2560
+      },
+      "aspect": "9:16",
+      "accepted_aspects": [
+        "9:16"
+      ],
+      "min": {
+        "w": 500,
+        "h": null
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 30
+      },
+      "safe_zone": {
+        "top": 358,
+        "bottom": 896,
+        "left": 86,
+        "right": 86,
+        "units": "px at canvas",
+        "note": "Meta: keep roughly 14% top, 35% bottom and 6% each side free of text, logos and key creative (profile icon, caption, CTA cover it; taller-than-9:16 screens crop edges)."
+      },
+      "text": {
+        "primary": {
+          "max": 125
+        }
+      },
+      "notes": "Tolerance 1%. Image ads show 5-16 seconds or until swiped.",
+      "sources": [
+        {
+          "url": "https://www.facebook.com/business/ads-guide/update/image/instagram-story",
+          "title": "Meta Ads Guide: Instagram Stories image",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "instagram.ad.stories.video",
+      "platform": "instagram",
+      "surface": "ad",
+      "placement": "Instagram Stories",
+      "name": "Stories video ad",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1440,
+        "h": 2560
+      },
+      "aspect": "9:16",
+      "accepted_aspects": [
+        "9:16"
+      ],
+      "min": {
+        "w": 250,
+        "h": null
+      },
+      "video": {
+        "types": [
+          "mp4",
+          "mov"
+        ],
+        "codec": "H.264",
+        "audio": "AAC stereo 128kbps+",
+        "captions": "optional, recommended by Meta; sound optional, recommended",
+        "min_s": 1,
+        "max_s": 3600,
+        "recommended_s": [
+          1,
+          15
+        ],
+        "max_mb": 4096
+      },
+      "safe_zone": {
+        "top": 358,
+        "bottom": 896,
+        "left": 86,
+        "right": 86,
+        "units": "px at canvas",
+        "note": "Meta: keep roughly 14% top, 35% bottom and 6% each side free of text, logos and key creative (profile icon, caption, CTA cover it; taller-than-9:16 screens crop edges)."
+      },
+      "text": {
+        "primary": {
+          "max": 125
+        }
+      },
+      "notes": "Meta video settings: H.264, square pixels, fixed frame rate, progressive scan, stereo AAC 128kbps+; no edit lists or special boxes in the file container. Videos under 16s play in full; 16s+ may be split into 1-3 Stories cards. GIF also accepted.",
+      "sources": [
+        {
+          "url": "https://www.facebook.com/business/ads-guide/update/video/instagram-story",
+          "title": "Meta Ads Guide: Instagram Stories video",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "instagram.ad.reels.video",
+      "platform": "instagram",
+      "surface": "ad",
+      "placement": "Instagram Reels",
+      "name": "Reels video ad",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1440,
+        "h": 2560
+      },
+      "aspect": "9:16",
+      "accepted_aspects": [
+        "9:16"
+      ],
+      "min": {
+        "w": 250,
+        "h": null
+      },
+      "video": {
+        "types": [
+          "mp4",
+          "mov"
+        ],
+        "codec": "H.264",
+        "audio": "AAC stereo 128kbps+",
+        "captions": "optional, recommended by Meta; sound optional, recommended",
+        "min_s": 0,
+        "max_s": 900,
+        "max_mb": 4096
+      },
+      "safe_zone": {
+        "top": 358,
+        "bottom": 896,
+        "left": 86,
+        "right": 86,
+        "units": "px at canvas",
+        "note": "Meta: keep roughly 14% top, 35% bottom and 6% each side free of text, logos and key creative (profile icon, caption, CTA cover it; taller-than-9:16 screens crop edges)."
+      },
+      "text": {
+        "primary": {
+          "max": 44
+        }
+      },
+      "notes": "Meta video settings: H.264, square pixels, fixed frame rate, progressive scan, stereo AAC 128kbps+; no edit lists or special boxes in the file container. Min width 250px under 30s, 500px for 30s+. Max 15 minutes. No licensed music (use original audio or Meta Sound Collection), no face/camera effects, GIFs or product tags, no Reels published before Oct 15, 2021.",
+      "sources": [
+        {
+          "url": "https://www.facebook.com/business/ads-guide/update/video/instagram-reels",
+          "title": "Meta Ads Guide: Instagram Reels video",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "instagram.ad.reels.image",
+      "platform": "instagram",
+      "surface": "ad",
+      "placement": "Instagram Reels",
+      "name": "Reels image ad",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1440,
+        "h": 2560
+      },
+      "aspect": "9:16",
+      "accepted_aspects": [
+        "9:16"
+      ],
+      "min": {
+        "w": 500,
+        "h": null
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 30
+      },
+      "safe_zone": {
+        "top": 358,
+        "bottom": 896,
+        "left": 86,
+        "right": 86,
+        "units": "px at canvas",
+        "note": "Meta: keep roughly 14% top, 35% bottom and 6% each side free of text, logos and key creative (profile icon, caption, CTA cover it; taller-than-9:16 screens crop edges)."
+      },
+      "text": {
+        "primary": {
+          "max": 44
+        }
+      },
+      "notes": "Tolerance 1%. Headline limit not listed for this placement.",
+      "sources": [
+        {
+          "url": "https://www.facebook.com/business/ads-guide/update/image/instagram-reels",
+          "title": "Meta Ads Guide: Instagram Reels image",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "instagram.ad.feed.carousel",
+      "platform": "instagram",
+      "surface": "ad",
+      "placement": "Instagram Feed",
+      "name": "Feed carousel ad",
+      "media": [
+        "carousel",
+        "image",
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1350
+      },
+      "aspect": "4:5",
+      "accepted_aspects": [
+        "4:5",
+        "1:1"
+      ],
+      "min": {
+        "w": 1080,
+        "h": 1080
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 30
+      },
+      "video": {
+        "types": [
+          "mp4",
+          "mov"
+        ],
+        "codec": "H.264",
+        "audio": "AAC stereo 128kbps+",
+        "captions": "optional, recommended by Meta; sound optional, recommended",
+        "min_s": 1,
+        "max_s": 120,
+        "max_mb": 4096
+      },
+      "carousel": {
+        "min": 2,
+        "max": 10,
+        "card_aspects": [
+          "4:5",
+          "1:1"
+        ]
+      },
+      "text": {
+        "primary": {
+          "max": 125
+        },
+        "hashtags": {
+          "max": 30
+        }
+      },
+      "notes": "Image-only carousels: 4:5. Carousels containing any video: 1:1 only (Boost allows 1:1 or 4:5 video carousels). Resolution at least 1080x1080, tolerance 1%. Each card can have its own link; landing URL required; card order may be auto-optimized.",
+      "sources": [
+        {
+          "url": "https://www.facebook.com/business/ads-guide/update/carousel/instagram-feed",
+          "title": "Meta Ads Guide: Instagram Feed carousel",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "instagram.ad.stories.carousel",
+      "platform": "instagram",
+      "surface": "ad",
+      "placement": "Instagram Stories",
+      "name": "Stories carousel ad",
+      "media": [
+        "carousel",
+        "image",
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1920
+      },
+      "aspect": "9:16",
+      "accepted_aspects": [
+        "9:16"
+      ],
+      "min": {
+        "w": 1080,
+        "h": 1920
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 30
+      },
+      "video": {
+        "types": [
+          "mp4",
+          "mov"
+        ],
+        "codec": "H.264",
+        "audio": "AAC stereo 128kbps+",
+        "captions": "optional, recommended by Meta; sound optional, recommended",
+        "min_s": 1,
+        "max_s": 15,
+        "max_mb": 4096
+      },
+      "carousel": {
+        "min": 2,
+        "max": 10,
+        "card_aspects": [
+          "9:16"
+        ]
+      },
+      "safe_zone": {
+        "top": 269,
+        "bottom": 672,
+        "left": 65,
+        "right": 65,
+        "units": "px at canvas",
+        "note": "Meta: keep roughly 14% top, 35% bottom and 6% each side free of text, logos and key creative (profile icon, caption, CTA cover it; taller-than-9:16 screens crop edges)."
+      },
+      "text": {
+        "primary": {
+          "max": 125
+        },
+        "headline": {
+          "max": 40
+        }
+      },
+      "notes": "1-3 cards show automatically, then 'Expand Story'. Landing URL required.",
+      "sources": [
+        {
+          "url": "https://www.facebook.com/business/ads-guide/update/carousel/instagram-story",
+          "title": "Meta Ads Guide: Instagram Stories carousel",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "instagram.ad.reels.carousel",
+      "platform": "instagram",
+      "surface": "ad",
+      "placement": "Instagram Reels",
+      "name": "Reels carousel ad",
+      "media": [
+        "carousel",
+        "image"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1920
+      },
+      "aspect": "9:16",
+      "accepted_aspects": [
+        "9:16"
+      ],
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 30
+      },
+      "carousel": {
+        "min": 2,
+        "max": 10,
+        "card_aspects": [
+          "9:16"
+        ]
+      },
+      "safe_zone": {
+        "top": 269,
+        "bottom": 672,
+        "left": 65,
+        "right": 65,
+        "units": "px at canvas",
+        "note": "Not stated on the Reels carousel page; Meta's Reels guidance is 14% top, 35% bottom, 6% sides."
+      },
+      "notes": "Page lists 9:16 but 'at least 1080x1080' resolution (inconsistent) - render 1080x1920. Video specs and text limits not listed.",
+      "sources": [
+        {
+          "url": "https://www.facebook.com/business/ads-guide/update/carousel/instagram-reels",
+          "title": "Meta Ads Guide: Instagram Reels carousel",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "facebook.ad.feed.image",
+      "platform": "facebook",
+      "surface": "ad",
+      "placement": "Facebook Feed",
+      "name": "Feed image ad",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1440,
+        "h": 1800
+      },
+      "aspect": "4:5",
+      "accepted_aspects": [
+        "4:5",
+        "1:1",
+        "1.91:1"
+      ],
+      "min": {
+        "w": 600,
+        "h": 750
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 30
+      },
+      "text": {
+        "primary": {
+          "max": 150,
+          "recommended": [
+            50,
+            150
+          ]
+        },
+        "headline": {
+          "max": 27
+        },
+        "description": {
+          "max": null
+        }
+      },
+      "notes": "Ads guide lists only 4:5 (tolerance 3%); min 600 wide, 750 high at 4:5. 1:1 and 1.91:1 are commonly run but not listed on the current page. Primary text recommended 50-150 chars, headline 27; description length not listed. Text limits are recommendations, not hard caps.",
+      "sources": [
+        {
+          "url": "https://www.facebook.com/business/ads-guide/update/image/facebook-feed",
+          "title": "Meta Ads Guide: Facebook Feed image",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "facebook.ad.feed.video",
+      "platform": "facebook",
+      "surface": "ad",
+      "placement": "Facebook Feed",
+      "name": "Feed video ad",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1440,
+        "h": 1800
+      },
+      "aspect": "4:5",
+      "accepted_aspects": [
+        "4:5"
+      ],
+      "min": {
+        "w": 120,
+        "h": 120
+      },
+      "video": {
+        "types": [
+          "mp4",
+          "mov"
+        ],
+        "codec": "H.264",
+        "audio": "AAC stereo 128kbps+",
+        "captions": "optional, recommended by Meta; sound optional, recommended",
+        "min_s": 1,
+        "max_s": 14460,
+        "max_mb": 4096
+      },
+      "text": {
+        "primary": {
+          "max": 150,
+          "recommended": [
+            50,
+            150
+          ]
+        },
+        "headline": {
+          "max": 27
+        }
+      },
+      "notes": "Meta video settings: H.264, square pixels, fixed frame rate, progressive scan, stereo AAC 128kbps+; no edit lists or special boxes in the file container. Duration 1s-241 minutes. With Awareness or reach/engagement goals the ad footer (headline, description, CTA) is not shown on mobile Feed. GIF also accepted.",
+      "sources": [
+        {
+          "url": "https://www.facebook.com/business/ads-guide/update/video/facebook-feed",
+          "title": "Meta Ads Guide: Facebook Feed video",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "facebook.ad.feed.carousel",
+      "platform": "facebook",
+      "surface": "ad",
+      "placement": "Facebook Feed",
+      "name": "Feed carousel ad",
+      "media": [
+        "carousel",
+        "image",
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1080
+      },
+      "aspect": "1:1",
+      "accepted_aspects": [
+        "1:1"
+      ],
+      "min": {
+        "w": 1080,
+        "h": 1080
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 30
+      },
+      "video": {
+        "types": [
+          "mp4",
+          "mov"
+        ],
+        "codec": "H.264",
+        "audio": "AAC stereo 128kbps+",
+        "captions": "optional, recommended by Meta; sound optional, recommended",
+        "min_s": 1,
+        "max_s": 14400,
+        "max_mb": 4096
+      },
+      "carousel": {
+        "min": 2,
+        "max": 10,
+        "card_aspects": [
+          "1:1"
+        ]
+      },
+      "text": {
+        "primary": {
+          "max": 80
+        },
+        "headline": {
+          "max": 20
+        },
+        "description": {
+          "max": 18
+        }
+      },
+      "notes": "Tolerance 3%. Landing URL required; each card can link separately. Text values are recommendations.",
+      "sources": [
+        {
+          "url": "https://www.facebook.com/business/ads-guide/update/carousel/facebook-feed",
+          "title": "Meta Ads Guide: Facebook Feed carousel",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "facebook.ad.stories.image",
+      "platform": "facebook",
+      "surface": "ad",
+      "placement": "Facebook Stories",
+      "name": "Stories image ad",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1440,
+        "h": 2560
+      },
+      "aspect": "9:16",
+      "accepted_aspects": [
+        "9:16"
+      ],
+      "min": {
+        "w": 500,
+        "h": null
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 30
+      },
+      "safe_zone": {
+        "top": 358,
+        "bottom": 896,
+        "left": 86,
+        "right": 86,
+        "units": "px at canvas",
+        "note": "Meta: keep roughly 14% top, 35% bottom and 6% each side free of text, logos and key creative (profile icon, caption, CTA cover it; taller-than-9:16 screens crop edges)."
+      },
+      "text": {
+        "primary": {
+          "max": 125
+        },
+        "headline": {
+          "max": 40
+        }
+      },
+      "notes": "Tolerance 1%. Image shows 8 seconds or until swiped.",
+      "sources": [
+        {
+          "url": "https://www.facebook.com/business/ads-guide/update/image/facebook-story",
+          "title": "Meta Ads Guide: Facebook Stories image",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "facebook.ad.stories.video",
+      "platform": "facebook",
+      "surface": "ad",
+      "placement": "Facebook Stories",
+      "name": "Stories video ad",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1440,
+        "h": 2560
+      },
+      "aspect": "9:16",
+      "accepted_aspects": [
+        "9:16"
+      ],
+      "min": {
+        "w": 250,
+        "h": null
+      },
+      "video": {
+        "types": [
+          "mp4",
+          "mov"
+        ],
+        "codec": "H.264",
+        "audio": "AAC stereo 128kbps+",
+        "captions": "optional, recommended by Meta; sound optional, recommended",
+        "min_s": 1,
+        "max_s": 180,
+        "recommended_s": [
+          1,
+          15
+        ],
+        "max_mb": 4096
+      },
+      "safe_zone": {
+        "top": 358,
+        "bottom": 896,
+        "left": 86,
+        "right": 86,
+        "units": "px at canvas",
+        "note": "Meta: keep roughly 14% top, 35% bottom and 6% each side free of text, logos and key creative (profile icon, caption, CTA cover it; taller-than-9:16 screens crop edges)."
+      },
+      "text": {
+        "primary": {
+          "max": 125
+        },
+        "headline": {
+          "max": 40
+        }
+      },
+      "notes": "Meta video settings: H.264, square pixels, fixed frame rate, progressive scan, stereo AAC 128kbps+; no edit lists or special boxes in the file container. Ads of 15s or less play in full; longer ones split into 1-3 cards with 'Play Full'. GIF also accepted.",
+      "sources": [
+        {
+          "url": "https://www.facebook.com/business/ads-guide/update/video/facebook-story",
+          "title": "Meta Ads Guide: Facebook Stories video",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "facebook.ad.stories.carousel",
+      "platform": "facebook",
+      "surface": "ad",
+      "placement": "Facebook Stories",
+      "name": "Stories carousel ad",
+      "media": [
+        "carousel",
+        "image"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1920
+      },
+      "aspect": "9:16",
+      "accepted_aspects": [
+        "9:16",
+        "1:1"
+      ],
+      "min": {
+        "w": 500,
+        "h": null
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 30
+      },
+      "carousel": {
+        "min": 3,
+        "max": 10,
+        "card_aspects": [
+          "9:16",
+          "1:1"
+        ]
+      },
+      "safe_zone": {
+        "top": 250,
+        "bottom": 340,
+        "left": 0,
+        "right": 0,
+        "units": "px at canvas",
+        "note": "This page says roughly 14% top (250px) and 20% bottom (340px) - smaller than the 35% bottom used for other Stories/Reels ads; use 35% (672px) if the same asset also runs in Reels."
+      },
+      "text": {
+        "primary": {
+          "max": 125
+        },
+        "headline": {
+          "max": 40
+        }
+      },
+      "notes": "Image only - video not supported for Facebook Stories carousels. Page lists recommended ratio 1:1 but resolution 'at least 1080x1920' (inconsistent); render 1080x1920. 1-5 cards show automatically.",
+      "sources": [
+        {
+          "url": "https://www.facebook.com/business/ads-guide/update/carousel/facebook-story",
+          "title": "Meta Ads Guide: Facebook Stories carousel",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "facebook.ad.reels.video",
+      "platform": "facebook",
+      "surface": "ad",
+      "placement": "Facebook Reels",
+      "name": "Reels video ad",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1440,
+        "h": 2560
+      },
+      "aspect": "9:16",
+      "accepted_aspects": [
+        "9:16"
+      ],
+      "video": {
+        "types": [
+          "mp4",
+          "mov"
+        ],
+        "codec": "H.264",
+        "audio": "AAC stereo 128kbps+",
+        "captions": "optional, recommended by Meta; sound optional, recommended",
+        "min_s": null,
+        "max_s": null,
+        "max_mb": 4096
+      },
+      "safe_zone": {
+        "top": 358,
+        "bottom": 896,
+        "left": 86,
+        "right": 86,
+        "units": "px at canvas",
+        "note": "Meta: keep roughly 14% top, 35% bottom and 6% each side free of text, logos and key creative (profile icon, caption, CTA cover it; taller-than-9:16 screens crop edges)."
+      },
+      "text": {
+        "primary": {
+          "max": 40
+        },
+        "headline": {
+          "max": 55
+        }
+      },
+      "notes": "Meta video settings: H.264, square pixels, fixed frame rate, progressive scan, stereo AAC 128kbps+; no edit lists or special boxes in the file container. No maximum duration listed. Min width not listed. Auto-captioning not supported - burn in captions. GIF also accepted.",
+      "sources": [
+        {
+          "url": "https://www.facebook.com/business/ads-guide/update/video/facebook-facebook-reels",
+          "title": "Meta Ads Guide: Facebook Reels video",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "threads.ad.feed.image",
+      "platform": "threads",
+      "surface": "ad",
+      "placement": "Threads Feed",
+      "name": "Threads feed image ad",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1350
+      },
+      "aspect": "4:5",
+      "accepted_aspects": [
+        "1.91:1",
+        "1:1",
+        "4:5",
+        "9:16"
+      ],
+      "min": {
+        "w": 500,
+        "h": null
+      },
+      "text": {
+        "primary": {
+          "max": 1000,
+          "recommended": [
+            80,
+            160
+          ]
+        },
+        "hashtags": {
+          "max": 0
+        },
+        "links_in_caption": {
+          "max": 0
+        }
+      },
+      "crop_notes": "Images taller than 4:5 are cropped and vertically centred to 4:5; 1.91:1 to 4:5 shown unaltered.",
+      "notes": "Caption max 1000 chars (longer still creates for Instagram but won't deliver on Threads); 80-160 recommended; hashtags and URLs are not supported in the caption. Max height raised from 1:1 to 4:5 in Oct 2025. File size/type follow the Meta image ad defaults (not stated for Threads).",
+      "sources": [
+        {
+          "url": "https://developers.facebook.com/documentation/ads-commerce/marketing-api/ad-creative/threads-ads/creation",
+          "title": "Marketing API: Threads ads creation (creative requirements)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://developers.facebook.com/blog/post/2025/10/28/new-formats-and-optimization-for-ads-in-threads",
+          "title": "Meta for Developers blog: New formats and optimization for ads in Threads (Oct 28, 2025)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "threads.ad.feed.video",
+      "platform": "threads",
+      "surface": "ad",
+      "placement": "Threads Feed",
+      "name": "Threads feed video ad",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1350
+      },
+      "aspect": "4:5",
+      "accepted_aspects": [
+        "1.91:1",
+        "1:1",
+        "4:5",
+        "9:16"
+      ],
+      "video": {
+        "types": null,
+        "min_s": null,
+        "max_s": null,
+        "max_mb": null
+      },
+      "text": {
+        "primary": {
+          "max": 1000,
+          "recommended": [
+            80,
+            160
+          ]
+        },
+        "hashtags": {
+          "max": 0
+        },
+        "links_in_caption": {
+          "max": 0
+        }
+      },
+      "crop_notes": "Videos taller than 4:5 are cropped and centred to 4:5 - a 9:16 Reels asset loses top and bottom.",
+      "notes": "Caption max 1000 chars (longer still creates for Instagram but won't deliver on Threads); 80-160 recommended; hashtags and URLs are not supported in the caption. Duration, size and resolution limits not documented for Threads (null).",
+      "sources": [
+        {
+          "url": "https://developers.facebook.com/documentation/ads-commerce/marketing-api/ad-creative/threads-ads/creation",
+          "title": "Marketing API: Threads ads creation (creative requirements)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://developers.facebook.com/blog/post/2025/10/28/new-formats-and-optimization-for-ads-in-threads",
+          "title": "Meta for Developers blog: New formats and optimization for ads in Threads (Oct 28, 2025)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "threads.ad.feed.carousel",
+      "platform": "threads",
+      "surface": "ad",
+      "placement": "Threads Feed",
+      "name": "Threads feed carousel ad",
+      "media": [
+        "carousel",
+        "image"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1080
+      },
+      "aspect": "1:1",
+      "accepted_aspects": [
+        "1:1"
+      ],
+      "min": {
+        "w": 500,
+        "h": null
+      },
+      "carousel": {
+        "min": null,
+        "max": null,
+        "card_aspects": [
+          "1:1"
+        ]
+      },
+      "text": {
+        "primary": {
+          "max": 1000,
+          "recommended": [
+            80,
+            160
+          ]
+        },
+        "hashtags": {
+          "max": 0
+        },
+        "links_in_caption": {
+          "max": 0
+        }
+      },
+      "crop_notes": "Cards that are not 1:1 are center-cropped to 1:1.",
+      "notes": "Caption max 1000 chars (longer still creates for Instagram but won't deliver on Threads); 80-160 recommended; hashtags and URLs are not supported in the caption. Static image carousels only (since Oct 2025). Card count not documented for Threads (other Meta carousels are 2-10; unverified here).",
+      "sources": [
+        {
+          "url": "https://developers.facebook.com/documentation/ads-commerce/marketing-api/ad-creative/threads-ads/creation",
+          "title": "Marketing API: Threads ads creation (creative requirements)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://developers.facebook.com/blog/post/2025/10/28/new-formats-and-optimization-for-ads-in-threads",
+          "title": "Meta for Developers blog: New formats and optimization for ads in Threads (Oct 28, 2025)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    }
+  ]
+}

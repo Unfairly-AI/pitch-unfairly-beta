@@ -127,7 +127,7 @@ test('the allowlist rules', () => {
   for (const ok of ['logos/primary.svg', 'imagery/a.webp', 'fonts/x.woff2', 'icon.ico']) assert.equal(brandFileProblem(ok), null, ok);
   for (const bad of ['brand.json', 'seller-understanding.md', 'notes.txt', 'guide.pdf', 'board.html', 'palette.csv', 'references/x.jpg', 'capture/page1.jpg', 'imagery/research-1.png']) assert.ok(brandFileProblem(bad), bad);
   for (const ok of ['drawing.svg', 'fonts/a.woff2', 'customer-story.jpg', 'one-pager.pdf']) assert.equal(siteAssetProblem(ok), null, ok);
-  for (const bad of ['research.md', 'data.json', 'story.png', 'facts-v2.svg', 'buyers.csv', 'seller-understanding.pdf', 'notes/a.txt']) assert.ok(siteAssetProblem(bad), bad);
+  for (const bad of ['research.md', 'data.json', 'buyers.csv', 'seller-understanding.pdf', 'notes/a.txt', 'story.pdf', 'facts-v2.pdf']) assert.ok(siteAssetProblem(bad), bad);
   for (const ok of ['index.html', 'index.txt', 'deck.pdf', 'js/app.js', 'js/model.mjs', 'fonts/sora/a.woff2', 'assets/a.png', 'brand/logos/a.svg']) assert.equal(distFileProblem(ok), null, ok);
   for (const bad of ['story.md', 'research.md', 'facts.json', 'notes.html', 'brand/notes.md', 'brand/brand.json', 'js/x.json', 'fonts/a.css', 'other/a.png']) assert.ok(distFileProblem(bad), bad);
 });
@@ -143,6 +143,8 @@ test('ACCEPTANCE: a private name in any folder, an unsafe path, or a non-public 
     assert.ok(distFileProblem(`brand/${bad}`), `dist brand/${bad}`);
   }
   for (const bad of ['assets/../../.env', '../index.html', '/index.html', 'brand\\x.png', '.env']) assert.ok(distFileProblem(bad), bad);
+  // brand/ keeps the strict rule for its images: there they are the capture's evidence.
+  for (const bad of ['imagery/research-1.png', 'story.png', 'notes-board.jpg']) assert.ok(brandFileProblem(bad), `brand/${bad}`);
   // site/assets is an explicit allowlist: media and documents yes, code, markup and data no.
   for (const ok of ['clip.mp4', 'clip.webm', 'jingle.mp3', 'one-pager.pdf', 'photo.avif', 'favicon.ico', 'fonts/a.woff2', 'customer-story.jpg']) assert.equal(siteAssetProblem(ok), null, ok);
   for (const bad of ['embed.html', 'readme.md', 'data.json', 'copy.txt', 'table.csv', 'widget.js', 'extra.css', 'archive.zip', 'noext']) assert.ok(siteAssetProblem(bad), bad);
@@ -201,4 +203,19 @@ test('ACCEPTANCE: a 1.8 site whose upload reply lacks review_verified isn\'t pub
   assert.equal(unverifiedSiteReview({ engine: 'sites@1.8' }, { uploads: [], review_verified: true }), null);
   assert.equal(unverifiedSiteReview({ engine: 'sites@1.7' }, { uploads: [] }), null, 'an older pin publishes as before');
   assert.equal(unverifiedSiteReview({ engine: 'sites@1.8' }, [{ path: 'index.html' }]), null, 'a bare list (older host) is unchanged');
+});
+
+test('ACCEPTANCE (engine 1.11): page art named for what it shows publishes; documents, data and private folders still never do', () => {
+  // The Oct 23 false positives: a roastery story photo and a product screenshot of the notes view.
+  for (const ok of ['story-roastery.webp', 'notes-product.png', 'story.png', 'facts-v2.svg', 'capture-the-moment.jpg', 'research-lab.avif', 'references-wall.mp4', 'buyers-guide-cover.gif', 'fonts/story-serif.woff2']) {
+    assert.equal(siteAssetProblem(ok), null, `site/assets/${ok}`);
+    assert.equal(distFileProblem(`assets/${ok}`), null, `dist assets/${ok}`);
+  }
+  // Documents and data named for the plan, and anything inside a private folder, are refused as before.
+  for (const bad of ['research.md', 'facts.json', 'buyers.json', 'story.md', 'story.pdf', 'notes.txt', 'buyers.csv', 'seller-understanding.pdf', 'research/hero.png', 'seller-understanding/overview.png', 'references/x.jpg', 'capture/page1.webp', 'deep/research/a.svg', 'story/hero.png']) {
+    assert.ok(siteAssetProblem(bad), `site/assets/${bad}`);
+    assert.ok(distFileProblem(`assets/${bad}`), `dist assets/${bad}`);
+  }
+  for (const bad of ['capture/page1.jpg', 'capture/capture.json', 'references/x.jpg', 'seller-understanding/overview.png', 'seller-understanding.md']) assert.ok(brandFileProblem(bad), `brand/${bad}`);
+  for (const bad of ['story.md', 'research.md', 'facts.json', 'buyers.json']) assert.ok(distFileProblem(bad), bad);
 });

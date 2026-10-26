@@ -1,0 +1,4126 @@
+{
+  "group": "google-reddit",
+  "checked": "2026-10-25",
+  "formats": [
+    {
+      "id": "google.display.responsive.landscape",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Google Display Network (responsive display ad)",
+      "name": "Responsive display ad, landscape image",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1200,
+        "h": 628
+      },
+      "aspect": "1.91:1",
+      "accepted_aspects": [
+        "1.91:1",
+        "1:1",
+        "9:16"
+      ],
+      "min": {
+        "w": 600,
+        "h": 314
+      },
+      "max": {
+        "w": null,
+        "h": null
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 5.12
+      },
+      "text": {
+        "short_headline": {
+          "max": 30,
+          "count": [
+            1,
+            5
+          ]
+        },
+        "long_headline": {
+          "max": 90,
+          "count": [
+            1,
+            1
+          ]
+        },
+        "description": {
+          "max": 90,
+          "count": [
+            1,
+            5
+          ]
+        },
+        "business_name": {
+          "max": 25,
+          "count": [
+            1,
+            1
+          ]
+        },
+        "cta": {
+          "max": null,
+          "note": "automated"
+        }
+      },
+      "notes": "Responsive display ad. Text counts from the RDA spec page (17090561): headlines 30 x 1-5, long headline 90 x 1, descriptions 90 x 1-5, business name 25 x 1. Up to 15 images across ratios (best-practices guide); 5 per ratio recommended. Double-width (CJK) characters count as 2. Max file size 5120 KB per Create-an-RDA page. Required asset (1-15 landscape).",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/17090561",
+          "title": "Responsive display ads specs and format requirements - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/7005917",
+          "title": "Create a responsive display ad - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/9823397",
+          "title": "Best practices guide for responsive display ads - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.display.responsive.square",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Google Display Network (responsive display ad)",
+      "name": "Responsive display ad, square image",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1200,
+        "h": 1200
+      },
+      "aspect": "1:1",
+      "accepted_aspects": [
+        "1:1"
+      ],
+      "min": {
+        "w": 300,
+        "h": 300
+      },
+      "max": {
+        "w": null,
+        "h": null
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 5.12
+      },
+      "text": {
+        "short_headline": {
+          "max": 30,
+          "count": [
+            1,
+            5
+          ]
+        },
+        "long_headline": {
+          "max": 90,
+          "count": [
+            1,
+            1
+          ]
+        },
+        "description": {
+          "max": 90,
+          "count": [
+            1,
+            5
+          ]
+        },
+        "business_name": {
+          "max": 25,
+          "count": [
+            1,
+            1
+          ]
+        },
+        "cta": {
+          "max": null,
+          "note": "automated"
+        }
+      },
+      "notes": "Responsive display ad. Text counts from the RDA spec page (17090561): headlines 30 x 1-5, long headline 90 x 1, descriptions 90 x 1-5, business name 25 x 1. Up to 15 images across ratios (best-practices guide); 5 per ratio recommended. Double-width (CJK) characters count as 2. Max file size 5120 KB per Create-an-RDA page. Required asset (1-15 square). Discrepancy: the new spec page 17090561 lists 600x600 as the recommended square size; the Create-an-RDA page and best-practices guide say 1200x1200. Rendering at 1200x1200 satisfies both.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/17090561",
+          "title": "Responsive display ads specs and format requirements - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/7005917",
+          "title": "Create a responsive display ad - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/9823397",
+          "title": "Best practices guide for responsive display ads - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.display.responsive.vertical",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Google Display Network (responsive display ad)",
+      "name": "Responsive display ad, vertical image",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 900,
+        "h": 1600
+      },
+      "aspect": "9:16",
+      "accepted_aspects": [
+        "9:16"
+      ],
+      "min": {
+        "w": 600,
+        "h": 1067
+      },
+      "max": {
+        "w": null,
+        "h": null
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 5.12
+      },
+      "text": {
+        "short_headline": {
+          "max": 30,
+          "count": [
+            1,
+            5
+          ]
+        },
+        "long_headline": {
+          "max": 90,
+          "count": [
+            1,
+            1
+          ]
+        },
+        "description": {
+          "max": 90,
+          "count": [
+            1,
+            5
+          ]
+        },
+        "business_name": {
+          "max": 25,
+          "count": [
+            1,
+            1
+          ]
+        },
+        "cta": {
+          "max": null,
+          "note": "automated"
+        }
+      },
+      "notes": "Optional. Only the RDA best-practices guide (9823397) lists a vertical 9:16 image (900x1600 rec, 600x1067 min); the formal RDA spec page 17090561 lists only horizontal and square images. RDAs do NOT take a 4:5 (960x1200) image - that ratio belongs to Performance Max and Demand Gen. Optional RDA video assets: 16:9, 1:1, vertical 2:3, any length (30s preferred), 1-5.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/9823397",
+          "title": "Best practices guide for responsive display ads - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/17090561",
+          "title": "Responsive display ads specs and format requirements - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.display.responsive.logo_square",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Google Display Network (responsive display ad)",
+      "name": "Responsive display ad, square logo",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1200,
+        "h": 1200
+      },
+      "aspect": "1:1",
+      "accepted_aspects": [
+        "1:1"
+      ],
+      "min": {
+        "w": 128,
+        "h": 128
+      },
+      "max": {
+        "w": null,
+        "h": null
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 5.12
+      },
+      "notes": "Logo, 1-5 (1 recommended). Max file size 5120 KB (Create-an-RDA page).",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/17090561",
+          "title": "Responsive display ads specs and format requirements - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/7005917",
+          "title": "Create a responsive display ad - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.display.responsive.logo_wide",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Google Display Network (responsive display ad)",
+      "name": "Responsive display ad, landscape logo",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1200,
+        "h": 300
+      },
+      "aspect": "4:1",
+      "accepted_aspects": [
+        "4:1"
+      ],
+      "min": {
+        "w": 512,
+        "h": 128
+      },
+      "max": {
+        "w": null,
+        "h": null
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 5.12
+      },
+      "notes": "Logo, 1-5 (1 recommended). Max file size 5120 KB.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/17090561",
+          "title": "Responsive display ads specs and format requirements - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/7005917",
+          "title": "Create a responsive display ad - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.display.uploaded.200x200",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Google Display Network (uploaded display ad)",
+      "name": "Uploaded image display ad 200x200 (square/rectangle)",
+      "media": [
+        "image",
+        "gif"
+      ],
+      "canvas": {
+        "w": 200,
+        "h": 200
+      },
+      "aspect": "1:1",
+      "accepted_aspects": [
+        "1:1"
+      ],
+      "min": {
+        "w": 200,
+        "h": 200
+      },
+      "max": {
+        "w": 200,
+        "h": 200
+      },
+      "file": {
+        "types": [
+          "gif",
+          "jpg",
+          "png"
+        ],
+        "max_mb": 0.15
+      },
+      "notes": "Static or animated image ad. GIF/JPG/PNG, max 150 KB. Animated GIF: 30 s or shorter, may loop but must stop by 30 s, slower than 5 fps. Must be exact pixel size.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/1722096",
+          "title": "Uploaded display ads specifications - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.display.uploaded.240x400",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Google Display Network (uploaded display ad)",
+      "name": "Uploaded image display ad 240x400 (square/rectangle)",
+      "media": [
+        "image",
+        "gif"
+      ],
+      "canvas": {
+        "w": 240,
+        "h": 400
+      },
+      "aspect": "3:5",
+      "accepted_aspects": [
+        "3:5"
+      ],
+      "min": {
+        "w": 240,
+        "h": 400
+      },
+      "max": {
+        "w": 240,
+        "h": 400
+      },
+      "file": {
+        "types": [
+          "gif",
+          "jpg",
+          "png"
+        ],
+        "max_mb": 0.15
+      },
+      "notes": "Static or animated image ad. GIF/JPG/PNG, max 150 KB. Animated GIF: 30 s or shorter, may loop but must stop by 30 s, slower than 5 fps. Must be exact pixel size.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/1722096",
+          "title": "Uploaded display ads specifications - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.display.uploaded.250x250",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Google Display Network (uploaded display ad)",
+      "name": "Uploaded image display ad 250x250 (square/rectangle)",
+      "media": [
+        "image",
+        "gif"
+      ],
+      "canvas": {
+        "w": 250,
+        "h": 250
+      },
+      "aspect": "1:1",
+      "accepted_aspects": [
+        "1:1"
+      ],
+      "min": {
+        "w": 250,
+        "h": 250
+      },
+      "max": {
+        "w": 250,
+        "h": 250
+      },
+      "file": {
+        "types": [
+          "gif",
+          "jpg",
+          "png"
+        ],
+        "max_mb": 0.15
+      },
+      "notes": "Static or animated image ad. GIF/JPG/PNG, max 150 KB. Animated GIF: 30 s or shorter, may loop but must stop by 30 s, slower than 5 fps. Must be exact pixel size.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/1722096",
+          "title": "Uploaded display ads specifications - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.display.uploaded.250x360",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Google Display Network (uploaded display ad)",
+      "name": "Uploaded image display ad 250x360 (square/rectangle)",
+      "media": [
+        "image",
+        "gif"
+      ],
+      "canvas": {
+        "w": 250,
+        "h": 360
+      },
+      "aspect": "25:36",
+      "accepted_aspects": [
+        "25:36"
+      ],
+      "min": {
+        "w": 250,
+        "h": 360
+      },
+      "max": {
+        "w": 250,
+        "h": 360
+      },
+      "file": {
+        "types": [
+          "gif",
+          "jpg",
+          "png"
+        ],
+        "max_mb": 0.15
+      },
+      "notes": "Static or animated image ad. GIF/JPG/PNG, max 150 KB. Animated GIF: 30 s or shorter, may loop but must stop by 30 s, slower than 5 fps. Must be exact pixel size. Regional size listed for Sweden.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/1722096",
+          "title": "Uploaded display ads specifications - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.display.uploaded.300x250",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Google Display Network (uploaded display ad)",
+      "name": "Uploaded image display ad 300x250 (square/rectangle)",
+      "media": [
+        "image",
+        "gif"
+      ],
+      "canvas": {
+        "w": 300,
+        "h": 250
+      },
+      "aspect": "6:5",
+      "accepted_aspects": [
+        "6:5"
+      ],
+      "min": {
+        "w": 300,
+        "h": 250
+      },
+      "max": {
+        "w": 300,
+        "h": 250
+      },
+      "file": {
+        "types": [
+          "gif",
+          "jpg",
+          "png"
+        ],
+        "max_mb": 0.15
+      },
+      "notes": "Static or animated image ad. GIF/JPG/PNG, max 150 KB. Animated GIF: 30 s or shorter, may loop but must stop by 30 s, slower than 5 fps. Must be exact pixel size.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/1722096",
+          "title": "Uploaded display ads specifications - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.display.uploaded.336x280",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Google Display Network (uploaded display ad)",
+      "name": "Uploaded image display ad 336x280 (square/rectangle)",
+      "media": [
+        "image",
+        "gif"
+      ],
+      "canvas": {
+        "w": 336,
+        "h": 280
+      },
+      "aspect": "6:5",
+      "accepted_aspects": [
+        "6:5"
+      ],
+      "min": {
+        "w": 336,
+        "h": 280
+      },
+      "max": {
+        "w": 336,
+        "h": 280
+      },
+      "file": {
+        "types": [
+          "gif",
+          "jpg",
+          "png"
+        ],
+        "max_mb": 0.15
+      },
+      "notes": "Static or animated image ad. GIF/JPG/PNG, max 150 KB. Animated GIF: 30 s or shorter, may loop but must stop by 30 s, slower than 5 fps. Must be exact pixel size.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/1722096",
+          "title": "Uploaded display ads specifications - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.display.uploaded.580x400",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Google Display Network (uploaded display ad)",
+      "name": "Uploaded image display ad 580x400 (square/rectangle)",
+      "media": [
+        "image",
+        "gif"
+      ],
+      "canvas": {
+        "w": 580,
+        "h": 400
+      },
+      "aspect": "29:20",
+      "accepted_aspects": [
+        "29:20"
+      ],
+      "min": {
+        "w": 580,
+        "h": 400
+      },
+      "max": {
+        "w": 580,
+        "h": 400
+      },
+      "file": {
+        "types": [
+          "gif",
+          "jpg",
+          "png"
+        ],
+        "max_mb": 0.15
+      },
+      "notes": "Static or animated image ad. GIF/JPG/PNG, max 150 KB. Animated GIF: 30 s or shorter, may loop but must stop by 30 s, slower than 5 fps. Must be exact pixel size. Regional size listed for Norway.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/1722096",
+          "title": "Uploaded display ads specifications - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.display.uploaded.120x600",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Google Display Network (uploaded display ad)",
+      "name": "Uploaded image display ad 120x600 (skyscraper)",
+      "media": [
+        "image",
+        "gif"
+      ],
+      "canvas": {
+        "w": 120,
+        "h": 600
+      },
+      "aspect": "1:5",
+      "accepted_aspects": [
+        "1:5"
+      ],
+      "min": {
+        "w": 120,
+        "h": 600
+      },
+      "max": {
+        "w": 120,
+        "h": 600
+      },
+      "file": {
+        "types": [
+          "gif",
+          "jpg",
+          "png"
+        ],
+        "max_mb": 0.15
+      },
+      "notes": "Static or animated image ad. GIF/JPG/PNG, max 150 KB. Animated GIF: 30 s or shorter, may loop but must stop by 30 s, slower than 5 fps. Must be exact pixel size.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/1722096",
+          "title": "Uploaded display ads specifications - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.display.uploaded.160x600",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Google Display Network (uploaded display ad)",
+      "name": "Uploaded image display ad 160x600 (skyscraper)",
+      "media": [
+        "image",
+        "gif"
+      ],
+      "canvas": {
+        "w": 160,
+        "h": 600
+      },
+      "aspect": "4:15",
+      "accepted_aspects": [
+        "4:15"
+      ],
+      "min": {
+        "w": 160,
+        "h": 600
+      },
+      "max": {
+        "w": 160,
+        "h": 600
+      },
+      "file": {
+        "types": [
+          "gif",
+          "jpg",
+          "png"
+        ],
+        "max_mb": 0.15
+      },
+      "notes": "Static or animated image ad. GIF/JPG/PNG, max 150 KB. Animated GIF: 30 s or shorter, may loop but must stop by 30 s, slower than 5 fps. Must be exact pixel size.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/1722096",
+          "title": "Uploaded display ads specifications - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.display.uploaded.300x600",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Google Display Network (uploaded display ad)",
+      "name": "Uploaded image display ad 300x600 (skyscraper)",
+      "media": [
+        "image",
+        "gif"
+      ],
+      "canvas": {
+        "w": 300,
+        "h": 600
+      },
+      "aspect": "1:2",
+      "accepted_aspects": [
+        "1:2"
+      ],
+      "min": {
+        "w": 300,
+        "h": 600
+      },
+      "max": {
+        "w": 300,
+        "h": 600
+      },
+      "file": {
+        "types": [
+          "gif",
+          "jpg",
+          "png"
+        ],
+        "max_mb": 0.15
+      },
+      "notes": "Static or animated image ad. GIF/JPG/PNG, max 150 KB. Animated GIF: 30 s or shorter, may loop but must stop by 30 s, slower than 5 fps. Must be exact pixel size.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/1722096",
+          "title": "Uploaded display ads specifications - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.display.uploaded.300x1050",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Google Display Network (uploaded display ad)",
+      "name": "Uploaded image display ad 300x1050 (skyscraper)",
+      "media": [
+        "image",
+        "gif"
+      ],
+      "canvas": {
+        "w": 300,
+        "h": 1050
+      },
+      "aspect": "2:7",
+      "accepted_aspects": [
+        "2:7"
+      ],
+      "min": {
+        "w": 300,
+        "h": 1050
+      },
+      "max": {
+        "w": 300,
+        "h": 1050
+      },
+      "file": {
+        "types": [
+          "gif",
+          "jpg",
+          "png"
+        ],
+        "max_mb": 0.15
+      },
+      "notes": "Static or animated image ad. GIF/JPG/PNG, max 150 KB. Animated GIF: 30 s or shorter, may loop but must stop by 30 s, slower than 5 fps. Must be exact pixel size.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/1722096",
+          "title": "Uploaded display ads specifications - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.display.uploaded.468x60",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Google Display Network (uploaded display ad)",
+      "name": "Uploaded image display ad 468x60 (leaderboard)",
+      "media": [
+        "image",
+        "gif"
+      ],
+      "canvas": {
+        "w": 468,
+        "h": 60
+      },
+      "aspect": "39:5",
+      "accepted_aspects": [
+        "39:5"
+      ],
+      "min": {
+        "w": 468,
+        "h": 60
+      },
+      "max": {
+        "w": 468,
+        "h": 60
+      },
+      "file": {
+        "types": [
+          "gif",
+          "jpg",
+          "png"
+        ],
+        "max_mb": 0.15
+      },
+      "notes": "Static or animated image ad. GIF/JPG/PNG, max 150 KB. Animated GIF: 30 s or shorter, may loop but must stop by 30 s, slower than 5 fps. Must be exact pixel size.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/1722096",
+          "title": "Uploaded display ads specifications - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.display.uploaded.728x90",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Google Display Network (uploaded display ad)",
+      "name": "Uploaded image display ad 728x90 (leaderboard)",
+      "media": [
+        "image",
+        "gif"
+      ],
+      "canvas": {
+        "w": 728,
+        "h": 90
+      },
+      "aspect": "364:45",
+      "accepted_aspects": [
+        "364:45"
+      ],
+      "min": {
+        "w": 728,
+        "h": 90
+      },
+      "max": {
+        "w": 728,
+        "h": 90
+      },
+      "file": {
+        "types": [
+          "gif",
+          "jpg",
+          "png"
+        ],
+        "max_mb": 0.15
+      },
+      "notes": "Static or animated image ad. GIF/JPG/PNG, max 150 KB. Animated GIF: 30 s or shorter, may loop but must stop by 30 s, slower than 5 fps. Must be exact pixel size.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/1722096",
+          "title": "Uploaded display ads specifications - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.display.uploaded.930x180",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Google Display Network (uploaded display ad)",
+      "name": "Uploaded image display ad 930x180 (leaderboard)",
+      "media": [
+        "image",
+        "gif"
+      ],
+      "canvas": {
+        "w": 930,
+        "h": 180
+      },
+      "aspect": "31:6",
+      "accepted_aspects": [
+        "31:6"
+      ],
+      "min": {
+        "w": 930,
+        "h": 180
+      },
+      "max": {
+        "w": 930,
+        "h": 180
+      },
+      "file": {
+        "types": [
+          "gif",
+          "jpg",
+          "png"
+        ],
+        "max_mb": 0.15
+      },
+      "notes": "Static or animated image ad. GIF/JPG/PNG, max 150 KB. Animated GIF: 30 s or shorter, may loop but must stop by 30 s, slower than 5 fps. Must be exact pixel size. Regional size listed for Denmark.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/1722096",
+          "title": "Uploaded display ads specifications - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.display.uploaded.970x90",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Google Display Network (uploaded display ad)",
+      "name": "Uploaded image display ad 970x90 (leaderboard)",
+      "media": [
+        "image",
+        "gif"
+      ],
+      "canvas": {
+        "w": 970,
+        "h": 90
+      },
+      "aspect": "97:9",
+      "accepted_aspects": [
+        "97:9"
+      ],
+      "min": {
+        "w": 970,
+        "h": 90
+      },
+      "max": {
+        "w": 970,
+        "h": 90
+      },
+      "file": {
+        "types": [
+          "gif",
+          "jpg",
+          "png"
+        ],
+        "max_mb": 0.15
+      },
+      "notes": "Static or animated image ad. GIF/JPG/PNG, max 150 KB. Animated GIF: 30 s or shorter, may loop but must stop by 30 s, slower than 5 fps. Must be exact pixel size.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/1722096",
+          "title": "Uploaded display ads specifications - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.display.uploaded.970x250",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Google Display Network (uploaded display ad)",
+      "name": "Uploaded image display ad 970x250 (leaderboard)",
+      "media": [
+        "image",
+        "gif"
+      ],
+      "canvas": {
+        "w": 970,
+        "h": 250
+      },
+      "aspect": "97:25",
+      "accepted_aspects": [
+        "97:25"
+      ],
+      "min": {
+        "w": 970,
+        "h": 250
+      },
+      "max": {
+        "w": 970,
+        "h": 250
+      },
+      "file": {
+        "types": [
+          "gif",
+          "jpg",
+          "png"
+        ],
+        "max_mb": 0.15
+      },
+      "notes": "Static or animated image ad. GIF/JPG/PNG, max 150 KB. Animated GIF: 30 s or shorter, may loop but must stop by 30 s, slower than 5 fps. Must be exact pixel size.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/1722096",
+          "title": "Uploaded display ads specifications - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.display.uploaded.980x120",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Google Display Network (uploaded display ad)",
+      "name": "Uploaded image display ad 980x120 (leaderboard)",
+      "media": [
+        "image",
+        "gif"
+      ],
+      "canvas": {
+        "w": 980,
+        "h": 120
+      },
+      "aspect": "49:6",
+      "accepted_aspects": [
+        "49:6"
+      ],
+      "min": {
+        "w": 980,
+        "h": 120
+      },
+      "max": {
+        "w": 980,
+        "h": 120
+      },
+      "file": {
+        "types": [
+          "gif",
+          "jpg",
+          "png"
+        ],
+        "max_mb": 0.15
+      },
+      "notes": "Static or animated image ad. GIF/JPG/PNG, max 150 KB. Animated GIF: 30 s or shorter, may loop but must stop by 30 s, slower than 5 fps. Must be exact pixel size. Regional size listed for Sweden.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/1722096",
+          "title": "Uploaded display ads specifications - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.display.uploaded.300x50",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Google Display Network (uploaded display ad)",
+      "name": "Uploaded image display ad 300x50 (mobile)",
+      "media": [
+        "image",
+        "gif"
+      ],
+      "canvas": {
+        "w": 300,
+        "h": 50
+      },
+      "aspect": "6:1",
+      "accepted_aspects": [
+        "6:1"
+      ],
+      "min": {
+        "w": 300,
+        "h": 50
+      },
+      "max": {
+        "w": 300,
+        "h": 50
+      },
+      "file": {
+        "types": [
+          "gif",
+          "jpg",
+          "png"
+        ],
+        "max_mb": 0.15
+      },
+      "notes": "Static or animated image ad. GIF/JPG/PNG, max 150 KB. Animated GIF: 30 s or shorter, may loop but must stop by 30 s, slower than 5 fps. Must be exact pixel size.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/1722096",
+          "title": "Uploaded display ads specifications - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.display.uploaded.320x50",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Google Display Network (uploaded display ad)",
+      "name": "Uploaded image display ad 320x50 (mobile)",
+      "media": [
+        "image",
+        "gif"
+      ],
+      "canvas": {
+        "w": 320,
+        "h": 50
+      },
+      "aspect": "32:5",
+      "accepted_aspects": [
+        "32:5"
+      ],
+      "min": {
+        "w": 320,
+        "h": 50
+      },
+      "max": {
+        "w": 320,
+        "h": 50
+      },
+      "file": {
+        "types": [
+          "gif",
+          "jpg",
+          "png"
+        ],
+        "max_mb": 0.15
+      },
+      "notes": "Static or animated image ad. GIF/JPG/PNG, max 150 KB. Animated GIF: 30 s or shorter, may loop but must stop by 30 s, slower than 5 fps. Must be exact pixel size.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/1722096",
+          "title": "Uploaded display ads specifications - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.display.uploaded.320x100",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Google Display Network (uploaded display ad)",
+      "name": "Uploaded image display ad 320x100 (mobile)",
+      "media": [
+        "image",
+        "gif"
+      ],
+      "canvas": {
+        "w": 320,
+        "h": 100
+      },
+      "aspect": "16:5",
+      "accepted_aspects": [
+        "16:5"
+      ],
+      "min": {
+        "w": 320,
+        "h": 100
+      },
+      "max": {
+        "w": 320,
+        "h": 100
+      },
+      "file": {
+        "types": [
+          "gif",
+          "jpg",
+          "png"
+        ],
+        "max_mb": 0.15
+      },
+      "notes": "Static or animated image ad. GIF/JPG/PNG, max 150 KB. Animated GIF: 30 s or shorter, may loop but must stop by 30 s, slower than 5 fps. Must be exact pixel size.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/1722096",
+          "title": "Uploaded display ads specifications - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.display.uploaded.750x100",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Google Display Network (uploaded display ad)",
+      "name": "Uploaded image display ad 750x100 (regional (Poland))",
+      "media": [
+        "image",
+        "gif"
+      ],
+      "canvas": {
+        "w": 750,
+        "h": 100
+      },
+      "aspect": "15:2",
+      "accepted_aspects": [
+        "15:2"
+      ],
+      "min": {
+        "w": 750,
+        "h": 100
+      },
+      "max": {
+        "w": 750,
+        "h": 100
+      },
+      "file": {
+        "types": [
+          "gif",
+          "jpg",
+          "png"
+        ],
+        "max_mb": 0.15
+      },
+      "notes": "Static or animated image ad. GIF/JPG/PNG, max 150 KB. Animated GIF: 30 s or shorter, may loop but must stop by 30 s, slower than 5 fps. Must be exact pixel size. Regional size listed for Poland.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/1722096",
+          "title": "Uploaded display ads specifications - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.display.uploaded.750x200",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Google Display Network (uploaded display ad)",
+      "name": "Uploaded image display ad 750x200 (regional (Poland))",
+      "media": [
+        "image",
+        "gif"
+      ],
+      "canvas": {
+        "w": 750,
+        "h": 200
+      },
+      "aspect": "15:4",
+      "accepted_aspects": [
+        "15:4"
+      ],
+      "min": {
+        "w": 750,
+        "h": 200
+      },
+      "max": {
+        "w": 750,
+        "h": 200
+      },
+      "file": {
+        "types": [
+          "gif",
+          "jpg",
+          "png"
+        ],
+        "max_mb": 0.15
+      },
+      "notes": "Static or animated image ad. GIF/JPG/PNG, max 150 KB. Animated GIF: 30 s or shorter, may loop but must stop by 30 s, slower than 5 fps. Must be exact pixel size. Regional size listed for Poland.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/1722096",
+          "title": "Uploaded display ads specifications - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.display.uploaded.750x300",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Google Display Network (uploaded display ad)",
+      "name": "Uploaded image display ad 750x300 (regional (Poland))",
+      "media": [
+        "image",
+        "gif"
+      ],
+      "canvas": {
+        "w": 750,
+        "h": 300
+      },
+      "aspect": "5:2",
+      "accepted_aspects": [
+        "5:2"
+      ],
+      "min": {
+        "w": 750,
+        "h": 300
+      },
+      "max": {
+        "w": 750,
+        "h": 300
+      },
+      "file": {
+        "types": [
+          "gif",
+          "jpg",
+          "png"
+        ],
+        "max_mb": 0.15
+      },
+      "notes": "Static or animated image ad. GIF/JPG/PNG, max 150 KB. Animated GIF: 30 s or shorter, may loop but must stop by 30 s, slower than 5 fps. Must be exact pixel size. Regional size listed for Poland.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/1722096",
+          "title": "Uploaded display ads specifications - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.display.html5",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Google Display Network (uploaded HTML5 ad)",
+      "name": "HTML5 display ad (ZIP)",
+      "media": [
+        "html5"
+      ],
+      "canvas": {
+        "w": 300,
+        "h": 250
+      },
+      "aspect": "6:5",
+      "accepted_aspects": [
+        "same size list as uploaded image ads (see google.display.uploaded.*)"
+      ],
+      "file": {
+        "types": [
+          "zip (html, css, js, gif, png, jpg, jpeg, svg)"
+        ],
+        "max_mb": 0.6,
+        "max_files": 40
+      },
+      "notes": "Canvas 300x250 is a default; any uploaded-ad size is accepted. ZIP <= 600 KB, <= 40 files. Must include <!DOCTYPE html>, <html>, <body> and a size meta tag in <head>, e.g. <meta name=\"ad.size\" content=\"width=300,height=250\">. Explicit SVG end tags. Relative paths only; external refs allowed only to Google Fonts, Google-hosted CreateJS, GreenSock, Google-hosted jQuery. UTF-8. Eligibility gated: account open >90 days, >$9,000 lifetime spend, good policy history (not guaranteed). GWD limits: local images only, no expandables, local storage not allowed, Google fonts only. clickTag: the Google Ads uploaded-ads page does NOT state a clickTag requirement (null); clickTag/exit conventions are documented for Ad Manager/Campaign Manager/GWD, not Google Ads. Animation-length limit for HTML5 not stated on the page (GIF limit is 30 s).",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/1722096",
+          "title": "Uploaded display ads specifications - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.demandgen.image.landscape",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Demand Gen (YouTube, Discover, Gmail, Display)",
+      "name": "Demand Gen image ad, landscape 1.91:1",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1200,
+        "h": 628
+      },
+      "aspect": "1.91:1",
+      "accepted_aspects": [
+        "1.91:1",
+        "1:1",
+        "4:5",
+        "9:16"
+      ],
+      "min": {
+        "w": 600,
+        "h": 314
+      },
+      "max": {
+        "w": null,
+        "h": null
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 5
+      },
+      "text": {
+        "headline": {
+          "max": 40,
+          "count": [
+            1,
+            5
+          ]
+        },
+        "description": {
+          "max": 90,
+          "count": [
+            1,
+            5
+          ]
+        },
+        "business_name": {
+          "max": 25,
+          "count": [
+            1,
+            1
+          ]
+        },
+        "cta": {
+          "max": null,
+          "note": "automated"
+        },
+        "final_url": {
+          "max": 2048
+        }
+      },
+      "notes": "Demand Gen single-image ad. Up to 20 images per ad, 3 of each ratio recommended. Headlines 40 chars x 1-5 (keep at least one <=30 chars or Ad Strength is 'Incomplete' and it can't serve on Display). Descriptions 90 x 1-5. Business name 25. Logo 1:1 required (1200x1200, min 144x144 on the spec page, 128x128 in the image-asset table; max 150 KB). Required.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/17091672",
+          "title": "Demand Gen campaigns specs and format requirements - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/17140672",
+          "title": "About image assets specifications and ad format guidelines for Demand Gen campaigns - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/13704860",
+          "title": "Demand Gen campaign creative: Asset specifications and ad format guidelines - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.demandgen.image.square",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Demand Gen (YouTube, Discover, Gmail, Display)",
+      "name": "Demand Gen image ad, square 1:1",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1200,
+        "h": 1200
+      },
+      "aspect": "1:1",
+      "accepted_aspects": [
+        "1.91:1",
+        "1:1",
+        "4:5",
+        "9:16"
+      ],
+      "min": {
+        "w": 300,
+        "h": 300
+      },
+      "max": {
+        "w": null,
+        "h": null
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 5
+      },
+      "text": {
+        "headline": {
+          "max": 40,
+          "count": [
+            1,
+            5
+          ]
+        },
+        "description": {
+          "max": 90,
+          "count": [
+            1,
+            5
+          ]
+        },
+        "business_name": {
+          "max": 25,
+          "count": [
+            1,
+            1
+          ]
+        },
+        "cta": {
+          "max": null,
+          "note": "automated"
+        },
+        "final_url": {
+          "max": 2048
+        }
+      },
+      "notes": "Demand Gen single-image ad. Up to 20 images per ad, 3 of each ratio recommended. Headlines 40 chars x 1-5 (keep at least one <=30 chars or Ad Strength is 'Incomplete' and it can't serve on Display). Descriptions 90 x 1-5. Business name 25. Logo 1:1 required (1200x1200, min 144x144 on the spec page, 128x128 in the image-asset table; max 150 KB). Required.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/17091672",
+          "title": "Demand Gen campaigns specs and format requirements - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/17140672",
+          "title": "About image assets specifications and ad format guidelines for Demand Gen campaigns - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/13704860",
+          "title": "Demand Gen campaign creative: Asset specifications and ad format guidelines - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.demandgen.image.portrait",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Demand Gen (YouTube, Discover, Gmail, Display)",
+      "name": "Demand Gen image ad, portrait 4:5",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 960,
+        "h": 1200
+      },
+      "aspect": "4:5",
+      "accepted_aspects": [
+        "1.91:1",
+        "1:1",
+        "4:5",
+        "9:16"
+      ],
+      "min": {
+        "w": 480,
+        "h": 600
+      },
+      "max": {
+        "w": null,
+        "h": null
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 5
+      },
+      "text": {
+        "headline": {
+          "max": 40,
+          "count": [
+            1,
+            5
+          ]
+        },
+        "description": {
+          "max": 90,
+          "count": [
+            1,
+            5
+          ]
+        },
+        "business_name": {
+          "max": 25,
+          "count": [
+            1,
+            1
+          ]
+        },
+        "cta": {
+          "max": null,
+          "note": "automated"
+        },
+        "final_url": {
+          "max": 2048
+        }
+      },
+      "notes": "Demand Gen single-image ad. Up to 20 images per ad, 3 of each ratio recommended. Headlines 40 chars x 1-5 (keep at least one <=30 chars or Ad Strength is 'Incomplete' and it can't serve on Display). Descriptions 90 x 1-5. Business name 25. Logo 1:1 required (1200x1200, min 144x144 on the spec page, 128x128 in the image-asset table; max 150 KB). Optional.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/17091672",
+          "title": "Demand Gen campaigns specs and format requirements - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/17140672",
+          "title": "About image assets specifications and ad format guidelines for Demand Gen campaigns - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/13704860",
+          "title": "Demand Gen campaign creative: Asset specifications and ad format guidelines - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.demandgen.image.vertical",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Demand Gen (YouTube, Discover, Gmail, Display)",
+      "name": "Demand Gen image ad, vertical 9:16",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1920
+      },
+      "aspect": "9:16",
+      "accepted_aspects": [
+        "1.91:1",
+        "1:1",
+        "4:5",
+        "9:16"
+      ],
+      "min": {
+        "w": 600,
+        "h": 1067
+      },
+      "max": {
+        "w": null,
+        "h": null
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 5
+      },
+      "text": {
+        "headline": {
+          "max": 40,
+          "count": [
+            1,
+            5
+          ]
+        },
+        "description": {
+          "max": 90,
+          "count": [
+            1,
+            5
+          ]
+        },
+        "business_name": {
+          "max": 25,
+          "count": [
+            1,
+            1
+          ]
+        },
+        "cta": {
+          "max": null,
+          "note": "automated"
+        },
+        "final_url": {
+          "max": 2048
+        }
+      },
+      "notes": "Demand Gen single-image ad. Up to 20 images per ad, 3 of each ratio recommended. Headlines 40 chars x 1-5 (keep at least one <=30 chars or Ad Strength is 'Incomplete' and it can't serve on Display). Descriptions 90 x 1-5. Business name 25. Logo 1:1 required (1200x1200, min 144x144 on the spec page, 128x128 in the image-asset table; max 150 KB). Optional. Recommended for YouTube Shorts; safe zones similar to 9:16 video. May be rejected for Demand Gen in Display & Video 360 - use 4:5/1.91:1/1:1 there.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/17091672",
+          "title": "Demand Gen campaigns specs and format requirements - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/17140672",
+          "title": "About image assets specifications and ad format guidelines for Demand Gen campaigns - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/13704860",
+          "title": "Demand Gen campaign creative: Asset specifications and ad format guidelines - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.demandgen.logo",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Demand Gen",
+      "name": "Demand Gen logo",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1200,
+        "h": 1200
+      },
+      "aspect": "1:1",
+      "accepted_aspects": [
+        "1:1"
+      ],
+      "min": {
+        "w": 144,
+        "h": 144
+      },
+      "max": {
+        "w": null,
+        "h": null
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 0.15
+      },
+      "notes": "1-5 logos (1 recommended), required. Min 144x144 per spec page and creative guide; image-asset table and API say 128x128 - use >=144. Max 150 KB (much smaller than PMax/RDA 5 MB).",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/17091672",
+          "title": "Demand Gen campaigns specs and format requirements - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/17140672",
+          "title": "About image assets specifications and ad format guidelines for Demand Gen campaigns - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/13704860",
+          "title": "Demand Gen campaign creative: Asset specifications and ad format guidelines - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.demandgen.video.horizontal",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Demand Gen (YouTube in-stream, in-feed, Shorts; Discover; Gmail)",
+      "name": "Demand Gen video ad, 16:9",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1920,
+        "h": 1080
+      },
+      "aspect": "16:9",
+      "accepted_aspects": [
+        "16:9",
+        "9:16",
+        "4:5",
+        "1:1"
+      ],
+      "video": {
+        "types": [
+          "mpg",
+          "mp4",
+          "mov",
+          "webm"
+        ],
+        "codec": null,
+        "audio": null,
+        "fps": null,
+        "min_s": 5,
+        "max_s": null,
+        "recommended_s": [
+          10,
+          60
+        ],
+        "max_mb": 256000,
+        "captions": null
+      },
+      "safe_zone": {
+        "top": null,
+        "bottom": null,
+        "left": null,
+        "right": null,
+        "units": "px at canvas",
+        "note": "Google publishes safe-zone diagrams and PNG templates (answer 13547298) but no numeric margins in text; not transcribed."
+      },
+      "text": {
+        "headline": {
+          "max": 40,
+          "count": [
+            1,
+            5
+          ]
+        },
+        "description": {
+          "max": 90,
+          "count": [
+            1,
+            5
+          ]
+        },
+        "business_name": {
+          "max": 25,
+          "count": [
+            1,
+            1
+          ]
+        },
+        "cta": {
+          "max": null,
+          "note": "automated"
+        },
+        "final_url": {
+          "max": 2048
+        }
+      },
+      "notes": "Spec page: 10-60 s per orientation, up to 3 videos each. Creative guide: minimum 5 s; videos under 10 s can't serve on YouTube in-stream. Shorts: max 1 minute, 10-20 s recommended (creative guide, via search index). Max file size 256 GB. Hosted on YouTube.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/17091672",
+          "title": "Demand Gen campaigns specs and format requirements - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/13704860",
+          "title": "Demand Gen campaign creative: Asset specifications and ad format guidelines - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/13547298",
+          "title": "About video ad specs - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.demandgen.video.vertical",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Demand Gen (YouTube in-stream, in-feed, Shorts; Discover; Gmail)",
+      "name": "Demand Gen video ad, 9:16",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1920
+      },
+      "aspect": "9:16",
+      "accepted_aspects": [
+        "16:9",
+        "9:16",
+        "4:5",
+        "1:1"
+      ],
+      "video": {
+        "types": [
+          "mpg",
+          "mp4",
+          "mov",
+          "webm"
+        ],
+        "codec": null,
+        "audio": null,
+        "fps": null,
+        "min_s": 5,
+        "max_s": null,
+        "recommended_s": [
+          10,
+          60
+        ],
+        "max_mb": 256000,
+        "captions": null
+      },
+      "safe_zone": {
+        "top": null,
+        "bottom": null,
+        "left": null,
+        "right": null,
+        "units": "px at canvas",
+        "note": "Google publishes safe-zone diagrams and PNG templates (answer 13547298) but no numeric margins in text; not transcribed."
+      },
+      "text": {
+        "headline": {
+          "max": 40,
+          "count": [
+            1,
+            5
+          ]
+        },
+        "description": {
+          "max": 90,
+          "count": [
+            1,
+            5
+          ]
+        },
+        "business_name": {
+          "max": 25,
+          "count": [
+            1,
+            1
+          ]
+        },
+        "cta": {
+          "max": null,
+          "note": "automated"
+        },
+        "final_url": {
+          "max": 2048
+        }
+      },
+      "notes": "Spec page: 10-60 s per orientation, up to 3 videos each. Creative guide: minimum 5 s; videos under 10 s can't serve on YouTube in-stream. Shorts: max 1 minute, 10-20 s recommended (creative guide, via search index). Max file size 256 GB. Hosted on YouTube.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/17091672",
+          "title": "Demand Gen campaigns specs and format requirements - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/13704860",
+          "title": "Demand Gen campaign creative: Asset specifications and ad format guidelines - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/13547298",
+          "title": "About video ad specs - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.demandgen.video.portrait",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Demand Gen (YouTube in-stream, in-feed, Shorts; Discover; Gmail)",
+      "name": "Demand Gen video ad, 4:5",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1350
+      },
+      "aspect": "4:5",
+      "accepted_aspects": [
+        "16:9",
+        "9:16",
+        "4:5",
+        "1:1"
+      ],
+      "video": {
+        "types": [
+          "mpg",
+          "mp4",
+          "mov",
+          "webm"
+        ],
+        "codec": null,
+        "audio": null,
+        "fps": null,
+        "min_s": 5,
+        "max_s": null,
+        "recommended_s": [
+          10,
+          60
+        ],
+        "max_mb": 256000,
+        "captions": null
+      },
+      "safe_zone": {
+        "top": null,
+        "bottom": null,
+        "left": null,
+        "right": null,
+        "units": "px at canvas",
+        "note": "Google publishes safe-zone diagrams and PNG templates (answer 13547298) but no numeric margins in text; not transcribed."
+      },
+      "text": {
+        "headline": {
+          "max": 40,
+          "count": [
+            1,
+            5
+          ]
+        },
+        "description": {
+          "max": 90,
+          "count": [
+            1,
+            5
+          ]
+        },
+        "business_name": {
+          "max": 25,
+          "count": [
+            1,
+            1
+          ]
+        },
+        "cta": {
+          "max": null,
+          "note": "automated"
+        },
+        "final_url": {
+          "max": 2048
+        }
+      },
+      "notes": "Spec page: 10-60 s per orientation, up to 3 videos each. Creative guide: minimum 5 s; videos under 10 s can't serve on YouTube in-stream. Shorts: max 1 minute, 10-20 s recommended (creative guide, via search index). Max file size 256 GB. Hosted on YouTube.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/17091672",
+          "title": "Demand Gen campaigns specs and format requirements - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/13704860",
+          "title": "Demand Gen campaign creative: Asset specifications and ad format guidelines - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/13547298",
+          "title": "About video ad specs - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.demandgen.video.square",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Demand Gen (YouTube in-stream, in-feed, Shorts; Discover; Gmail)",
+      "name": "Demand Gen video ad, 1:1",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1080
+      },
+      "aspect": "1:1",
+      "accepted_aspects": [
+        "16:9",
+        "9:16",
+        "4:5",
+        "1:1"
+      ],
+      "video": {
+        "types": [
+          "mpg",
+          "mp4",
+          "mov",
+          "webm"
+        ],
+        "codec": null,
+        "audio": null,
+        "fps": null,
+        "min_s": 5,
+        "max_s": null,
+        "recommended_s": [
+          10,
+          60
+        ],
+        "max_mb": 256000,
+        "captions": null
+      },
+      "safe_zone": {
+        "top": null,
+        "bottom": null,
+        "left": null,
+        "right": null,
+        "units": "px at canvas",
+        "note": "Google publishes safe-zone diagrams and PNG templates (answer 13547298) but no numeric margins in text; not transcribed."
+      },
+      "text": {
+        "headline": {
+          "max": 40,
+          "count": [
+            1,
+            5
+          ]
+        },
+        "description": {
+          "max": 90,
+          "count": [
+            1,
+            5
+          ]
+        },
+        "business_name": {
+          "max": 25,
+          "count": [
+            1,
+            1
+          ]
+        },
+        "cta": {
+          "max": null,
+          "note": "automated"
+        },
+        "final_url": {
+          "max": 2048
+        }
+      },
+      "notes": "Spec page: 10-60 s per orientation, up to 3 videos each. Creative guide: minimum 5 s; videos under 10 s can't serve on YouTube in-stream. Shorts: max 1 minute, 10-20 s recommended (creative guide, via search index). Max file size 256 GB. Hosted on YouTube.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/17091672",
+          "title": "Demand Gen campaigns specs and format requirements - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/13704860",
+          "title": "Demand Gen campaign creative: Asset specifications and ad format guidelines - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/13547298",
+          "title": "About video ad specs - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.demandgen.carousel",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Demand Gen",
+      "name": "Demand Gen carousel ad",
+      "media": [
+        "carousel",
+        "image"
+      ],
+      "canvas": {
+        "w": 1200,
+        "h": 1200
+      },
+      "aspect": "1:1",
+      "accepted_aspects": [
+        "1.91:1",
+        "1:1",
+        "4:5"
+      ],
+      "min": {
+        "w": 300,
+        "h": 300
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 5
+      },
+      "carousel": {
+        "min": 2,
+        "max": 10,
+        "card_aspects": [
+          "1.91:1",
+          "1:1",
+          "4:5"
+        ]
+      },
+      "text": {
+        "headline": {
+          "max": 40
+        },
+        "card_headline": {
+          "max": 40
+        },
+        "description": {
+          "max": 90
+        },
+        "business_name": {
+          "max": 25
+        }
+      },
+      "notes": "2-10 cards, one image per card; aspect ratio must be consistent across all cards (horizontal, square or vertical-optional). Card sizes follow the single-image table (1200x628/600x314, 1200x1200/300x300, 960x1200/480x600). Merchant Center feeds can't be used with carousels. Card headline 40 chars per creative guide (read via search index).",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/17140672",
+          "title": "About image assets specifications and ad format guidelines for Demand Gen campaigns - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/13704860",
+          "title": "Demand Gen campaign creative: Asset specifications and ad format guidelines - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/17091672",
+          "title": "Demand Gen campaigns specs and format requirements - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.pmax.image.landscape",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Performance Max asset group",
+      "name": "Performance Max image, landscape 1.91:1",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1200,
+        "h": 628
+      },
+      "aspect": "1.91:1",
+      "accepted_aspects": [
+        "1.91:1",
+        "1:1",
+        "4:5"
+      ],
+      "min": {
+        "w": 600,
+        "h": 314
+      },
+      "max": {
+        "w": null,
+        "h": null
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 5.12
+      },
+      "text": {
+        "headline": {
+          "max": 30,
+          "count": [
+            3,
+            15
+          ],
+          "note": ">=1 headline of 15 chars or fewer"
+        },
+        "long_headline": {
+          "max": 90,
+          "count": [
+            1,
+            5
+          ]
+        },
+        "description": {
+          "max": 90,
+          "count": [
+            2,
+            5
+          ]
+        },
+        "business_name": {
+          "max": 25,
+          "count": [
+            1,
+            1
+          ]
+        },
+        "path": {
+          "max": 15,
+          "count": [
+            1,
+            2
+          ]
+        }
+      },
+      "notes": "Performance Max asset group. Up to 20 images; JPG/PNG, max 5120 KB. Headlines 30 x 3-15 (11+ recommended), long headlines 90 x 1-5, descriptions 90 x 2-5 (4+ recommended), business name 25 (must match domain or verified name), display path 15 x 2. Required, 4+ recommended.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/17091269",
+          "title": "Performance Max campaigns specs and format requirements - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.pmax.image.square",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Performance Max asset group",
+      "name": "Performance Max image, square 1:1",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1200,
+        "h": 1200
+      },
+      "aspect": "1:1",
+      "accepted_aspects": [
+        "1.91:1",
+        "1:1",
+        "4:5"
+      ],
+      "min": {
+        "w": 300,
+        "h": 300
+      },
+      "max": {
+        "w": null,
+        "h": null
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 5.12
+      },
+      "text": {
+        "headline": {
+          "max": 30,
+          "count": [
+            3,
+            15
+          ],
+          "note": ">=1 headline of 15 chars or fewer"
+        },
+        "long_headline": {
+          "max": 90,
+          "count": [
+            1,
+            5
+          ]
+        },
+        "description": {
+          "max": 90,
+          "count": [
+            2,
+            5
+          ]
+        },
+        "business_name": {
+          "max": 25,
+          "count": [
+            1,
+            1
+          ]
+        },
+        "path": {
+          "max": 15,
+          "count": [
+            1,
+            2
+          ]
+        }
+      },
+      "notes": "Performance Max asset group. Up to 20 images; JPG/PNG, max 5120 KB. Headlines 30 x 3-15 (11+ recommended), long headlines 90 x 1-5, descriptions 90 x 2-5 (4+ recommended), business name 25 (must match domain or verified name), display path 15 x 2. Required, 4+ recommended.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/17091269",
+          "title": "Performance Max campaigns specs and format requirements - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.pmax.image.portrait",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Performance Max asset group",
+      "name": "Performance Max image, portrait 4:5",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 960,
+        "h": 1200
+      },
+      "aspect": "4:5",
+      "accepted_aspects": [
+        "1.91:1",
+        "1:1",
+        "4:5"
+      ],
+      "min": {
+        "w": 480,
+        "h": 600
+      },
+      "max": {
+        "w": null,
+        "h": null
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 5.12
+      },
+      "text": {
+        "headline": {
+          "max": 30,
+          "count": [
+            3,
+            15
+          ],
+          "note": ">=1 headline of 15 chars or fewer"
+        },
+        "long_headline": {
+          "max": 90,
+          "count": [
+            1,
+            5
+          ]
+        },
+        "description": {
+          "max": 90,
+          "count": [
+            2,
+            5
+          ]
+        },
+        "business_name": {
+          "max": 25,
+          "count": [
+            1,
+            1
+          ]
+        },
+        "path": {
+          "max": 15,
+          "count": [
+            1,
+            2
+          ]
+        }
+      },
+      "notes": "Performance Max asset group. Up to 20 images; JPG/PNG, max 5120 KB. Headlines 30 x 3-15 (11+ recommended), long headlines 90 x 1-5, descriptions 90 x 2-5 (4+ recommended), business name 25 (must match domain or verified name), display path 15 x 2. Optional, 2+ recommended.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/17091269",
+          "title": "Performance Max campaigns specs and format requirements - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.pmax.logo_square",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Performance Max asset group",
+      "name": "Performance Max logo square",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1200,
+        "h": 1200
+      },
+      "aspect": "1:1",
+      "accepted_aspects": [
+        "1:1"
+      ],
+      "min": {
+        "w": 128,
+        "h": 128
+      },
+      "max": {
+        "w": null,
+        "h": null
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 5.12
+      },
+      "notes": "Required, 1-5. Transparent logos may render on white; prefer a square logo on a non-white background.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/17091269",
+          "title": "Performance Max campaigns specs and format requirements - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.pmax.logo_wide",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Performance Max asset group",
+      "name": "Performance Max logo wide",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1200,
+        "h": 300
+      },
+      "aspect": "4:1",
+      "accepted_aspects": [
+        "4:1"
+      ],
+      "min": {
+        "w": 512,
+        "h": 128
+      },
+      "max": {
+        "w": null,
+        "h": null
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 5.12
+      },
+      "notes": "Optional, 1-5. Transparent logos may render on white; prefer a square logo on a non-white background.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/17091269",
+          "title": "Performance Max campaigns specs and format requirements - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.pmax.video.horizontal",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Performance Max asset group",
+      "name": "Performance Max video, 16:9",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1920,
+        "h": 1080
+      },
+      "aspect": "16:9",
+      "accepted_aspects": [
+        "16:9",
+        "1:1",
+        "9:16"
+      ],
+      "video": {
+        "types": [
+          "mpg",
+          "mp4",
+          "mov",
+          "webm"
+        ],
+        "codec": null,
+        "audio": null,
+        "fps": null,
+        "min_s": 10,
+        "max_s": null,
+        "recommended_s": null,
+        "max_mb": 256000,
+        "captions": null
+      },
+      "notes": "10 s or longer; up to 15 videos per asset group, 1 of each orientation recommended. Without uploaded videos Google may auto-generate them from your assets. Resolutions are the general YouTube video recommendations (13547298). Hosted on YouTube.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/17091269",
+          "title": "Performance Max campaigns specs and format requirements - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/13547298",
+          "title": "About video ad specs - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.pmax.video.square",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Performance Max asset group",
+      "name": "Performance Max video, 1:1",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1080
+      },
+      "aspect": "1:1",
+      "accepted_aspects": [
+        "16:9",
+        "1:1",
+        "9:16"
+      ],
+      "video": {
+        "types": [
+          "mpg",
+          "mp4",
+          "mov",
+          "webm"
+        ],
+        "codec": null,
+        "audio": null,
+        "fps": null,
+        "min_s": 10,
+        "max_s": null,
+        "recommended_s": null,
+        "max_mb": 256000,
+        "captions": null
+      },
+      "notes": "10 s or longer; up to 15 videos per asset group, 1 of each orientation recommended. Without uploaded videos Google may auto-generate them from your assets. Resolutions are the general YouTube video recommendations (13547298). Hosted on YouTube.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/17091269",
+          "title": "Performance Max campaigns specs and format requirements - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/13547298",
+          "title": "About video ad specs - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.pmax.video.vertical",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Performance Max asset group",
+      "name": "Performance Max video, 9:16",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1920
+      },
+      "aspect": "9:16",
+      "accepted_aspects": [
+        "16:9",
+        "1:1",
+        "9:16"
+      ],
+      "video": {
+        "types": [
+          "mpg",
+          "mp4",
+          "mov",
+          "webm"
+        ],
+        "codec": null,
+        "audio": null,
+        "fps": null,
+        "min_s": 10,
+        "max_s": null,
+        "recommended_s": null,
+        "max_mb": 256000,
+        "captions": null
+      },
+      "notes": "10 s or longer; up to 15 videos per asset group, 1 of each orientation recommended. Without uploaded videos Google may auto-generate them from your assets. Resolutions are the general YouTube video recommendations (13547298). Hosted on YouTube.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/17091269",
+          "title": "Performance Max campaigns specs and format requirements - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/13547298",
+          "title": "About video ad specs - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "youtube.instream.skippable",
+      "platform": "youtube",
+      "surface": "ad",
+      "placement": "Skippable in-stream ad",
+      "name": "Skippable in-stream ad, 16:9",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1920,
+        "h": 1080
+      },
+      "aspect": "16:9",
+      "accepted_aspects": [
+        "16:9",
+        "9:16",
+        "1:1",
+        "4:3"
+      ],
+      "min": {
+        "w": 1280,
+        "h": 720
+      },
+      "video": {
+        "types": [
+          "mpg",
+          "mp4",
+          "mov",
+          "webm",
+          "wmv",
+          "avi",
+          "flv",
+          "3gpp",
+          "hevc"
+        ],
+        "codec": null,
+        "audio": null,
+        "fps": null,
+        "min_s": null,
+        "max_s": null,
+        "recommended_s": [
+          15,
+          15
+        ],
+        "max_mb": 256000,
+        "captions": null
+      },
+      "safe_zone": {
+        "top": null,
+        "bottom": null,
+        "left": null,
+        "right": null,
+        "units": "px at canvas",
+        "note": "Google provides safe-zone diagrams and downloadable transparent PNG templates (answer 13547298); no numeric margins in text. Not transcribed - overlay the official template."
+      },
+      "notes": "Viewers can skip after 5 s. No max length (<3 min recommended). 15 s recommended in Efficient Reach. Companion banner 300x60 (desktop only) may accompany it - see youtube.companion_banner. Min resolution 1280x720 (SD 640x480 accepted, not recommended).",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/2375464",
+          "title": "About video ad formats - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/17091270",
+          "title": "Video ads specs and format requirements - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/13547298",
+          "title": "About video ad specs - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "youtube.instream.nonskippable",
+      "platform": "youtube",
+      "surface": "ad",
+      "placement": "Non-skippable in-stream ad",
+      "name": "Non-skippable in-stream ad, 16:9",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1920,
+        "h": 1080
+      },
+      "aspect": "16:9",
+      "accepted_aspects": [
+        "16:9",
+        "9:16",
+        "1:1"
+      ],
+      "min": {
+        "w": 1280,
+        "h": 720
+      },
+      "video": {
+        "types": [
+          "mpg",
+          "mp4",
+          "mov",
+          "webm",
+          "wmv",
+          "avi",
+          "flv",
+          "3gpp",
+          "hevc"
+        ],
+        "codec": null,
+        "audio": null,
+        "fps": null,
+        "min_s": null,
+        "max_s": 60,
+        "recommended_s": null,
+        "max_mb": 256000,
+        "captions": null
+      },
+      "safe_zone": {
+        "top": null,
+        "bottom": null,
+        "left": null,
+        "right": null,
+        "units": "px at canvas",
+        "note": "Google provides safe-zone diagrams and downloadable transparent PNG templates (answer 13547298); no numeric margins in text. Not transcribed - overlay the official template."
+      },
+      "notes": "60 s or shorter; table says 15-60 s depending on campaign subtype. Unskippable.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/2375464",
+          "title": "About video ad formats - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/17091270",
+          "title": "Video ads specs and format requirements - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/13547298",
+          "title": "About video ad specs - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "youtube.bumper",
+      "platform": "youtube",
+      "surface": "ad",
+      "placement": "Bumper ad",
+      "name": "Bumper ad, 16:9",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1920,
+        "h": 1080
+      },
+      "aspect": "16:9",
+      "accepted_aspects": [
+        "16:9",
+        "9:16",
+        "1:1"
+      ],
+      "min": {
+        "w": 1280,
+        "h": 720
+      },
+      "video": {
+        "types": [
+          "mpg",
+          "mp4",
+          "mov",
+          "webm",
+          "wmv",
+          "avi",
+          "flv",
+          "3gpp",
+          "hevc"
+        ],
+        "codec": null,
+        "audio": null,
+        "fps": null,
+        "min_s": 5,
+        "max_s": 6,
+        "recommended_s": [
+          6,
+          6
+        ],
+        "max_mb": 256000,
+        "captions": null
+      },
+      "safe_zone": {
+        "top": null,
+        "bottom": null,
+        "left": null,
+        "right": null,
+        "units": "px at canvas",
+        "note": "Google provides safe-zone diagrams and downloadable transparent PNG templates (answer 13547298); no numeric margins in text. Not transcribed - overlay the official template."
+      },
+      "notes": "Non-skippable, 6 s max (>=5 s minimum).",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/2375464",
+          "title": "About video ad formats - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/17091270",
+          "title": "Video ads specs and format requirements - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/13547298",
+          "title": "About video ad specs - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "youtube.infeed",
+      "platform": "youtube",
+      "surface": "ad",
+      "placement": "In-feed video ad",
+      "name": "In-feed video ad, 16:9",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1920,
+        "h": 1080
+      },
+      "aspect": "16:9",
+      "accepted_aspects": [
+        "16:9",
+        "9:16",
+        "1:1"
+      ],
+      "min": {
+        "w": 1280,
+        "h": 720
+      },
+      "video": {
+        "types": [
+          "mpg",
+          "mp4",
+          "mov",
+          "webm",
+          "wmv",
+          "avi",
+          "flv",
+          "3gpp",
+          "hevc"
+        ],
+        "codec": null,
+        "audio": null,
+        "fps": null,
+        "min_s": null,
+        "max_s": null,
+        "recommended_s": [
+          15,
+          15
+        ],
+        "max_mb": 256000,
+        "captions": null
+      },
+      "safe_zone": {
+        "top": null,
+        "bottom": null,
+        "left": null,
+        "right": null,
+        "units": "px at canvas",
+        "note": "Google provides safe-zone diagrams and downloadable transparent PNG templates (answer 13547298); no numeric margins in text. Not transcribed - overlay the official template."
+      },
+      "notes": "No max length; 15 s recommended. Also 9:16 (1080x1920) and 1:1 (1080x1080). Thumbnail 1280x720 required-ish (see youtube.thumbnail). Headline/description lines may be hidden on desktop/TV watch page.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/2375464",
+          "title": "About video ad formats - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/17091270",
+          "title": "Video ads specs and format requirements - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/13547298",
+          "title": "About video ad specs - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official",
+      "text": {
+        "headline": {
+          "max": 40,
+          "lines": 2
+        },
+        "description": {
+          "max": 35,
+          "lines": 2
+        }
+      }
+    },
+    {
+      "id": "youtube.shorts",
+      "platform": "youtube",
+      "surface": "ad",
+      "placement": "YouTube Shorts ad",
+      "name": "YouTube Shorts ad, 9:16",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1920
+      },
+      "aspect": "9:16",
+      "accepted_aspects": [
+        "9:16"
+      ],
+      "min": {
+        "w": 720,
+        "h": 1280
+      },
+      "video": {
+        "types": [
+          "mpg",
+          "mp4",
+          "mov",
+          "webm",
+          "wmv",
+          "avi",
+          "flv",
+          "3gpp",
+          "hevc"
+        ],
+        "codec": null,
+        "audio": null,
+        "fps": null,
+        "min_s": null,
+        "max_s": 60,
+        "recommended_s": [
+          6,
+          60
+        ],
+        "max_mb": 256000,
+        "captions": null
+      },
+      "safe_zone": {
+        "top": null,
+        "bottom": null,
+        "left": null,
+        "right": null,
+        "units": "px at canvas",
+        "note": "Google provides safe-zone diagrams and downloadable transparent PNG templates (answer 13547298); no numeric margins in text. Not transcribed - overlay the official template."
+      },
+      "notes": "Vertical 1080x1920. <60 s recommended (formats page); 6-60 s in Efficient Reach; Demand Gen Shorts max 1 minute, 10-20 s recommended. Users can swipe away immediately; view counts at 10 s. Bottom of frame carries CTA/headline overlay - use Google's vertical safe-zone template (no numeric margins published in text). Served via Video Reach, Demand Gen, PMax, App.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/2375464",
+          "title": "About video ad formats - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/17091270",
+          "title": "Video ads specs and format requirements - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/13547298",
+          "title": "About video ad specs - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/13704860",
+          "title": "Demand Gen campaign creative: Asset specifications and ad format guidelines - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "youtube.masthead",
+      "platform": "youtube",
+      "surface": "ad",
+      "placement": "YouTube Masthead",
+      "name": "YouTube Masthead, 16:9",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1920,
+        "h": 1080
+      },
+      "aspect": "16:9",
+      "accepted_aspects": [
+        "16:9"
+      ],
+      "min": {
+        "w": 1280,
+        "h": 720
+      },
+      "video": {
+        "types": [
+          "mpg",
+          "mp4",
+          "mov",
+          "webm",
+          "wmv",
+          "avi",
+          "flv",
+          "3gpp",
+          "hevc"
+        ],
+        "codec": null,
+        "audio": null,
+        "fps": null,
+        "min_s": null,
+        "max_s": null,
+        "recommended_s": null,
+        "max_mb": 256000,
+        "captions": null
+      },
+      "safe_zone": {
+        "top": null,
+        "bottom": null,
+        "left": null,
+        "right": null,
+        "units": "px at canvas",
+        "note": "Google provides safe-zone diagrams and downloadable transparent PNG templates (answer 13547298); no numeric margins in text. Not transcribed - overlay the official template."
+      },
+      "notes": "Reservation only. No max length (>10 s recommended). Desktop autoplays muted up to 30 s; mobile autoplays full duration.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/2375464",
+          "title": "About video ad formats - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/17091270",
+          "title": "Video ads specs and format requirements - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/13547298",
+          "title": "About video ad specs - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official",
+      "text": {
+        "headline": {
+          "max": 40
+        },
+        "description": {
+          "max": 60
+        },
+        "cta": {
+          "max": 15
+        }
+      }
+    },
+    {
+      "id": "youtube.companion_banner",
+      "platform": "youtube",
+      "surface": "ad",
+      "placement": "Companion banner (desktop watch page)",
+      "name": "Companion banner 300x60",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 300,
+        "h": 60
+      },
+      "aspect": "5:1",
+      "accepted_aspects": [
+        "5:1"
+      ],
+      "min": {
+        "w": 300,
+        "h": 60
+      },
+      "max": {
+        "w": 300,
+        "h": 60
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "gif",
+          "png"
+        ],
+        "max_mb": 0.15
+      },
+      "notes": "Desktop only. Shown alongside in-stream ads. If not uploaded, an auto-generated banner from channel videos may show.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/17091270",
+          "title": "Video ads specs and format requirements - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/13547298",
+          "title": "About video ad specs - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "youtube.thumbnail",
+      "platform": "youtube",
+      "surface": "ad",
+      "placement": "Video ad thumbnail",
+      "name": "Video thumbnail 16:9",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1280,
+        "h": 720
+      },
+      "aspect": "16:9",
+      "accepted_aspects": [
+        "16:9"
+      ],
+      "min": {
+        "w": 1280,
+        "h": 640
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "gif",
+          "png"
+        ],
+        "max_mb": 2
+      },
+      "notes": "Under 2 MB for videos (10 MB for podcasts).",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/17091270",
+          "title": "Video ads specs and format requirements - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/13547298",
+          "title": "About video ad specs - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.search.rsa",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Google Search (responsive search ad)",
+      "name": "Responsive search ad",
+      "media": [
+        "text"
+      ],
+      "text": {
+        "headline": {
+          "max": 30,
+          "count": [
+            3,
+            15
+          ]
+        },
+        "description": {
+          "max": 90,
+          "count": [
+            2,
+            4
+          ]
+        },
+        "path": {
+          "max": 15,
+          "count": [
+            0,
+            2
+          ]
+        },
+        "final_url": {
+          "max": 2048
+        }
+      },
+      "notes": "Headlines 30 chars, 3-15; descriptions 90 chars, 2-4; display paths 15 chars each (two path fields per the PMax spec table; the RSA page doesn't state the count). CJK double-width chars count as 2. The new Search spec page also lists an 'Ad assets' block with 25-char headlines x 1-20 and a 1:1 business logo - its exact scope (likely AI-generated/AI Max text assets) is not explained; not an RSA limit.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/7684791",
+          "title": "About responsive search ads - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/17092074",
+          "title": "Search campaigns specs and format requirements - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/17091269",
+          "title": "Performance Max campaigns specs and format requirements - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.search.sitelink",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Search / PMax / Video / Demand Gen (sitelink asset)",
+      "name": "Sitelink asset",
+      "media": [
+        "text"
+      ],
+      "text": {
+        "link_text": {
+          "max": 25,
+          "max_double_width": 12
+        },
+        "description1": {
+          "max": 35
+        },
+        "description2": {
+          "max": 35
+        }
+      },
+      "notes": "Link text 25 (12 in CJK). Description lines 35 each, optional but if one is set both must be (API). Up to 6 shown on desktop / 8 on mobile for Search & PMax; up to 4 for Video and Demand Gen; at least 2 must be eligible to show. Recommend 6+ with descriptions.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/2375416",
+          "title": "About sitelink assets - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://developers.google.com/google-ads/api/reference/rpc/v22/SitelinkAsset",
+          "title": "SitelinkAsset - Google Ads API reference (v22)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.search.callout",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Search (callout asset)",
+      "name": "Callout asset",
+      "media": [
+        "text"
+      ],
+      "text": {
+        "callout": {
+          "max": 25,
+          "max_double_width": 12
+        }
+      },
+      "notes": "25 chars (12 CJK). Up to 10 can show with an ad depending on space; no creation cap stated.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/6079510",
+          "title": "About callout assets - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://developers.google.com/google-ads/api/reference/rpc/v22/CalloutAsset",
+          "title": "CalloutAsset - Google Ads API reference (v22)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.search.structured_snippet",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Search (structured snippet asset)",
+      "name": "Structured snippet asset",
+      "media": [
+        "text"
+      ],
+      "text": {
+        "value": {
+          "max": 25,
+          "count": [
+            3,
+            10
+          ]
+        }
+      },
+      "notes": "Header from 13 predefined values (Amenities, Brands, Courses, Degree programs, Destinations, Featured hotels, Insurance coverage, Models, Neighborhoods, Service catalog, Shows, Styles, Types). 3-10 values, each 1-25 chars (API); 4+ recommended. Up to 2 headers show on desktop, 1 on mobile.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/6280012",
+          "title": "About structured snippet assets - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://developers.google.com/google-ads/api/reference/rpc/v22/StructuredSnippetAsset",
+          "title": "StructuredSnippetAsset - Google Ads API reference (v22)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.search.image.square",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Google Search (image asset)",
+      "name": "Search image asset, 1:1",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1200,
+        "h": 1200
+      },
+      "aspect": "1:1",
+      "accepted_aspects": [
+        "1:1",
+        "1.91:1"
+      ],
+      "min": {
+        "w": 300,
+        "h": 300
+      },
+      "max": {
+        "w": null,
+        "h": null
+      },
+      "file": {
+        "types": [
+          "png",
+          "jpg"
+        ],
+        "max_mb": 5.12
+      },
+      "safe_zone": {
+        "top": 120,
+        "bottom": 120,
+        "left": 120,
+        "right": 120,
+        "units": "px at canvas",
+        "note": "Keep important content in the center 80% of the image (may be cropped)."
+      },
+      "notes": "Required for image assets. Up to 20 images per campaign; 4+ unique recommended incl. 1 square + 1 landscape. Eligibility: account open 60+ days, good policy history, active campaigns, text ads with Search spend in last 30 days, eligible vertical.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/9566341",
+          "title": "About image assets (Search) - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/17092074",
+          "title": "Search campaigns specs and format requirements - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.search.image.landscape",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Google Search (image asset)",
+      "name": "Search image asset, 1.91:1",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1200,
+        "h": 628
+      },
+      "aspect": "1.91:1",
+      "accepted_aspects": [
+        "1:1",
+        "1.91:1"
+      ],
+      "min": {
+        "w": 600,
+        "h": 314
+      },
+      "max": {
+        "w": null,
+        "h": null
+      },
+      "file": {
+        "types": [
+          "png",
+          "jpg"
+        ],
+        "max_mb": 5.12
+      },
+      "safe_zone": {
+        "top": 63,
+        "bottom": 63,
+        "left": 120,
+        "right": 120,
+        "units": "px at canvas",
+        "note": "Keep important content in the center 80% of the image (may be cropped)."
+      },
+      "notes": "Optional but recommended. Up to 20 images per campaign; 4+ unique recommended incl. 1 square + 1 landscape. Eligibility: account open 60+ days, good policy history, active campaigns, text ads with Search spend in last 30 days, eligible vertical.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/9566341",
+          "title": "About image assets (Search) - Google Ads Help",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/google-ads/answer/17092074",
+          "title": "Search campaigns specs and format requirements - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "google.search.business_logo",
+      "platform": "google",
+      "surface": "ad",
+      "placement": "Google Search (business logo)",
+      "name": "Business logo for Search",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1200,
+        "h": 1200
+      },
+      "aspect": "1:1",
+      "accepted_aspects": [
+        "1:1"
+      ],
+      "min": {
+        "w": 128,
+        "h": 128
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": null
+      },
+      "text": {
+        "business_name": {
+          "max": 25
+        }
+      },
+      "notes": "1 logo; max file size not stated on Search spec page (null). Business name 25 chars.",
+      "sources": [
+        {
+          "url": "https://support.google.com/google-ads/answer/17092074",
+          "title": "Search campaigns specs and format requirements - Google Ads Help",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "reddit.feed.image.landscape_4x3",
+      "platform": "reddit",
+      "surface": "ad",
+      "placement": "Feed",
+      "name": "Reddit image ad, 4:3",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1440,
+        "h": 1080
+      },
+      "aspect": "4:3",
+      "accepted_aspects": [
+        "4:3",
+        "1:1",
+        "4:5",
+        "16:9"
+      ],
+      "min": {
+        "w": null,
+        "h": null
+      },
+      "max": {
+        "w": null,
+        "h": null
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 3
+      },
+      "text": {
+        "headline": {
+          "max": 300,
+          "truncates_at": 100,
+          "note": "Reddit recommends <=100 chars, or <=80 if truncation is a concern"
+        }
+      },
+      "notes": "Reddit Feed promoted post. JPG/PNG, card image max 3 MB. Any aspect ratio accepted but non-recommended ratios may letterbox. Optional 4:3 thumbnail 400x300 (500 KB) - auto-generated if not supplied; shown in classic/compact view and Conversation. CTA from fixed list (Learn More, Shop Now, Sign Up, ...). Destination URLs must be HTTPS and not end with ';'. Recommended card ratio. Minimum size not published (null). Older Reddit pages cite a 1200x628 card image; current spec article lists the four ratios above. GIFs (create-post guidance): <3 MB, 3-10 s.",
+      "sources": [
+        {
+          "url": "https://business.reddithelp.com/articles/Knowledge/Reddit-Ad-Unit-Specifications",
+          "title": "Knowledge: Ad Unit Specifications - Reddit Ads Help Center",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://business.reddithelp.com/en/categories/campaign-setup/reddit-ad-unit-specifications",
+          "title": "Reddit Ad Unit Specifications - Reddit Ads Help Center (returns 401 to direct fetch; read via search index)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "reddit.feed.image.square",
+      "platform": "reddit",
+      "surface": "ad",
+      "placement": "Feed",
+      "name": "Reddit image ad, 1:1",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1080
+      },
+      "aspect": "1:1",
+      "accepted_aspects": [
+        "4:3",
+        "1:1",
+        "4:5",
+        "16:9"
+      ],
+      "min": {
+        "w": null,
+        "h": null
+      },
+      "max": {
+        "w": null,
+        "h": null
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 3
+      },
+      "text": {
+        "headline": {
+          "max": 300,
+          "truncates_at": 100,
+          "note": "Reddit recommends <=100 chars, or <=80 if truncation is a concern"
+        }
+      },
+      "notes": "Reddit Feed promoted post. JPG/PNG, card image max 3 MB. Any aspect ratio accepted but non-recommended ratios may letterbox. Optional 4:3 thumbnail 400x300 (500 KB) - auto-generated if not supplied; shown in classic/compact view and Conversation. CTA from fixed list (Learn More, Shop Now, Sign Up, ...). Destination URLs must be HTTPS and not end with ';'.  Minimum size not published (null). Older Reddit pages cite a 1200x628 card image; current spec article lists the four ratios above. GIFs (create-post guidance): <3 MB, 3-10 s.",
+      "sources": [
+        {
+          "url": "https://business.reddithelp.com/articles/Knowledge/Reddit-Ad-Unit-Specifications",
+          "title": "Knowledge: Ad Unit Specifications - Reddit Ads Help Center",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://business.reddithelp.com/en/categories/campaign-setup/reddit-ad-unit-specifications",
+          "title": "Reddit Ad Unit Specifications - Reddit Ads Help Center (returns 401 to direct fetch; read via search index)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "reddit.feed.image.portrait",
+      "platform": "reddit",
+      "surface": "ad",
+      "placement": "Feed",
+      "name": "Reddit image ad, 4:5",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1350
+      },
+      "aspect": "4:5",
+      "accepted_aspects": [
+        "4:3",
+        "1:1",
+        "4:5",
+        "16:9"
+      ],
+      "min": {
+        "w": null,
+        "h": null
+      },
+      "max": {
+        "w": null,
+        "h": null
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 3
+      },
+      "text": {
+        "headline": {
+          "max": 300,
+          "truncates_at": 100,
+          "note": "Reddit recommends <=100 chars, or <=80 if truncation is a concern"
+        }
+      },
+      "notes": "Reddit Feed promoted post. JPG/PNG, card image max 3 MB. Any aspect ratio accepted but non-recommended ratios may letterbox. Optional 4:3 thumbnail 400x300 (500 KB) - auto-generated if not supplied; shown in classic/compact view and Conversation. CTA from fixed list (Learn More, Shop Now, Sign Up, ...). Destination URLs must be HTTPS and not end with ';'. Some Reddit pages describe 4:5 as mobile-only (secondary). Minimum size not published (null). Older Reddit pages cite a 1200x628 card image; current spec article lists the four ratios above. GIFs (create-post guidance): <3 MB, 3-10 s.",
+      "sources": [
+        {
+          "url": "https://business.reddithelp.com/articles/Knowledge/Reddit-Ad-Unit-Specifications",
+          "title": "Knowledge: Ad Unit Specifications - Reddit Ads Help Center",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://business.reddithelp.com/en/categories/campaign-setup/reddit-ad-unit-specifications",
+          "title": "Reddit Ad Unit Specifications - Reddit Ads Help Center (returns 401 to direct fetch; read via search index)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "reddit.feed.image.landscape_16x9",
+      "platform": "reddit",
+      "surface": "ad",
+      "placement": "Feed",
+      "name": "Reddit image ad, 16:9",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1920,
+        "h": 1080
+      },
+      "aspect": "16:9",
+      "accepted_aspects": [
+        "4:3",
+        "1:1",
+        "4:5",
+        "16:9"
+      ],
+      "min": {
+        "w": null,
+        "h": null
+      },
+      "max": {
+        "w": null,
+        "h": null
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 3
+      },
+      "text": {
+        "headline": {
+          "max": 300,
+          "truncates_at": 100,
+          "note": "Reddit recommends <=100 chars, or <=80 if truncation is a concern"
+        }
+      },
+      "notes": "Reddit Feed promoted post. JPG/PNG, card image max 3 MB. Any aspect ratio accepted but non-recommended ratios may letterbox. Optional 4:3 thumbnail 400x300 (500 KB) - auto-generated if not supplied; shown in classic/compact view and Conversation. CTA from fixed list (Learn More, Shop Now, Sign Up, ...). Destination URLs must be HTTPS and not end with ';'.  Minimum size not published (null). Older Reddit pages cite a 1200x628 card image; current spec article lists the four ratios above. GIFs (create-post guidance): <3 MB, 3-10 s.",
+      "sources": [
+        {
+          "url": "https://business.reddithelp.com/articles/Knowledge/Reddit-Ad-Unit-Specifications",
+          "title": "Knowledge: Ad Unit Specifications - Reddit Ads Help Center",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://business.reddithelp.com/en/categories/campaign-setup/reddit-ad-unit-specifications",
+          "title": "Reddit Ad Unit Specifications - Reddit Ads Help Center (returns 401 to direct fetch; read via search index)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "reddit.feed.video",
+      "platform": "reddit",
+      "surface": "ad",
+      "placement": "Feed",
+      "name": "Reddit video ad",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1350
+      },
+      "aspect": "4:5",
+      "accepted_aspects": [
+        "1:1",
+        "4:5",
+        "4:3",
+        "16:9"
+      ],
+      "video": {
+        "types": [
+          "mp4",
+          "mov"
+        ],
+        "codec": null,
+        "audio": null,
+        "fps": [
+          null,
+          30
+        ],
+        "min_s": null,
+        "max_s": null,
+        "recommended_s": [
+          5,
+          30
+        ],
+        "max_mb": 1000,
+        "captions": "autoplays muted in feed; burned-in captions advisable (not a Reddit spec)"
+      },
+      "safe_zone": {
+        "top": null,
+        "bottom": null,
+        "left": null,
+        "right": null,
+        "units": "px at canvas",
+        "note": "Reddit publishes no safe-zone numbers in its help center (null)."
+      },
+      "text": {
+        "headline": {
+          "max": 300,
+          "truncates_at": 100,
+          "note": "Reddit recommends <=100 chars, or <=80 if truncation is a concern"
+        }
+      },
+      "notes": "MOV/MP4, <=30 fps, max 1 GB, ProRes not accepted, 5-30 s recommended. Canvas 4:5 chosen for mobile feed coverage; Reddit lists no single recommended video ratio (4:3 1440x1080 is the recommended card ratio). Max duration not stated (null). Thumbnail optional 400x300. Video Views objective won't run on Conversation placement.",
+      "sources": [
+        {
+          "url": "https://business.reddithelp.com/articles/Knowledge/Reddit-Ad-Unit-Specifications",
+          "title": "Knowledge: Ad Unit Specifications - Reddit Ads Help Center",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://business.reddithelp.com/en/categories/campaign-setup/reddit-ad-unit-specifications",
+          "title": "Reddit Ad Unit Specifications - Reddit Ads Help Center (returns 401 to direct fetch; read via search index)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://business.reddithelp.com/en/categories/campaign-setup/post-library",
+          "title": "Post Library - Reddit Ads Help Center (read via search index)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "reddit.feed.carousel",
+      "platform": "reddit",
+      "surface": "ad",
+      "placement": "Feed",
+      "name": "Reddit carousel ad",
+      "media": [
+        "carousel",
+        "image",
+        "gif"
+      ],
+      "canvas": {
+        "w": 1200,
+        "h": 1200
+      },
+      "aspect": "1:1",
+      "accepted_aspects": [
+        "1:1",
+        "1.91:1"
+      ],
+      "file": {
+        "types": [
+          "jpg",
+          "png",
+          "gif"
+        ],
+        "max_mb": 20
+      },
+      "carousel": {
+        "min": 2,
+        "max": 6,
+        "card_aspects": [
+          "1:1",
+          "1.91:1 (desktop-only campaigns)"
+        ]
+      },
+      "text": {
+        "headline": {
+          "max": 300
+        },
+        "caption": {
+          "max": 45
+        }
+      },
+      "notes": "2-6 cards; 1200x1200 square, JPG/PNG up to 20 MB; 1200x628 landscape only for desktop-only campaigns; all cards same ratio; GIF cards <=3 MB and 3-10 s. Caption under each card 45 chars; each card needs its own HTTPS destination URL. Carousel can't run in the Conversation placement. Card count is confirmed by the fetched spec article; other card numbers came from Reddit help pages read via search index (direct fetch blocked).",
+      "sources": [
+        {
+          "url": "https://business.reddithelp.com/articles/Knowledge/Reddit-Ad-Unit-Specifications",
+          "title": "Knowledge: Ad Unit Specifications - Reddit Ads Help Center",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://business.reddithelp.com/en/categories/campaign-setup/create-an-ad-campaign",
+          "title": "Set up a Reddit Ads Campaign - Reddit Ads Help Center (read via search index)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://business.reddithelp.com/en/categories/campaign-setup/reddit-ad-unit-specifications",
+          "title": "Reddit Ad Unit Specifications - Reddit Ads Help Center (returns 401 to direct fetch; read via search index)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "reddit.conversation",
+      "platform": "reddit",
+      "surface": "ad",
+      "placement": "Conversation",
+      "name": "Reddit Conversation placement ad",
+      "media": [
+        "image",
+        "video"
+      ],
+      "canvas": {
+        "w": 400,
+        "h": 300
+      },
+      "aspect": "4:3",
+      "accepted_aspects": [
+        "4:3",
+        "1:1"
+      ],
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 0.5
+      },
+      "text": {
+        "headline": {
+          "max": 250,
+          "max_mobile": 100,
+          "truncates_at": 100
+        }
+      },
+      "notes": "Appears between comments in compact form; supply a 400x300 thumbnail since the standard card image renders poorly there. Headline 100 chars max on mobile/mWeb, 250 on desktop; overflow is cut off. Not available for carousel, gallery, text posts, managed takeovers, or the Video Views objective. Numbers from Ad Placements page read via search index (direct fetch 401). Category Takeover Conversation (managed): headline 50 recommended, truncates at 145; card image 1 MB.",
+      "sources": [
+        {
+          "url": "https://business.reddithelp.com/en/categories/campaign-setup/ad-placements",
+          "title": "Ad Placements - Reddit Ads Help Center (returns 401 to direct fetch; read via search index)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://business.reddithelp.com/articles/Knowledge/Reddit-Ad-Unit-Specifications",
+          "title": "Knowledge: Ad Unit Specifications - Reddit Ads Help Center",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "reddit.thumbnail",
+      "platform": "reddit",
+      "surface": "ad",
+      "placement": "Feed (classic/compact) and Conversation",
+      "name": "Reddit ad thumbnail",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 400,
+        "h": 300
+      },
+      "aspect": "4:3",
+      "accepted_aspects": [
+        "4:3"
+      ],
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 0.5
+      },
+      "notes": "Optional, auto-generated for all types except free-form; replace with your own.",
+      "sources": [
+        {
+          "url": "https://business.reddithelp.com/articles/Knowledge/Reddit-Ad-Unit-Specifications",
+          "title": "Knowledge: Ad Unit Specifications - Reddit Ads Help Center",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "reddit.feed.freeform",
+      "platform": "reddit",
+      "surface": "ad",
+      "placement": "Feed",
+      "name": "Reddit free-form ad",
+      "media": [
+        "image",
+        "video",
+        "text"
+      ],
+      "text": {
+        "headline": {
+          "max": 300
+        },
+        "body": {
+          "max": 40000
+        }
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 3
+      },
+      "notes": "Rich text post with up to 20 images and 5 videos and 40,000 characters of body. No auto thumbnail. Per-media size limits assumed same as Feed (assumed: not confirmed for free-form).",
+      "sources": [
+        {
+          "url": "https://business.reddithelp.com/articles/Knowledge/Reddit-Ad-Unit-Specifications",
+          "title": "Knowledge: Ad Unit Specifications - Reddit Ads Help Center",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "reddit.takeover.sidebar",
+      "platform": "reddit",
+      "surface": "ad",
+      "placement": "Sidebar Takeover (managed)",
+      "name": "Reddit Sidebar Takeover, above the fold",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1920
+      },
+      "aspect": "9:16",
+      "accepted_aspects": [
+        "9:16",
+        "1:1",
+        "4:5",
+        "1:2",
+        "6:5"
+      ],
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 0.15
+      },
+      "notes": "Managed/CPM only. ATF 1080x1920; also 1080x1080, 1080x1350, 300x600, 300x250. BTF 1:1 1080x1080. Max 150 KB. No animated GIF or ProRes.",
+      "sources": [
+        {
+          "url": "https://business.reddithelp.com/articles/Knowledge/Reddit-Ad-Unit-Specifications",
+          "title": "Knowledge: Ad Unit Specifications - Reddit Ads Help Center",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    }
+  ]
+}

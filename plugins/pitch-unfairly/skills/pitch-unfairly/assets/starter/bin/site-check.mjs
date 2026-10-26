@@ -2,7 +2,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { readdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { checkSite } from './site/check.mjs';
+import { CURRENT_PIN, checkAgainstLatest, checkSite } from './site/check.mjs';
 import { includeParts } from './site/fill.mjs';
 
 export async function loadSite(root = '.') {
@@ -29,12 +29,23 @@ export async function loadSite(root = '.') {
 }
 
 if (process.argv[1]?.endsWith('site-check.mjs')) {
-  const { errors, warnings } = checkSite(await loadSite());
+  const loaded = await loadSite();
+  // --latest: the newest engine's rules, all blocking, without re-pinning; marks what's new.
+  const latest = process.argv.includes('--latest');
+  let errors;
+  let warnings;
+  let fresh = new Set();
+  if (latest) {
+    const r = checkAgainstLatest(loaded);
+    ({ errors, warnings } = r.latest);
+    fresh = new Set(r.fresh);
+    console.log(`Checking against ${CURRENT_PIN}, every rule blocking${loaded.site.engine && loaded.site.engine !== CURRENT_PIN ? ` (this site is pinned ${loaded.site.engine})` : ''}.`);
+  } else ({ errors, warnings } = checkSite(loaded));
   warnings.forEach((w) => console.log(`  ! ${w}`));
-  errors.forEach((e) => console.error(`  ✗ ${e}`));
+  errors.forEach((e) => console.error(`  ✗ ${fresh.has(e) ? `[new in ${CURRENT_PIN}] ` : ''}${e}`));
   if (errors.length) {
-    console.error(`${errors.length} error(s).`);
+    console.error(`${errors.length} error(s)${fresh.size ? `, ${fresh.size} of them new against the pin (a warning there; npm run site:upgrade re-pins)` : ''}.`);
     process.exit(1);
   }
-  console.log(`Site source is clean${warnings.length ? ` (${warnings.length} warning(s) to read)` : ''}.`);
+  console.log(`Site source is clean${latest ? ` on ${CURRENT_PIN}` : ''}${warnings.length ? ` (${warnings.length} warning(s) to read)` : ''}.`);
 }

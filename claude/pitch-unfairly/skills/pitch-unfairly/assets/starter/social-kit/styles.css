@@ -1,0 +1,8 @@
+/* This campaign's own styles: the moments' design. Read the brand tokens (var(--accent), var(--font-display) ...). */
+.m-card{width:600px;height:440px;padding:40px 44px;border-radius:var(--radius);background:var(--paper);box-shadow:var(--shadow-focal);display:grid;grid-template-rows:auto auto 1fr;gap:10px}
+.m-k{font:600 20px/1 var(--font-body);color:var(--ink-muted)}
+.m-n{font:var(--display-weight) 120px/0.9 var(--font-display);letter-spacing:-.05em;color:var(--ink);font-variant-numeric:tabular-nums}
+.m-n small{font-size:.4em;margin-left:.08em;color:var(--ink-muted)}
+.m-bars{display:flex;align-items:flex-end;gap:14px;height:100%}
+.m-bars i{flex:1;border-radius:8px 8px 0 0;background:color-mix(in oklab,var(--accent) 22%,var(--paper));transform-origin:50% 100%}
+.m-bars i:last-child{background:var(--accent)}

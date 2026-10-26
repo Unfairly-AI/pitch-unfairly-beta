@@ -4,18 +4,20 @@
 // errors, writes the PDF (dist-site/deck.pdf, one 16:9 page per section, like
 // a deck), and stamps a clean pass.
 //
-//   node bin/site-audit.mjs        screenshots land in artifacts/site/
+//   node bin/site-audit.mjs            screenshots land in artifacts/site/
+//   node bin/site-audit.mjs --latest   as if pinned to this engine: every rule blocks, and
+//                                      what the site's own pin doesn't block is marked new
 import puppeteer from 'puppeteer';
 import { createHash } from 'node:crypto';
 import { mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { checkSite } from './site/check.mjs';
+import { CURRENT_PIN, checkAgainstLatest, checkSite, pinnedMinorOf } from './site/check.mjs';
 import { loadSite } from './site-check.mjs';
 import { buildSite } from './site-build.mjs';
 import { serveDir } from './serve.mjs';
 import { refuseInCodexSandbox } from './browser-guard.mjs';
 import { exerciseControls, printStateProblems, selectPdfState } from './site/interact.mjs';
-import { EXTRA_WIDTHS, brandDiff, layoutProblems, motionProblems, previewProblems, qualifierProblems, visualSlop } from './site/page-lint.mjs';
+import { EXTRA_WIDTHS, PHONE_MAX, boxedTextProblems, brandDiff, layoutProblems, motionProblems, previewProblems, qualifierProblems, sampleBandProblems, sampleNames, visualSlop } from './site/page-lint.mjs';
 
 const STAMP = 'artifacts/site-audit-pass.json';
 const OUT = 'artifacts/site';
@@ -140,18 +142,27 @@ if (process.argv[1]?.endsWith('site-audit.mjs')) {
   refuseInCodexSandbox('The site audit');
   await rm(STAMP, { force: true });
   const loaded = await loadSite();
-  const source = checkSite(loaded);
+  // --latest: run this engine's checks as if the site were pinned to it, without re-pinning.
+  const latest = process.argv.includes('--latest');
+  const against = latest ? checkAgainstLatest(loaded) : null;
+  const source = against ? against.latest : checkSite(loaded);
+  const freshSource = new Set(against?.fresh ?? []);
+  if (latest) console.log(`Auditing against ${CURRENT_PIN}, every rule blocking${loaded.site.engine && loaded.site.engine !== CURRENT_PIN ? ` (this site is pinned ${loaded.site.engine})` : ''}.`);
   // The browser checks that came with engine 1.8 (controls, the PDF's story, page
   // lint) block on a site that's unpinned or pinned 1.8+, and warn on an older
-  // pin, as its pin promises. A lead sample is held to motion too.
-  const pinnedMinor = /^sites@1\.(\d+)/.exec(String(loaded.site.engine ?? ''))?.[1];
-  const strict = pinnedMinor === undefined || Number(pinnedMinor) >= 8;
+  // pin, as its pin promises; the sample band's phone check came with 1.11. A lead
+  // sample is held to motion too.
+  const pinnedMinor = pinnedMinorOf(loaded.site);
+  const pinFrom = (minor) => pinnedMinor === undefined || Number(pinnedMinor) >= minor;
+  const from = (minor) => latest || pinFrom(minor);
+  const isNew = (minor) => latest && !pinFrom(minor);
   const lead = !!loaded.site.sample?.lead;
+  const names = sampleNames(loaded.site);
   const kit = JSON.parse(await readFile('brand/brand.json', 'utf8').catch(() => 'null'));
   const references = JSON.parse(await readFile('brand/references/index.json', 'utf8').catch(() => 'null'));
   source.warnings.forEach((w) => console.log(`  ! ${w}`));
   if (source.errors.length) {
-    source.errors.forEach((e) => console.error(`  ✗ ${e}`));
+    source.errors.forEach((e) => console.error(`  ✗ ${freshSource.has(e) ? `[new in ${CURRENT_PIN}] ` : ''}${e}`));
     console.error(`Source: ${source.errors.length} error(s). Fix them, then run the audit again.`);
     process.exit(1);
   }
@@ -160,9 +171,10 @@ if (process.argv[1]?.endsWith('site-audit.mjs')) {
   const browser = await puppeteer.launch({ headless: true });
   await rm(OUT, { recursive: true, force: true });
   const problems = [];
-  const gate = (label, r) => {
+  // minor: the engine version whose rule this is (8 for the 1.8 browser checks).
+  const gate = (label, r, minor = 8) => {
     const say = (m) => (m.startsWith(label) ? m : `${label}: ${m}`);
-    for (const e of r.errors) if (strict) problems.push(say(e)); else console.log(`  ! ${say(e)}`);
+    for (const e of r.errors) if (from(minor)) problems.push(`${isNew(minor) ? `[new in ${CURRENT_PIN}] ` : ''}${say(e)}`); else console.log(`  ! ${say(e)}`);
     for (const w of r.warnings) console.log(`  ! ${say(w)}`);
   };
   try {
@@ -253,8 +265,10 @@ if (process.argv[1]?.endsWith('site-audit.mjs')) {
         gate('brand', await brandDiff(page, kit, references));
         gate('motion', await motionProblems(page, { strict: lead }));
         gate('controls', await exerciseControls(page));
+        gate('boxed text', await boxedTextProblems(page), 11);
       }
       if (mode.mobile) gate(mode.name, await layoutProblems(page, { width: mode.width, height: mode.height }));
+      if (mode.mobile && loaded.site.sample) gate(mode.name, await sampleBandProblems(page, names), 11);
       // A proposed promise and a partial total keep their qualifier in view at every width.
       gate(mode.name, await qualifierProblems(page));
       errs.forEach((e) => problems.push(`${mode.name}: ${e}`));
@@ -268,6 +282,7 @@ if (process.argv[1]?.endsWith('site-audit.mjs')) {
       await page.setViewport({ width, height: width < 600 ? 800 : 1000, isMobile: width < 600, hasTouch: width < 600, deviceScaleFactor: 1 });
       await page.goto(`${server.url}/`, { waitUntil: 'networkidle0' });
       gate(`${width}px`, await layoutProblems(page, { width }));
+      if (width < PHONE_MAX && loaded.site.sample) gate(`${width}px`, await sampleBandProblems(page, names), 11);
       gate(`${width}px`, await qualifierProblems(page));
       await page.close();
     }

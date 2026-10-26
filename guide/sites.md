@@ -2,7 +2,7 @@
 
 A site is a scrolling page published like a deck: the same link, password, named links, gallery, versions, and views (one per section instead of one per slide). Use one when the reader will scroll, compare, and try numbers on their own, such as a proposal a broker forwards, a pricing page for one customer, or a business case. Use a deck when someone will present it.
 
-Start from the toolbox, not a blank page. The starter carries a toolbox of proven components (hero, glance band, what you asked for, calculator, comparison table, plan cards, price builder, scope, tabs, stats, quotes, team, photos, statement, timeline, FAQ, close, sticky header, sample band) and two proposal templates built from them. They are the default for every common job: copy the component that does the job, then write it for this reader and this point, and adapt its layout where the point needs it. Invent a component only for a job the toolbox doesn't do. Under the components, the starter gives you the machinery that has to be right every time: the numbers, the brand, the controls, the checks, and publishing.
+Start from the toolbox, not a blank page. The starter carries a toolbox of proven components (hero, glance band, what you asked for, calculator, comparison table, plan cards, price builder, scope, tabs, stats, quotes, team, photos, statement, timeline, close, sticky header, sample band) and two proposal templates built from them. They are the default for every common job: copy the component that does the job, then write it for this reader and this point, and adapt its layout where the point needs it. Invent a component only for a job the toolbox doesn't do. Under the components, the starter gives you the machinery that has to be right every time: the numbers, the brand, the controls, the checks, and publishing.
 
 ## Understand the company before writing
 
@@ -51,15 +51,16 @@ brand/brand.json        the brand kit, as for a deck
 story.md                the story: audience, the action, and one block per section
 ```
 
-`site.json` names the engine it was built with, `"engine": "sites@1.3"`. A site keeps building with any newer 1.x, and the check refuses an engine older than its pin or a different major version, so a copy made a year from now still builds the way it did. A new site gets the current pin; update an old one's only when you've rebuilt and looked at it.
+`site.json` names the engine it was built with, `"engine": "sites@1.3"`. A site keeps building with any newer 1.x, and the check refuses an engine older than its pin or a different major version, so a copy made a year from now still builds the way it did. A new site gets the current pin; update an old one's only when you've rebuilt and looked at it. A rule that came with a newer engine blocks only from its version: on an older pin it's a warning. To see what the newest engine would block without re-pinning, run `npm run site:check -- --latest` (and `npm run site:audit -- --latest` for the browser checks): every rule blocks, and each finding the pin doesn't block is marked `[new in sites@1.N]`. `npm run site:upgrade` prints what re-pinning would newly block, as a dry run; `npm run site:upgrade -- --write` sets the pin to the current engine.
 
 Commands, from the project folder:
 
 - `npm run site:new -- data-proposal` (or `proposal`) writes `site/` from a proposal template: its sections from the toolbox in order, the header and footer, `toolbox.css`, and the example model. `--list` shows the templates.
 - `npm run site:gallery` builds every toolbox component on one page in this project's brand (`dist-gallery/`), each labelled. Look at it once the brand is in, before choosing components.
-- `npm run site:check` checks the source in a second. Run it often.
+- `npm run site:check` checks the source in a second. Run it often. `-- --latest` checks it as if pinned to the current engine.
+- `npm run site:upgrade` lists what the current engine's rules would newly block on an older pin; `-- --write` re-pins `site.json` to it.
 - `npm run site:build` builds `dist-site/`, a static folder that works on any host. Beside `index.html` it writes `index.txt`, the page as plain text for AI agents, from the same filled sections. Once published, the host serves it at `<link>/index.txt` behind the link's own gates and points agents at it from the page; decorative text that would only add noise (a marquee repeating a heading) can be marked `data-text="skip"`.
-- `npm run site:audit` checks, builds, opens the page at 390, 1280, and 1920 wide, screenshots every section into `artifacts/site/`, works every control, checks tap targets on the phone, and writes the PDF (`dist-site/deck.pdf`). Publishing needs a clean audit newer than every edit.
+- `npm run site:audit` checks, builds, opens the page at 390, 1280, and 1920 wide, screenshots every section into `artifacts/site/`, works every control, checks tap targets on the phone, and writes the PDF (`dist-site/deck.pdf`). Publishing needs a clean audit newer than every edit. `-- --latest` audits as if pinned to the current engine.
 - `npm run -s site:manifest` prints the arguments for `deck_upload_start`.
 
 ## Numbers come from the model
@@ -95,6 +96,14 @@ A headline that makes a claim has to stay true when the inputs change. "Pays for
 ## Copy is held to the deck rules
 
 A site's words get the same review a deck's do (`voice.md`), read off the page with its tokens filled in. `site:check` refuses an em dash (or a spaced en dash or double hyphen used as one), fragments strung together with middle dots, and a line that opens with a bold label and a colon. It warns, for you to read and decide, on generated-sounding words (unlock, seamless, empower, streamline, leverage and the like), "not just X but Y", a "Title: subtitle" headline, a headline over 110 characters, and an eyebrow or label that only says "Overview" or "Next steps". Attributed quoted words in a `<blockquote>`, or in an element marked `data-copy-ok` and `data-copy-source="https://..."` (a verbatim quote that keeps its own dash), are someone else's and aren't checked. The blocking rules came with `sites@1.2`; a site pinned to 1.1 sees them as warnings until it's re-pinned.
+
+From engine 1.11 `site:check` also refuses three tells a read of real samples kept finding (warnings on an older pin):
+
+- **"X, not Y" contrast lines.** "A scenario, not an estimate." "Setup follows approval, not a calendar." "Add-ons, not included." Say what the thing is and stop. "Not only", "not yet", "not least", a clause that carries on ("not because..."), quotes and the fine print pass.
+- **A FAQ section.** A section headed "Questions", "FAQ", "Your questions, answered" or "What finance teams ask before they sign", or one whose headings and toggles are mostly questions. A proposal answers each question where it comes up: the cost question in the price, the start date in the timeline. The toolbox no longer has a FAQ.
+- **Attribution hedges** on the seller's own claims: "per Northline", "as Northline publishes it", "by its own count", "according to its own...", "Northline says". State the claim; its source goes in `site.json` `sources` (and a sources footnote if the page shows one). A third party's claim ("Gartner says") and units ("per seat") pass.
+
+A sources, footnotes or legal block (a class, id or `data-section` naming it, or `<small>`, `<cite>`) is the fine print and isn't read for these. `site:audit` also warns, from 1.11, on running text set in a box: a paragraph of more than twelve words inside a container bordered on three or more sides, or a tinted panel unlike what it sits on. A card in a row of like cards, a figure, a quote, a form or calculator and a band across the page aren't boxes.
 
 The voice guide's "Simplify the copy" rule is measured too, as warnings: a hero headline over 12 words, a hero lede over 30 words or longer than one sentence, a hero with more than one button or more than two figures, a section headline over 18 words, a lede over 35, a paragraph over 60, and a sentence over 30. Detail inside `<details>`, tables and quotes doesn't count: one click away is where it belongs. Read each warning, then cut, or keep the line on purpose.
 
@@ -171,7 +180,7 @@ The toolbox is in the project at `site-toolbox/`: `toolbox.css`, one snippet per
 
 The CSS reads only the brand kit's tokens, so it takes any brand, and every class starts with `tb-`, so the site's own `styles.css` adapts it without collisions. Each component already lays out for a phone at 390 and for the PDF.
 
-A sample (`"sample": true`) carries the sample band: one slim band above the header, in the Pitch Unfairly house palette whatever the page's (a yellow, cyan or pink band in DM Sans), saying it is a sample and what's fictional, with at most one "Made by Unfairly" link. It must never share the provider's hues: set `data-sample-tone` and `data-sample-pill` from `sampleTone(brand)` in `site-toolbox/sample-tone.mjs`. **A sample is never an ad for us.** It is a proposal the seller could send, so the page carries none of Unfairly's pitch: no "Book 30 minutes" or "Email us" buttons of ours, no "yours could look like this", no who-read-it demo, no house close. Our pitch goes in the note that carries the link. From engine 1.10 `site:check` blocks these on every sample, lead or not (a warning on an older pin), and warns on a sample without the band.
+A sample (`"sample": true`) carries the sample band: one slim band above the header, in the Pitch Unfairly house palette whatever the page's (a yellow, cyan or pink band in DM Sans), saying it is a sample and what's fictional, with at most one "Made by Unfairly" link, to an Unfairly home page (`facts.sample.made_by_href`, `https://unfairly.ai/` in the toolbox). It must never share the provider's hues: set `data-sample-tone` and `data-sample-pill` from `sampleTone(brand)` in `site-toolbox/sample-tone.mjs`. **A sample is never an ad for us.** It is a proposal the seller could send, so the page carries none of Unfairly's pitch: no "Book 30 minutes" or "Email us" buttons of ours, no "yours could look like this", no who-read-it demo, no house close. Our pitch goes in the note that carries the link. From engine 1.10 `site:check` blocks these on every sample, lead or not (a warning on an older pin), and warns on a sample without the band. From 1.11 it also blocks a band link (on screen or in the PDF strip) that goes anywhere but an Unfairly home page, whatever its label: a booking calendar (calendly.com, cal.com), `mailto:`, `tel:`, a claim, sign-up or app flow (`app.unfairly.ai/claim`) or another host; and a PDF strip that prints our contact (`bob@`, `@unfairly.ai`, calendly). The link's facts are `made_by_href` and `made_by_print`; the old `book_href` and `book_print` still fill them, with a warning to rename. On a phone (390 and 320 wide) `site:audit` checks the band still names the seller and the buyer ("Sample: Northline for Harlow Services.") and that its link is in view, not hidden, zero-size or clipped.
 
 | Job | Component | What it holds |
 |---|---|---|
@@ -193,7 +202,6 @@ A sample (`"sample": true`) carries the sample band: one slim band above the hea
 | The client's world | `photos` | One lead photo and two beside it, captioned, from the client's own site; stock only for a gap, credited |
 | The turn in the argument | `statement` | One sentence set big, once a page |
 | The path to the start | `timeline` | Four to six dated steps with owners, today marked |
-| Questions | `faq` | Four to eight questions in an accordion |
 | The ask | `close` | One action, two or three steps, who to contact, Save as PDF |
 | Navigation | `header` | Mark, five to seven nav links, one button |
 | A sample | `sample` (the band in `header.html`, `parts/sample.html` for the PDF) | One slim band in the house palette, off the provider's hues: it's a sample, what's fictional, at most a "Made by Unfairly" link |
@@ -215,10 +223,9 @@ A proposal follows a shape the reader already knows, so start from one of these.
 | 7 | Terms comparison | `compare` | The options or the market's terms against yours, sourced | Paragraphs in cells |
 | 8 | Proof and quotes | `stats`, then `quotes` | Published numbers with qualifiers; one pull quote, two or three more | A wall of quotes |
 | 9 | Timeline | `timeline` | Dated steps with owners from today to the start | Undated phases |
-| 10 | FAQ | `faq` | The questions asked before a yes | Restating sections |
-| 11 | Close | `close` | The ask by a date, the steps after yes, a named contact, the PDF | A summary of the page |
+| 10 | Close | `close` | The ask by a date, the steps after yes, a named contact, the PDF | A summary of the page |
 
-**The standard proposal** (`npm run site:new -- proposal`), with no calculator: a scope of work, a partnership, a service with one price. Hero and glance, what you asked for (`heard`), how it works (`cards`), the client's photos (`photos`), the scope, the price (`price`), the team, quotes, timeline, FAQ, close.
+**The standard proposal** (`npm run site:new -- proposal`), with no calculator: a scope of work, a partnership, a service with one price. Hero and glance, what you asked for (`heard`), how it works (`cards`), the client's photos (`photos`), the scope, the price (`price`), the team, quotes, timeline, close.
 
 **Keep any one screen from overwhelming the reader.** One point and one focal element per screen: the answer in the calculator, the lit column in the comparison, the pull quote. Three to four of anything (numbers, cards, steps of the close), never seven. Detail goes behind `<details>`. If a section needs more than a screen and a half at 1280 wide, it's two sections, or its detail belongs in a toggle. Write the copy short first (voice guide, "Simplify the copy"), then design; `site:check` warns where a line runs long.
 
@@ -274,7 +281,7 @@ From engine 1.8, `site:audit` also:
 Only public files publish:
 - From `brand/`, that means images and fonts, never `brand.json`, notes, `brand/capture/` or `brand/references/`.
 - `site/assets/` takes only images, fonts, mp4, webm, mp3 and pdf.
-- A name like research, story, facts, buyers, notes, seller-understanding, references or capture, anywhere in a path, never publishes. Neither does a dotfile, `..`, an absolute path or a backslash.
+- A folder named research, story, facts, buyers, notes, seller-understanding, references or capture, anywhere in a path, never publishes, nor does a document or data file (md, json, txt, pdf, csv, html) with such a name. From engine 1.11 an image, video, audio or font file in `site/assets/` is page art whatever it's called (`assets/story-roastery.webp`, `assets/notes-product.png`); in `brand/` the name rule still holds for images. A dotfile, `..`, an absolute path or a backslash never publishes either.
 - `site:manifest` and the upload refuse a `dist-site` holding anything else.
 
 A design review comes from the server, never from the builder: `artifacts/review.json` must be the JSON `deck_review` returned, with its `review_id`. `site:manifest` sends that id and the engine version to `deck_upload_start`, and a site on engine 1.8 is refused unless the server holds that finished review for you with no blocking verdict. A builder's own review file is refused locally too.

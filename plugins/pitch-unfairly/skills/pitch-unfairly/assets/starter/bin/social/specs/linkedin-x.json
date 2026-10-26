@@ -1,0 +1,3123 @@
+{
+  "group": "linkedin-x",
+  "checked": "2026-10-25",
+  "formats": [
+    {
+      "id": "linkedin.feed.image.landscape",
+      "platform": "linkedin",
+      "surface": "organic",
+      "placement": "Feed",
+      "name": "Image post, landscape",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1200,
+        "h": 627
+      },
+      "aspect": "1.91:1",
+      "accepted_aspects": [
+        "3:1",
+        "1.91:1",
+        "1:1",
+        "4:5"
+      ],
+      "min": {
+        "w": 552,
+        "h": 276
+      },
+      "max": {
+        "w": null,
+        "h": null
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png",
+          "gif",
+          "webp"
+        ],
+        "max_mb": 5
+      },
+      "crop_notes": "Accepted range is 3:1 to 4:5 (w:h); 4:5 is the tallest the feed shows. Image-only posts are enlarged to fill the feed width. 1.91:1 at 1200x627 is LinkedIn's stated size for custom link images.",
+      "text": {
+        "primary": {
+          "max": 3000,
+          "truncates_at": null
+        }
+      },
+      "notes": "Post text max 3,000 characters (LinkedIn Help). LinkedIn does not publish the 'see more' cutoff; third-party guides put it at ~210 characters on desktop and ~140 on mobile, and line breaks shorten it, so front-load the hook in the first ~140 characters. Max resolution 36 megapixels (Media file types page). Upload limit 5 MB per photo (Share photos page); the generic media page says 100 MB for any file, so treat 5 MB as the binding limit. HEIC is iOS-only.",
+      "sources": [
+        {
+          "url": "https://www.linkedin.com/help/lms/answer/a527229",
+          "title": "LinkedIn Help: Share photos on LinkedIn",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://www.linkedin.com/help/linkedin/answer/a563309",
+          "title": "LinkedIn Help: Image specifications for your LinkedIn Pages and Career Pages (last updated ~Aug 2026)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://www.linkedin.com/help/linkedin/answer/a564109",
+          "title": "LinkedIn Help: Media file types supported on LinkedIn",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://www.linkedin.com/help/learning/answer/a528176",
+          "title": "LinkedIn Help: create a post (states 3,000-character post limit; seen via search index, not fetched directly)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://eden.so/blog/linkedin-character-limits/",
+          "title": "Eden: LinkedIn character limits in 2026 (third-party)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "linkedin.feed.image.square",
+      "platform": "linkedin",
+      "surface": "organic",
+      "placement": "Feed",
+      "name": "Image post, square",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1080
+      },
+      "aspect": "1:1",
+      "accepted_aspects": [
+        "3:1",
+        "1.91:1",
+        "1:1",
+        "4:5"
+      ],
+      "min": {
+        "w": 552,
+        "h": 276
+      },
+      "max": {
+        "w": null,
+        "h": null
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png",
+          "gif",
+          "webp"
+        ],
+        "max_mb": 5
+      },
+      "crop_notes": "Accepted range is 3:1 to 4:5 (w:h); 4:5 is the tallest the feed shows. Image-only posts are enlarged to fill the feed width. 1.91:1 at 1200x627 is LinkedIn's stated size for custom link images. LinkedIn recommends 1080 px wide.",
+      "text": {
+        "primary": {
+          "max": 3000,
+          "truncates_at": null
+        }
+      },
+      "notes": "Post text max 3,000 characters (LinkedIn Help). LinkedIn does not publish the 'see more' cutoff; third-party guides put it at ~210 characters on desktop and ~140 on mobile, and line breaks shorten it, so front-load the hook in the first ~140 characters. Max resolution 36 megapixels (Media file types page). Upload limit 5 MB per photo (Share photos page); the generic media page says 100 MB for any file, so treat 5 MB as the binding limit. HEIC is iOS-only.",
+      "sources": [
+        {
+          "url": "https://www.linkedin.com/help/lms/answer/a527229",
+          "title": "LinkedIn Help: Share photos on LinkedIn",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://www.linkedin.com/help/linkedin/answer/a563309",
+          "title": "LinkedIn Help: Image specifications for your LinkedIn Pages and Career Pages (last updated ~Aug 2026)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://www.linkedin.com/help/linkedin/answer/a564109",
+          "title": "LinkedIn Help: Media file types supported on LinkedIn",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://www.linkedin.com/help/learning/answer/a528176",
+          "title": "LinkedIn Help: create a post (states 3,000-character post limit; seen via search index, not fetched directly)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://eden.so/blog/linkedin-character-limits/",
+          "title": "Eden: LinkedIn character limits in 2026 (third-party)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "linkedin.feed.image.portrait",
+      "platform": "linkedin",
+      "surface": "organic",
+      "placement": "Feed",
+      "name": "Image post, vertical",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1350
+      },
+      "aspect": "4:5",
+      "accepted_aspects": [
+        "3:1",
+        "1.91:1",
+        "1:1",
+        "4:5"
+      ],
+      "min": {
+        "w": 552,
+        "h": 276
+      },
+      "max": {
+        "w": null,
+        "h": null
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png",
+          "gif",
+          "webp"
+        ],
+        "max_mb": 5
+      },
+      "crop_notes": "Accepted range is 3:1 to 4:5 (w:h); 4:5 is the tallest the feed shows. Image-only posts are enlarged to fill the feed width. 1.91:1 at 1200x627 is LinkedIn's stated size for custom link images. LinkedIn recommends 1080 px wide.",
+      "text": {
+        "primary": {
+          "max": 3000,
+          "truncates_at": null
+        }
+      },
+      "notes": "Post text max 3,000 characters (LinkedIn Help). LinkedIn does not publish the 'see more' cutoff; third-party guides put it at ~210 characters on desktop and ~140 on mobile, and line breaks shorten it, so front-load the hook in the first ~140 characters. Max resolution 36 megapixels (Media file types page). Upload limit 5 MB per photo (Share photos page); the generic media page says 100 MB for any file, so treat 5 MB as the binding limit. HEIC is iOS-only.",
+      "sources": [
+        {
+          "url": "https://www.linkedin.com/help/lms/answer/a527229",
+          "title": "LinkedIn Help: Share photos on LinkedIn",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://www.linkedin.com/help/linkedin/answer/a563309",
+          "title": "LinkedIn Help: Image specifications for your LinkedIn Pages and Career Pages (last updated ~Aug 2026)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://www.linkedin.com/help/linkedin/answer/a564109",
+          "title": "LinkedIn Help: Media file types supported on LinkedIn",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://www.linkedin.com/help/learning/answer/a528176",
+          "title": "LinkedIn Help: create a post (states 3,000-character post limit; seen via search index, not fetched directly)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://eden.so/blog/linkedin-character-limits/",
+          "title": "Eden: LinkedIn character limits in 2026 (third-party)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "linkedin.feed.multi_image",
+      "platform": "linkedin",
+      "surface": "organic",
+      "placement": "Feed",
+      "name": "Multi-image post",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1350
+      },
+      "aspect": "4:5",
+      "accepted_aspects": [
+        "3:1",
+        "1.91:1",
+        "1:1",
+        "4:5"
+      ],
+      "min": {
+        "w": 552,
+        "h": 276
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png",
+          "gif",
+          "webp"
+        ],
+        "max_mb": 5
+      },
+      "carousel": {
+        "min": 2,
+        "max": 20,
+        "card_aspects": [
+          "3:1",
+          "1.91:1",
+          "1:1",
+          "4:5"
+        ]
+      },
+      "crop_notes": "Layout is decided by the first image: if it is portrait, square, or taller than 4:3 (or 292 px), it takes the left column and the others stack on the right; otherwise it sits on top. The container is capped at 4:5 and bottom-row images may be cropped. Keep key content centered in images 2+.",
+      "text": {
+        "primary": {
+          "max": 3000,
+          "truncates_at": null
+        }
+      },
+      "notes": "Up to 20 photos per post on desktop and mobile. Not swipeable like a document carousel; for a slide carousel use a document post. Post text max 3,000 characters (LinkedIn Help). LinkedIn does not publish the 'see more' cutoff; third-party guides put it at ~210 characters on desktop and ~140 on mobile, and line breaks shorten it, so front-load the hook in the first ~140 characters.",
+      "sources": [
+        {
+          "url": "https://www.linkedin.com/help/lms/answer/a527229",
+          "title": "LinkedIn Help: Share photos on LinkedIn",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://www.linkedin.com/help/learning/answer/a528176",
+          "title": "LinkedIn Help: create a post (states 3,000-character post limit; seen via search index, not fetched directly)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "linkedin.feed.document",
+      "platform": "linkedin",
+      "surface": "organic",
+      "placement": "Feed (document post)",
+      "name": "Document / PDF carousel post",
+      "media": [
+        "document"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1350
+      },
+      "aspect": "4:5",
+      "file": {
+        "types": [
+          "pdf",
+          "ppt",
+          "pptx",
+          "doc",
+          "docx"
+        ],
+        "max_mb": 100
+      },
+      "carousel": {
+        "min": 1,
+        "max": 300,
+        "card_aspects": null
+      },
+      "crop_notes": "Every page must be the same size (mixed page sizes must be fit to one size). Flatten multi-layer PDFs.",
+      "text": {
+        "primary": {
+          "max": 3000,
+          "truncates_at": null
+        }
+      },
+      "notes": "One document per post; max 300 pages and 1,000,000 words. Add a document title at upload (no published length limit). Video/animation in documents renders as a static image. The document itself cannot be swapped after posting. LinkedIn publishes no recommended page size or aspect for organic document posts; canvas 1080x1350 (4:5) is our render choice to match the feed's tallest image ratio, not a LinkedIn spec (document ads accept vertical, horizontal or square pages and list standard paper sizes such as Letter and A4). Post text max 3,000 characters (LinkedIn Help). LinkedIn does not publish the 'see more' cutoff; third-party guides put it at ~210 characters on desktop and ~140 on mobile, and line breaks shorten it, so front-load the hook in the first ~140 characters.",
+      "sources": [
+        {
+          "url": "https://www.linkedin.com/help/linkedin/answer/a518909",
+          "title": "LinkedIn Help: Upload and share documents on LinkedIn",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://www.linkedin.com/help/linkedin/answer/a564109",
+          "title": "LinkedIn Help: Media file types supported on LinkedIn",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://business.linkedin.com/advertise/ads/sponsored-content/document-ads/specs",
+          "title": "LinkedIn Marketing Solutions: Document ads specs",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://www.linkedin.com/help/learning/answer/a528176",
+          "title": "LinkedIn Help: create a post (states 3,000-character post limit; seen via search index, not fetched directly)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "linkedin.feed.video.landscape",
+      "platform": "linkedin",
+      "surface": "organic",
+      "placement": "Feed",
+      "name": "Video post, landscape",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1920,
+        "h": 1080
+      },
+      "aspect": "16:9",
+      "accepted_aspects": [
+        "1:2.4 to 2.4:1"
+      ],
+      "min": {
+        "w": 256,
+        "h": 144
+      },
+      "max": {
+        "w": 4096,
+        "h": 2304
+      },
+      "video": {
+        "types": [
+          "mp4",
+          "mov",
+          "webm",
+          "mkv",
+          "avi",
+          "wmv",
+          "mpeg"
+        ],
+        "fps": [
+          10,
+          60
+        ],
+        "min_s": 3,
+        "max_s": 900,
+        "max_mb": 5120,
+        "captions": "burned-in recommended; sound-off default (captions guidance not in the cited help page)"
+      },
+      "safe_zone": {
+        "top": null,
+        "bottom": null,
+        "left": null,
+        "right": null,
+        "units": "px at canvas",
+        "note": "LinkedIn says keep the top, bottom and side edges free of key elements, text and logos so the UI does not overlap them, but publishes no pixel values."
+      },
+      "text": {
+        "primary": {
+          "max": 3000,
+          "truncates_at": null
+        }
+      },
+      "notes": "Member posts: 75 KB-5 GB, 3 s minimum from desktop (2 s from the mobile app), 15 min maximum, 192 Kbps-30 Mbps. Company Page videos: 10 min maximum and the Pages help page says AVI/QuickTime/MOV are no longer supported, which conflicts with the member page listing MOV; export MP4 for Pages. Resolution range 256x144 to 4096x2304 (stated landscape; treat as the long/short-edge bounds for vertical). Canvas sizes are our render choice within the published range. Post text max 3,000 characters (LinkedIn Help). LinkedIn does not publish the 'see more' cutoff; third-party guides put it at ~210 characters on desktop and ~140 on mobile, and line breaks shorten it, so front-load the hook in the first ~140 characters.",
+      "sources": [
+        {
+          "url": "https://www.linkedin.com/help/linkedin/answer/a548372",
+          "title": "LinkedIn Help: Video sharing troubleshooting (video file requirements)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://www.linkedin.com/help/linkedin/answer/a1311816",
+          "title": "LinkedIn Help: Video specifications for your LinkedIn Pages and Career Pages",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://www.linkedin.com/help/learning/answer/a528176",
+          "title": "LinkedIn Help: create a post (states 3,000-character post limit; seen via search index, not fetched directly)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "linkedin.feed.video.square",
+      "platform": "linkedin",
+      "surface": "organic",
+      "placement": "Feed",
+      "name": "Video post, square",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1080
+      },
+      "aspect": "1:1",
+      "accepted_aspects": [
+        "1:2.4 to 2.4:1"
+      ],
+      "min": {
+        "w": 256,
+        "h": 144
+      },
+      "max": {
+        "w": 4096,
+        "h": 2304
+      },
+      "video": {
+        "types": [
+          "mp4",
+          "mov",
+          "webm",
+          "mkv",
+          "avi",
+          "wmv",
+          "mpeg"
+        ],
+        "fps": [
+          10,
+          60
+        ],
+        "min_s": 3,
+        "max_s": 900,
+        "max_mb": 5120,
+        "captions": "burned-in recommended; sound-off default (captions guidance not in the cited help page)"
+      },
+      "safe_zone": {
+        "top": null,
+        "bottom": null,
+        "left": null,
+        "right": null,
+        "units": "px at canvas",
+        "note": "LinkedIn says keep the top, bottom and side edges free of key elements, text and logos so the UI does not overlap them, but publishes no pixel values."
+      },
+      "text": {
+        "primary": {
+          "max": 3000,
+          "truncates_at": null
+        }
+      },
+      "notes": "Member posts: 75 KB-5 GB, 3 s minimum from desktop (2 s from the mobile app), 15 min maximum, 192 Kbps-30 Mbps. Company Page videos: 10 min maximum and the Pages help page says AVI/QuickTime/MOV are no longer supported, which conflicts with the member page listing MOV; export MP4 for Pages. Resolution range 256x144 to 4096x2304 (stated landscape; treat as the long/short-edge bounds for vertical). Canvas sizes are our render choice within the published range. Post text max 3,000 characters (LinkedIn Help). LinkedIn does not publish the 'see more' cutoff; third-party guides put it at ~210 characters on desktop and ~140 on mobile, and line breaks shorten it, so front-load the hook in the first ~140 characters.",
+      "sources": [
+        {
+          "url": "https://www.linkedin.com/help/linkedin/answer/a548372",
+          "title": "LinkedIn Help: Video sharing troubleshooting (video file requirements)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://www.linkedin.com/help/linkedin/answer/a1311816",
+          "title": "LinkedIn Help: Video specifications for your LinkedIn Pages and Career Pages",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://www.linkedin.com/help/learning/answer/a528176",
+          "title": "LinkedIn Help: create a post (states 3,000-character post limit; seen via search index, not fetched directly)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "linkedin.feed.video.vertical",
+      "platform": "linkedin",
+      "surface": "organic",
+      "placement": "Feed",
+      "name": "Video post, vertical",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1920
+      },
+      "aspect": "9:16",
+      "accepted_aspects": [
+        "1:2.4 to 2.4:1"
+      ],
+      "min": {
+        "w": 256,
+        "h": 144
+      },
+      "max": {
+        "w": 4096,
+        "h": 2304
+      },
+      "video": {
+        "types": [
+          "mp4",
+          "mov",
+          "webm",
+          "mkv",
+          "avi",
+          "wmv",
+          "mpeg"
+        ],
+        "fps": [
+          10,
+          60
+        ],
+        "min_s": 3,
+        "max_s": 900,
+        "max_mb": 5120,
+        "captions": "burned-in recommended; sound-off default (captions guidance not in the cited help page)"
+      },
+      "safe_zone": {
+        "top": null,
+        "bottom": null,
+        "left": null,
+        "right": null,
+        "units": "px at canvas",
+        "note": "LinkedIn says keep the top, bottom and side edges free of key elements, text and logos so the UI does not overlap them, but publishes no pixel values."
+      },
+      "text": {
+        "primary": {
+          "max": 3000,
+          "truncates_at": null
+        }
+      },
+      "notes": "Member posts: 75 KB-5 GB, 3 s minimum from desktop (2 s from the mobile app), 15 min maximum, 192 Kbps-30 Mbps. Company Page videos: 10 min maximum and the Pages help page says AVI/QuickTime/MOV are no longer supported, which conflicts with the member page listing MOV; export MP4 for Pages. Resolution range 256x144 to 4096x2304 (stated landscape; treat as the long/short-edge bounds for vertical). Canvas sizes are our render choice within the published range. Post text max 3,000 characters (LinkedIn Help). LinkedIn does not publish the 'see more' cutoff; third-party guides put it at ~210 characters on desktop and ~140 on mobile, and line breaks shorten it, so front-load the hook in the first ~140 characters.",
+      "sources": [
+        {
+          "url": "https://www.linkedin.com/help/linkedin/answer/a548372",
+          "title": "LinkedIn Help: Video sharing troubleshooting (video file requirements)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://www.linkedin.com/help/linkedin/answer/a1311816",
+          "title": "LinkedIn Help: Video specifications for your LinkedIn Pages and Career Pages",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://www.linkedin.com/help/learning/answer/a528176",
+          "title": "LinkedIn Help: create a post (states 3,000-character post limit; seen via search index, not fetched directly)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "linkedin.feed.video.portrait",
+      "platform": "linkedin",
+      "surface": "organic",
+      "placement": "Feed",
+      "name": "Video post, 4:5",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1350
+      },
+      "aspect": "4:5",
+      "accepted_aspects": [
+        "1:2.4 to 2.4:1"
+      ],
+      "min": {
+        "w": 256,
+        "h": 144
+      },
+      "max": {
+        "w": 4096,
+        "h": 2304
+      },
+      "video": {
+        "types": [
+          "mp4",
+          "mov",
+          "webm",
+          "mkv",
+          "avi",
+          "wmv",
+          "mpeg"
+        ],
+        "fps": [
+          10,
+          60
+        ],
+        "min_s": 3,
+        "max_s": 900,
+        "max_mb": 5120,
+        "captions": "burned-in recommended; sound-off default (captions guidance not in the cited help page)"
+      },
+      "safe_zone": {
+        "top": null,
+        "bottom": null,
+        "left": null,
+        "right": null,
+        "units": "px at canvas",
+        "note": "LinkedIn says keep the top, bottom and side edges free of key elements, text and logos so the UI does not overlap them, but publishes no pixel values."
+      },
+      "text": {
+        "primary": {
+          "max": 3000,
+          "truncates_at": null
+        }
+      },
+      "notes": "Member posts: 75 KB-5 GB, 3 s minimum from desktop (2 s from the mobile app), 15 min maximum, 192 Kbps-30 Mbps. Company Page videos: 10 min maximum and the Pages help page says AVI/QuickTime/MOV are no longer supported, which conflicts with the member page listing MOV; export MP4 for Pages. Resolution range 256x144 to 4096x2304 (stated landscape; treat as the long/short-edge bounds for vertical). Canvas sizes are our render choice within the published range. Post text max 3,000 characters (LinkedIn Help). LinkedIn does not publish the 'see more' cutoff; third-party guides put it at ~210 characters on desktop and ~140 on mobile, and line breaks shorten it, so front-load the hook in the first ~140 characters.",
+      "sources": [
+        {
+          "url": "https://www.linkedin.com/help/linkedin/answer/a548372",
+          "title": "LinkedIn Help: Video sharing troubleshooting (video file requirements)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://www.linkedin.com/help/linkedin/answer/a1311816",
+          "title": "LinkedIn Help: Video specifications for your LinkedIn Pages and Career Pages",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://www.linkedin.com/help/learning/answer/a528176",
+          "title": "LinkedIn Help: create a post (states 3,000-character post limit; seen via search index, not fetched directly)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "linkedin.article.cover",
+      "platform": "linkedin",
+      "surface": "organic",
+      "placement": "Article",
+      "name": "Article cover image",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1920,
+        "h": 1080
+      },
+      "aspect": "16:9",
+      "file": {
+        "types": [
+          "jpg",
+          "png",
+          "webp"
+        ],
+        "max_mb": null
+      },
+      "crop_notes": "Cover is cropped to 16:9.",
+      "notes": "GIFs can no longer be used as article cover photos. Max file size not stated on the help page (in-article GIFs must be under 400 frames).",
+      "sources": [
+        {
+          "url": "https://www.linkedin.com/help/linkedin/answer/a521719",
+          "title": "LinkedIn Help: Add images and other rich media to your article",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "linkedin.newsletter.cover",
+      "platform": "linkedin",
+      "surface": "organic",
+      "placement": "Newsletter",
+      "name": "Newsletter edition cover image",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1920,
+        "h": 1080
+      },
+      "aspect": "16:9",
+      "file": {
+        "types": [
+          "jpg",
+          "png",
+          "webp"
+        ],
+        "max_mb": null
+      },
+      "crop_notes": "Each newsletter edition is an article; its cover is cropped to 16:9 like an article cover.",
+      "notes": "LinkedIn recommends 1920x1080 for each edition's cover photo. File size and type limits are not stated on the newsletter page; types follow the article cover rules.",
+      "sources": [
+        {
+          "url": "https://www.linkedin.com/help/linkedin/answer/a517940",
+          "title": "LinkedIn Help: LinkedIn Newsletters best practices",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://www.linkedin.com/help/linkedin/answer/a521719",
+          "title": "LinkedIn Help: Add images and other rich media to your article",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "linkedin.newsletter.logo",
+      "platform": "linkedin",
+      "surface": "organic",
+      "placement": "Newsletter",
+      "name": "Newsletter logo",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 300,
+        "h": 300
+      },
+      "aspect": "1:1",
+      "file": {
+        "types": null,
+        "max_mb": null
+      },
+      "notes": "LinkedIn recommends 300x300. File type and size limits not published on the cited page.",
+      "sources": [
+        {
+          "url": "https://www.linkedin.com/help/linkedin/answer/a517940",
+          "title": "LinkedIn Help: LinkedIn Newsletters best practices",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "linkedin.profile.photo",
+      "platform": "linkedin",
+      "surface": "organic",
+      "placement": "Profile",
+      "name": "Personal profile photo",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 400,
+        "h": 400
+      },
+      "aspect": "1:1",
+      "min": {
+        "w": 400,
+        "h": 400
+      },
+      "max": {
+        "w": 7680,
+        "h": 4320
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 8
+      },
+      "crop_notes": "Displayed as a circle; keep the face centered with margin.",
+      "notes": "Help page gives the allowed range (400x400 to 7680x4320) but no recommended size; 400x400 is the minimum, so render larger (e.g. 800x800 or more) for sharpness. GIFs not supported. Circular display is common knowledge, not stated on the cited page.",
+      "sources": [
+        {
+          "url": "https://www.linkedin.com/help/linkedin/answer/a549049",
+          "title": "LinkedIn Help: Photo won't upload to your profile",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://www.linkedin.com/help/linkedin/answer/a564109",
+          "title": "LinkedIn Help: Media file types supported on LinkedIn",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "linkedin.profile.background",
+      "platform": "linkedin",
+      "surface": "organic",
+      "placement": "Profile",
+      "name": "Personal profile background banner",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1584,
+        "h": 396
+      },
+      "aspect": "4:1",
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 8
+      },
+      "safe_zone": {
+        "top": null,
+        "bottom": null,
+        "left": null,
+        "right": null,
+        "units": "px at canvas",
+        "note": "Profile photo overlaps the lower-left on desktop and the lower-center on mobile; LinkedIn publishes no pixel safe zone."
+      },
+      "notes": "Recommended 1584x396. GIFs not supported. Overlap description is from observation/third-party guides, not the help page.",
+      "sources": [
+        {
+          "url": "https://www.linkedin.com/help/linkedin/answer/a549049",
+          "title": "LinkedIn Help: Photo won't upload to your profile",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "linkedin.page.logo",
+      "platform": "linkedin",
+      "surface": "organic",
+      "placement": "Company Page",
+      "name": "Company Page logo",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 400,
+        "h": 400
+      },
+      "aspect": "1:1",
+      "min": {
+        "w": 268,
+        "h": 268
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 3
+      },
+      "notes": "Shows on light and dark backgrounds; transparent PNGs get a white fill, so test both. Older guides say 300x300; current official recommendation is 400x400.",
+      "sources": [
+        {
+          "url": "https://www.linkedin.com/help/linkedin/answer/a563309",
+          "title": "LinkedIn Help: Image specifications for your LinkedIn Pages and Career Pages (last updated ~Aug 2026)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "linkedin.page.cover",
+      "platform": "linkedin",
+      "surface": "organic",
+      "placement": "Company Page",
+      "name": "Company Page cover image",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1512,
+        "h": 256
+      },
+      "aspect": "5.9:1",
+      "min": {
+        "w": 1512,
+        "h": 256
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 3
+      },
+      "safe_zone": {
+        "top": null,
+        "bottom": null,
+        "left": null,
+        "right": null,
+        "units": "px at canvas",
+        "note": "Cover may be trimmed horizontally or vertically per screen. Keep key details centered and away from the edges, especially the lower-right corner. Use little text."
+      },
+      "notes": "CHANGED: the current help page (updated ~Aug 2026) lists 1512x256 as both minimum and recommended. Older specs (1128x191, and 4200x700 in some 2026 third-party guides) are outdated. A dynamic cover slideshow needs a Premium Company Page.",
+      "sources": [
+        {
+          "url": "https://www.linkedin.com/help/linkedin/answer/a563309",
+          "title": "LinkedIn Help: Image specifications for your LinkedIn Pages and Career Pages (last updated ~Aug 2026)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "linkedin.event.cover",
+      "platform": "linkedin",
+      "surface": "organic",
+      "placement": "Event",
+      "name": "Event cover image",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1280,
+        "h": 720
+      },
+      "aspect": "16:9",
+      "min": {
+        "w": 480,
+        "h": 270
+      },
+      "file": {
+        "types": null,
+        "max_mb": null
+      },
+      "notes": "Help page: aspect ratio must be 16:9, minimum width 480, examples 480x270 or 1280x720; uploading from cloud storage not supported. The older 1776x444 (4:1) spec is outdated, but the business.linkedin.com Event Ads page still says 4:1, so the two LinkedIn sources disagree.",
+      "sources": [
+        {
+          "url": "https://www.linkedin.com/help/linkedin/answer/a554183",
+          "title": "LinkedIn Help: Create or edit a LinkedIn Event",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://business.linkedin.com/advertise/ads/sponsored-content/event-ads/specs",
+          "title": "LinkedIn Marketing Solutions: Event ads specs",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "linkedin.ad.single_image.landscape",
+      "platform": "linkedin",
+      "surface": "ad",
+      "placement": "Sponsored Content (single image)",
+      "name": "Single image ad, horizontal",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1200,
+        "h": 628
+      },
+      "aspect": "1.91:1",
+      "accepted_aspects": [
+        "1.91:1",
+        "1:1",
+        "4:5",
+        "2:3",
+        "1:1.91"
+      ],
+      "min": {
+        "w": 640,
+        "h": 360
+      },
+      "max": {
+        "w": 7680,
+        "h": 4320
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png",
+          "gif"
+        ],
+        "max_mb": 5
+      },
+      "crop_notes": "Serves on desktop and mobile. Images narrower than 401 px show as thumbnails.",
+      "text": {
+        "primary": {
+          "recommended": 150,
+          "max": 3000
+        },
+        "headline": {
+          "recommended": 70,
+          "max": 200
+        },
+        "description": {
+          "recommended": 100,
+          "max": 300
+        }
+      },
+      "notes": "Intro text: 150 recommended to avoid truncation, 3,000 max (Help Center); up to 10 emojis allowed, but more than 4 emojis/symbols risks rejection. URLs over 23 characters become short links. Headline 70 recommended / 200 max; description 100 recommended / 300 max (description shows only on LAN or when the image is under 200 px). The business.linkedin.com page lists flat limits (headline 70, intro 150, description 70); the Help Center figures are the hard caps. Animated GIFs: 250 frames max. Canvas sizes are LinkedIn's recommended sizes, which are small for vertical; rendering at 1080x1350 (4:5) stays within the max.",
+      "sources": [
+        {
+          "url": "https://www.linkedin.com/help/lms/answer/a426534",
+          "title": "LinkedIn Help: Single image ads advertising specifications",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://business.linkedin.com/advertise/ads/sponsored-content/single-image-ads-specs",
+          "title": "LinkedIn Marketing Solutions: Single image ads specs",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "linkedin.ad.single_image.square",
+      "platform": "linkedin",
+      "surface": "ad",
+      "placement": "Sponsored Content (single image)",
+      "name": "Single image ad, square",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1200,
+        "h": 1200
+      },
+      "aspect": "1:1",
+      "accepted_aspects": [
+        "1.91:1",
+        "1:1",
+        "4:5",
+        "2:3",
+        "1:1.91"
+      ],
+      "min": {
+        "w": 360,
+        "h": 360
+      },
+      "max": {
+        "w": 4320,
+        "h": 4320
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png",
+          "gif"
+        ],
+        "max_mb": 5
+      },
+      "crop_notes": "Serves on desktop and mobile. Images narrower than 401 px show as thumbnails.",
+      "text": {
+        "primary": {
+          "recommended": 150,
+          "max": 3000
+        },
+        "headline": {
+          "recommended": 70,
+          "max": 200
+        },
+        "description": {
+          "recommended": 100,
+          "max": 300
+        }
+      },
+      "notes": "Intro text: 150 recommended to avoid truncation, 3,000 max (Help Center); up to 10 emojis allowed, but more than 4 emojis/symbols risks rejection. URLs over 23 characters become short links. Headline 70 recommended / 200 max; description 100 recommended / 300 max (description shows only on LAN or when the image is under 200 px). The business.linkedin.com page lists flat limits (headline 70, intro 150, description 70); the Help Center figures are the hard caps. Animated GIFs: 250 frames max. Canvas sizes are LinkedIn's recommended sizes, which are small for vertical; rendering at 1080x1350 (4:5) stays within the max.",
+      "sources": [
+        {
+          "url": "https://www.linkedin.com/help/lms/answer/a426534",
+          "title": "LinkedIn Help: Single image ads advertising specifications",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://business.linkedin.com/advertise/ads/sponsored-content/single-image-ads-specs",
+          "title": "LinkedIn Marketing Solutions: Single image ads specs",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "linkedin.ad.single_image.vertical_4x5",
+      "platform": "linkedin",
+      "surface": "ad",
+      "placement": "Sponsored Content (single image)",
+      "name": "Single image ad, vertical 4:5",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 720,
+        "h": 900
+      },
+      "aspect": "4:5",
+      "accepted_aspects": [
+        "1.91:1",
+        "1:1",
+        "4:5",
+        "2:3",
+        "1:1.91"
+      ],
+      "min": {
+        "w": 360,
+        "h": 640
+      },
+      "max": {
+        "w": 2430,
+        "h": 4320
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png",
+          "gif"
+        ],
+        "max_mb": 5
+      },
+      "crop_notes": "Vertical assets serve on mobile only. 1:1.91 gets side borders; LinkedIn recommends 4:5 to avoid them. Images narrower than 401 px show as thumbnails.",
+      "text": {
+        "primary": {
+          "recommended": 150,
+          "max": 3000
+        },
+        "headline": {
+          "recommended": 70,
+          "max": 200
+        },
+        "description": {
+          "recommended": 100,
+          "max": 300
+        }
+      },
+      "notes": "Intro text: 150 recommended to avoid truncation, 3,000 max (Help Center); up to 10 emojis allowed, but more than 4 emojis/symbols risks rejection. URLs over 23 characters become short links. Headline 70 recommended / 200 max; description 100 recommended / 300 max (description shows only on LAN or when the image is under 200 px). The business.linkedin.com page lists flat limits (headline 70, intro 150, description 70); the Help Center figures are the hard caps. Animated GIFs: 250 frames max. Canvas sizes are LinkedIn's recommended sizes, which are small for vertical; rendering at 1080x1350 (4:5) stays within the max.",
+      "sources": [
+        {
+          "url": "https://www.linkedin.com/help/lms/answer/a426534",
+          "title": "LinkedIn Help: Single image ads advertising specifications",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://business.linkedin.com/advertise/ads/sponsored-content/single-image-ads-specs",
+          "title": "LinkedIn Marketing Solutions: Single image ads specs",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "linkedin.ad.single_image.vertical_2x3",
+      "platform": "linkedin",
+      "surface": "ad",
+      "placement": "Sponsored Content (single image)",
+      "name": "Single image ad, vertical 2:3",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 600,
+        "h": 900
+      },
+      "aspect": "2:3",
+      "accepted_aspects": [
+        "1.91:1",
+        "1:1",
+        "4:5",
+        "2:3",
+        "1:1.91"
+      ],
+      "min": {
+        "w": 360,
+        "h": 640
+      },
+      "max": {
+        "w": 2430,
+        "h": 4320
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png",
+          "gif"
+        ],
+        "max_mb": 5
+      },
+      "crop_notes": "Vertical assets serve on mobile only. 1:1.91 gets side borders; LinkedIn recommends 4:5 to avoid them. Images narrower than 401 px show as thumbnails.",
+      "text": {
+        "primary": {
+          "recommended": 150,
+          "max": 3000
+        },
+        "headline": {
+          "recommended": 70,
+          "max": 200
+        },
+        "description": {
+          "recommended": 100,
+          "max": 300
+        }
+      },
+      "notes": "Intro text: 150 recommended to avoid truncation, 3,000 max (Help Center); up to 10 emojis allowed, but more than 4 emojis/symbols risks rejection. URLs over 23 characters become short links. Headline 70 recommended / 200 max; description 100 recommended / 300 max (description shows only on LAN or when the image is under 200 px). The business.linkedin.com page lists flat limits (headline 70, intro 150, description 70); the Help Center figures are the hard caps. Animated GIFs: 250 frames max. Canvas sizes are LinkedIn's recommended sizes, which are small for vertical; rendering at 1080x1350 (4:5) stays within the max. Vertical sizes appear on the business.linkedin.com page; the Help Center lists 4:5 only.",
+      "sources": [
+        {
+          "url": "https://www.linkedin.com/help/lms/answer/a426534",
+          "title": "LinkedIn Help: Single image ads advertising specifications",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://business.linkedin.com/advertise/ads/sponsored-content/single-image-ads-specs",
+          "title": "LinkedIn Marketing Solutions: Single image ads specs",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "linkedin.ad.single_image.vertical_1x1_91",
+      "platform": "linkedin",
+      "surface": "ad",
+      "placement": "Sponsored Content (single image)",
+      "name": "Single image ad, vertical 1:1.91",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 628,
+        "h": 1200
+      },
+      "aspect": "1:1.91",
+      "accepted_aspects": [
+        "1.91:1",
+        "1:1",
+        "4:5",
+        "2:3",
+        "1:1.91"
+      ],
+      "min": {
+        "w": 360,
+        "h": 640
+      },
+      "max": {
+        "w": 2430,
+        "h": 4320
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png",
+          "gif"
+        ],
+        "max_mb": 5
+      },
+      "crop_notes": "Vertical assets serve on mobile only. 1:1.91 gets side borders; LinkedIn recommends 4:5 to avoid them. Images narrower than 401 px show as thumbnails.",
+      "text": {
+        "primary": {
+          "recommended": 150,
+          "max": 3000
+        },
+        "headline": {
+          "recommended": 70,
+          "max": 200
+        },
+        "description": {
+          "recommended": 100,
+          "max": 300
+        }
+      },
+      "notes": "Intro text: 150 recommended to avoid truncation, 3,000 max (Help Center); up to 10 emojis allowed, but more than 4 emojis/symbols risks rejection. URLs over 23 characters become short links. Headline 70 recommended / 200 max; description 100 recommended / 300 max (description shows only on LAN or when the image is under 200 px). The business.linkedin.com page lists flat limits (headline 70, intro 150, description 70); the Help Center figures are the hard caps. Animated GIFs: 250 frames max. Canvas sizes are LinkedIn's recommended sizes, which are small for vertical; rendering at 1080x1350 (4:5) stays within the max. Vertical sizes appear on the business.linkedin.com page; the Help Center lists 4:5 only.",
+      "sources": [
+        {
+          "url": "https://www.linkedin.com/help/lms/answer/a426534",
+          "title": "LinkedIn Help: Single image ads advertising specifications",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://business.linkedin.com/advertise/ads/sponsored-content/single-image-ads-specs",
+          "title": "LinkedIn Marketing Solutions: Single image ads specs",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "linkedin.ad.carousel",
+      "platform": "linkedin",
+      "surface": "ad",
+      "placement": "Sponsored Content (carousel)",
+      "name": "Carousel image ad",
+      "media": [
+        "carousel",
+        "image"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1080
+      },
+      "aspect": "1:1",
+      "accepted_aspects": [
+        "1:1"
+      ],
+      "max": {
+        "w": 4320,
+        "h": 4320
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png",
+          "gif"
+        ],
+        "max_mb": 10
+      },
+      "carousel": {
+        "min": 2,
+        "max": 10,
+        "card_aspects": [
+          "1:1"
+        ]
+      },
+      "crop_notes": "Cards are scaled to 312x312. Off-size images may run letterboxed in gray.",
+      "text": {
+        "primary": {
+          "recommended": 150,
+          "max": 255
+        },
+        "headline": {
+          "max": 45
+        }
+      },
+      "notes": "10 MB per card; GIFs must be non-animated; no video cards. Card headline: 45-character limit and truncates after two lines. Cards can link to different URLs, except with a Lead Gen Form. Cards cannot be edited after the ad is saved.",
+      "sources": [
+        {
+          "url": "https://www.linkedin.com/help/linkedin/answer/a427022",
+          "title": "LinkedIn Help: Carousel Ads advertising specifications",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://business.linkedin.com/marketing-solutions/success/ads-guide",
+          "title": "LinkedIn Ads Guide",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "linkedin.ad.video.landscape",
+      "platform": "linkedin",
+      "surface": "ad",
+      "placement": "Sponsored Content (video)",
+      "name": "Video ad, 16:9",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1920,
+        "h": 1080
+      },
+      "aspect": "16:9",
+      "accepted_aspects": [
+        "16:9",
+        "1:1",
+        "4:5",
+        "9:16"
+      ],
+      "min": {
+        "w": 640,
+        "h": 360
+      },
+      "max": {
+        "w": 1920,
+        "h": 1080
+      },
+      "video": {
+        "types": [
+          "mp4"
+        ],
+        "codec": "H.264 or VP8",
+        "audio": "AAC or MPEG4",
+        "fps": [
+          null,
+          30
+        ],
+        "min_s": 3,
+        "max_s": 1800,
+        "recommended_s": [
+          15,
+          30
+        ],
+        "max_mb": 500,
+        "captions": "SRT sidecar, text only (no custom formatting); burned-in recommended for sound-off"
+      },
+      "safe_zone": {
+        "top": null,
+        "bottom": null,
+        "left": null,
+        "right": null,
+        "units": "px at canvas",
+        "note": "No pixel safe zone published for ads; organic guidance says keep edges clear of UI overlap."
+      },
+      "text": {
+        "primary": {
+          "recommended": 150,
+          "max": 3000
+        },
+        "headline": {
+          "recommended": 70,
+          "max": 200
+        }
+      },
+      "notes": "75 KB-500 MB; frame rate below 30 fps; audio under 64 kHz. Videos under 30 s loop to 30 s. In-stream video max 90 s. 4:5 is LinkedIn's recommended vertical ratio; vertical serves on mobile. Optional thumbnail JPG/PNG up to 2 MB, matching the video's ratio. Upload directly (no YouTube/Vimeo links); no Apple ProRes; 25 uploads per 24 h; desktop upload only. Help Center recommends 1920x1080 or 1200x675.",
+      "sources": [
+        {
+          "url": "https://www.linkedin.com/help/lms/answer/a424737",
+          "title": "LinkedIn Help: Video ads advertising specifications",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://business.linkedin.com/marketing-solutions/success/ads-guide",
+          "title": "LinkedIn Ads Guide",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "linkedin.ad.video.square",
+      "platform": "linkedin",
+      "surface": "ad",
+      "placement": "Sponsored Content (video)",
+      "name": "Video ad, 1:1",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1080
+      },
+      "aspect": "1:1",
+      "accepted_aspects": [
+        "16:9",
+        "1:1",
+        "4:5",
+        "9:16"
+      ],
+      "min": {
+        "w": 360,
+        "h": 360
+      },
+      "max": {
+        "w": 1920,
+        "h": 1920
+      },
+      "video": {
+        "types": [
+          "mp4"
+        ],
+        "codec": "H.264 or VP8",
+        "audio": "AAC or MPEG4",
+        "fps": [
+          null,
+          30
+        ],
+        "min_s": 3,
+        "max_s": 1800,
+        "recommended_s": [
+          15,
+          30
+        ],
+        "max_mb": 500,
+        "captions": "SRT sidecar, text only (no custom formatting); burned-in recommended for sound-off"
+      },
+      "safe_zone": {
+        "top": null,
+        "bottom": null,
+        "left": null,
+        "right": null,
+        "units": "px at canvas",
+        "note": "No pixel safe zone published for ads; organic guidance says keep edges clear of UI overlap."
+      },
+      "text": {
+        "primary": {
+          "recommended": 150,
+          "max": 3000
+        },
+        "headline": {
+          "recommended": 70,
+          "max": 200
+        }
+      },
+      "notes": "75 KB-500 MB; frame rate below 30 fps; audio under 64 kHz. Videos under 30 s loop to 30 s. In-stream video max 90 s. 4:5 is LinkedIn's recommended vertical ratio; vertical serves on mobile. Optional thumbnail JPG/PNG up to 2 MB, matching the video's ratio. Upload directly (no YouTube/Vimeo links); no Apple ProRes; 25 uploads per 24 h; desktop upload only. No recommended size published for square; canvas is our choice.",
+      "sources": [
+        {
+          "url": "https://www.linkedin.com/help/lms/answer/a424737",
+          "title": "LinkedIn Help: Video ads advertising specifications",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://business.linkedin.com/marketing-solutions/success/ads-guide",
+          "title": "LinkedIn Ads Guide",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "linkedin.ad.video.vertical_4x5",
+      "platform": "linkedin",
+      "surface": "ad",
+      "placement": "Sponsored Content (video)",
+      "name": "Video ad, 4:5",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 720,
+        "h": 900
+      },
+      "aspect": "4:5",
+      "accepted_aspects": [
+        "16:9",
+        "1:1",
+        "4:5",
+        "9:16"
+      ],
+      "min": {
+        "w": 360,
+        "h": 450
+      },
+      "max": {
+        "w": 1080,
+        "h": 1350
+      },
+      "video": {
+        "types": [
+          "mp4"
+        ],
+        "codec": "H.264 or VP8",
+        "audio": "AAC or MPEG4",
+        "fps": [
+          null,
+          30
+        ],
+        "min_s": 3,
+        "max_s": 1800,
+        "recommended_s": [
+          15,
+          30
+        ],
+        "max_mb": 500,
+        "captions": "SRT sidecar, text only (no custom formatting); burned-in recommended for sound-off"
+      },
+      "safe_zone": {
+        "top": null,
+        "bottom": null,
+        "left": null,
+        "right": null,
+        "units": "px at canvas",
+        "note": "No pixel safe zone published for ads; organic guidance says keep edges clear of UI overlap."
+      },
+      "text": {
+        "primary": {
+          "recommended": 150,
+          "max": 3000
+        },
+        "headline": {
+          "recommended": 70,
+          "max": 200
+        }
+      },
+      "notes": "75 KB-500 MB; frame rate below 30 fps; audio under 64 kHz. Videos under 30 s loop to 30 s. In-stream video max 90 s. 4:5 is LinkedIn's recommended vertical ratio; vertical serves on mobile. Optional thumbnail JPG/PNG up to 2 MB, matching the video's ratio. Upload directly (no YouTube/Vimeo links); no Apple ProRes; 25 uploads per 24 h; desktop upload only.",
+      "sources": [
+        {
+          "url": "https://www.linkedin.com/help/lms/answer/a424737",
+          "title": "LinkedIn Help: Video ads advertising specifications",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://business.linkedin.com/marketing-solutions/success/ads-guide",
+          "title": "LinkedIn Ads Guide",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "linkedin.ad.video.vertical_9x16",
+      "platform": "linkedin",
+      "surface": "ad",
+      "placement": "Sponsored Content (video)",
+      "name": "Video ad, 9:16",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 720,
+        "h": 1280
+      },
+      "aspect": "9:16",
+      "accepted_aspects": [
+        "16:9",
+        "1:1",
+        "4:5",
+        "9:16"
+      ],
+      "min": {
+        "w": 360,
+        "h": 640
+      },
+      "max": {
+        "w": 1080,
+        "h": 1920
+      },
+      "video": {
+        "types": [
+          "mp4"
+        ],
+        "codec": "H.264 or VP8",
+        "audio": "AAC or MPEG4",
+        "fps": [
+          null,
+          30
+        ],
+        "min_s": 3,
+        "max_s": 1800,
+        "recommended_s": [
+          15,
+          30
+        ],
+        "max_mb": 500,
+        "captions": "SRT sidecar, text only (no custom formatting); burned-in recommended for sound-off"
+      },
+      "safe_zone": {
+        "top": null,
+        "bottom": null,
+        "left": null,
+        "right": null,
+        "units": "px at canvas",
+        "note": "No pixel safe zone published for ads; organic guidance says keep edges clear of UI overlap."
+      },
+      "text": {
+        "primary": {
+          "recommended": 150,
+          "max": 3000
+        },
+        "headline": {
+          "recommended": 70,
+          "max": 200
+        }
+      },
+      "notes": "75 KB-500 MB; frame rate below 30 fps; audio under 64 kHz. Videos under 30 s loop to 30 s. In-stream video max 90 s. 4:5 is LinkedIn's recommended vertical ratio; vertical serves on mobile. Optional thumbnail JPG/PNG up to 2 MB, matching the video's ratio. Upload directly (no YouTube/Vimeo links); no Apple ProRes; 25 uploads per 24 h; desktop upload only.",
+      "sources": [
+        {
+          "url": "https://www.linkedin.com/help/lms/answer/a424737",
+          "title": "LinkedIn Help: Video ads advertising specifications",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://business.linkedin.com/marketing-solutions/success/ads-guide",
+          "title": "LinkedIn Ads Guide",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "linkedin.ad.document",
+      "platform": "linkedin",
+      "surface": "ad",
+      "placement": "Sponsored Content (document)",
+      "name": "Document ad",
+      "media": [
+        "document"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1350
+      },
+      "aspect": "4:5",
+      "accepted_aspects": [
+        "vertical",
+        "horizontal",
+        "square"
+      ],
+      "file": {
+        "types": [
+          "pdf",
+          "doc",
+          "docx",
+          "ppt",
+          "pptx"
+        ],
+        "max_mb": 100
+      },
+      "carousel": {
+        "min": 1,
+        "max": 300,
+        "card_aspects": null
+      },
+      "text": {
+        "primary": {
+          "recommended": 150,
+          "max": 3000
+        },
+        "headline": {
+          "recommended": 70,
+          "max": 200
+        }
+      },
+      "notes": "Under 10 pages recommended; 300 pages or 1M words max. Standard page sizes accepted (Letter 8.5x11 in, Legal, Tabloid, Statement, Executive, Folio, A3, A4, B4, B5); all pages must share one size; flatten multi-layer PDFs. Up to five documents can be uploaded at once. Lead-gen-objective document ads accept PDF only. Canvas 1080x1350 is our render choice; LinkedIn gives no pixel page size.",
+      "sources": [
+        {
+          "url": "https://www.linkedin.com/help/lms/answer/a493903",
+          "title": "LinkedIn Help: Document ads advertising specifications",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://business.linkedin.com/advertise/ads/sponsored-content/document-ads/specs",
+          "title": "LinkedIn Marketing Solutions: Document ads specs",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "linkedin.ad.event",
+      "platform": "linkedin",
+      "surface": "ad",
+      "placement": "Sponsored Content (event)",
+      "name": "Event ad",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1280,
+        "h": 720
+      },
+      "aspect": "16:9",
+      "text": {
+        "primary": {
+          "max": 600
+        },
+        "headline": {
+          "max": 255
+        }
+      },
+      "notes": "The image is pulled from the LinkedIn Event page, not uploaded to the ad. CONFLICT: the Event Ads spec page says 4:1, while the Event help page says event covers must be 16:9 (min width 480; e.g. 1280x720). Design the event cover at 16:9. Intro text max 600; event name up to 255. URL must be a LinkedIn Event page.",
+      "sources": [
+        {
+          "url": "https://business.linkedin.com/advertise/ads/sponsored-content/event-ads/specs",
+          "title": "LinkedIn Marketing Solutions: Event ads specs",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://www.linkedin.com/help/linkedin/answer/a554183",
+          "title": "LinkedIn Help: Create or edit a LinkedIn Event",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "linkedin.ad.conversation",
+      "platform": "linkedin",
+      "surface": "ad",
+      "placement": "Sponsored Messaging (conversation)",
+      "name": "Conversation ad",
+      "media": [
+        "text",
+        "image"
+      ],
+      "canvas": {
+        "w": 300,
+        "h": 250
+      },
+      "aspect": "6:5",
+      "max": {
+        "w": 300,
+        "h": 250
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 2
+      },
+      "text": {
+        "primary": {
+          "max": 8000
+        },
+        "cta": {
+          "max": 25,
+          "count_max": 5
+        },
+        "footer": {
+          "max": 20000
+        }
+      },
+      "notes": "Canvas is the optional banner companion (300x250 max, desktop only). Sender image is the sender's profile photo. Up to 5 CTA buttons (Ads Guide), 25 characters each. Message text 8,000 max; custom footer 20,000.",
+      "sources": [
+        {
+          "url": "https://business.linkedin.com/advertise/ads/sponsored-messaging/conversation-ads/specs",
+          "title": "LinkedIn Marketing Solutions: Conversation ads specs",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://business.linkedin.com/marketing-solutions/success/ads-guide",
+          "title": "LinkedIn Ads Guide",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "linkedin.ad.message",
+      "platform": "linkedin",
+      "surface": "ad",
+      "placement": "Sponsored Messaging (message)",
+      "name": "Message ad",
+      "media": [
+        "text",
+        "image"
+      ],
+      "canvas": {
+        "w": 300,
+        "h": 250
+      },
+      "aspect": "6:5",
+      "max": {
+        "w": 300,
+        "h": 250
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 2
+      },
+      "text": {
+        "primary": {
+          "max": 8000
+        },
+        "cta": {
+          "max": 25
+        },
+        "footer": {
+          "max": 20000
+        }
+      },
+      "notes": "CONFLICT: the Message Ads spec page says message text 8,000 max and CTA 25, while the Ads Guide summary says 1,500 message and a 20-character CTA. Write to the tighter figures (1,500 / 20) to be safe. A subject-line limit is not published on either page. Banner is optional, desktop only.",
+      "sources": [
+        {
+          "url": "https://business.linkedin.com/advertise/ads/sponsored-messaging/message-ads/specs",
+          "title": "LinkedIn Marketing Solutions: Message ads specs",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://business.linkedin.com/marketing-solutions/success/ads-guide",
+          "title": "LinkedIn Ads Guide",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "linkedin.ad.thought_leader",
+      "platform": "linkedin",
+      "surface": "ad",
+      "placement": "Sponsored Content (Thought Leader)",
+      "name": "Thought Leader ad",
+      "media": [
+        "image",
+        "video",
+        "text"
+      ],
+      "notes": "The creative is a member's existing public post (text, single image, video, article or newsletter); its media must meet single-image or video ad specs. You cannot add a headline or intro text, or any URL beyond what's in the post. No CTA button on image/video Thought Leader ads (Event Thought Leader ads have one). Documents, polls, multi-image posts, celebrations and reposts are not eligible. Only the author can edit. Size to the linkedin.ad.single_image.* / linkedin.ad.video.* entries and the organic 3,000-character post limit.",
+      "sources": [
+        {
+          "url": "https://business.linkedin.com/advertise/ads/sponsored-content/thought-leader-ads/specs",
+          "title": "LinkedIn Marketing Solutions: Thought Leader ads specs",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://www.linkedin.com/help/lms/answer/a1399568",
+          "title": "LinkedIn Help: Thought Leader Ads",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "linkedin.ad.text",
+      "platform": "linkedin",
+      "surface": "ad",
+      "placement": "Text ads (right rail, desktop)",
+      "name": "Text ad",
+      "media": [
+        "text",
+        "image"
+      ],
+      "canvas": {
+        "w": 100,
+        "h": 100
+      },
+      "aspect": "1:1",
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 2
+      },
+      "text": {
+        "headline": {
+          "max": 25
+        },
+        "description": {
+          "max": 75
+        }
+      },
+      "notes": "Canvas is the logo/image. The text-ads spec page lists headline 25 / description 75 under 'Text Recommendations'; the Ads Guide summary repeats the Spotlight figures (headline 50, 300x250 background), which looks like a copy error on that page.",
+      "sources": [
+        {
+          "url": "https://business.linkedin.com/advertise/ads/text-ads/specs",
+          "title": "LinkedIn Marketing Solutions: Text ads specs",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://business.linkedin.com/marketing-solutions/success/ads-guide",
+          "title": "LinkedIn Ads Guide",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "linkedin.ad.spotlight",
+      "platform": "linkedin",
+      "surface": "ad",
+      "placement": "Dynamic ads (Spotlight, right rail)",
+      "name": "Spotlight ad",
+      "media": [
+        "image",
+        "text"
+      ],
+      "canvas": {
+        "w": 100,
+        "h": 100
+      },
+      "aspect": "1:1",
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 2
+      },
+      "text": {
+        "headline": {
+          "max": 50
+        },
+        "description": {
+          "max": 70
+        },
+        "company_name": {
+          "max": 25
+        },
+        "cta": {
+          "max": 18
+        }
+      },
+      "notes": "Canvas is the logo (100x100). Optional background image 300x250, JPG/PNG, 2 MB. Destination URL up to 500 characters. Desktop right rail; member photo is pulled in dynamically.",
+      "sources": [
+        {
+          "url": "https://business.linkedin.com/advertise/ads/dynamic-ads/spotlight-ads",
+          "title": "LinkedIn Marketing Solutions: Spotlight ads",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "linkedin.ad.follower",
+      "platform": "linkedin",
+      "surface": "ad",
+      "placement": "Dynamic ads (Follower, right rail)",
+      "name": "Follower ad",
+      "media": [
+        "image",
+        "text"
+      ],
+      "canvas": {
+        "w": 100,
+        "h": 100
+      },
+      "aspect": "1:1",
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 2
+      },
+      "text": {
+        "headline": {
+          "max": 50
+        },
+        "description": {
+          "max": 70
+        },
+        "company_name": {
+          "max": 25
+        }
+      },
+      "notes": "Canvas is the company logo. CTAs are preset (Visit company / careers / jobs).",
+      "sources": [
+        {
+          "url": "https://business.linkedin.com/advertise/ads/dynamic-ads/follower-ads",
+          "title": "LinkedIn Marketing Solutions: Follower ads",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "x.timeline.image.landscape",
+      "platform": "x",
+      "surface": "organic",
+      "placement": "Timeline",
+      "name": "Image post, landscape",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1920,
+        "h": 1080
+      },
+      "aspect": "16:9",
+      "file": {
+        "types": [
+          "jpg",
+          "png",
+          "gif"
+        ],
+        "max_mb": 5
+      },
+      "crop_notes": "X publishes no organic crop rules. Third-party guides say single images between about 2:1 and 1:1 show uncropped in the feed, while taller or wider images get cropped in the preview and shown in full when tapped. Keep key content centered.",
+      "text": {
+        "primary": {
+          "max": 280,
+          "premium_max": 25000
+        }
+      },
+      "notes": "Official organic limits: photos up to 5 MB, JPEG/PNG/GIF, no BMP/TIFF; X auto-scales for display. X publishes no recommended organic pixel size; canvas uses the X Ads expanded aspect-ratio sizes (1920x1080, 1080x1080, 1440x1800). Standard posts: 280 characters; Premium subscribers can post up to 25,000 (X Premium page; one section of the How to post page still says 4,000, which is stale). Each link counts as 23 characters. Media does not count toward the limit.",
+      "sources": [
+        {
+          "url": "https://help.x.com/en/using-x/posting-gifs-and-pictures",
+          "title": "X Help: How to post photos or GIFs on X (read via Wayback snapshot 2026-08-29)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.x.com/en/using-x/how-to-post",
+          "title": "X Help: How to post (read via Wayback snapshot 2026-09-24)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.x.com/en/using-x/x-premium",
+          "title": "X Help: About X Premium (read via Wayback snapshot 2026-10-10)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://business.x.com/en/help/campaign-setup/creative-ad-specifications",
+          "title": "X Ads creative specs (live page returns 403 to automated fetch; read via Wayback snapshot 2026-09-27: https://web.archive.org/web/20260927081108/https://business.x.com/en/help/campaign-setup/creative-ad-specifications)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://influencermarketinghub.com/twitter-image-size/",
+          "title": "Influencer Marketing Hub: X image sizes (third-party, updated 2026-09-28)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "secondary"
+    },
+    {
+      "id": "x.timeline.image.square",
+      "platform": "x",
+      "surface": "organic",
+      "placement": "Timeline",
+      "name": "Image post, square",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1080
+      },
+      "aspect": "1:1",
+      "file": {
+        "types": [
+          "jpg",
+          "png",
+          "gif"
+        ],
+        "max_mb": 5
+      },
+      "crop_notes": "X publishes no organic crop rules. Third-party guides say single images between about 2:1 and 1:1 show uncropped in the feed, while taller or wider images get cropped in the preview and shown in full when tapped. Keep key content centered.",
+      "text": {
+        "primary": {
+          "max": 280,
+          "premium_max": 25000
+        }
+      },
+      "notes": "Official organic limits: photos up to 5 MB, JPEG/PNG/GIF, no BMP/TIFF; X auto-scales for display. X publishes no recommended organic pixel size; canvas uses the X Ads expanded aspect-ratio sizes (1920x1080, 1080x1080, 1440x1800). Standard posts: 280 characters; Premium subscribers can post up to 25,000 (X Premium page; one section of the How to post page still says 4,000, which is stale). Each link counts as 23 characters. Media does not count toward the limit.",
+      "sources": [
+        {
+          "url": "https://help.x.com/en/using-x/posting-gifs-and-pictures",
+          "title": "X Help: How to post photos or GIFs on X (read via Wayback snapshot 2026-08-29)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.x.com/en/using-x/how-to-post",
+          "title": "X Help: How to post (read via Wayback snapshot 2026-09-24)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.x.com/en/using-x/x-premium",
+          "title": "X Help: About X Premium (read via Wayback snapshot 2026-10-10)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://business.x.com/en/help/campaign-setup/creative-ad-specifications",
+          "title": "X Ads creative specs (live page returns 403 to automated fetch; read via Wayback snapshot 2026-09-27: https://web.archive.org/web/20260927081108/https://business.x.com/en/help/campaign-setup/creative-ad-specifications)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://influencermarketinghub.com/twitter-image-size/",
+          "title": "Influencer Marketing Hub: X image sizes (third-party, updated 2026-09-28)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "secondary"
+    },
+    {
+      "id": "x.timeline.image.portrait",
+      "platform": "x",
+      "surface": "organic",
+      "placement": "Timeline",
+      "name": "Image post, portrait",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1440,
+        "h": 1800
+      },
+      "aspect": "4:5",
+      "file": {
+        "types": [
+          "jpg",
+          "png",
+          "gif"
+        ],
+        "max_mb": 5
+      },
+      "crop_notes": "X publishes no organic crop rules. Third-party guides say single images between about 2:1 and 1:1 show uncropped in the feed, while taller or wider images get cropped in the preview and shown in full when tapped. Keep key content centered.",
+      "text": {
+        "primary": {
+          "max": 280,
+          "premium_max": 25000
+        }
+      },
+      "notes": "Official organic limits: photos up to 5 MB, JPEG/PNG/GIF, no BMP/TIFF; X auto-scales for display. X publishes no recommended organic pixel size; canvas uses the X Ads expanded aspect-ratio sizes (1920x1080, 1080x1080, 1440x1800). Standard posts: 280 characters; Premium subscribers can post up to 25,000 (X Premium page; one section of the How to post page still says 4,000, which is stale). Each link counts as 23 characters. Media does not count toward the limit.",
+      "sources": [
+        {
+          "url": "https://help.x.com/en/using-x/posting-gifs-and-pictures",
+          "title": "X Help: How to post photos or GIFs on X (read via Wayback snapshot 2026-08-29)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.x.com/en/using-x/how-to-post",
+          "title": "X Help: How to post (read via Wayback snapshot 2026-09-24)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.x.com/en/using-x/x-premium",
+          "title": "X Help: About X Premium (read via Wayback snapshot 2026-10-10)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://business.x.com/en/help/campaign-setup/creative-ad-specifications",
+          "title": "X Ads creative specs (live page returns 403 to automated fetch; read via Wayback snapshot 2026-09-27: https://web.archive.org/web/20260927081108/https://business.x.com/en/help/campaign-setup/creative-ad-specifications)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://influencermarketinghub.com/twitter-image-size/",
+          "title": "Influencer Marketing Hub: X image sizes (third-party, updated 2026-09-28)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "secondary"
+    },
+    {
+      "id": "x.timeline.multi_image",
+      "platform": "x",
+      "surface": "organic",
+      "placement": "Timeline",
+      "name": "Multi-image post (2-4)",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1080
+      },
+      "aspect": "1:1",
+      "file": {
+        "types": [
+          "jpg",
+          "png",
+          "gif"
+        ],
+        "max_mb": 5
+      },
+      "carousel": {
+        "min": 2,
+        "max": 4,
+        "card_aspects": null
+      },
+      "crop_notes": "Third-party: 2 images = side by side, each cropped to about 7:8 (portrait works best); 3 images = one large on the left, two stacked on the right; 4 images = 2x2 grid. Keep subjects centered.",
+      "text": {
+        "primary": {
+          "max": 280,
+          "premium_max": 25000
+        }
+      },
+      "notes": "Official: up to 4 media items per post (e.g. 2 photos, 1 GIF, 1 video). The grid crop ratios are not published by X. Standard posts: 280 characters; Premium subscribers can post up to 25,000 (X Premium page; one section of the How to post page still says 4,000, which is stale). Each link counts as 23 characters. Media does not count toward the limit.",
+      "sources": [
+        {
+          "url": "https://help.x.com/en/using-x/how-to-post",
+          "title": "X Help: How to post (read via Wayback snapshot 2026-09-24)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.x.com/en/using-x/posting-gifs-and-pictures",
+          "title": "X Help: How to post photos or GIFs on X (read via Wayback snapshot 2026-08-29)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://influencermarketinghub.com/twitter-image-size/",
+          "title": "Influencer Marketing Hub: X image sizes (third-party, updated 2026-09-28)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "secondary"
+    },
+    {
+      "id": "x.timeline.video.landscape",
+      "platform": "x",
+      "surface": "organic",
+      "placement": "Timeline",
+      "name": "Video post, 16:9",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1920,
+        "h": 1080
+      },
+      "aspect": "16:9",
+      "accepted_aspects": [
+        "1:2.39 to 2.39:1"
+      ],
+      "min": {
+        "w": 32,
+        "h": 32
+      },
+      "max": {
+        "w": 1920,
+        "h": 1200
+      },
+      "video": {
+        "types": [
+          "mp4",
+          "mov"
+        ],
+        "fps": [
+          null,
+          40
+        ],
+        "max_s": 140,
+        "max_mb": 512,
+        "captions": "burned-in recommended; videos autoplay muted in timelines"
+      },
+      "text": {
+        "primary": {
+          "max": 280,
+          "premium_max": 25000
+        }
+      },
+      "notes": "Non-Premium: up to 140 s and 512 MB. Premium: up to 4 h at 1080p on web/iOS (2-4 h must be 720p), 16 GB max; Android Premium 10 min. Web upload limits: min 32x32, max 1920x1200 (and 1200x1900 portrait), ratios 1:2.39-2.39:1, max 40 fps, max 25 Mbps. A 9:16 video at 1080x1920 exceeds the stated 1200x1900 portrait max, so render vertical at 1080x1900 or less (e.g. 1068x1900) for web upload; the app may accept 1080x1920. File types: the help page doesn't list them; MP4/MOV comes from the ads page. Standard posts: 280 characters; Premium subscribers can post up to 25,000 (X Premium page; one section of the How to post page still says 4,000, which is stale). Each link counts as 23 characters. Media does not count toward the limit.",
+      "sources": [
+        {
+          "url": "https://help.x.com/en/using-x/x-videos",
+          "title": "X Help: How to share and watch videos on X (read via Wayback snapshot 2026-10-11)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.x.com/en/using-x/premium-longer-videos",
+          "title": "X Help: About longer videos for X Premium subscribers (read via Wayback snapshot 2026-05-13)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.x.com/en/using-x/how-to-post",
+          "title": "X Help: How to post (read via Wayback snapshot 2026-09-24)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "x.timeline.video.square",
+      "platform": "x",
+      "surface": "organic",
+      "placement": "Timeline",
+      "name": "Video post, 1:1",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1080
+      },
+      "aspect": "1:1",
+      "accepted_aspects": [
+        "1:2.39 to 2.39:1"
+      ],
+      "min": {
+        "w": 32,
+        "h": 32
+      },
+      "max": {
+        "w": 1920,
+        "h": 1200
+      },
+      "video": {
+        "types": [
+          "mp4",
+          "mov"
+        ],
+        "fps": [
+          null,
+          40
+        ],
+        "max_s": 140,
+        "max_mb": 512,
+        "captions": "burned-in recommended; videos autoplay muted in timelines"
+      },
+      "text": {
+        "primary": {
+          "max": 280,
+          "premium_max": 25000
+        }
+      },
+      "notes": "Non-Premium: up to 140 s and 512 MB. Premium: up to 4 h at 1080p on web/iOS (2-4 h must be 720p), 16 GB max; Android Premium 10 min. Web upload limits: min 32x32, max 1920x1200 (and 1200x1900 portrait), ratios 1:2.39-2.39:1, max 40 fps, max 25 Mbps. A 9:16 video at 1080x1920 exceeds the stated 1200x1900 portrait max, so render vertical at 1080x1900 or less (e.g. 1068x1900) for web upload; the app may accept 1080x1920. File types: the help page doesn't list them; MP4/MOV comes from the ads page. Standard posts: 280 characters; Premium subscribers can post up to 25,000 (X Premium page; one section of the How to post page still says 4,000, which is stale). Each link counts as 23 characters. Media does not count toward the limit.",
+      "sources": [
+        {
+          "url": "https://help.x.com/en/using-x/x-videos",
+          "title": "X Help: How to share and watch videos on X (read via Wayback snapshot 2026-10-11)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.x.com/en/using-x/premium-longer-videos",
+          "title": "X Help: About longer videos for X Premium subscribers (read via Wayback snapshot 2026-05-13)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.x.com/en/using-x/how-to-post",
+          "title": "X Help: How to post (read via Wayback snapshot 2026-09-24)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "x.timeline.video.vertical",
+      "platform": "x",
+      "surface": "organic",
+      "placement": "Timeline",
+      "name": "Video post, 9:16",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1920
+      },
+      "aspect": "9:16",
+      "accepted_aspects": [
+        "1:2.39 to 2.39:1"
+      ],
+      "min": {
+        "w": 32,
+        "h": 32
+      },
+      "max": {
+        "w": 1920,
+        "h": 1200
+      },
+      "video": {
+        "types": [
+          "mp4",
+          "mov"
+        ],
+        "fps": [
+          null,
+          40
+        ],
+        "max_s": 140,
+        "max_mb": 512,
+        "captions": "burned-in recommended; videos autoplay muted in timelines"
+      },
+      "text": {
+        "primary": {
+          "max": 280,
+          "premium_max": 25000
+        }
+      },
+      "notes": "Non-Premium: up to 140 s and 512 MB. Premium: up to 4 h at 1080p on web/iOS (2-4 h must be 720p), 16 GB max; Android Premium 10 min. Web upload limits: min 32x32, max 1920x1200 (and 1200x1900 portrait), ratios 1:2.39-2.39:1, max 40 fps, max 25 Mbps. A 9:16 video at 1080x1920 exceeds the stated 1200x1900 portrait max, so render vertical at 1080x1900 or less (e.g. 1068x1900) for web upload; the app may accept 1080x1920. File types: the help page doesn't list them; MP4/MOV comes from the ads page. Standard posts: 280 characters; Premium subscribers can post up to 25,000 (X Premium page; one section of the How to post page still says 4,000, which is stale). Each link counts as 23 characters. Media does not count toward the limit.",
+      "sources": [
+        {
+          "url": "https://help.x.com/en/using-x/x-videos",
+          "title": "X Help: How to share and watch videos on X (read via Wayback snapshot 2026-10-11)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.x.com/en/using-x/premium-longer-videos",
+          "title": "X Help: About longer videos for X Premium subscribers (read via Wayback snapshot 2026-05-13)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.x.com/en/using-x/how-to-post",
+          "title": "X Help: How to post (read via Wayback snapshot 2026-09-24)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "x.timeline.gif",
+      "platform": "x",
+      "surface": "organic",
+      "placement": "Timeline",
+      "name": "Animated GIF post",
+      "media": [
+        "gif"
+      ],
+      "file": {
+        "types": [
+          "gif"
+        ],
+        "max_mb": 15
+      },
+      "text": {
+        "primary": {
+          "max": 280,
+          "premium_max": 25000
+        }
+      },
+      "notes": "Animated GIFs: up to 5 MB on mobile, 15 MB on web. GIFs loop and autoplay. One GIF counts as one of the 4 media items. No pixel or frame limits published in the help center. GIFs in image ads render as static.",
+      "sources": [
+        {
+          "url": "https://help.x.com/en/using-x/posting-gifs-and-pictures",
+          "title": "X Help: How to post photos or GIFs on X (read via Wayback snapshot 2026-08-29)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.x.com/en/using-x/how-to-post",
+          "title": "X Help: How to post (read via Wayback snapshot 2026-09-24)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "x.profile.photo",
+      "platform": "x",
+      "surface": "organic",
+      "placement": "Profile",
+      "name": "Profile photo",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 400,
+        "h": 400
+      },
+      "aspect": "1:1",
+      "file": {
+        "types": [
+          "jpg",
+          "png",
+          "gif"
+        ],
+        "max_mb": 2
+      },
+      "crop_notes": "Displayed as a circle (square for some business/organization accounts).",
+      "notes": "400x400 recommended (official). The 2 MB limit and file types come from third-party guides, not X's help center.",
+      "sources": [
+        {
+          "url": "https://help.x.com/en/managing-your-account/how-to-customize-your-profile",
+          "title": "X Help: How to customize your profile (read via Wayback snapshot 2026-09-25)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://influencermarketinghub.com/twitter-image-size/",
+          "title": "Influencer Marketing Hub: X image sizes (third-party, updated 2026-09-28)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "x.profile.header",
+      "platform": "x",
+      "surface": "organic",
+      "placement": "Profile",
+      "name": "Header (banner)",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1500,
+        "h": 500
+      },
+      "aspect": "3:1",
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 5
+      },
+      "safe_zone": {
+        "top": null,
+        "bottom": null,
+        "left": null,
+        "right": null,
+        "units": "px at canvas",
+        "note": "Profile photo covers the lower-left; top/bottom crop differently by screen. Keep key content centered. No official pixel safe zone."
+      },
+      "notes": "1500x500 recommended (official). The 5 MB limit and safe-zone guidance come from third-party guides.",
+      "sources": [
+        {
+          "url": "https://help.x.com/en/managing-your-account/how-to-customize-your-profile",
+          "title": "X Help: How to customize your profile (read via Wayback snapshot 2026-09-25)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://influencermarketinghub.com/twitter-image-size/",
+          "title": "Influencer Marketing Hub: X image sizes (third-party, updated 2026-09-28)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "x.ad.image.square",
+      "platform": "x",
+      "surface": "ad",
+      "placement": "Promoted Ad (image)",
+      "name": "Image ad, square",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1200,
+        "h": 1200
+      },
+      "aspect": "1:1",
+      "accepted_aspects": [
+        "16:9",
+        "1.91:1",
+        "1:1",
+        "4:5",
+        "2:3",
+        "9:16"
+      ],
+      "file": {
+        "types": [
+          "png",
+          "jpg"
+        ],
+        "max_mb": 5
+      },
+      "text": {
+        "primary": {
+          "max": 280
+        }
+      },
+      "notes": "Standalone image ads: 1200x1200 (1:1) or 1200x628 (1.91:1) recommended; larger is better for tap-to-expand. Expanded ratios: 4:5 1440x1800, 2:3 1080x1620, 1:1 1080x1080, 1.91:1 2064x1080, 16:9 1920x1080, 9:16 1080x1920. GIFs render static. No BMP/TIFF. Post copy 280 characters; each link uses 23 (257 left with one link).",
+      "sources": [
+        {
+          "url": "https://business.x.com/en/help/campaign-setup/creative-ad-specifications",
+          "title": "X Ads creative specs (live page returns 403 to automated fetch; read via Wayback snapshot 2026-09-27: https://web.archive.org/web/20260927081108/https://business.x.com/en/help/campaign-setup/creative-ad-specifications)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.x.com/en/business-and-advertising/creative-ad-specifications",
+          "title": "X Help: X Ads creative specs (mirror of the business.x.com page; 403 to automated fetch)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "x.ad.image.landscape",
+      "platform": "x",
+      "surface": "ad",
+      "placement": "Promoted Ad (image)",
+      "name": "Image ad, landscape",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1200,
+        "h": 628
+      },
+      "aspect": "1.91:1",
+      "accepted_aspects": [
+        "16:9",
+        "1.91:1",
+        "1:1",
+        "4:5",
+        "2:3",
+        "9:16"
+      ],
+      "file": {
+        "types": [
+          "png",
+          "jpg"
+        ],
+        "max_mb": 5
+      },
+      "text": {
+        "primary": {
+          "max": 280
+        }
+      },
+      "notes": "See x.ad.image.square for the full ratio list. Post copy 280 characters; each link uses 23 (257 left with one link).",
+      "sources": [
+        {
+          "url": "https://business.x.com/en/help/campaign-setup/creative-ad-specifications",
+          "title": "X Ads creative specs (live page returns 403 to automated fetch; read via Wayback snapshot 2026-09-27: https://web.archive.org/web/20260927081108/https://business.x.com/en/help/campaign-setup/creative-ad-specifications)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.x.com/en/business-and-advertising/creative-ad-specifications",
+          "title": "X Help: X Ads creative specs (mirror of the business.x.com page; 403 to automated fetch)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "x.ad.image.portrait",
+      "platform": "x",
+      "surface": "ad",
+      "placement": "Promoted Ad (image)",
+      "name": "Image ad, portrait 4:5",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1440,
+        "h": 1800
+      },
+      "aspect": "4:5",
+      "accepted_aspects": [
+        "16:9",
+        "1.91:1",
+        "1:1",
+        "4:5",
+        "2:3",
+        "9:16"
+      ],
+      "file": {
+        "types": [
+          "png",
+          "jpg"
+        ],
+        "max_mb": 5
+      },
+      "text": {
+        "primary": {
+          "max": 280
+        }
+      },
+      "notes": "4:5 (1440x1800) and 2:3 (1080x1620) are recently added ad ratios. Post copy 280 characters; each link uses 23 (257 left with one link).",
+      "sources": [
+        {
+          "url": "https://business.x.com/en/help/campaign-setup/creative-ad-specifications",
+          "title": "X Ads creative specs (live page returns 403 to automated fetch; read via Wayback snapshot 2026-09-27: https://web.archive.org/web/20260927081108/https://business.x.com/en/help/campaign-setup/creative-ad-specifications)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.x.com/en/business-and-advertising/creative-ad-specifications",
+          "title": "X Help: X Ads creative specs (mirror of the business.x.com page; 403 to automated fetch)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "x.ad.image.website_card",
+      "platform": "x",
+      "surface": "ad",
+      "placement": "Image Ad with Website Card",
+      "name": "Website card (image)",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 800,
+        "h": 418
+      },
+      "aspect": "1.91:1",
+      "accepted_aspects": [
+        "16:9",
+        "1.91:1",
+        "1:1",
+        "4:5",
+        "2:3",
+        "9:16"
+      ],
+      "file": {
+        "types": [
+          "png",
+          "jpg"
+        ],
+        "max_mb": 5
+      },
+      "text": {
+        "primary": {
+          "max": 280
+        },
+        "headline": {
+          "max": 70,
+          "recommended": 50
+        }
+      },
+      "crop_notes": "Headline renders over the media, 8-12 px from the left and bottom edges; keep that band clear of key detail.",
+      "safe_zone": {
+        "top": null,
+        "bottom": null,
+        "left": null,
+        "right": null,
+        "units": "px at canvas",
+        "note": "Headline overlay sits 8-12 px in from the left and bottom; overlay height not published."
+      },
+      "notes": "800x418 (1.91:1) or 800x800 (1:1) recommended. Headline max 70; renders up to two lines then ellipsis; 50 or fewer avoids truncation on most devices. Post copy 280 characters; each link uses 23 (257 left with one link).",
+      "sources": [
+        {
+          "url": "https://business.x.com/en/help/campaign-setup/creative-ad-specifications",
+          "title": "X Ads creative specs (live page returns 403 to automated fetch; read via Wayback snapshot 2026-09-27: https://web.archive.org/web/20260927081108/https://business.x.com/en/help/campaign-setup/creative-ad-specifications)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.x.com/en/business-and-advertising/creative-ad-specifications",
+          "title": "X Help: X Ads creative specs (mirror of the business.x.com page; 403 to automated fetch)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "x.ad.video.square",
+      "platform": "x",
+      "surface": "ad",
+      "placement": "Promoted Ad (video)",
+      "name": "Video ad, square",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1200,
+        "h": 1200
+      },
+      "aspect": "1:1",
+      "accepted_aspects": [
+        "16:9",
+        "1.91:1",
+        "1:1",
+        "4:5",
+        "2:3",
+        "9:16"
+      ],
+      "video": {
+        "types": [
+          "mp4",
+          "mov"
+        ],
+        "codec": "H.264 (Baseline/Main/High, 4:2:0)",
+        "audio": "AAC LC",
+        "fps": [
+          29.97,
+          60
+        ],
+        "max_s": 140,
+        "recommended_s": [
+          null,
+          15
+        ],
+        "max_mb": 1024,
+        "captions": "burned-in recommended; autoplays muted"
+      },
+      "text": {
+        "primary": {
+          "max": 280
+        }
+      },
+      "notes": "1 GB max, under 30 MB recommended. 15 s or less recommended, 2:20 max (select advertisers up to 10 min; X advises 9:55). Bitrate 6,000-10,000k for 1080p, 5,000-8,000k for 720p. 29.97/30 fps (up to 60; don't upsample). Loops if under 60 s. Thumbnail PNG/JPEG up to 5 MB, matching the video's ratio. If you use a logo, keep it in the upper-left throughout. Post copy 280 characters; each link uses 23 (257 left with one link).",
+      "sources": [
+        {
+          "url": "https://business.x.com/en/help/campaign-setup/creative-ad-specifications",
+          "title": "X Ads creative specs (live page returns 403 to automated fetch; read via Wayback snapshot 2026-09-27: https://web.archive.org/web/20260927081108/https://business.x.com/en/help/campaign-setup/creative-ad-specifications)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.x.com/en/business-and-advertising/creative-ad-specifications",
+          "title": "X Help: X Ads creative specs (mirror of the business.x.com page; 403 to automated fetch)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "x.ad.video.landscape",
+      "platform": "x",
+      "surface": "ad",
+      "placement": "Promoted Ad (video)",
+      "name": "Video ad, landscape",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1920,
+        "h": 1080
+      },
+      "aspect": "16:9",
+      "accepted_aspects": [
+        "16:9",
+        "1.91:1",
+        "1:1",
+        "4:5",
+        "2:3",
+        "9:16"
+      ],
+      "video": {
+        "types": [
+          "mp4",
+          "mov"
+        ],
+        "codec": "H.264 (Baseline/Main/High, 4:2:0)",
+        "audio": "AAC LC",
+        "fps": [
+          29.97,
+          60
+        ],
+        "max_s": 140,
+        "recommended_s": [
+          null,
+          15
+        ],
+        "max_mb": 1024,
+        "captions": "burned-in recommended; autoplays muted"
+      },
+      "text": {
+        "primary": {
+          "max": 280
+        }
+      },
+      "notes": "See x.ad.video.square for limits. Post copy 280 characters; each link uses 23 (257 left with one link).",
+      "sources": [
+        {
+          "url": "https://business.x.com/en/help/campaign-setup/creative-ad-specifications",
+          "title": "X Ads creative specs (live page returns 403 to automated fetch; read via Wayback snapshot 2026-09-27: https://web.archive.org/web/20260927081108/https://business.x.com/en/help/campaign-setup/creative-ad-specifications)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.x.com/en/business-and-advertising/creative-ad-specifications",
+          "title": "X Help: X Ads creative specs (mirror of the business.x.com page; 403 to automated fetch)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "x.ad.video.website_card",
+      "platform": "x",
+      "surface": "ad",
+      "placement": "Video Ad with Website Card",
+      "name": "Website card (video)",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 800,
+        "h": 450
+      },
+      "aspect": "16:9",
+      "accepted_aspects": [
+        "16:9",
+        "1.91:1",
+        "1:1",
+        "4:5",
+        "2:3",
+        "9:16"
+      ],
+      "video": {
+        "types": [
+          "mp4",
+          "mov"
+        ],
+        "codec": "H.264 (Baseline/Main/High, 4:2:0)",
+        "audio": "AAC LC",
+        "fps": [
+          29.97,
+          60
+        ],
+        "max_s": 140,
+        "recommended_s": [
+          null,
+          15
+        ],
+        "max_mb": 1024,
+        "captions": "burned-in recommended; autoplays muted"
+      },
+      "text": {
+        "primary": {
+          "max": 280
+        },
+        "headline": {
+          "max": 70
+        }
+      },
+      "crop_notes": "Headline renders 8-12 px from the left and bottom of the video.",
+      "notes": "800x450 (16:9) or 800x800 (1:1) recommended. Headline max 70; may truncate by device. Post copy 280 characters; each link uses 23 (257 left with one link).",
+      "sources": [
+        {
+          "url": "https://business.x.com/en/help/campaign-setup/creative-ad-specifications",
+          "title": "X Ads creative specs (live page returns 403 to automated fetch; read via Wayback snapshot 2026-09-27: https://web.archive.org/web/20260927081108/https://business.x.com/en/help/campaign-setup/creative-ad-specifications)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.x.com/en/business-and-advertising/creative-ad-specifications",
+          "title": "X Help: X Ads creative specs (mirror of the business.x.com page; 403 to automated fetch)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "x.ad.video.vertical",
+      "platform": "x",
+      "surface": "ad",
+      "placement": "Vertical Video Ads (Immersive Media Viewer)",
+      "name": "Vertical video ad",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1920
+      },
+      "aspect": "9:16",
+      "accepted_aspects": [
+        "16:9",
+        "1.91:1",
+        "1:1",
+        "4:5",
+        "2:3",
+        "9:16"
+      ],
+      "min": {
+        "w": 720,
+        "h": 1280
+      },
+      "max": {
+        "w": 1080,
+        "h": 1920
+      },
+      "video": {
+        "types": [
+          "mp4",
+          "mov"
+        ],
+        "codec": "H.264 (Baseline/Main/High, 4:2:0)",
+        "audio": "AAC LC",
+        "fps": [
+          null,
+          60
+        ],
+        "max_s": 140,
+        "recommended_s": [
+          null,
+          15
+        ],
+        "max_mb": 1024,
+        "captions": "full-screen, sound-on unit; burned-in captions still recommended"
+      },
+      "safe_zone": {
+        "top": null,
+        "bottom": null,
+        "left": null,
+        "right": null,
+        "units": "px at canvas",
+        "note": "Full-screen viewer overlays UI; X publishes no pixel safe zone."
+      },
+      "text": {
+        "primary": {
+          "max": 280
+        }
+      },
+      "notes": "Runs in the Immersive Media Viewer (Video tab / full-screen swipe). Max bitrate 25 Mbps, target 5-10 Mbps. The 1 GB file limit comes from the general video ad specs. Post copy 280 characters; each link uses 23 (257 left with one link).",
+      "sources": [
+        {
+          "url": "https://business.x.com/en/help/campaign-setup/creative-ad-specifications",
+          "title": "X Ads creative specs (live page returns 403 to automated fetch; read via Wayback snapshot 2026-09-27: https://web.archive.org/web/20260927081108/https://business.x.com/en/help/campaign-setup/creative-ad-specifications)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.x.com/en/business-and-advertising/creative-ad-specifications",
+          "title": "X Help: X Ads creative specs (mirror of the business.x.com page; 403 to automated fetch)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "x.ad.carousel",
+      "platform": "x",
+      "surface": "ad",
+      "placement": "Carousel Ads",
+      "name": "Carousel ad (image or video)",
+      "media": [
+        "carousel",
+        "image",
+        "video"
+      ],
+      "canvas": {
+        "w": 800,
+        "h": 800
+      },
+      "aspect": "1:1",
+      "accepted_aspects": [
+        "16:9",
+        "1.91:1",
+        "1:1",
+        "4:5",
+        "2:3",
+        "9:16"
+      ],
+      "file": {
+        "types": [
+          "png",
+          "jpg"
+        ],
+        "max_mb": 5
+      },
+      "carousel": {
+        "min": 2,
+        "max": 6,
+        "card_aspects": [
+          "16:9",
+          "1.91:1",
+          "1:1",
+          "4:5",
+          "2:3",
+          "9:16"
+        ]
+      },
+      "text": {
+        "primary": {
+          "max": 280
+        },
+        "headline": {
+          "max": 70,
+          "recommended": 50
+        }
+      },
+      "notes": "2-6 swipeable cards, all one aspect ratio (including mixed image + video). Image cards 800x418 (1.91:1) or 800x800 (1:1) recommended; video cards 800x450 (16:9) or 800x800. One destination, or up to 6 different web destinations. Website title 70 max (50 avoids truncation), set per card. App carousels pull the app title (truncated at 200). Per-card image file size not stated for carousels; 5 MB is the image ad limit. Post copy 280 characters; each link uses 23 (257 left with one link).",
+      "sources": [
+        {
+          "url": "https://business.x.com/en/help/campaign-setup/creative-ad-specifications",
+          "title": "X Ads creative specs (live page returns 403 to automated fetch; read via Wayback snapshot 2026-09-27: https://web.archive.org/web/20260927081108/https://business.x.com/en/help/campaign-setup/creative-ad-specifications)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.x.com/en/business-and-advertising/creative-ad-specifications",
+          "title": "X Help: X Ads creative specs (mirror of the business.x.com page; 403 to automated fetch)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    }
+  ]
+}

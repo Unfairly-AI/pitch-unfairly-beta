@@ -20,15 +20,23 @@ export const MEDIA_EXT = ['mp4', 'webm', 'mp3'];
 export const ASSET_EXT = [...IMAGE_EXT, ...FONT_EXT, ...MEDIA_EXT, 'pdf'];
 // brand/ publishes only what the page loads from it: images and fonts.
 export const BRAND_EXT = [...IMAGE_EXT, ...FONT_EXT];
-// A folder or file named for the private plan or the brand's evidence, at any depth:
-// research/strategy.pdf, seller-understanding/overview.png, story.png, facts-v2.svg...
+// A folder or document named for the private plan or the brand's evidence, at any depth:
+// research/strategy.pdf, seller-understanding/overview.png, story.md, facts-v2.json...
+// A folder with such a name is private whatever it holds. In site/assets, a file is judged
+// by its name only when it is a document or data (md, json, txt, pdf, csv, html...): page art
+// named for what it shows (assets/story-roastery.webp, assets/notes-product.png) is page art.
+// brand/ keeps the strict rule: an image there named research-1.png is the capture's evidence.
 const PRIVATE_NAME = /^(research|story|facts|buyers|notes|seller[-_ ]?understanding|references|capture)([-_. ].*)?$/i;
+const ART_EXT = [...IMAGE_EXT, ...FONT_EXT, ...MEDIA_EXT];
 const ROOT_FILES = ['index.html', 'index.txt', 'deck.pdf'];
 
 const ext = (path) => (/\.([^./]+)$/.exec(path)?.[1] ?? '').toLowerCase();
 
-/** Why a relative path is unsafe or names private material in any segment, or null. */
-export function pathProblem(path) {
+/**
+ * Why a relative path is unsafe or names private material in any segment, or null.
+ * art: the path is under site/assets, where image, video, audio and font files are page art.
+ */
+export function pathProblem(path, { art = false } = {}) {
   if (typeof path !== 'string' || !path) return 'an empty path';
   if (path.includes('\\') || path.includes('\0')) return `${path}: backslashes and NUL never appear in a published path`;
   if (path.startsWith('/') || /^[A-Za-z]:/.test(path)) return `${path}: an absolute path`;
@@ -36,7 +44,9 @@ export function pathProblem(path) {
   for (const [i, seg] of segments.entries()) {
     if (!seg || seg === '.' || seg === '..') return `${path}: "${seg}" segments never appear in a published path`;
     if (seg.startsWith('.')) return `${path}: dotfiles and dot-folders stay private`;
-    const name = i === segments.length - 1 ? seg.replace(/\.[^.]+$/, '') : seg;
+    const last = i === segments.length - 1;
+    if (art && last && ART_EXT.includes(ext(seg))) continue;
+    const name = last ? seg.replace(/\.[^.]+$/, '') : seg;
     if (PRIVATE_NAME.test(name)) return `${path}: "${seg}" is named like private material (research, story, facts, buyers, notes, seller understanding, references, capture), which never publishes. Move it out of the site, or rename it if it is really page art`;
   }
   return null;
@@ -52,7 +62,7 @@ export function brandFileProblem(rel) {
 
 /** Why a file under site/assets/ (path relative to it) can't publish, or null when it can. */
 export function siteAssetProblem(rel) {
-  const unsafe = pathProblem(rel);
+  const unsafe = pathProblem(rel, { art: true });
   if (unsafe) return `site/assets/${unsafe}; everything in site/assets is published`;
   if (!ASSET_EXT.includes(ext(rel))) return `site/assets/${rel}: site/assets takes only images, fonts, video (mp4, webm), audio (mp3) and PDFs, because everything there is published. Keep notes and research outside site/, data in site/data or site.json, and styles in site/styles.css`;
   return null;
@@ -60,7 +70,7 @@ export function siteAssetProblem(rel) {
 
 /** Why a file in dist-site/ (path relative to it, with "/") must not be published, or null when it may. */
 export function distFileProblem(path) {
-  const unsafe = pathProblem(path);
+  const unsafe = pathProblem(path, { art: path.startsWith('assets/') });
   if (unsafe) return unsafe;
   if (ROOT_FILES.includes(path)) return null;
   const [top, ...restParts] = path.split('/');

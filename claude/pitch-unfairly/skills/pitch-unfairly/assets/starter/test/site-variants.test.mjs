@@ -24,13 +24,13 @@ async function site(template = 'proposal') {
   return root;
 }
 const page = async (root) => { await buildSite({ root }); return readFile(join(root, 'dist-site/index.html'), 'utf8'); };
-// A newer toolbox in which the FAQ's question type changes.
-const newer = (css) => css.replace(/\.tb-qa > summary \{ list-style: none;/, '.tb-qa > summary { letter-spacing: .2em; list-style: none;');
+// A newer toolbox in which the scope's columns change.
+const newer = (css) => css.replace(/\.tb-scope-col \{ padding: 28px;/, '.tb-scope-col { letter-spacing: .2em; padding: 28px;');
 
 test('ACCEPTANCE: locking takes exactly the components the site uses, at this engine, and the build reads them', async () => {
   const root = await site();
   const used = usedComponents(root);
-  for (const c of ['hero', 'glance', 'faq', 'close', 'price']) assert.ok(used.includes(c), c);
+  for (const c of ['hero', 'glance', 'scope', 'close', 'price']) assert.ok(used.includes(c), c);
   assert.ok(!used.includes('calculator') && !used.includes('base'));
   const done = lock(root);
   assert.deepEqual(done, ['base', ...used]);
@@ -38,29 +38,29 @@ test('ACCEPTANCE: locking takes exactly the components the site uses, at this en
   assert.deepEqual(Object.keys(m.components), ['base', ...used]);
   for (const v of Object.values(m.components)) assert.equal(v.from, ENGINE);
   const html = await page(root);
-  assert.match(html, /Variant of the sites toolbox "faq" component, locked from engine/);
+  assert.match(html, /Variant of the sites toolbox "scope" component, locked from engine/);
   assert.doesNotMatch(html, /\.tb-calc \{/, 'only what the site uses ships');
 });
 
 test('ACCEPTANCE: once locked, a newer toolbox in the project changes nothing until that one variant is upgraded, and the skin survives', async () => {
   const root = await site();
   lock(root);
-  const skin = '.tb-qa > summary { color: var(--accent); }\n';
-  await appendFile(join(root, 'site/variants/faq.css'), skin);
+  const skin = '.tb-scope-col { color: var(--accent); }\n';
+  await appendFile(join(root, 'site/variants/scope.css'), skin);
   const before = await page(root);
   const toolbox = join(root, 'site/toolbox.css');
   await writeFile(toolbox, newer(await readFile(toolbox, 'utf8')));
   assert.equal(await page(root), before, 'the live toolbox no longer reaches the page');
   const status = JSON.parse(execFileSync('node', [CLI, 'status', '--json', toolbox], { cwd: root, encoding: 'utf8' }).trim());
-  assert.deepEqual(Object.entries(status.components).filter(([, v]) => v.changed).map(([k]) => k), ['faq']);
-  assert.deepEqual(Object.keys(status.components.faq).sort(), ['changed', 'current', 'from', 'upstream']);
+  assert.deepEqual(Object.entries(status.components).filter(([, v]) => v.changed).map(([k]) => k), ['scope']);
+  assert.deepEqual(Object.keys(status.components.scope).sort(), ['changed', 'current', 'from', 'upstream']);
   const cards = await readFile(join(root, 'site/variants/cards.css'), 'utf8');
-  execFileSync('node', [CLI, 'upgrade', 'faq', toolbox], { cwd: root });
-  const faq = await readFile(join(root, 'site/variants/faq.css'), 'utf8');
-  assert.match(faq, /letter-spacing: \.2em; list-style: none/);
-  assert.ok(faq.endsWith(skin), 'the site\'s skin is kept');
+  execFileSync('node', [CLI, 'upgrade', 'scope', toolbox], { cwd: root });
+  const scope = await readFile(join(root, 'site/variants/scope.css'), 'utf8');
+  assert.match(scope, /letter-spacing: \.2em; padding: 28px/);
+  assert.ok(scope.endsWith(skin), 'the site\'s skin is kept');
   assert.equal(await readFile(join(root, 'site/variants/cards.css'), 'utf8'), cards, 'the other variants stay locked');
-  assert.match(await page(root), /letter-spacing: \.2em; list-style: none/);
+  assert.match(await page(root), /letter-spacing: \.2em; padding: 28px/);
 });
 
 test('a site that was never locked keeps building from the live toolbox', async () => {

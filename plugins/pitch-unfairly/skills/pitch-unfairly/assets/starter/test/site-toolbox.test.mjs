@@ -91,7 +91,10 @@ test('toolbox.css reads only brand tokens: no raw colors, and a phone and a PDF 
 test('ACCEPTANCE: the sample band says it is a sample in the house palette, carries none of our booking pitch, and ships its fonts', async () => {
   const header = await readFile(join(TOOLBOX, 'components', 'header.html'), 'utf8');
   assert.match(header, /class="tb-sample-bar" data-sample data-sample-tone="yellow" data-sample-pill="magenta"/);
-  assert.match(header, /Sample proposal\. \{\{facts\.client\.name\}\} and its numbers are fictional\./);
+  assert.match(header, /Sample proposal from \{\{facts\.vendor\.name\}\}\. \{\{facts\.client\.name\}\} and its numbers are fictional\./);
+  assert.match(header, /class="tb-sb-short">Sample: \{\{facts\.vendor\.name\}\} for \{\{facts\.client\.name\}\}\./, 'the phone line still names seller and buyer');
+  const example = JSON.parse(await readFile(join(TOOLBOX, 'example.json'), 'utf8'));
+  assert.equal(example.facts.sample.made_by_href, 'https://unfairly.ai/', 'Made by Unfairly goes to our home page');
   assert.doesNotMatch(header, /book_meeting|talk_to_us|book_href|email_href|Yours could look like this/, 'no Unfairly booking pitch in a sample');
   assert.equal((header.match(/data-cta="/g) ?? []).length, 1, 'one link at most: Made by Unfairly');
   assert.match(header, /href="\{\{facts\.sample\.made_by_href\}\}" target="_blank" rel="noopener" data-cta="made_by"/);
@@ -102,6 +105,7 @@ test('ACCEPTANCE: the sample band says it is a sample in the house palette, carr
   assert.match(part, /pdf-only/, 'the PDF carries the band');
   assert.doesNotMatch(part, /book|email|calendly/i, 'and no booking pitch in print either');
   assert.ok(!existsSync(join(TOOLBOX, 'components', 'viewers.html')), 'the viewers demo is not a toolbox component');
+  assert.ok(!existsSync(join(TOOLBOX, 'components', 'faq.html')), 'nor is a FAQ (engine 1.11)');
 });
 
 test('a sample site without a sample band is called out', async () => {

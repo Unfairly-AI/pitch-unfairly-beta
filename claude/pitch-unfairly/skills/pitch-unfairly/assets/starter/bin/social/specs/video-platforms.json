@@ -1,0 +1,1643 @@
+{
+  "group": "video-platforms",
+  "checked": "2026-10-25",
+  "formats": [
+    {
+      "id": "tiktok.feed.video",
+      "platform": "tiktok",
+      "surface": "organic",
+      "placement": "For You feed",
+      "name": "Organic video post",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1920
+      },
+      "aspect": "9:16",
+      "accepted_aspects": [
+        "9:16",
+        "16:9",
+        "1:1"
+      ],
+      "min": {
+        "w": 360,
+        "h": 360
+      },
+      "max": {
+        "w": 4096,
+        "h": 4096
+      },
+      "video": {
+        "types": [
+          "mp4",
+          "webm",
+          "mov"
+        ],
+        "codec": "H.264 (recommended); H.265, VP8, VP9 accepted",
+        "fps": [
+          23,
+          60
+        ],
+        "min_s": null,
+        "max_s": null,
+        "max_mb": null,
+        "captions": "burned-in or TikTok auto-captions; keep text off the right-edge action rail and bottom caption area"
+      },
+      "safe_zone": {
+        "top": null,
+        "bottom": null,
+        "left": null,
+        "right": null,
+        "units": "px at canvas",
+        "note": "TikTok publishes no organic safe zone. Right rail (like/comment/share/profile) and bottom caption/username/music overlay cover content; use the ad safe zone from tiktok.ads.in_feed.video as a proxy."
+      },
+      "text": {
+        "primary": {
+          "max": 2200,
+          "truncates_at": null
+        }
+      },
+      "notes": "Max length differs by upload path: TikTok Help Center (TikTok Studio, desktop) says uploads up to 30 minutes, MP4 or WebM, 720x1280 or higher, under 10 GB. Developer API: every creator can post 3-minute videos, some 5 or 10 minutes; API max 4 GB, 360-4096 px each side, 23-60 fps. Widely repeated '60 minutes' claims are from creator posts, not TikTok docs. Caption: API direct-post title max 2,200 UTF-16 runes; third-party guides cite 4,000 in-app (unverified). 1080x1920 canvas is our render choice; TikTok states only minimums.",
+      "sources": [
+        {
+          "url": "https://support.tiktok.com/en/using-tiktok/creating-videos/creator-tools-on-tiktok",
+          "title": "TikTok Studio / creator tools (TikTok Help Center)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://developers.tiktok.com/doc/content-posting-api-media-transfer-guide",
+          "title": "Content Posting API — Media Transfer Guide (TikTok for Developers)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://developers.tiktok.com/doc/content-posting-api-reference-direct-post",
+          "title": "Content Posting API — Direct Post reference (TikTok for Developers)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "tiktok.photo_mode.carousel",
+      "platform": "tiktok",
+      "surface": "organic",
+      "placement": "Photo Mode",
+      "name": "Photo carousel post",
+      "media": [
+        "image",
+        "carousel"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1920
+      },
+      "aspect": "9:16",
+      "accepted_aspects": null,
+      "max": {
+        "w": 1080,
+        "h": 1920
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "webp"
+        ],
+        "max_mb": 20
+      },
+      "carousel": {
+        "min": 1,
+        "max": 35,
+        "card_aspects": null
+      },
+      "text": {
+        "headline": {
+          "max": 90
+        },
+        "primary": {
+          "max": 4000
+        }
+      },
+      "notes": "Limits are from the Content Posting API photo-post spec: up to 35 images, max 1080p, JPEG or WebP, max 20 MB per image; title max 90 and description max 4,000 UTF-16 runes. In-app upload may accept more types. TikTok publishes no official organic Photo Mode aspect ratio; 9:16 at 1080x1920 is our render choice (accepted_aspects null). Music can be added; older newsroom post cites 2,200-character captions (superseded by the 4,000 API limit).",
+      "sources": [
+        {
+          "url": "https://developers.tiktok.com/doc/content-posting-api-reference-photo-post",
+          "title": "Content Posting API — Photo post reference (TikTok for Developers)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://developers.tiktok.com/doc/content-posting-api-media-transfer-guide",
+          "title": "Content Posting API — Media Transfer Guide (TikTok for Developers)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://newsroom.tiktok.com/en-us/product-tutorial-photos-on-tiktok",
+          "title": "TikTok Tutorial Series: Photos on TikTok (TikTok Newsroom)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "tiktok.profile.photo",
+      "platform": "tiktok",
+      "surface": "organic",
+      "placement": "Profile",
+      "name": "Profile photo",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 200,
+        "h": 200
+      },
+      "aspect": "1:1",
+      "min": {
+        "w": 20,
+        "h": 20
+      },
+      "crop_notes": "Displayed as a circle; keep the mark centered.",
+      "notes": "TikTok Help Center states only a 20x20 px minimum; no maximum, file-size or recommended size is published. 200x200 canvas is our render choice (unofficial; third-party guides commonly cite 200x200). A profile video, if set, hides the photo.",
+      "sources": [
+        {
+          "url": "https://support.tiktok.com/en/getting-started/setting-up-your-profile/adding-a-profile-photo-or-video",
+          "title": "Adding a profile photo (TikTok Help Center)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "tiktok.ads.in_feed.video",
+      "platform": "tiktok",
+      "surface": "ad",
+      "placement": "In-Feed Ads (Auction, non-Spark)",
+      "name": "In-Feed video ad",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1920
+      },
+      "aspect": "9:16",
+      "accepted_aspects": [
+        "9:16",
+        "16:9",
+        "1:1"
+      ],
+      "min": {
+        "w": 540,
+        "h": 960
+      },
+      "video": {
+        "types": [
+          "mp4",
+          "mov",
+          "mpeg",
+          "3gp",
+          "avi"
+        ],
+        "min_s": null,
+        "max_s": 600,
+        "recommended_s": [
+          9,
+          15
+        ],
+        "max_mb": 500,
+        "captions": "burned-in recommended"
+      },
+      "safe_zone": {
+        "top": null,
+        "bottom": null,
+        "left": null,
+        "right": null,
+        "units": "px at canvas",
+        "note": "TikTok publishes the ad safe zone as a downloadable .zip overlay (standard LTR and Arabic RTL) on the Auction In-Feed help page; its size depends on dimension, ad-caption length and interactive add-ons (longer caption = smaller safe zone). The zip could not be downloaded here, so pixel margins are null. Right-side action rail, bottom caption, display name and CTA cover content."
+      },
+      "text": {
+        "primary": {
+          "max": 100,
+          "truncates_at": null
+        }
+      },
+      "notes": "Minimums: 9:16 >= 540x960, 16:9 >= 960x540, 1:1 >= 640x640. Bitrate >= 516 kbps (reservation in-feed lists >= 2,500 kbps). Duration up to 10 minutes for auction non-Spark; reservation in-feed is 5-60 s (recommend 9-15 s). Ad text: preview tool shows a 0/100 counter; 'Advertising on TikTok' says max 100 English characters, 4-60 recommended; captions use fixed white font and do not support clickable links, @ mentions or hashtags. Display name (account name) shows on one line: up to 20 characters (10 for CJK), 4-10 recommended (reservation page). Profile image: 98x98 px, jpg/jpeg/png, under 50 KB, key element inside the centre 66x66 px. 1080x1920 canvas is our render choice. ads.tiktok.com is DNS-blocked on the research machine (resolves to 0.0.0.0), so TikTok Ads Help pages were read through search-engine excerpts of the official pages, not a direct fetch. Re-verify in Ads Manager before launch.",
+      "sources": [
+        {
+          "url": "https://ads.tiktok.com/help/article/tiktok-auction-in-feed-ads",
+          "title": "TikTok Auction In-Feed Ads (TikTok Ads Help)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://ads.tiktok.com/help/article/tiktok-reservation-in-feed-ads-reach-frequency",
+          "title": "TikTok reservation in-feed ad specifications (TikTok Ads Help)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://ads.tiktok.com/standalone-preview/home",
+          "title": "Advertising on TikTok — Ads Manager preview tool",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "tiktok.ads.spark",
+      "platform": "tiktok",
+      "surface": "ad",
+      "placement": "Spark Ads",
+      "name": "Spark Ad (boosted organic post)",
+      "media": [
+        "video",
+        "carousel"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1920
+      },
+      "aspect": "9:16",
+      "video": {
+        "types": [
+          "mp4",
+          "mov"
+        ],
+        "max_s": null,
+        "captions": "uses the organic post's caption"
+      },
+      "text": {
+        "primary": {
+          "max": null,
+          "truncates_at": null
+        }
+      },
+      "notes": "Spark Ads run an existing organic TikTok post under the creator's or brand's identity (profile photo and name come from that account). Official pages conflict: About Spark Ads says no duration restriction but also cites a 10-minute maximum for sparkable videos; auction in-feed says no duration restriction. Caption is pulled from the organic post and can't be edited after authorization; about 4 lines show before 'See more'; TikTok suggests ~100 characters; reservation page cites max 150, TopView max 100. No ratio/resolution/file restrictions for pull-mode Spark Ads. Design to tiktok.feed.video. ads.tiktok.com is DNS-blocked on the research machine (resolves to 0.0.0.0), so TikTok Ads Help pages were read through search-engine excerpts of the official pages, not a direct fetch. Re-verify in Ads Manager before launch.",
+      "sources": [
+        {
+          "url": "https://ads.tiktok.com/help/article/spark-ads",
+          "title": "About Spark Ads (TikTok Ads Help)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://ads.tiktok.com/help/article/tiktok-auction-in-feed-ads",
+          "title": "TikTok Auction In-Feed Ads (TikTok Ads Help)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://ads.tiktok.com/help/article/tiktok-reservation-in-feed-ads-reach-frequency",
+          "title": "TikTok reservation in-feed ad specifications (TikTok Ads Help)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "tiktok.ads.carousel",
+      "platform": "tiktok",
+      "surface": "ad",
+      "placement": "Carousel Ads",
+      "name": "Image carousel ad",
+      "media": [
+        "image",
+        "carousel"
+      ],
+      "canvas": {
+        "w": 720,
+        "h": 1280
+      },
+      "aspect": "9:16",
+      "accepted_aspects": [
+        "9:16",
+        "1:1",
+        "1.91:1"
+      ],
+      "file": {
+        "types": [
+          "jpg",
+          "jpeg",
+          "png"
+        ],
+        "max_mb": null
+      },
+      "carousel": {
+        "min": 2,
+        "max": 35,
+        "card_aspects": [
+          "9:16",
+          "1:1",
+          "1.91:1"
+        ]
+      },
+      "text": {
+        "primary": {
+          "max": 100
+        }
+      },
+      "notes": "Recommended resolutions: 720x1280 (vertical), 640x640 (square), 1200x628 (horizontal); vertical most recommended, other ratios may show black bars in feed. File size <= 100 KB suggested. Standard Carousel 2-35 images (Video Shopping Ads carousel 2-20 catalog images). One caption, one CTA and one URL for all cards. Music mandatory, loops, min 2 s, MP3 up to 10 MB (playbook also lists wav/m4a/flac). Caption limit assumed same as in-feed (100) — not stated on the carousel page. ads.tiktok.com is DNS-blocked on the research machine (resolves to 0.0.0.0), so TikTok Ads Help pages were read through search-engine excerpts of the official pages, not a direct fetch. Re-verify in Ads Manager before launch.",
+      "sources": [
+        {
+          "url": "https://ads.tiktok.com/help/article/specifications-for-carousel-ads",
+          "title": "Specifications for Carousel Ads (TikTok Ads Help)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://ads.tiktok.com/help/article/about-the-differences-between-standard-carousel-and-video-shopping-ads",
+          "title": "Standard Carousel and Video Shopping Ads Carousel (TikTok Ads Help)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "youtube.shorts.video",
+      "platform": "youtube",
+      "surface": "organic",
+      "placement": "Shorts",
+      "name": "YouTube Short",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1920
+      },
+      "aspect": "9:16",
+      "accepted_aspects": [
+        "9:16",
+        "1:1"
+      ],
+      "video": {
+        "types": [
+          "mp4"
+        ],
+        "codec": "H.264",
+        "audio": "AAC-LC",
+        "max_s": 180,
+        "captions": "burned-in common; keep clear of right action rail and bottom title/channel overlay"
+      },
+      "safe_zone": {
+        "top": null,
+        "bottom": null,
+        "left": null,
+        "right": null,
+        "units": "px at canvas",
+        "note": "YouTube Help publishes no Shorts safe zone. Right-side buttons and bottom title/channel/subscribe overlay cover content."
+      },
+      "text": {
+        "headline": {
+          "max": 100
+        }
+      },
+      "notes": "Shorts can be up to 3 minutes, square or vertical. Uploads via the app are capped at 1080p. Title max 100 characters. Custom Shorts thumbnail: see youtube.thumbnail.shorts (desktop Studio only, verified accounts).",
+      "sources": [
+        {
+          "url": "https://support.google.com/youtube/answer/12779649?hl=en",
+          "title": "Upload YouTube Shorts (YouTube Help)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/youtube/answer/10059070?hl=en",
+          "title": "Get started creating YouTube Shorts (YouTube Help)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/youtube/answer/1722171?hl=en",
+          "title": "YouTube recommended upload encoding settings (YouTube Help)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "youtube.video.standard",
+      "platform": "youtube",
+      "surface": "organic",
+      "placement": "Watch page / Home",
+      "name": "Standard video",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1920,
+        "h": 1080
+      },
+      "aspect": "16:9",
+      "accepted_aspects": [
+        "16:9",
+        "any (player adapts)"
+      ],
+      "max": {
+        "w": 7680,
+        "h": 4320
+      },
+      "video": {
+        "types": [
+          "mp4"
+        ],
+        "codec": "H.264, High Profile, progressive, closed GOP",
+        "audio": "AAC-LC or Opus, 48 kHz",
+        "fps": [
+          24,
+          60
+        ],
+        "max_s": 43200,
+        "max_mb": 262144,
+        "captions": "upload SRT/VTT or auto-captions"
+      },
+      "text": {
+        "headline": {
+          "max": 100
+        },
+        "primary": {
+          "max": 5000
+        }
+      },
+      "notes": "Recommended 16:9 resolutions 426x240 up to 7680x4320 (3840x2160 for 4K). Don't add letterbox/pillarbox bars — player adapts. Default limit 15 minutes; verified accounts up to 12 hours or 256 GB, whichever is less. Recommended bitrate 1080p SDR 8 Mbps (12 Mbps high frame rate). Title 100, description 5,000 characters.",
+      "sources": [
+        {
+          "url": "https://support.google.com/youtube/answer/6375112?hl=en",
+          "title": "Video resolution & aspect ratios (YouTube Help)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/youtube/answer/1722171?hl=en",
+          "title": "YouTube recommended upload encoding settings (YouTube Help)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/youtube/answer/71673?hl=en",
+          "title": "Upload videos longer than 15 minutes (YouTube Help)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://support.google.com/youtube/answer/57407?hl=en",
+          "title": "Upload YouTube videos (YouTube Help)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "youtube.thumbnail.video",
+      "platform": "youtube",
+      "surface": "organic",
+      "placement": "Video thumbnail",
+      "name": "Custom video thumbnail",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 3840,
+        "h": 2160
+      },
+      "aspect": "16:9",
+      "min": {
+        "w": 640,
+        "h": null
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 50
+      },
+      "notes": "CHANGED: YouTube now recommends 3840x2160 (was 1280x720) and allows 50 MB on desktop (mobile upload still 2 MB; podcast 10 MB on mobile). Podcast playlists use 1:1. Account must be verified. Vertical videos with 16:9 custom thumbnails get an auto-generated 4:5 thumbnail on Home/Explore/Subscriptions.",
+      "sources": [
+        {
+          "url": "https://support.google.com/youtube/answer/72431?hl=en",
+          "title": "Add custom thumbnails on YouTube (YouTube Help)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "youtube.thumbnail.shorts",
+      "platform": "youtube",
+      "surface": "organic",
+      "placement": "Shorts thumbnail",
+      "name": "Custom Shorts thumbnail",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 2160,
+        "h": 3840
+      },
+      "aspect": "9:16",
+      "min": {
+        "w": null,
+        "h": 640
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png"
+        ],
+        "max_mb": 50
+      },
+      "notes": "Custom Shorts thumbnails can only be added in YouTube Studio on a computer, verified accounts only. Recommended 2160x3840, min height 640 px, desktop limit 50 MB.",
+      "sources": [
+        {
+          "url": "https://support.google.com/youtube/answer/72431?hl=en",
+          "title": "Add custom thumbnails on YouTube (YouTube Help)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "youtube.channel.banner",
+      "platform": "youtube",
+      "surface": "organic",
+      "placement": "Channel banner",
+      "name": "Channel banner image",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 2560,
+        "h": 1440
+      },
+      "aspect": "16:9",
+      "min": {
+        "w": 2048,
+        "h": 1152
+      },
+      "file": {
+        "types": [
+          "jpg",
+          "png",
+          "gif",
+          "bmp"
+        ],
+        "max_mb": 6
+      },
+      "safe_zone": {
+        "top": 509,
+        "bottom": 509,
+        "left": 508,
+        "right": 508,
+        "units": "px at canvas",
+        "note": "Official: safe area for text/logos is 1235x338 px at the 2048x1152 minimum. Scaled to the 2560x1440 canvas that is ~1544x423 centred (margins derived). The often-quoted 1546x423 is a third-party figure consistent with this."
+      },
+      "crop_notes": "TV shows the full 2560x1440; desktop and mobile crop to a centred horizontal strip.",
+      "notes": "No shadows, borders or frames. File types not listed for the banner on the branding page (types here assumed same as profile picture — unverified).",
+      "sources": [
+        {
+          "url": "https://support.google.com/youtube/answer/10456525?hl=en",
+          "title": "Manage your channel branding (YouTube Help)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "youtube.channel.profile",
+      "platform": "youtube",
+      "surface": "organic",
+      "placement": "Profile picture",
+      "name": "Channel profile picture",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 800,
+        "h": 800
+      },
+      "aspect": "1:1",
+      "file": {
+        "types": [
+          "jpg",
+          "gif",
+          "bmp",
+          "png"
+        ],
+        "max_mb": 15
+      },
+      "crop_notes": "Renders at 98x98 px as a circle.",
+      "notes": "Official: JPG, GIF (not animated), BMP or PNG, under 15 MB (older guidance said 4 MB), renders at 98x98. 800x800 canvas is the widely used recommendation, not stated on the current help page.",
+      "sources": [
+        {
+          "url": "https://support.google.com/youtube/answer/10456525?hl=en",
+          "title": "Manage your channel branding (YouTube Help)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "youtube.channel.watermark",
+      "platform": "youtube",
+      "surface": "organic",
+      "placement": "Video watermark",
+      "name": "Channel video watermark",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 150,
+        "h": 150
+      },
+      "aspect": "1:1",
+      "min": {
+        "w": 150,
+        "h": 150
+      },
+      "file": {
+        "types": null,
+        "max_mb": 1
+      },
+      "notes": "Square image, min 150x150, under 1 MB. Shown in landscape on computers and mobile; not on made-for-kids videos.",
+      "sources": [
+        {
+          "url": "https://support.google.com/youtube/answer/10456525?hl=en",
+          "title": "Manage your channel branding (YouTube Help)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "youtube.posts.image",
+      "platform": "youtube",
+      "surface": "organic",
+      "placement": "Posts (Community)",
+      "name": "Community post image",
+      "media": [
+        "image",
+        "gif",
+        "carousel"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1080
+      },
+      "aspect": "1:1",
+      "file": {
+        "types": [
+          "jpg",
+          "png",
+          "gif",
+          "webp"
+        ],
+        "max_mb": 16
+      },
+      "carousel": {
+        "min": 1,
+        "max": 10,
+        "card_aspects": [
+          "1:1"
+        ]
+      },
+      "text": {
+        "poll_option": {
+          "max": 65
+        },
+        "image_poll_caption": {
+          "max": 36
+        },
+        "quiz_answer": {
+          "max": 80
+        },
+        "quiz_explanation": {
+          "max": 500
+        }
+      },
+      "notes": "Up to 10 images per post, 16 MB each; 1:1 suggested because the feed shows images square (tap expands). Polls up to 4 options. Quiz answers 80 characters (30 with image). 1080x1080 canvas is our render choice. Post text limit not published.",
+      "sources": [
+        {
+          "url": "https://support.google.com/youtube/answer/7124474?hl=en",
+          "title": "Create a post (YouTube Help)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "pinterest.pin.standard",
+      "platform": "pinterest",
+      "surface": "both",
+      "placement": "Home feed / Search",
+      "name": "Standard Pin, 2:3",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1000,
+        "h": 1500
+      },
+      "aspect": "2:3",
+      "accepted_aspects": [
+        "2:3",
+        "1:1",
+        "other (taller crops)"
+      ],
+      "file": {
+        "types": [
+          "png",
+          "jpg",
+          "bmp",
+          "tiff",
+          "webp"
+        ],
+        "max_mb": 20
+      },
+      "safe_zone": {
+        "top": 270,
+        "bottom": 790,
+        "left": 65,
+        "right": 195,
+        "units": "px (Pinterest does not state the reference canvas; appears to be 1080x1920 full-screen view)",
+        "note": "Pinterest's organic Pin spec safe zones for text and key elements."
+      },
+      "text": {
+        "headline": {
+          "max": 100,
+          "truncates_at": 40
+        },
+        "primary": {
+          "max": 800
+        }
+      },
+      "crop_notes": "Pins taller than 2:3 may be cut off in feeds.",
+      "notes": "Upload PNG in sRGB — everything is converted to 8-bit RGB JPEG; custom colour profiles unsupported. Pinterest adds a faint overlay to white/black backgrounds (#000 at 4% in light mode on white; #FFF at 10% in dark mode on black). Title: 100 characters, first ~40 visible (30 for double-byte languages). Description 800 characters, not shown in feed — used for relevance. Text-box overlay 250 characters. Organic web upload max 20 MB; ads 20 MB desktop / 32 MB in-app (ads accept PNG/JPEG only).",
+      "sources": [
+        {
+          "url": "https://help.pinterest.com/en/article/review-pin-specs",
+          "title": "Review Pin specs (Pinterest help)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.pinterest.com/en/business/article/pinterest-product-specs",
+          "title": "Review ad specs (Pinterest Business help)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "pinterest.pin.square",
+      "platform": "pinterest",
+      "surface": "both",
+      "placement": "Home feed / Search",
+      "name": "Square Pin, 1:1",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1000,
+        "h": 1000
+      },
+      "aspect": "1:1",
+      "file": {
+        "types": [
+          "png",
+          "jpg",
+          "bmp",
+          "tiff",
+          "webp"
+        ],
+        "max_mb": 20
+      },
+      "text": {
+        "headline": {
+          "max": 100,
+          "truncates_at": 40
+        },
+        "primary": {
+          "max": 800
+        }
+      },
+      "notes": "1:1 is an accepted alternative (listed for video Pins, carousels and collections); 2:3 performs as the standard. 1000x1000 canvas is our render choice derived from the 1000-px width of the official 1000x1500 recommendation.",
+      "sources": [
+        {
+          "url": "https://help.pinterest.com/en/article/review-pin-specs",
+          "title": "Review Pin specs (Pinterest help)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.pinterest.com/en/business/article/pinterest-product-specs",
+          "title": "Review ad specs (Pinterest Business help)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "pinterest.pin.tall",
+      "platform": "pinterest",
+      "surface": "both",
+      "placement": "Home feed",
+      "name": "Long / tall Pin (taller than 2:3)",
+      "media": [
+        "image"
+      ],
+      "canvas": null,
+      "aspect": "1:2",
+      "accepted_aspects": [
+        "1:2"
+      ],
+      "crop_notes": "Anything taller than 2:3 may be truncated in the feed; the preview shows the top 2:3 region. Keep the hook and brand in the top 1000x1500.",
+      "notes": "Pinterest no longer recommends long Pins; it states only that ratios greater than 2:3 'might get cut off'. 1:2 is the tallest ratio listed for video Pins. No official truncation height is published — don't render this by default.",
+      "sources": [
+        {
+          "url": "https://help.pinterest.com/en/business/article/pinterest-product-specs",
+          "title": "Review ad specs (Pinterest Business help)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.pinterest.com/en/article/review-pin-specs",
+          "title": "Review Pin specs (Pinterest help)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "pinterest.pin.video",
+      "platform": "pinterest",
+      "surface": "organic",
+      "placement": "Video Pin",
+      "name": "Organic video Pin",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1920
+      },
+      "aspect": "9:16",
+      "accepted_aspects": [
+        "9:16",
+        "1:2",
+        "2:3",
+        "3:4",
+        "4:5",
+        "1:1"
+      ],
+      "video": {
+        "types": [
+          "mp4",
+          "m4v",
+          "mov"
+        ],
+        "codec": "H.264 or H.265",
+        "min_s": 4,
+        "max_s": 300,
+        "max_mb": null
+      },
+      "safe_zone": {
+        "top": 270,
+        "bottom": 790,
+        "left": 65,
+        "right": 195,
+        "units": "px (Pinterest does not state the reference canvas; appears to be 1080x1920 full-screen view)",
+        "note": "Pinterest's organic Pin spec safe zones for text and key elements."
+      },
+      "text": {
+        "headline": {
+          "max": 100,
+          "truncates_at": 40
+        },
+        "primary": {
+          "max": 800
+        }
+      },
+      "notes": "Organic video Pins: 4 s to 5 minutes (ads allow up to 15 minutes). Web upload accepts MP4/M4V; MOV on Android/iOS. Organic max file size not stated on the Pin spec page (ads: 2 GB). Idea Pins were folded into this format: video Pins can hold multiple videos and images in one Pin.",
+      "sources": [
+        {
+          "url": "https://help.pinterest.com/en/article/review-pin-specs",
+          "title": "Review Pin specs (Pinterest help)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://help.pinterest.com/en/article/types-of-pins-on-pinterest",
+          "title": "Types of Pins on Pinterest (Pinterest help)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "pinterest.carousel",
+      "platform": "pinterest",
+      "surface": "both",
+      "placement": "Carousel",
+      "name": "Carousel Pin / ad",
+      "media": [
+        "image",
+        "carousel"
+      ],
+      "canvas": {
+        "w": 1000,
+        "h": 1500
+      },
+      "aspect": "2:3",
+      "accepted_aspects": [
+        "1:1",
+        "2:3"
+      ],
+      "file": {
+        "types": [
+          "png",
+          "jpg"
+        ],
+        "max_mb": 20
+      },
+      "carousel": {
+        "min": 2,
+        "max": 5,
+        "card_aspects": [
+          "1:1",
+          "2:3"
+        ]
+      },
+      "text": {
+        "headline": {
+          "max": 100,
+          "truncates_at": 40
+        },
+        "primary": {
+          "max": 800
+        }
+      },
+      "notes": "2-5 images, 20 MB per image. Usable for paid campaigns or organic impressions (business accounts). Sales-objective catalog carousels take 2-10 images/videos pulled from the catalog.",
+      "sources": [
+        {
+          "url": "https://help.pinterest.com/en/business/article/pinterest-product-specs",
+          "title": "Review ad specs (Pinterest Business help)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "pinterest.profile.cover",
+      "platform": "pinterest",
+      "surface": "organic",
+      "placement": "Profile cover",
+      "name": "Business profile cover",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1920,
+        "h": 1080
+      },
+      "aspect": "16:9",
+      "min": {
+        "w": 800,
+        "h": 450
+      },
+      "notes": "Business accounts. Min 800x450, horizontal 16:9 recommended; Pinterest lets you crop/pan to 16:9. File size/type not published. 1920x1080 canvas is our render choice.",
+      "sources": [
+        {
+          "url": "https://help.pinterest.com/en/business/article/personalize-your-profile",
+          "title": "Add a profile cover (Pinterest Business help)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "pinterest.ads.standard_image",
+      "platform": "pinterest",
+      "surface": "ad",
+      "placement": "Standard ad",
+      "name": "Standard image ad",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 1000,
+        "h": 1500
+      },
+      "aspect": "2:3",
+      "file": {
+        "types": [
+          "png",
+          "jpg"
+        ],
+        "max_mb": 32
+      },
+      "text": {
+        "headline": {
+          "max": 100,
+          "truncates_at": 40
+        },
+        "primary": {
+          "max": 800
+        }
+      },
+      "notes": "Max file size 20 MB desktop, 32 MB in-app. Ratios greater than 2:3 may be cut off. Description (800) not shown in feed or close-up for ads. Shopping ads follow the same specs.",
+      "sources": [
+        {
+          "url": "https://help.pinterest.com/en/business/article/pinterest-product-specs",
+          "title": "Review ad specs (Pinterest Business help)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "pinterest.ads.video_standard",
+      "platform": "pinterest",
+      "surface": "ad",
+      "placement": "Standard width video ad",
+      "name": "Video ad, standard width",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1350
+      },
+      "aspect": "4:5",
+      "accepted_aspects": [
+        "1:1",
+        "2:3",
+        "4:5",
+        "9:16"
+      ],
+      "video": {
+        "types": [
+          "mp4",
+          "mov",
+          "m4v"
+        ],
+        "codec": "H.264 or H.265",
+        "min_s": 4,
+        "max_s": 900,
+        "recommended_s": [
+          6,
+          15
+        ],
+        "max_mb": 2048
+      },
+      "text": {
+        "headline": {
+          "max": 100,
+          "truncates_at": 40
+        },
+        "primary": {
+          "max": 800
+        }
+      },
+      "notes": "Aspect must be shorter than 1:2 and taller than 1.91:1; square or vertical (2:3, 4:5, 9:16) recommended. 4:5 canvas is our render choice from the recommended set.",
+      "sources": [
+        {
+          "url": "https://help.pinterest.com/en/business/article/pinterest-product-specs",
+          "title": "Review ad specs (Pinterest Business help)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "pinterest.ads.video_max_width",
+      "platform": "pinterest",
+      "surface": "ad",
+      "placement": "Max. width video ad",
+      "name": "Video ad, max width",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1080
+      },
+      "aspect": "1:1",
+      "accepted_aspects": [
+        "1:1",
+        "16:9"
+      ],
+      "video": {
+        "types": [
+          "mp4",
+          "mov",
+          "m4v"
+        ],
+        "codec": "H.264 or H.265",
+        "min_s": 4,
+        "max_s": 900,
+        "recommended_s": [
+          6,
+          15
+        ],
+        "max_mb": 2048
+      },
+      "text": {
+        "headline": {
+          "max": 100,
+          "truncates_at": 40
+        },
+        "primary": {
+          "max": 800
+        }
+      },
+      "notes": "Paid only; spans the full mobile feed width. Cannot exceed the height of a 1:1 ratio (1:1 or 16:9 per the max-width collections spec).",
+      "sources": [
+        {
+          "url": "https://help.pinterest.com/en/business/article/pinterest-product-specs",
+          "title": "Review ad specs (Pinterest Business help)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "pinterest.ads.collections",
+      "platform": "pinterest",
+      "surface": "both",
+      "placement": "Collections ad",
+      "name": "Collections ad (hero + secondary)",
+      "media": [
+        "image",
+        "video"
+      ],
+      "canvas": {
+        "w": 1000,
+        "h": 1000
+      },
+      "aspect": "1:1",
+      "accepted_aspects": [
+        "1:1",
+        "2:3"
+      ],
+      "file": {
+        "types": [
+          "png",
+          "jpg"
+        ],
+        "max_mb": 10
+      },
+      "video": {
+        "types": [
+          "mp4",
+          "mov",
+          "m4v"
+        ],
+        "codec": "H.264 or H.265",
+        "min_s": 4,
+        "max_s": 900,
+        "max_mb": 2048
+      },
+      "carousel": {
+        "min": 3,
+        "max": 24,
+        "card_aspects": [
+          "1:1",
+          "2:3"
+        ]
+      },
+      "text": {
+        "headline": {
+          "max": 100,
+          "truncates_at": 40
+        },
+        "primary": {
+          "max": 800
+        }
+      },
+      "notes": "One hero (1:1 or 2:3; video hero shorter than 1:2 and taller than 1.91:1) above three smaller images on mobile. Secondary creatives: min 3 recommended, max 24, all the same ratio; 1:1 recommended — non-1:1 is centre-cropped. Description shows only on organic collections close-up. Max-width collections: hero spans full width, video hero 1:1 or 16:9, min 4 secondary recommended.",
+      "sources": [
+        {
+          "url": "https://help.pinterest.com/en/business/article/pinterest-product-specs",
+          "title": "Review ad specs (Pinterest Business help)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "pinterest.ads.idea",
+      "platform": "pinterest",
+      "surface": "both",
+      "placement": "Idea ad",
+      "name": "Idea ad (multi-page)",
+      "media": [
+        "image",
+        "video",
+        "carousel"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1920
+      },
+      "aspect": "9:16",
+      "file": {
+        "types": [
+          "bmp",
+          "jpg",
+          "png",
+          "tiff",
+          "webp"
+        ],
+        "max_mb": null
+      },
+      "video": {
+        "types": [
+          "mp4",
+          "m4v",
+          "mov"
+        ],
+        "codec": "H.264 or H.265",
+        "max_s": 300,
+        "max_mb": 2048
+      },
+      "safe_zone": {
+        "top": 270,
+        "bottom": 440,
+        "left": 65,
+        "right": 195,
+        "units": "px at canvas",
+        "note": "Idea ad safe zone (bottom differs from organic Pin spec's 790)."
+      },
+      "text": {
+        "headline": {
+          "max": 100
+        },
+        "page_text": {
+          "max": 250
+        }
+      },
+      "notes": "Promotes an organic multi-page Pin. 9:16 recommended; no hard ratio restriction. Video files: 2 GB on Android/iOS, 100 MB on web; MP4/M4V/MOV video only on iOS/Android.",
+      "sources": [
+        {
+          "url": "https://help.pinterest.com/en/business/article/pinterest-product-specs",
+          "title": "Review ad specs (Pinterest Business help)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "snapchat.ads.single",
+      "platform": "snapchat",
+      "surface": "ad",
+      "placement": "Single Image or Video Ad (Stories, Spotlight)",
+      "name": "Snap Ad, single image or video",
+      "media": [
+        "image",
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1920
+      },
+      "aspect": "9:16",
+      "min": {
+        "w": 720,
+        "h": 1280
+      },
+      "file": {
+        "types": [
+          "png",
+          "jpg"
+        ],
+        "max_mb": 5
+      },
+      "video": {
+        "types": [
+          "mp4",
+          "mov"
+        ],
+        "codec": "H.264",
+        "min_s": 3,
+        "max_s": 180,
+        "max_mb": 1024,
+        "captions": "sound-on platform; burned-in captions still recommended"
+      },
+      "safe_zone": {
+        "top": 150,
+        "bottom": 330,
+        "left": 0,
+        "right": 0,
+        "units": "px at canvas",
+        "note": "Keep top 150 px and bottom 330 px clear of graphics/logos — brand name/headline at top, CTA/attachment UI at bottom."
+      },
+      "text": {
+        "brand_name": {
+          "max": 25
+        },
+        "headline": {
+          "max": 34
+        }
+      },
+      "notes": "Full-screen vertical required; assets that don't match are cropped. Dynamic ads 6 MB max. Brand name must match the paying advertiser; both brand name and headline required. Story Ad spec page lists brand name up to 32 characters — conflicts with 25 elsewhere; use 25. businesshelp.snapchat.com articles are JavaScript-rendered and returned no body to a direct fetch; their numbers were read from search-engine excerpts of the official pages. forbusiness.snapchat.com/advertising/ad-formats was fetched directly.",
+      "sources": [
+        {
+          "url": "https://businesshelp.snapchat.com/s/article/top-snap-specs?language=en_US",
+          "title": "Single Image or Video Specifications (Snapchat Business Help)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://businesshelp.snapchat.com/s/article/snap-ads-practices?language=en_US",
+          "title": "Single Image or Video Creative Best Practices (Snapchat Business Help)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://forbusiness.snapchat.com/advertising/ad-formats",
+          "title": "Snapchat Ad Formats & Specs (Snapchat for Business)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "snapchat.ads.story",
+      "platform": "snapchat",
+      "surface": "ad",
+      "placement": "Story Ads",
+      "name": "Story Ad (series of Snaps)",
+      "media": [
+        "image",
+        "video",
+        "carousel"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1920
+      },
+      "aspect": "9:16",
+      "min": {
+        "w": 720,
+        "h": 1280
+      },
+      "video": {
+        "types": [
+          "mp4",
+          "mov"
+        ],
+        "codec": "H.264",
+        "min_s": 3,
+        "max_s": 180
+      },
+      "carousel": {
+        "min": null,
+        "max": null,
+        "card_aspects": [
+          "9:16"
+        ]
+      },
+      "safe_zone": {
+        "top": 150,
+        "bottom": 330,
+        "left": 0,
+        "right": 0,
+        "units": "px at canvas",
+        "note": "Each Snap follows the Single Image or Video spec."
+      },
+      "text": {
+        "brand_name": {
+          "max": 25
+        },
+        "headline": {
+          "max": 34
+        }
+      },
+      "notes": "Tap-through series of images/videos; each Snap must meet the Single Image or Video spec. Min/max Snap count per Story not confirmed (null). Discover-feed tile: see snapchat.ads.story_tile. businesshelp.snapchat.com articles are JavaScript-rendered and returned no body to a direct fetch; their numbers were read from search-engine excerpts of the official pages. forbusiness.snapchat.com/advertising/ad-formats was fetched directly.",
+      "sources": [
+        {
+          "url": "https://businesshelp.snapchat.com/s/article/story-ad-specs?language=en_US",
+          "title": "Story Ad Specifications (Snapchat Business Help)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://forbusiness.snapchat.com/advertising/ad-formats",
+          "title": "Snapchat Ad Formats & Specs (Snapchat for Business)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "snapchat.ads.story_tile",
+      "platform": "snapchat",
+      "surface": "ad",
+      "placement": "Story Ad tile (Discover)",
+      "name": "Story Ad tile + logo",
+      "media": [
+        "image"
+      ],
+      "canvas": {
+        "w": 360,
+        "h": 600
+      },
+      "aspect": "3:5",
+      "file": {
+        "types": [
+          "png"
+        ],
+        "max_mb": 2
+      },
+      "safe_zone": {
+        "top": 175,
+        "bottom": 269,
+        "left": null,
+        "right": null,
+        "units": "px at canvas",
+        "note": "175 px top buffer; with a CTA keep text out of the bottom 269 px. Tile text belongs in a 300x128 px safe area."
+      },
+      "text": {
+        "tile_headline": {
+          "max": 55
+        }
+      },
+      "notes": "Tile image 360x600 PNG under 2 MB, 8-bit or lower. Logo 993x284 PNG on transparent background, filling full height or full width and >= 50% height. Tile headline up to 55 characters incl. emoji. Use a gradient toward the bottom on white tiles. Tile required for automatic or Discover placement. businesshelp.snapchat.com articles are JavaScript-rendered and returned no body to a direct fetch; their numbers were read from search-engine excerpts of the official pages. forbusiness.snapchat.com/advertising/ad-formats was fetched directly.",
+      "sources": [
+        {
+          "url": "https://businesshelp.snapchat.com/s/article/story-ad-specs?language=en_US",
+          "title": "Story Ad Specifications (Snapchat Business Help)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "snapchat.ads.collection",
+      "platform": "snapchat",
+      "surface": "ad",
+      "placement": "Collection Ads",
+      "name": "Collection Ad (hero + product tiles)",
+      "media": [
+        "image",
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1920
+      },
+      "aspect": "9:16",
+      "min": {
+        "w": 720,
+        "h": 1280
+      },
+      "file": {
+        "types": [
+          "png",
+          "jpg"
+        ],
+        "max_mb": 5
+      },
+      "video": {
+        "types": [
+          "mp4",
+          "mov"
+        ],
+        "codec": "H.264",
+        "min_s": 3,
+        "max_s": 180,
+        "max_mb": 1024
+      },
+      "carousel": {
+        "min": 2,
+        "max": 4,
+        "card_aspects": [
+          "1:1"
+        ]
+      },
+      "safe_zone": {
+        "top": 150,
+        "bottom": 450,
+        "left": 0,
+        "right": 0,
+        "units": "px at canvas",
+        "note": "Product thumbnails sit near the bottom; keep critical content out of the bottom ~450 px."
+      },
+      "text": {
+        "brand_name": {
+          "max": 25
+        },
+        "headline": {
+          "max": 34
+        }
+      },
+      "notes": "2, 3 or 4 square thumbnails, each min 160x160, jpg/png, max 2 MB, each with its own URL; 3-4 recommended. Dynamic collection uses 3-4 catalog tiles. Hero follows Single Image or Video spec. Spec page is old (~6 years). businesshelp.snapchat.com articles are JavaScript-rendered and returned no body to a direct fetch; their numbers were read from search-engine excerpts of the official pages. forbusiness.snapchat.com/advertising/ad-formats was fetched directly.",
+      "sources": [
+        {
+          "url": "https://businesshelp.snapchat.com/s/article/collection-ad-specs?language=en_US",
+          "title": "Collection Ad Specifications (Snapchat Business Help)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://forbusiness.snapchat.com/advertising/ad-formats",
+          "title": "Snapchat Ad Formats & Specs (Snapchat for Business)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "snapchat.ads.commercial",
+      "platform": "snapchat",
+      "surface": "ad",
+      "placement": "Commercials",
+      "name": "Commercial (non-skippable)",
+      "media": [
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1920
+      },
+      "aspect": "9:16",
+      "min": {
+        "w": 720,
+        "h": 1280
+      },
+      "video": {
+        "types": [
+          "mp4",
+          "mov"
+        ],
+        "codec": "H.264",
+        "min_s": 3,
+        "max_s": 180
+      },
+      "safe_zone": {
+        "top": 150,
+        "bottom": null,
+        "left": 0,
+        "right": 0,
+        "units": "px at canvas",
+        "note": "~150 px top suggestion for logos/graphics; bottom value not confirmed."
+      },
+      "notes": "Standard Commercials 3-6 s fully non-skippable; Extended Play 7-180 s with first 6 s non-skippable. Shown inside Snap's curated content. businesshelp.snapchat.com articles are JavaScript-rendered and returned no body to a direct fetch; their numbers were read from search-engine excerpts of the official pages. forbusiness.snapchat.com/advertising/ad-formats was fetched directly.",
+      "sources": [
+        {
+          "url": "https://businesshelp.snapchat.com/s/article/commercial-specs?language=en_US",
+          "title": "Commercial Specifications (Snapchat Business Help)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://forbusiness.snapchat.com/advertising/ad-formats",
+          "title": "Snapchat Ad Formats & Specs (Snapchat for Business)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "snapchat.ads.sponsored_snap",
+      "platform": "snapchat",
+      "surface": "ad",
+      "placement": "Sponsored Snaps (Chat)",
+      "name": "Sponsored Snap",
+      "media": [
+        "image",
+        "video"
+      ],
+      "canvas": {
+        "w": 1080,
+        "h": 1920
+      },
+      "aspect": "9:16",
+      "min": {
+        "w": 720,
+        "h": 1280
+      },
+      "video": {
+        "types": [
+          "mp4",
+          "mov"
+        ],
+        "max_s": 180,
+        "recommended_s": [
+          1,
+          10
+        ]
+      },
+      "text": {
+        "brand_name": {
+          "max": 25
+        },
+        "headline": {
+          "max": 34
+        },
+        "chat_message": {
+          "max": 500
+        },
+        "auto_response": {
+          "max": 500
+        }
+      },
+      "notes": "Delivered into the Chat inbox. Brand name pulls from Public Profile. Headline: aim 25-28, 34 max. Optional branded chat background 1080x1920. Recommended under 10 s.",
+      "sources": [
+        {
+          "url": "https://forbusiness.snapchat.com/advertising/ad-formats",
+          "title": "Snapchat Ad Formats & Specs (Snapchat for Business)",
+          "checked": "2026-10-25"
+        },
+        {
+          "url": "https://businesshelp.snapchat.com/s/article/ads-in-chat?language=en_US",
+          "title": "Sponsored Snaps (Snapchat Business Help)",
+          "checked": "2026-10-25"
+        }
+      ],
+      "confidence": "official"
+    }
+  ]
+}

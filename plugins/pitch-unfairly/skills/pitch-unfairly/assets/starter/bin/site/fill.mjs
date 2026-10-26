@@ -23,6 +23,9 @@ export function includeParts(html, read, missing = [], depth = 0) {
   });
 }
 
+/** facts.sample's made-by link, by its current name: the name it had before engine 1.11. */
+export const DEPRECATED_FACTS = { 'sample.made_by_href': 'sample.book_href', 'sample.made_by_print': 'sample.book_print' };
+
 const TOKEN = /\{\{\s*(=\s*[^}|]+?(?:\|\s*\w+)?|[\w.]+)\s*\}\}/g;
 
 /** Fill every token in html. Returns the html and the tokens that didn't resolve. */
@@ -44,7 +47,11 @@ export function fillTokens(html, { model = {}, facts = {} } = {}) {
         }
       }
       if (body.startsWith('facts.')) {
-        const v = body.slice(6).split('.').reduce((o, k) => (o == null ? undefined : o[k]), facts);
+        const path = body.slice(6);
+        const get = (p) => p.split('.').reduce((o, k) => (o == null ? undefined : o[k]), facts);
+        let v = get(path);
+        // The made-by link's old names (book_href, book_print), read until a kit renames them.
+        if (v === undefined && DEPRECATED_FACTS[path]) v = get(DEPRECATED_FACTS[path]);
         if (v === undefined || typeof v === 'object') {
           missing.push(whole);
           return whole;

@@ -4,6 +4,8 @@
 // subtitle" headlines, overlong headlines and labels that name nothing are
 // worth a read). Read off the page as the reader sees it, tokens filled.
 
+import { attrValue, drop } from './lead.mjs';
+
 const BLOCK = /<\/?(?:p|li|h[1-6]|div|section|header|footer|td|th|caption|figcaption|blockquote|dt|dd|button|a|label|summary|small|span)\b[^>]*>/i;
 
 // Someone else's words, marked data-copy-ok (a verbatim quote that keeps its own
@@ -59,7 +61,7 @@ export const HEADLINE_MAX = 110;
  * html: a section (or header/footer) with its tokens filled. Returns
  * { blocking, advisory }: lines saying what's wrong and how to fix it.
  */
-export function copyFindings(html, { requireAttribution = false } = {}) {
+export function copyFindings(html, { requireAttribution = false, seller = [] } = {}) {
   if (requireAttribution) html = html.replace(/<\w+\b[^>]*\sdata-copy-ok\b[^>]*>/gi, (tag) =>
     /\bdata-copy-source\s*=\s*["']https?:\/\/[^"']+["']/i.test(tag) ? tag : tag.replace(/\sdata-copy-ok\b(?:=(?:"[^"]*"|'[^']*'|[^\s>]+))?/i, ''));
   const blocking = [];
@@ -86,7 +88,101 @@ export function copyFindings(html, { requireAttribution = false } = {}) {
     const label = plain(m[3]);
     if (LABEL_CLASS.test(m[2]) && GENERIC_LABEL.test(label)) advisory.push(`the label "${label}" names nothing the reader can't see. Cut it and keep the space.`);
   }
-  return { blocking, advisory };
+  // The engine 1.11 tells: blocking on a site pinned sites@1.11+ (or unpinned), warnings before.
+  const strict = [...contrastFindings(html), ...hedgeFindings(html, { seller })];
+  return { blocking, advisory, strict };
+}
+
+// ── Engine 1.11: the tics a final read of real samples kept finding ──
+// Read off prose lines: the text between real block tags, so a token's <span> or a
+// link inside a sentence doesn't cut it in two. Someone else's words (quotes, data-copy-ok)
+// and the fine print (a sources or footnotes block, <small>, <cite>) aren't the page's voice.
+const FINE_PRINT = /\b(?:sources?|footnotes?|endnotes?|fine-?print|legal|disclaimers?|citations?|references|credits?|notes-list)\b/i;
+const finePrint = (attrs, tag) =>
+  /^(?:blockquote|cite|q|small|code|pre)$/i.test(tag) ||
+  /\sdata-copy-ok\b/i.test(attrs) ||
+  /\srole\s*=\s*"doc-(?:footnote|endnotes?|bibliography)"/i.test(attrs) ||
+  FINE_PRINT.test(attrValue(attrs, 'class') ?? '') ||
+  FINE_PRINT.test(attrValue(attrs, 'id') ?? '') ||
+  FINE_PRINT.test(attrValue(attrs, 'data-section') ?? '');
+const PROSE_BLOCK = /<\/?(?:p|li|h[1-6]|div|section|header|footer|nav|td|th|caption|figcaption|dt|dd|button|label|summary|br|ol|ul|table|tr|figure|aside|article|main|details)\b[^>]*>/i;
+/** The page's own prose, one line per block, fine print and other people's words out. */
+export function proseLines(html) {
+  const own = drop(strip(html), finePrint);
+  return own.split(PROSE_BLOCK).map(plain).filter((l) => /[A-Za-z]/.test(l));
+}
+const sentencesOf = (line) => line.split(/(?<=[.!?;])\s+/).filter((x) => /[A-Za-z]/.test(x));
+// Words in quotation marks are a quote or a named thing ("the 'not included' column").
+const unquoted = (s) => s.replace(/“[^”]*”|"[^"]*"|‘[^’]*’(?!\w)/g, ' ');
+
+// "A scenario, not an estimate." "Setup follows approval, not a calendar." The foil after
+// ", not" is a short tail that ends the sentence; "not only", "not yet", "not least" and a
+// clause that carries on ("not because...") are ordinary English.
+const CONTRAST = /,\s+not\s+(?!(?:only|just|merely|yet|least|necessarily|always|to mention|counting|including|that|because|if|when|unless|since|until|so|even|every|all|everyone)\b)((?:[\w’'$%&+/-]+\s*){1,6})[.;:!?)]*\s*$/i;
+/** "X, not Y" contrast lines in the page's own prose. */
+export function contrastFindings(html) {
+  const out = [];
+  for (const line of proseLines(html)) {
+    for (const s of sentencesOf(line)) {
+      const m = CONTRAST.exec(unquoted(s));
+      if (!m) continue;
+      out.push(`"${clip(s)}" is an "X, not Y" contrast line. Say what it is and stop; the foil reads as a template's rhythm, not the seller's voice.`);
+      break;
+    }
+    if (out.length >= 3) break;
+  }
+  return out;
+}
+
+// "per Salesforce", "as Acme publishes it", "by its own count", "according to its own...",
+// "Acme says": a hedge on the seller's own claim. State it; the source goes in site.json.
+const UNITS = new Set('month year seat user day week hour minute unit person employee location site head cent annum capita diem se order job visit technician tech rep account license licence member ticket call shift truck vehicle route store item page click lead deal room bed patient student sku project quarter event mile load case'.split(' '));
+const HEDGE_PATTERNS = [
+  /\bas\s+(?:[A-Z][\w&.’'-]*\s+){1,4}(?:publishes|reports|puts|describes|states|tells|lists|counts|explains|frames|shows|says|claims)\s+it\b/,
+  /\bby\s+(?:its|their|the company[’']s|the vendor[’']s|[A-Z][\w&.-]*[’']s)\s+own\s+(?:count|account|measure|numbers|figures|estimates?|reckoning|tally|telling|description|admission|data|reporting)\b/i,
+  /\baccording to\s+(?:its|their)\s+own\b/i,
+  /\baccording to\s+(?:the company|the vendor|the seller)\b/i,
+  /\b(?:the company|the vendor)\s+(?:says|claims|reports|states)\b/i,
+];
+const reEscape = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+/** Attribution hedges in the page's own prose. seller: the seller's names, for "<Seller> says". */
+export function hedgeFindings(html, { seller = [] } = {}) {
+  const names = [...new Set(seller.filter((n) => typeof n === 'string' && n.trim().length >= 2).map((n) => n.trim()))];
+  const own = names.length ? new RegExp(`(?<![\\w])(?:${names.map(reEscape).join('|')})(?:[’']s)?\\s+(?:says|said|claims|reports|states|notes|estimates|reckons|publishes)\\b|\\baccording to\\s+(?:${names.map(reEscape).join('|')})\\b`) : null;
+  const out = [];
+  for (const line of proseLines(html)) {
+    const s = unquoted(line);
+    let hit = HEDGE_PATTERNS.map((re) => re.exec(s)).find(Boolean)?.[0] ?? (own ? own.exec(s)?.[0] : undefined);
+    if (!hit) {
+      for (const m of s.matchAll(/\b[Pp]er\s+([A-Z][\w&.’'-]*)((?:\s+[A-Z][\w&.’'-]*)*)/g)) {
+        if (UNITS.has(m[1].toLowerCase().replace(/s$/, ''))) continue;
+        hit = m[0];
+        break;
+      }
+    }
+    if (!hit) continue;
+    out.push(`"${hit}" in "${clip(line)}" hedges a claim by attributing it in the sentence. If it's the seller's own fact, state it plainly; its source goes in site.json "sources" (or a sources footnote), not the copy.`);
+    if (out.length >= 3) break;
+  }
+  return out;
+}
+
+// A FAQ is a template's section, not a proposal's: each answer belongs where its question
+// comes up. Read from the heading (or its eyebrow) and from the body: a list of questions.
+const FAQ_HEAD = /^(?:faqs?|f\.a\.q\.?s?|q\s*(?:&|and)\s*a|(?:frequently asked|common|your|some|good|the|a few|top|buyers?[’']?)\s+questions(?:\s+and answers)?|questions(?:\s+and answers|,?\s+answered|\s+we hear|\s+(?:people|buyers|teams|you|they)\s+ask)?|(?:your|the|their)\s+questions,?\s+answered|ask us anything|before you (?:ask|sign)|what\s+.{1,60}?\s(?:asks?|asked|want to know|wonder(?:s)?)(?:\s+(?:before|about|when|first|most|us|every)\b.*)?)\s*[.?!:]?$/i;
+const QUESTION_ITEM = /<(summary|dt|h3|h4|h5|button)\b[^>]*>([\s\S]*?)<\/\1>/gi;
+/** Why a section reads as a FAQ, or null. */
+export function faqFinding(html) {
+  const body = strip(html);
+  const heads = [...body.matchAll(/<(h[1-3])\b[^>]*>([\s\S]*?)<\/\1>/gi)].map((m) => plain(m[2]));
+  const labels = [...body.matchAll(/<(\w+)\b([^>]*)>([^<]{1,60})<\/\1>/g)].filter((m) => LABEL_CLASS.test(m[2])).map((m) => plain(m[3]));
+  const named = [...heads.slice(0, 1), ...labels].find((h) => FAQ_HEAD.test(h) && !/\bwhat you asked for\b/i.test(h));
+  const items = [...body.matchAll(QUESTION_ITEM)].map((m) => plain(m[2])).filter((t) => /[A-Za-z]/.test(t));
+  const asked = items.filter((t) => /\?\s*$/.test(t));
+  const listed = asked.length >= 3 && asked.length / items.length >= 0.6;
+  if (!named && !listed) return null;
+  const why = named ? `its heading reads as one ("${clip(named)}")` : `${asked.length} of its ${items.length} headings and toggles are questions`;
+  return `this section is a FAQ: ${why}. A proposal answers each question where it comes up, in the section it belongs to (the price, the timeline, the scope). Move the answers there and cut the section.`;
 }
 
 // ── Simple copy: length limits that keep any one screen from overwhelming ──

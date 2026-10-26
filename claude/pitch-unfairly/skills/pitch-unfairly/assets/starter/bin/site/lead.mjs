@@ -31,7 +31,7 @@ export function element(html, at, tag) {
 }
 
 /** The outermost elements whose opening tag passes test(attrs, tag): [{ at, tag, attrs, html }]. */
-function elements(html, test) {
+export function elements(html, test) {
   const out = [];
   let end = 0;
   for (const m of html.matchAll(/<([a-z][\w-]*)\b([^>]*)>/gi)) {
@@ -44,7 +44,7 @@ function elements(html, test) {
 }
 
 /** html with every element that passes test(attrs, tag) taken out. */
-function drop(html, test) {
+export function drop(html, test) {
   let out = '';
   let from = 0;
   for (const e of elements(html, test)) {
@@ -54,8 +54,8 @@ function drop(html, test) {
   return out + html.slice(from);
 }
 
-const attr = (attrs, name) => new RegExp(`\\s${name}(?:\\s*=\\s*"([^"]*)"|\\s*=\\s*'([^']*)'|(?=[\\s/>]|$))`, 'i').exec(attrs);
-const attrValue = (attrs, name) => {
+export const attr = (attrs, name) => new RegExp(`\\s${name}(?:\\s*=\\s*"([^"]*)"|\\s*=\\s*'([^']*)'|(?=[\\s/>]|$))`, 'i').exec(attrs);
+export const attrValue = (attrs, name) => {
   const m = attr(attrs, name);
   return m ? (m[1] ?? m[2] ?? '') : undefined;
 };
@@ -157,6 +157,23 @@ const PITCH = [/A note from Unfairly/i, /\bUnfairly built\b/i, /Made by Unfairly
 const OUR_HOST = /(?:^|\.)(?:unfairly\.ai|pitchunfairly\.com)$/i;
 /** The host a link goes to (a web page's, or a mailto's domain). */
 const linkHost = (href) => /^https?:\/\/(?:[^@/?#]*@)?([^/?#:]+)/i.exec(href)?.[1] ?? /^mailto:[^@?]*@([^?&,\s]+)/i.exec(href)?.[1] ?? null;
+// Unfairly's home pages: the bare domains (or www.), on any path that isn't a flow.
+const OUR_HOME = /^(?:www\.)?(?:unfairly\.ai|pitchunfairly\.com)$/i;
+const FLOW_PATH = /^\/(?:claim|book|booking|schedule|meet|meeting|calendar|call|demo|contact|signup|sign-up|signin|sign-in|login|start|trial|checkout|pay)(?:[/?#.-]|$)/i;
+const BOOKING_HOST = /(?:^|\.)(?:calendly\.com|cal\.com|savvycal\.com|chilipiper\.com|hubspot\.com|zcal\.co|tidycal\.com)$/i;
+/** Why a link in the sample band doesn't go to an Unfairly home page, or null when it does. */
+export function bandLinkProblem(href) {
+  if (/^mailto:/i.test(href)) return 'an email address';
+  if (/^tel:/i.test(href)) return 'a phone number';
+  const m = /^https?:\/\/(?:[^@/?#]*@)?([^/?#:]+)(?::\d+)?([^?#]*)/i.exec(href);
+  if (!m) return 'which isn\'t a web page of ours';
+  const [, host, path] = m;
+  if (BOOKING_HOST.test(host)) return 'a booking calendar';
+  if (OUR_HOST.test(host) && !OUR_HOME.test(host)) return `which is ${host}, not our home page`;
+  if (!OUR_HOST.test(host)) return `which isn't Unfairly's (${host})`;
+  if (FLOW_PATH.test(path)) return 'a booking, claim or sign-up flow';
+  return null;
+}
 
 // A plain number typed into copy (not a year, not a figure the copy rules already catch).
 const PLAIN_NUMBER = /(?<![\w.,$€£:/-])\d[\d,]*(?:\.\d+)?(?!\d|[.,]\d|\s?[%×])/g;
@@ -185,7 +202,7 @@ const stripFacts = (p) => String(p).replace(/^facts\./, '');
  * footer (section: true for a section file). blocks: whether this pin makes
  * the rules blocking. Returns { errors, warnings }.
  */
-export function leadFindings({ site, files, blocks, sampleBlocks = blocks, today = new Date().toISOString().slice(0, 10) }) {
+export function leadFindings({ site, files, blocks, sampleBlocks = blocks, bandBlocks = sampleBlocks, today = new Date().toISOString().slice(0, 10) }) {
   const errors = [];
   const warnings = [];
   const lead = isLead(site);
@@ -417,6 +434,7 @@ export function leadFindings({ site, files, blocks, sampleBlocks = blocks, today
   // once to who made it ("Made by Unfairly").
   if (site?.sample) {
     const ad = (m) => (sampleBlocks ? errors : warnings).push(m);
+    const band11 = (m) => (bandBlocks ? errors : warnings).push(m);
     const PITCH_BTN = /^(?:book_meeting|talk_to_us|book|email|contact)$/i;
     const PITCH_LABEL = /\b(?:book|schedule|email|talk to us|get in touch|call us)\b/i;
     for (const { where, html } of files) {
@@ -426,7 +444,21 @@ export function leadFindings({ site, files, blocks, sampleBlocks = blocks, today
         for (const c of pitched) ad(`${where}: the sample band carries Unfairly's booking pitch ("${clip(words(filled(c.html))) || attrValue(c.attrs, 'data-cta')}"). A sample's band says what the page is and links at most once, to "Made by Unfairly"; booking and email go in the note.`);
         if (!lead && ctas.length > 1) ad(`${where}: the sample band has ${ctas.length} calls to action. A sample's band carries one at most, "Made by Unfairly".`);
         const bandWords = words(filled(drop(band.html, (a) => !!attr(a, 'data-cta'))));
-        if (/\b(?:book|email)\b|calendly\.com|@unfairly\.ai/i.test(bandWords)) ad(`${where}: the sample band asks the reader to book or email us ("${clip(bandWords)}"). It says what the page is; our pitch goes in the note.`);
+        const asks = /\b(?:book|email)\b|calendly\.com|@unfairly\.ai/i.test(bandWords);
+        if (asks) ad(`${where}: the sample band asks the reader to book or email us ("${clip(bandWords)}"). It says what the page is; our pitch goes in the note.`);
+        // Engine 1.11: the band's link goes where its label says, an Unfairly home page,
+        // whatever the label ("Made by Unfairly" pointing at a booking calendar is a booking
+        // link). The PDF strip counts too, and so does a contact it prints as text.
+        const strip = isPdfOnly(band.attrs) ? 'the PDF strip of the sample band' : 'the sample band';
+        for (const a of elements(band.html, (attrs) => attr(attrs, 'href') !== null)) {
+          if (pitched.some((c) => c.at === a.at && c.html === a.html)) continue;
+          const href = decode(fillTokens(attrValue(a.attrs, 'href') ?? '', site).html).trim();
+          const wrong = bandLinkProblem(href);
+          if (wrong) band11(`${where}: ${strip} links to ${href || '(no address)'}, ${wrong}. Its one link goes to an Unfairly home page (https://unfairly.ai/ or https://pitchunfairly.com/), never a booking, claim or contact flow; booking and email go in the note.`);
+        }
+        const printed = words(filled(band.html));
+        const contact = !asks && /\bbob@|[\w.+-]+@unfairly\.ai\b|calendly|\bcal\.com\b/i.exec(printed);
+        if (contact) band11(`${where}: ${strip} prints a way to reach us ("${contact[0]}"). It says what the page is; our contact goes in the note.`);
       }
       const offBand = filled(drop(html, isBand));
       const yours = /\b(?:yours could look like this|your team could send this|a page like this for your|want one like this)\b/i.exec(words(filled(html)));

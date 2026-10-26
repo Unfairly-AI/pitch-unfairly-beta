@@ -4,17 +4,18 @@
      the Pitch Unfairly house palette that says the page is a sample and what's fictional,
      with at most one "Made by Unfairly" link. Never our booking buttons: the page is the
      seller's, and our pitch goes in the note. Set data-sample-tone and data-sample-pill
-     from sample-tone.mjs for the page's brand. A real proposal drops it. -->
+     from sample-tone.mjs for the page's brand. On a phone the short line still names the
+     seller and the buyer, and the link stays in view. A real proposal drops it. -->
 <header class="top tb-top">
   <div class="tb-sample-bar" data-sample data-sample-tone="yellow" data-sample-pill="magenta" role="note" aria-label="About this sample">
     <div class="tb-wrap tb-sb-row">
-      <p class="tb-sb-text"><span class="tb-sb-long">Sample proposal. {{facts.client.name}} and its numbers are fictional.</span><span class="tb-sb-short">A sample proposal.</span></p>
+      <p class="tb-sb-text"><span class="tb-sb-long">Sample proposal from {{facts.vendor.name}}. {{facts.client.name}} and its numbers are fictional.</span><span class="tb-sb-short">Sample: {{facts.vendor.name}} for {{facts.client.name}}.</span></p>
       <div class="tb-sb-actions"><a class="tb-sb-made" href="{{facts.sample.made_by_href}}" target="_blank" rel="noopener" data-cta="made_by">{{facts.sample.made_by_label}}</a></div>
     </div>
   </div>
   <div class="tb-wrap tb-top-row">
     <a class="tb-brand" href="#top" aria-label="Back to the top">{{facts.vendor.name}}</a>
-    <nav class="tb-nav" aria-label="Sections"><a href="#context">The problem</a><a href="#calculator">Your numbers</a><a href="#options">Plans</a><a href="#proof">Proof</a><a href="#timeline">Timeline</a><a href="#questions">Questions</a></nav>
+    <nav class="tb-nav" aria-label="Sections"><a href="#context">The problem</a><a href="#calculator">Your numbers</a><a href="#options">Plans</a><a href="#proof">Proof</a><a href="#timeline">Timeline</a></nav>
     <a class="tb-btn" href="#next">Book a call</a>
   </div>
 </header>

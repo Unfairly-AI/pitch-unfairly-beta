@@ -1,0 +1,46 @@
+/* The social engine's base styles. Every color, font, radius and shadow is a brand token
+   from brand/brand.json (via brand-lib's brandCss). A campaign adds its moments' styles in
+   social/styles.css. */
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html,body{background:var(--paper)}
+body{font-family:var(--font-body);color:var(--ink);-webkit-font-smoothing:antialiased}
+
+.cv{position:relative;overflow:hidden;background:var(--paper);color:var(--ink);font-family:var(--font-body)}
+.cv .blk{position:absolute;left:0;right:0;bottom:0}
+.hd{font-family:var(--font-display);font-weight:var(--display-weight);letter-spacing:var(--display-tracking);line-height:1.02;text-transform:var(--display-case);text-wrap:balance}
+.hd .ac{color:var(--accent);display:block}
+.sub{font-weight:var(--body-weight);letter-spacing:var(--body-tracking);line-height:1.35;color:var(--ink-muted);text-wrap:pretty}
+.ex-area{position:absolute}
+.ex{position:absolute;left:0;top:0;transform-origin:0 0}
+.note{position:absolute;font:500 15px/1 var(--font-mono);letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+.cta{position:absolute;display:flex;align-items:center;gap:28px}
+.btn{display:inline-flex;align-items:center;gap:.5em;background:var(--accent);color:var(--on-accent);border-radius:calc(var(--radius-button) * .9);font:600 1em/1 var(--font-body);padding:.85em 1.15em;white-space:nowrap;box-shadow:var(--shadow-card)}
+.btn svg{width:1em;height:1em}
+.offer{color:var(--ink-muted);line-height:1.3;font-weight:500}
+
+/* the brand mark + wordmark: the kit's mark image, or an initial tile when it has none */
+.logo{display:inline-flex;align-items:center;gap:.32em;font-size:44px;white-space:nowrap}
+.logo .mark{display:block;flex:none;width:.82em;height:.82em;object-fit:contain}
+.logo .tile{display:grid;place-items:center;flex:none;width:.82em;height:.82em;border-radius:.2em;background:var(--accent)}
+.logo .tile b{color:var(--on-accent);font:800 .5em/1 var(--font-display)}
+.logo .wm{font:700 .55em/1 var(--font-display);letter-spacing:-.04em;color:var(--ink)}
+
+.dsp{position:absolute;inset:0;display:flex}
+
+/* the review gallery */
+.gal{padding:40px clamp(16px,4vw,56px) 80px;max-width:1500px;margin:0 auto}
+.gal h1{font:600 40px/1.05 var(--font-display);letter-spacing:-.03em}
+.gal .lede{max-width:72ch;margin-top:12px;color:var(--ink-muted);font-size:16px;line-height:1.5}
+.gal .bar{display:flex;gap:8px;flex-wrap:wrap;margin:24px 0 8px}
+.gal .bar button{font:600 14px/1 var(--font-body);padding:10px 14px;border-radius:999px;border:1px solid color-mix(in oklab,var(--ink) 15%,transparent);background:var(--paper);color:var(--ink);cursor:pointer}
+.gal .bar button[aria-pressed=true]{background:var(--ink);color:var(--paper)}
+.gal h2{font:600 24px/1.1 var(--font-display);margin:40px 0 14px}
+.grid{display:flex;flex-wrap:wrap;gap:22px;align-items:flex-start}
+.card{display:grid;gap:10px}
+.card .stage{position:relative;overflow:hidden;border-radius:10px;box-shadow:0 0 0 1px color-mix(in oklab,var(--ink) 12%,transparent)}
+.card .stage > .cv{transform-origin:0 0;position:absolute;left:0;top:0}
+.card .meta{font-size:13px;color:var(--ink-muted);line-height:1.35}
+.card .meta b{color:var(--ink);font-weight:600;display:block;font-size:14px}
+.safe-ov{position:absolute;outline:2px dashed #e0245e;outline-offset:-1px;pointer-events:none;display:none;box-shadow:0 0 0 9999px rgba(224,36,94,.16)}
+.show-safe .safe-ov{display:block}

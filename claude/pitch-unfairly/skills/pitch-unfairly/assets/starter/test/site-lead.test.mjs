@@ -285,7 +285,7 @@ test('CASE Garner money: "$158.4" can\'t print; money_exact gives cents ($158.40
 });
 
 test('CASE Garner hedging: more than four hedges warn, naming the sections; quotes don\'t count', () => {
-  const hedgy = '<p>An illustrative figure, not a forecast and not a quote.</p><p>Actual results vary; hypothetical.</p>';
+  const hedgy = '<p>An illustrative figure. Not a forecast and not a quote.</p><p>Actual results vary; hypothetical.</p>';
   const r = page({ next: addTo(NEXT, hedgy) });
   assert.ok(has(r.warnings, /The page hedges 5 times \(sections\/02-next.html: 5\); keep one qualifier beside each figure and say the rest with conviction\./), r.warnings.join('\n'));
   assert.deepEqual(r.errors, [], 'a warning, not an error');

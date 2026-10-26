@@ -1,0 +1,33 @@
+{
+  "$comment": "An example campaign: replace every line with this brand's own. guide: deck_guide topic social.",
+  "engine": "social@1.0",
+  "name": "Example campaign",
+  "url": "example.com",
+  "cta": "Book a demo",
+  "offer": "One line that says what happens when they click.",
+  "avoid": ["seamless", "game-changer", "revolutionary"],
+  "formats": { "include": ["linkedin.*", "instagram.*"] },
+  "angles": {
+    "A": {
+      "name": "The proof",
+      "head": "Say the one thing your buyer should believe.",
+      "ac": "Then show it moving.",
+      "sub": "One sentence that makes the headline concrete for this buyer.",
+      "short": "The one thing to believe.",
+      "shortAc": "Shown, not told.",
+      "micro": "The one thing, shown.",
+      "note": "Example data",
+      "tint": "var(--surface)",
+      "moment": "metric"
+    }
+  },
+  "cards": [
+    { "head": "A hook that earns the swipe.", "ac": "Say what they get by swiping.", "sub": "Swipe for the proof." },
+    { "angle": "A" },
+    { "close": true, "head": "The next step,", "ac": "in one line." }
+  ],
+  "copy": {
+    "linkedin": { "ad": { "A": { "primary": "The post above the ad: who it's for and the one thing it proves.", "headline": "The headline under the image" } } },
+    "instagram": { "organic": { "A": { "primary": "The caption. Lead with the point; the feed shows about 125 characters before \"more\". #oneortwo" } } }
+  }
+}

@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { buildSite } from '../bin/site-build.mjs';
 import { serveDir } from '../bin/serve.mjs';
-import { EXTRA_WIDTHS, layoutProblems, visualSlop, motionProblems, previewProblems, brandDiff, qualifierProblems } from '../bin/site/page-lint.mjs';
+import { EXTRA_WIDTHS, layoutProblems, visualSlop, motionProblems, previewProblems, brandDiff, qualifierProblems, sampleBandProblems, sampleNames, boxedTextProblems } from '../bin/site/page-lint.mjs';
 
 const STARTER = resolve(import.meta.dirname, '..');
 
@@ -403,4 +403,77 @@ test('a real build carries a title and description but no Open Graph tags (the s
   const r = await previewProblems(site.out);
   assert.deepEqual(r.errors, []);
   assert.ok(r.warnings.some((w) => /og:image/.test(w)));
+});
+
+// ---------- Engine 1.11: the sample band on a phone, and boxed text ----------
+
+const SAMPLE_SITE = { sample: true, facts: { vendor: { name: 'Northline' }, client: { name: 'Harlow Services' } } };
+const bandHeader = (short, link = '<a class="made" href="https://unfairly.ai/" target="_blank" rel="noopener" data-cta="made_by">Made by Unfairly</a>') =>
+  `<header class="top"><div class="band" data-sample role="note"><p class="txt"><span class="long">Sample proposal from {{facts.vendor.name}}. {{facts.client.name}} and its numbers are fictional.</span><span class="short">${short}</span></p>${link}</div></header>`;
+const BAND_CSS = `.band { display: flex; align-items: center; gap: 12px; padding: 8px 16px; background: #fff1a8; }
+  .made { display: inline-flex; min-height: 44px; align-items: center; }
+  .short { display: none; }
+  @media (max-width: 720px) { .long { display: none; } .short { display: inline; } }`;
+const SECTION_ONE = '<section data-section="hero"><h1>Routes for Harlow.</h1><p>One plan by Monday.</p></section>';
+
+browserTest('ACCEPTANCE: at 390 and 320 a band that collapses to "Example Salesforce plan." and hides its link fails', async (page) => {
+  const site = await makeSite('band-bad', { site: SAMPLE_SITE, sections: [SECTION_ONE], styles: `${BAND_CSS}\n@media (max-width: 720px) { .made { display: none; } }`, files: { 'site/header.html': bandHeader('Example Salesforce plan.') } });
+  for (const width of [390, 320]) {
+    await open(page, site, { width, height: 844 });
+    const r = await sampleBandProblems(page, sampleNames({ ...SAMPLE_SITE }));
+    assert.ok(r.errors.some((e) => new RegExp(`^${width}px: the sample band reads "Example Salesforce plan\\.", which doesn't name the seller \\(Northline\\) or the buyer \\(Harlow Services\\)`).test(e)), r.errors.join('\n'));
+    assert.ok(r.errors.some((e) => /hides its link "Made by Unfairly"/.test(e)), r.errors.join('\n'));
+  }
+});
+
+browserTest('ACCEPTANCE: a phone band that names seller and buyer and keeps its link in view passes', async (page) => {
+  const site = await makeSite('band-good', { site: SAMPLE_SITE, sections: [SECTION_ONE], styles: BAND_CSS, files: { 'site/header.html': bandHeader('Sample: {{facts.vendor.name}} for {{facts.client.name}}.') } });
+  for (const width of [390, 320]) {
+    await open(page, site, { width, height: 844 });
+    const r = await sampleBandProblems(page, sampleNames(SAMPLE_SITE));
+    assert.deepEqual(r.errors, [], `${width}px`);
+  }
+});
+
+browserTest('a band link pushed past the band\'s clipped edge, or a band hidden outright, fails', async (page) => {
+  const clipped = await makeSite('band-clip', { site: SAMPLE_SITE, sections: [SECTION_ONE], styles: `${BAND_CSS}\n.band { overflow: hidden; } .txt { flex: none; white-space: nowrap; }`, files: { 'site/header.html': bandHeader('Sample: {{facts.vendor.name}} for {{facts.client.name}}, and its numbers are fictional.') } });
+  await open(page, clipped, { width: 320, height: 800 });
+  const r = await sampleBandProblems(page, sampleNames(SAMPLE_SITE));
+  assert.ok(r.errors.some((e) => /link "Made by Unfairly" (?:is clipped by|runs off the screen)/.test(e)), r.errors.join('\n'));
+  const hidden = await makeSite('band-hidden', { site: SAMPLE_SITE, sections: [SECTION_ONE], styles: `${BAND_CSS}\n@media (max-width: 720px) { .band { display: none; } }`, files: { 'site/header.html': bandHeader('x') } });
+  await open(page, hidden, { width: 390, height: 844 });
+  assert.ok((await sampleBandProblems(page, sampleNames(SAMPLE_SITE))).errors.some((e) => /the sample band is hidden/.test(e)));
+});
+
+const words = (n) => Array.from({ length: n }, (_, i) => ['routes', 'crews', 'plan', 'the', 'day', 'before', 'dispatch', 'starts'][i % 8]).join(' ');
+const BOX_CSS = `.wrap { max-width: 960px; margin: 0 auto; padding: 48px 24px; }
+  .callout { border: 1px solid #1d1b16; border-radius: 8px; padding: 20px; max-width: 640px; }
+  .panel { background: #f1ede4; padding: 20px; max-width: 640px; }
+  .tinted { background: #f1ede4; }
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .card { border: 1px solid #1d1b16; border-radius: 8px; padding: 16px; }
+  figure { border: 1px solid #1d1b16; padding: 12px; max-width: 640px; }
+  .calc { border: 1px solid #1d1b16; padding: 16px; max-width: 640px; }
+  .tag { border: 1px solid #1d1b16; padding: 4px 8px; display: inline-block; }`;
+
+browserTest('ACCEPTANCE: running text in a bordered box or a tinted panel is a warning', async (page) => {
+  const site = await makeSite('boxed', { sections: [`<section data-section="plan"><div class="wrap"><h2>The plan.</h2><div class="callout"><p>${words(24)}.</p></div><aside class="panel"><p>${words(18)}.</p></aside></div></section>`], styles: BOX_CSS });
+  await open(page, site);
+  const r = await boxedTextProblems(page);
+  assert.deepEqual(r.errors, [], 'boxed text only warns');
+  assert.ok(r.warnings.some((w) => /^boxed text: <div\.callout> in "plan" sets 24 words of running text in a bordered box/.test(w)), r.warnings.join('\n'));
+  assert.ok(r.warnings.some((w) => /<aside\.panel> in "plan" sets 18 words of running text in a tinted panel/.test(w)), r.warnings.join('\n'));
+});
+
+browserTest('boxed text: cards in a row, a tinted section, a figure, a calculator and a short label pass', async (page) => {
+  const site = await makeSite('not-boxed', {
+    sections: [
+      `<section data-section="cards"><div class="wrap"><h2>Three crews.</h2><div class="cards">${[1, 2, 3].map(() => `<div class="card"><p>${words(20)}.</p></div>`).join('')}</div></div></section>`,
+      `<section data-section="band" class="tinted"><div class="wrap"><p>${words(30)}.</p></div></section>`,
+      `<section data-section="fig"><div class="wrap"><figure><figcaption>${words(20)}.</figcaption></figure><div class="calc"><label>Crews <input data-input="seats" type="number" value="40"></label><p>${words(16)}.</p></div><span class="tag">Proposed for Harlow</span></div></section>`,
+    ],
+    styles: BOX_CSS,
+  });
+  await open(page, site);
+  assert.deepEqual((await boxedTextProblems(page)).warnings, []);
 });

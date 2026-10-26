@@ -26,6 +26,7 @@
     "brand:board": "node bin/brand-board.mjs",
     "site:new": "node bin/site-new.mjs",
     "site:check": "node bin/site-check.mjs",
+    "site:upgrade": "node bin/site-upgrade.mjs",
     "site:census": "node bin/site-census.mjs",
     "site:map": "node bin/site-map.mjs",
     "site:vendor": "node bin/site-vendor.mjs",
@@ -34,6 +35,10 @@
     "site:manifest": "node bin/site-manifest.mjs",
     "site:variants": "node bin/site-variants.mjs",
     "site:gallery": "node bin/brand-apply.mjs && node bin/site-gallery.mjs",
+    "social:new": "node bin/social-new.mjs",
+    "social:formats": "node bin/social-formats.mjs",
+    "social:check": "node bin/social-check.mjs",
+    "social:build": "node bin/brand-apply.mjs && node bin/social-build.mjs",
     "test": "node --test 'test/*.test.mjs'"
   },
   "dependencies": {

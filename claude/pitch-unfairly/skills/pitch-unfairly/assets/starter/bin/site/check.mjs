@@ -3,7 +3,8 @@
 import { runModel } from './model.mjs';
 import { fillTokens } from './fill.mjs';
 import { ENGINE, engineProblem } from './version.mjs';
-import { copyExemptionProblems, copyFindings, simplicityFindings, LIMITS } from './copy.mjs';
+import { copyExemptionProblems, copyFindings, faqFinding, simplicityFindings, LIMITS } from './copy.mjs';
+import { DEPRECATED_FACTS } from './fill.mjs';
 import { element, isLead, leadFindings } from './lead.mjs';
 
 const text = (html) =>
@@ -56,15 +57,30 @@ export function checkSite({ site, sections, header = '', footer = '', styles = '
   // The copy rules that block came with engine 1.2; a site pinned earlier gets
   // them as warnings until it's rebuilt and re-pinned, as its pin promises.
   const pinnedMinor = /^sites@1\.(\d+)/.exec(String(site.engine ?? ''))?.[1];
-  const copyBlocks = pinnedMinor === undefined || Number(pinnedMinor) >= 2;
+  // A rule that came with engine 1.N blocks unpinned or pinned 1.N+, and warns on an older pin.
+  const from = (minor) => pinnedMinor === undefined || Number(pinnedMinor) >= minor;
+  const copyBlocks = from(2);
+  const rules11 = (m) => (from(11) ? errors : warnings).push(m);
+  const seller = [site.facts?.vendor?.name, site.facts?.vendor?.short, site.facts?.seller?.name, site.sample?.seller].filter((n) => typeof n === 'string');
   const copy = (where, html) => {
-    const requireAttribution = pinnedMinor === undefined || Number(pinnedMinor) >= 7;
+    const requireAttribution = from(7);
     for (const problem of copyExemptionProblems(html)) (requireAttribution ? errors : warnings).push(`${where}: ${problem}`);
-    const { blocking, advisory } = copyFindings(fillTokens(html, site).html, { requireAttribution });
+    const { blocking, advisory, strict } = copyFindings(fillTokens(html, site).html, { requireAttribution, seller });
     // Before 1.2 the em dash was already an error of its own (below).
     for (const b of blocking) if (copyBlocks) errors.push(`${where}: ${b}`); else if (!b.startsWith('has an em dash')) warnings.push(`${where}: ${b}`);
     for (const a of advisory) warnings.push(`${where}: ${a}`);
+    for (const x of strict) rules11(`${where}: ${x}`);
   };
+  // The made-by link's facts were book_href and book_print before 1.11. They still fill
+  // made_by_href and made_by_print, with a warning to rename them.
+  const sampleFacts = site.facts?.sample ?? {};
+  const allHtml = [header, footer, ...sections.map(({ html }) => html)].join('\n');
+  for (const [now, old] of Object.entries(DEPRECATED_FACTS)) {
+    const [, oldKey] = old.split('.');
+    const [, newKey] = now.split('.');
+    if (Object.hasOwn(sampleFacts, oldKey)) warnings.push(`site.json facts.sample.${oldKey} is the old name for the "Made by Unfairly" link. Rename it ${newKey}${Object.hasOwn(sampleFacts, newKey) ? ' (both are set; the old one is ignored)' : ''}.`);
+    if (new RegExp(`\\{\\{\\s*facts\\.${old.replace('.', '\\.')}\\s*\\}\\}`).test(allHtml)) warnings.push(`{{facts.${old}}} is the old name for the "Made by Unfairly" link. Use {{facts.${now}}}.`);
+  }
 
   const ids = new Set();
   // The hero is the section named hero, or the first one.
@@ -117,6 +133,8 @@ export function checkSite({ site, sections, header = '', footer = '', styles = '
     }
     if (/—/.test(plain) && !copyBlocks) errors.push(`${where}: has an em dash. Rewrite the sentence.`);
     copy(where, html);
+    const faq = faqFinding(fillTokens(html, site).html);
+    if (faq) rules11(`${where}: ${faq}`);
     // Simple copy (voice.md): long headlines, ledes, paragraphs and sentences, and a crowded hero.
     const hero = at === heroAt;
     // In the hero's file, only the hero itself is held to the hero's limits: a
@@ -192,11 +210,28 @@ export function checkSite({ site, sections, header = '', footer = '', styles = '
   // reader knows it isn't the provider's own page. It carries no pitch of ours (lead.mjs, S).
   const banded = [header, ...sections.map(({ html }) => html), footer].some((html) => [...html.matchAll(/<[a-z]+\b([^>]*\sdata-sample\b[^>]*)>/gi)].some((m) => !/\bpdf-only\b/.test(m[1])));
   if (site.sample && !lead && !banded) warnings.push('site.json says sample, but the page has no sample band. Use the toolbox\'s sample band (header.html, data-sample): one line saying the client and its numbers are fictional, with at most one "Made by Unfairly" link.');
-  // The one-shot rules came with engine 1.8, the sample-pitch rules with 1.10: each blocks
+  // The one-shot rules came with engine 1.8, the sample-pitch rules with 1.10, the band's
+  // link target with 1.11: each blocks
   // unpinned or pinned at its version or later, and warns on an older pin.
   const files = [{ where: 'header.html', html: header, section: false }, ...sections.map(({ name, html }) => ({ where: `sections/${name}`, html, section: true })), { where: 'footer.html', html: footer, section: false }].filter((f) => f.html);
-  const found = leadFindings({ site, files, blocks: pinnedMinor === undefined || Number(pinnedMinor) >= 8, sampleBlocks: pinnedMinor === undefined || Number(pinnedMinor) >= 10, ...(today ? { today } : {}) });
+  const found = leadFindings({ site, files, blocks: from(8), sampleBlocks: from(10), bandBlocks: from(11), ...(today ? { today } : {}) });
   errors.push(...found.errors);
   warnings.push(...found.warnings);
   return { errors, warnings };
+}
+
+/** The pin a site gets on this engine: "sites@<major>.<minor>". */
+export const CURRENT_PIN = `sites@${ENGINE.split('.').slice(0, 2).join('.')}`;
+/** The minor a site.json pins (undefined when unpinned, which counts as current). */
+export const pinnedMinorOf = (site) => /^sites@1\.(\d+)/.exec(String(site?.engine ?? ''))?.[1];
+
+/**
+ * The site checked twice: as pinned, and as if pinned to this engine (every rule blocking).
+ * fresh: the errors the current engine adds, which the pin keeps as warnings (or doesn't run).
+ */
+export function checkAgainstLatest(loaded) {
+  const pinned = checkSite(loaded);
+  const latest = checkSite({ ...loaded, site: { ...loaded.site, engine: CURRENT_PIN } });
+  const was = new Set(pinned.errors);
+  return { pinned, latest, fresh: latest.errors.filter((e) => !was.has(e)) };
 }

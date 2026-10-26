@@ -1,0 +1,162 @@
+{
+ "_about": "Our render decisions layered over the researched specs. Researched numbers are never edited here; every override says why. House safe zones apply only where the platform publishes none, and the report labels them.",
+ "overrides": {
+  "pinterest.pin.standard": {
+   "safe_zone": null,
+   "why": "Pinterest's 270/790 safe zone is published for full-screen 9:16 pins; it does not apply to a 2:3 feed pin."
+  },
+  "tiktok.ads.spark": {
+   "media": [
+    "video"
+   ],
+   "why": "Spark Ads boost an organic post; we render the video variant (carousel Spark is the photo-mode carousel)."
+  },
+  "youtube.channel.watermark": {
+   "kind": "avatar",
+   "why": "The watermark is a 150px brand mark, rendered like a profile image."
+  },
+  "google.display.responsive.logo_wide": {
+   "kind": "logo",
+   "why": "4:1 logo slot: tile + wordmark, not a square avatar."
+  },
+  "google.pmax.logo_wide": {
+   "kind": "logo",
+   "why": "4:1 logo slot: tile + wordmark."
+  },
+  "snapchat.ads.story_tile": {
+   "kind": "ad",
+   "why": "The Story tile is a small vertical ad (image + headline), not a logo."
+  },
+  "instagram.reels.cover": {
+   "kind": "thumb",
+   "why": "The Reels cover is the reel's thumbnail; the grid shows its centre 3:4."
+  },
+  "youtube.companion_banner": {
+   "kind": "banner",
+   "why": "300x60 companion banner: strip banner layout."
+  },
+  "linkedin.ad.conversation": {
+   "kind": "banner",
+   "why": "300x250 banner shown beside a message ad."
+  },
+  "linkedin.ad.message": {
+   "kind": "banner",
+   "why": "300x250 banner shown beside a message ad."
+  },
+  "reddit.conversation": {
+   "kind": "banner",
+   "why": "Small 4:3 image beside conversation placements."
+  },
+  "linkedin.ad.text": {
+   "kind": "avatar",
+   "why": "100x100 advertiser image = the brand mark."
+  },
+  "linkedin.ad.spotlight": {
+   "kind": "avatar",
+   "why": "100x100 company logo."
+  },
+  "linkedin.ad.follower": {
+   "kind": "avatar",
+   "why": "100x100 company logo."
+  },
+  "instagram.profile.grid_preview": {
+   "render": false,
+   "why": "Not an upload: it is how the profile grid crops feed posts (3:4). Enforced as a crop on feed formats instead."
+  }
+ },
+ "house_safe_zones": {
+  "_why": "Platforms that publish no pixel safe zone still cover the frame with UI. These are conservative margins we hold until an official figure exists; the export report marks every asset that uses one.",
+  "tiktok.feed.video": {
+   "top": 160,
+   "bottom": 480,
+   "left": 60,
+   "right": 160,
+   "units": "px at canvas",
+   "note": "house: TikTok publishes its ad safe zone only as a downloadable template; right rail = like/comment/share, bottom = caption + music"
+  },
+  "tiktok.ads.in_feed.video": {
+   "top": 160,
+   "bottom": 480,
+   "left": 60,
+   "right": 160,
+   "units": "px at canvas",
+   "note": "house: same as organic feed until the official template is read"
+  },
+  "tiktok.ads.spark": {
+   "top": 160,
+   "bottom": 480,
+   "left": 60,
+   "right": 160,
+   "units": "px at canvas",
+   "note": "house"
+  },
+  "tiktok.photo_mode.carousel": {
+   "top": 160,
+   "bottom": 480,
+   "left": 60,
+   "right": 160,
+   "units": "px at canvas",
+   "note": "house"
+  },
+  "youtube.shorts.video": {
+   "top": 150,
+   "bottom": 420,
+   "left": 60,
+   "right": 190,
+   "units": "px at canvas",
+   "note": "house: YouTube publishes no Shorts safe zone; right rail + title/channel at the bottom"
+  }
+ },
+ "crops": {
+  "_why": "Places a platform shows a cropped view of the asset. Text must sit inside the crop too; merged with the safe zone (larger margin wins).",
+  "instagram.feed.portrait": {
+   "aspect": [
+    3,
+    4
+   ],
+   "note": "profile grid shows feed posts as 3:4 tiles (Instagram Help Center, 2025)"
+  },
+  "instagram.feed.carousel": {
+   "aspect": [
+    3,
+    4
+   ],
+   "note": "profile grid 3:4 tile shows the first card"
+  },
+  "instagram.feed.square": {
+   "aspect": [
+    3,
+    4
+   ],
+   "note": "profile grid 3:4 tile crops the square's sides"
+  },
+  "instagram.reels": {
+   "aspect": [
+    3,
+    4
+   ],
+   "note": "grid shows the cover's centre 3:4"
+  },
+  "instagram.reels.cover": {
+   "aspect": [
+    3,
+    4
+   ],
+   "note": "grid shows the cover's centre 3:4"
+  },
+  "instagram.ad.feed.image": {
+   "aspect": [
+    3,
+    4
+   ],
+   "note": "boosted/feed images also appear in the 3:4 grid"
+  },
+  "threads.ad.feed.image": {
+   "aspect": [
+    4,
+    5
+   ],
+   "note": "Threads crops anything taller than 4:5"
+  }
+ }
+}
