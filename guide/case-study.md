@@ -17,7 +17,7 @@ When the customer can't supply a result, ask the user for it or leave the result
 
 ## Start from the skeleton
 
-`steal_examples` with `format: "case-study"` gives the section order: hero (the customer and the outcome), context (their situation, in their words), approach (what happened, in order), results (their numbers or plain words), quote (one, verbatim, with name and role), close (one next step). Fill every section with this customer's facts. Cut a section the customer can't supply; never fill it with invention.
+Use this section order. When `steal_examples` with `format: "case-study"` returns examples, use the closest one's skeleton instead: hero (the customer and the outcome), context (their situation, in their words), approach (what happened, in order), results (their numbers or plain words), quote (one, verbatim, with name and role), close (one next step). Fill every section with this customer's facts. Cut a section the customer can't supply; never fill it with invention.
 
 ## The brand
 
