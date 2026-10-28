@@ -12,6 +12,10 @@ This is the runbook. Run the steps in order. A step is done when its gate passes
 The first rollout was CU Anschutz School of Dental Medicine (repo `Unfairly-AI/cu-anschutz-dental-site`).
 When this guide is unclear, do what that repo does.
 
+The sites guide's working rules hold throughout, and its intake (a brand kit with the guide's own logo
+files, a page-role map, a reproduction of the governing web example and a one-page spec sheet) is
+done in steps 1 and 2, before the website or any piece is started.
+
 ## Before you start
 
 Ask for these. Ask once, in one message:
@@ -37,7 +41,10 @@ Make one repo per client, `Unfairly-AI/<client>-site`, from the CU repo's layout
   `pdfimages -png`), and `copy.md`.
 - **What `copy.md` holds:** every headline, tagline, claim and number the guide prints, each with its
   page. Pieces may only use copy from this file.
-- **Gate:** you have read every page, and `copy.md` cites a page for every line.
+- **Also:** the page-role map, `brand/roles.json`, from the sites guide's intake. Label every example
+  page web, campaign, print or system, and name what it governs. Campaign and print pages govern
+  pieces, never the website.
+- **Gate:** you have read every page, `copy.md` cites a page for every line, and every example page has a medium in `roles.json`.
 
 Rules:
 - **Use the guide's own words.** Never invent a claim, a number, a name or a headline. If the guide
@@ -54,10 +61,14 @@ Rules:
   balance by context, type roles, textures and grain, graphic elements and messaging.
 - **Brand components:** put the brand's own headline treatments, frames and grain in
   `brand/components/*.css|js`.
+- **Then:** reproduce the governing web example at 1440 and 390, and write the one-page spec sheet
+  (`brand/spec.md`): one treatment per role, the banned list, and every house override of the guide.
+  Both are in the sites guide's intake.
 - **Gate:** `npm run brand:check` passes. Also look at the brand board next to the guide's pages.
 
 Two things to check by hand:
-- Lockups are real files from the guide or the client, never redrawn.
+- Lockups are real files from the guide's own download links (or the client), never redrawn. Record
+  each file's source URL and the page that links it.
 - System fonts (Helvetica Neue) are declared, not shipped. Check that weight 300 renders as Light,
   not Thin.
 
@@ -88,6 +99,8 @@ Visual identity doc. The other is a service-role script, run through `infisical 
 - **Publish:** publish it as type `page`. Run the site audit and its design review before publishing.
 - **Gate:**
   - the site audit is clean
+  - the critic, run on the same build as the audit, has no blocking findings (sites guide, "The
+    critic, before publish")
   - you have looked at every section at desktop and at 390 px wide
   - the live link opens
 
@@ -228,3 +241,5 @@ Look at it yourself.
 - Use the guide's own headlines and copy (1, 5).
 - Slugs can't be renamed: publish new, unpublish, archive (9).
 - Publish into the client's workspace, never a personal default (0, 7).
+- Campaign and print pages of the guide never govern the website; the page-role map says which page does (1).
+- Logos come from the guide's download links, byte for byte (2).

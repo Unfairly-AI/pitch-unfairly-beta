@@ -4,6 +4,16 @@ A site is a scrolling page published like a deck: the same link, password, named
 
 Start from the toolbox, not a blank page. The starter carries a toolbox of proven components (hero, glance band, what you asked for, calculator, comparison table, plan cards, price builder, scope, tabs, stats, quotes, team, photos, statement, timeline, close, sticky header, sample band) and two proposal templates built from them. They are the default for every common job: copy the component that does the job, then write it for this reader and this point, and adapt its layout where the point needs it. Invent a component only for a job the toolbox doesn't do. Under the components, the starter gives you the machinery that has to be right every time: the numbers, the brand, the controls, the checks, and publishing.
 
+## Working rules
+
+These hold for every site and every proposal kit, from the first message to the hand-over. Each one comes from a 23-page client site that took 27 versions because none of them was followed.
+
+1. **Say early what the engine can't do.** If the engine can't build what was asked (a multi-page site, a component the toolbox doesn't have, a command your engine version lacks), say so to the person in one line within the first five minutes, and say what you'll use instead. "The sites engine builds one scrolling page, so I'll build the 23 pages on its toolbox, craft rules and audit, with a shared header and footer around them." Then use the guide, the toolbox, `craft.md` and the audit around that gap. Never build a parallel stack in silence.
+2. **"Done" and "clean" quote the gate.** Never call a build done, clean, fixed or ready unless you can point to the gate's output for that exact build: the audit, the critic's findings and the server review, all on the same fingerprint. Quote the line ("All modes clean", "0 blocking findings"). A reviewer still running means not done. A restyle is not a fix.
+3. **Add nothing the brief and the spec don't call for.** No carousel, explorer, picker, tile grid, chip row, hover lift or illustration that nobody asked for. If you think the page needs a new component, write it on the spec sheet as a proposal (what job it does, which guide page or brief line it serves) and build it only once it's accepted.
+4. **Rebuild a component on its third fix.** When the same component needs fixing a third time, delete its rules and write it again under fresh class names from the spec. Never stack another override on top. A stylesheet whose sections are named for review rounds is a stylesheet nobody can trust.
+5. **A correction becomes a rule in the same turn.** When the founder or client corrects something ("no eyebrows", "no outlined secondary buttons"), add it to the banned list in that same turn, with a detector where one is possible (a selector, a computed-style test, a word pattern), and rerun the check. Project-specific entries go in `brand/brand.json` `rules`; ones that apply to every client go in the engine's banned-patterns file, through the engine. A memory note or a promise to remember is not enough.
+
 ## Understand the company before writing
 
 Use the existing workflow, company Brain, customer kit, layered context and review engine. This is preparation for those tools, not another proposal generator. First identify the seller, buyer, sender, format and sample wrapper. Prefer the customer's promoted kit and its pinned engine. Read `deck_context`, the company/positioning/competition/ICP/brand docs, segment playbooks and accepted lessons. For a prospect sample, keep the prospect's seller research in that prospect's scoped account/project; never seed it as Unfairly's own company context.
@@ -18,6 +28,97 @@ Research the website deeply, then go beyond it. Read relevant product, pricing, 
 Keep findings in the existing Company/Playbooks/Deals layers; a local authoring project can keep a public-only synthesis in `brand/seller-understanding.md`, which the existing source bundle retains. Record source URL, access date, publication date when known, claim/qualifier, confidence, and fact versus hypothesis. Preserve contradictions and questions. Do not manufacture TAM, ROI, superiority or buyer motives. Competitor comparisons must be current and cite the competitor, not merely the seller's claims about it. Private account context stays in the Brain, outside the public authoring bundle.
 
 Before writing, make an internal readiness decision: can you explain the offer, who buys and why, the alternatives, the defensible difference, the proof and the constraints? Answer each from evidence, identify its uncertainty, and name what the proposal will omit. Missing critical positioning or an unresolved contradiction stops unsupported copy. A nonessential gap can remain explicit. A failed search is a gap, never evidence of no competition. Refresh stale research instead of starting over for every proposal.
+
+## Intake: a client's brand guide and content drafts
+
+When a site or kit is built from a client's brand guide plus content drafts (a sitemap, page copy, service write-ups), intake is the required first step. No section, stylesheet or layout is written until it's finished. It turns the guide and the drafts into four files that every later step reads, so the founder corrects the direction once, on paper, instead of across many versions.
+
+When the engine has `site:intake`, run `npm run site:intake -- <guide.pdf> <drafts-dir>` and check what it wrote. Until then, do the steps below by hand, and say so in one line (working rule 1).
+
+### Inputs
+
+- **The brand guide**, as the PDF the client sent, with its date. Rasterize every page at 2000 px wide into `brand/references/guide/p-NN.png` (`pdftoppm -png -scale-to-x 2000 -scale-to-y -1`), extract its text with `pdftotext -layout`, and list its links with `pdfinfo -url`. The download links for logos and assets are link annotations, so they never show up in the text.
+- **The content drafts**, one file per page or service, in whatever form the client sent. The engine's copy lock (`npm run site:copy-lock`) extracts them to JSON the build reads and holds every later build to them, both ways: no source sentence dropped, nothing added that isn't in a draft. Typos in the drafts are kept and listed for the client, never fixed in silence.
+- **The sitemap**, if there is one. It fixes the page list. Don't add pages it doesn't have.
+- **The house banned list**, which is the engine's banned-patterns file plus every correction already recorded for this client in `brand/brand.json` `rules`.
+
+### Output 1: `brand/brand.json`
+
+A brand-kit@1 file, as the brand-kit guide describes: colors with their tiers and where each may be used, type roles from the guide's hierarchy page, textures, frames and other graphic elements, messaging, and `rules`.
+
+Logos come from the guide's own download links, never rebuilt. Download every logo and asset file the guide links to, keep it byte for byte in `brand/logos/`, and record in the kit each file's source URL, the guide page that links it and the uses that page allows. Never trace, redraw, recolor, crop or re-letter a lockup, and never assemble one from a mark and live text. If a link is dead or a needed lockup isn't offered, ask the client for the file and leave a visible gap in the meantime, not a stand-in.
+
+### Output 2: `brand/roles.json`, the page-role map
+
+One entry for every guide page that shows an example or defines a system element. Each entry gives the page, the guide's own title for it, its medium, and what it governs on this build:
+
+```json
+{ "page": 33, "title": "Clinic example: website headers", "medium": "web",
+  "governs": ["header", "hero", "section-heading", "primary-action"],
+  "note": "The governing web example. Two variants; the gold grain one is used." }
+```
+
+- **`medium`** is `web`, `campaign`, `print` or `system`. A system page (logos, color, type, frames, grain) defines elements every medium uses. A web page is a screen the guide shows on a laptop or phone. A campaign page is an ad, a banner, a bus stop or a social post. A print page is a flyer, a booklet, a poster or merch. A divider or thank-you page gets no entry.
+- **`governs`** names the components of this build the page decides. Only `web` and `system` pages govern a site's components. A `campaign` or `print` page governs nothing on a web page, however striking it is; it's evidence for collateral, and its compositions stay there.
+- If no web example covers a component, write `"governs"` on the nearest system page and say on the spec sheet that the treatment is derived.
+
+### Output 3: the reproduction of the governing web example
+
+Build the governing web example (the `web` page that governs the hero) in the site project, privately, with the engine and the kit: same header rows, same proportions, same headline treatment, same crop, grain and frame. Screenshot it at 1440 and 390 wide into `brand/references/repro/`, and put the 1440 shot beside the guide page's screen area at the same scale. Fix it until the two read as the same page. The guide shows no phone, so the 390 version applies the guide's rules to a narrow screen, and every decision you make there goes on the spec sheet. This is the Hampton step from "Reproduce the brand", done first and against the client's own guide. The reproduction becomes the site's header and hero; it is not redesigned later.
+
+### Output 4: `brand/spec.md`, the one-page spec sheet
+
+One page, read by the founder and every reviewer:
+
+- **One treatment per role**, each citing its guide page: the hero, the section heading, body text, the primary action, the secondary action, the accent (frame, grain, rule), photos and motion. One treatment means one: a second hero style or a second button style is a spec change, not a design choice made in a section.
+- **The banned list** for this build: the engine's entries that apply, plus this client's `rules`.
+- **House overrides**, every point where house taste overrides the literal guide, each naming the guide page it contradicts and what is done instead. These can't be found by redesigning, so they are written down before anything is built.
+- **Proposals**, any component the brief seems to need that the toolbox and the guide don't supply (working rule 3), marked as proposed until accepted.
+
+The spec sheet ships with version 1 as its own page next to the site, so the founder can correct it there. It informs; it is not a sign-off gate. Every correction to it is applied in the same turn (working rule 5).
+
+### Gate
+
+Intake is done when all four outputs exist, every logo in the kit has a source URL from the guide, every example page has a medium, the reproduction has been compared at 1440 and 390, and the copy lock has extracted every draft. Then, and only then, start composing.
+
+### Worked example: CU Anschutz School of Dental Medicine
+
+The job was a 23-page patient-care site from the SDM brand guide (36 pages, dated 09.02.26) and nineteen drafts. Intake would have taken about two hours. Without it, the site took 27 versions.
+
+**Logos.** Page 17 links "Download Side-by-Side" and "Download Stacked", and page 18 links "Download Full Logos". `pdfinfo -url` lists all three as `cuanschutz.imagerelay.com` links. Page 18 reserves the full logo for formal documents and website mastheads, so the masthead uses it and nothing else does. The early versions redrew the lockup and put two logos in the header; the downloaded files fix both.
+
+**The page-role map.** Pages 23 to 36 sort like this.
+
+| Page | Guide title | Medium | Governs on the site |
+|---|---|---|---|
+| 23 | Simple headline treatments | system | Headline treatment; the guide pairs it with imagery |
+| 24 | Bold headline treatments (stacked repeat, sliced word) | campaign | Nothing. "Best when text is standing on its own": collateral only |
+| 25 | Frame elements | system | Photo frames, the framed word, the bracket text box |
+| 26 | Grain textures | system | Section grounds and corner accents |
+| 27 | Design examples (divider) | no entry | |
+| 28 | Education: homepage hero header | web | Header structure only. It's the education site, not the clinics |
+| 29 | Education: banner ad | campaign | Nothing |
+| 30 | Education: bus stop and pole banners | campaign | Nothing |
+| 31 | Education: 1-pager, tee, tumbler | print | Nothing |
+| 32 | Clinic: poster ads | print | Nothing on the web; the clinic voice for collateral |
+| 33 | Clinic: website headers | web | Header, hero, section heading, primary action. The governing page |
+| 34 | Research: booklet | print | Nothing |
+| 35 | Variation: one-off campaign | campaign | Nothing |
+| 36 | Thank you | no entry | |
+
+The color page (19), the clinical-care color balance (20, "a brighter color scheme overall") and the type hierarchy (21, 22) are system pages and go into the kit.
+
+**The reproduction.** Page 33 is a laptop showing this exact site's header in two variants: a light utility bar with the university mark and text links, the "School of Dental Medicine" masthead row with a gold "Visit Us" button, the nav row, then a hero with the headline "Transforming health through compassionate dental care" in Helvetica Neue Bold on a gold grain ground, the photo bleeding off the right edge, and "Patient Care" below with a gold rule and a "Request an Appointment" button. Rebuilding that at 1440 and 390 is the whole hero decision. On CU the hero was redesigned at least eight times, mostly toward the campaign pages 24, 29 and 30, before it came back to page 33 at version 14.
+
+**The spec sheet.** In part, it reads:
+
+- Hero: page 33, gold grain variant. Headline, one sentence, one primary action. Nothing else.
+- Section heading: page 33's "Patient Care", bold with a gold rule.
+- Primary action: page 33's solid button. Secondary action: a plain text link.
+- Accents: page 25's frames and page 26's fine grain, as accents, not whole-page fills.
+- Banned on this build: eyebrows and kickers, gold text on light grounds, gold underlines, outlined or bracketed secondary buttons, sliced or stacked words, image reveals and wipes, blurred blobs and noise filters, clip-art and the supplied vectors used as decoration, hover lifts, an "On this page" bar, chips or a second action in the hero, visible placeholders, paragraphs over the word limit outside a disclosure, native selects.
+- House override: page 22 assigns wide-tracked uppercase to "eyebrows, labels, sub-heads", and page 33 sets "CU ANSCHUTZ DENTAL CLINICS" over its headline. The house bans eyebrows, so the hero drops that line and the label style is kept for the utility bar only.
+- Proposal: services and locations dropdowns in the header, because the brief asked for them. Nothing else.
 
 ## Reproduce the brand before adapting it
 
@@ -318,9 +419,31 @@ Every published version keeps its project files. To make a new site from one tha
 3. Rewrite the sections that should differ, add sections this reader needs, and delete the ones they don't.
 4. Update `story.md`, run `npm run site:audit`, and look at every screenshot.
 
+## The critic, before publish
+
+A site built from a client's brand guide gets one design critic before it publishes, never a chain of critics after. It runs on a build that has passed the engine's QA gate (`site:audit` with the banned-patterns checks), and it is the last look before the server's design review. Nothing reaches the client's link, or the founder's, until it has no blocking findings.
+
+**What the critic is given.** The locked spec sheet (`brand/spec.md`), the banned list (the engine's entries and the kit's `rules`), the page-role map (`brand/roles.json`), and side-by-side screenshots: each component of the build, at 1440 and 390, next to the guide page that governs it according to the map (on CU, the hero beside page 33, frames and grounds beside pages 25 and 26). It is not given campaign or print pages to grade a web page against. A critic shown every page of the guide rewards posters on a website.
+
+**The rubric.** The critic checks each component against its governing page and its spec line, checks the whole page against the banned list, and runs Impeccable's full critique (the `impeccable` skill, `reference/critique.md`): both assessments, the design review and the detector with browser evidence, run as that file says. The detector alone is not the critique. Impeccable's P0 and P1 issues count as blocking here.
+
+**Findings.** Each finding names the component to rebuild (its section file and class), the guide page, spec line or banned entry it breaks, and whether it blocks. A finding that blocks:
+
+- breaks the spec sheet, the page-role map or the banned list
+- is an Impeccable P0 or P1
+- is a QA gate failure the critic can see
+
+Everything else is noted for the hand-over, not looped on.
+
+**Stop condition.** The critic stops when it has no blocking findings. There is no score target: Impeccable's health score is recorded, not chased. Aiming for a number produced nine rounds and a plateau on CU.
+
+**Fixing.** A finding is fixed by rebuilding the named component from the spec (working rule 4 if it's that component's third time), never by appending CSS. If the right fix needs something the spec doesn't allow, the spec changes first, on the spec sheet.
+
+**One round, one build.** Bug QA (the engine's gate at every width with every state opened) and the design critique run on the same build, with the same fingerprint, in the same round. Fixes from both land together, and both run again on the next build. Run separately, each undoes the other's last pass.
+
 ## Publish
 
-1. `npm run site:audit` until it says "All modes clean", then look at every screenshot in `artifacts/site/` (phone, laptop, wide) as you would a deck's.
+1. `npm run site:audit` until it says "All modes clean", then look at every screenshot in `artifacts/site/` (phone, laptop, wide) as you would a deck's. For a site built from a client's brand guide, run the critic on this same build (above) until it has no blocking findings.
 2. `npm run -s review-files -- --site` (after a clean audit of the current source) records the exact source state the review covers (fingerprint, story, engine, every laptop and phone section) and prepares the laptop and phone sections plus brand evidence for the existing `deck_review_start` / `deck_review` tools. Upload its file list through that protocol and save the returned review JSON as `artifacts/review.json`. Review at most 16 sections per call. Fix blockers in one batch, rerun the audit and confirm once. Sites pinned to `sites@1.7` or newer require a current site-format review covering every section; the upload command refuses a missing, stale or blocked review. If more than 16 sections are necessary, do not omit any from the review: keep the draft unpublished until complete review coverage is available.
 3. `npm run -s source:pack`.
 4. `npm run -s site:manifest > artifacts/site-start.json`. Pass it to `deck_upload_start` with the workspace, the source size, and a password if the content is confidential. Save the reply as `artifacts/uploads.json`.
