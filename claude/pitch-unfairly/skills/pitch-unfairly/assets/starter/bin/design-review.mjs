@@ -71,6 +71,18 @@ async function storyHeader() {
   return Object.keys(story).length ? { story } : {};
 }
 
+/**
+ * { sample: true } for a sample site (site.json "sample"), so the reviewer knows
+ * its band is the required disclosure, not the seller's design. Without it the
+ * reviewer only learns that from the band's text, on a round that judges the
+ * section the band sits in (core Clorox sample, review a12d4a61: 01-hero blocked
+ * for "the yellow utility strip").
+ */
+async function sampleFlag() {
+  const site = await readFile('site/site.json', 'utf8').then(JSON.parse).catch(() => null);
+  return site?.sample ? { sample: true } : {};
+}
+
 export async function siteReviewContext({ now = new Date() } = {}) {
   return {
     format: 'site',
@@ -79,6 +91,7 @@ export async function siteReviewContext({ now = new Date() } = {}) {
     created_at: now.toISOString(),
     coverage: { laptop: await pngs('artifacts/site/laptop'), phone: await pngs('artifacts/site/phone') },
     shots: await screenshotHashes(),
+    ...(await sampleFlag()),
     // The plan's header, so the page judges can hold the page to its decision and next step.
     ...(await storyHeader()),
   };

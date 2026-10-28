@@ -39,6 +39,12 @@
     "social:formats": "node bin/social-formats.mjs",
     "social:check": "node bin/social-check.mjs",
     "social:build": "node bin/brand-apply.mjs && node bin/social-build.mjs",
+    "collateral:new": "node bin/collateral-new.mjs",
+    "collateral:formats": "node bin/collateral-formats.mjs",
+    "collateral:build": "node bin/brand-apply.mjs && node bin/collateral-build.mjs",
+    "collateral:pages": "node bin/collateral-pages.mjs",
+    "collateral:publish": "node bin/collateral-publish.mjs",
+    "collateral:live": "node bin/collateral-live.mjs",
     "test": "node --test 'test/*.test.mjs'"
   },
   "dependencies": {

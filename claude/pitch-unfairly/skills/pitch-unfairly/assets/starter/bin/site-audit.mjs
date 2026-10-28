@@ -16,6 +16,7 @@ import { loadSite } from './site-check.mjs';
 import { buildSite } from './site-build.mjs';
 import { serveDir } from './serve.mjs';
 import { refuseInCodexSandbox } from './browser-guard.mjs';
+import { settleForShots, stableLaunch } from './stable-shots.mjs';
 import { exerciseControls, printStateProblems, selectPdfState } from './site/interact.mjs';
 import { EXTRA_WIDTHS, PHONE_MAX, boxedTextProblems, brandDiff, layoutProblems, motionProblems, previewProblems, qualifierProblems, sampleBandProblems, sampleNames, visualSlop } from './site/page-lint.mjs';
 
@@ -168,7 +169,8 @@ if (process.argv[1]?.endsWith('site-audit.mjs')) {
   }
   const built = await buildSite();
   const server = await serveDir('dist-site');
-  const browser = await puppeteer.launch({ headless: true });
+  // Software raster, so a rebuild of the same page screenshots to the same bytes (stable-shots.mjs).
+  const browser = await puppeteer.launch(stableLaunch());
   await rm(OUT, { recursive: true, force: true });
   const problems = [];
   // minor: the engine version whose rule this is (8 for the 1.8 browser checks).
@@ -230,6 +232,8 @@ if (process.argv[1]?.endsWith('site-audit.mjs')) {
       // Anything fixed to the screen (a booking bar) isn't part of a section.
       await page.evaluate(() => document.querySelectorAll('body *').forEach((el) => getComputedStyle(el).position === 'fixed' && el.setAttribute('data-shot-hidden', '')));
       const hideFixed = await page.addStyleTag({ content: '[data-shot-hidden] { visibility: hidden !important; }' });
+      // Animations, videos, lazy images and fonts held still, so the shots hash the same every run.
+      const unsettle = await settleForShots(page);
       const n = await page.$$eval('[data-section]', (s) => s.length);
       for (let i = 0; i < n; i++) {
         const el = (await page.$$('[data-section]'))[i];
@@ -238,6 +242,7 @@ if (process.argv[1]?.endsWith('site-audit.mjs')) {
       }
       await unstick.evaluate((n) => n.remove());
       await hideFixed.evaluate((n) => n.remove());
+      await unsettle();
 
       // Work every control and watch for errors.
       await page.evaluate(async () => {

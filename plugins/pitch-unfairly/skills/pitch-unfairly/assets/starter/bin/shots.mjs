@@ -9,6 +9,7 @@ import { join } from 'node:path';
 import { renderPdf } from './render-pdf.mjs';
 import { assertThisDeck } from './this-deck.mjs';
 import { refuseInCodexSandbox } from './browser-guard.mjs';
+import { settleForShots, stableLaunch } from './stable-shots.mjs';
 
 refuseInCodexSandbox('Taking screenshots');
 
@@ -23,7 +24,8 @@ const out = args[1] ?? 'artifacts';
 const run = promisify(execFile);
 
 await rm(out, { recursive: true, force: true });
-const browser = await puppeteer.launch({ headless: true });
+// Software raster, so the same slide screenshots to the same bytes every run (stable-shots.mjs).
+const browser = await puppeteer.launch(stableLaunch());
 
 // The deck's own controls (slide counter, arrows, Notes, PDF) sit over the
 // slides on a phone. They aren't part of any slide, so they stay out of the
@@ -41,6 +43,7 @@ async function capture(name, viewport, query) {
   await page.goto(`${base}/${query}`, { waitUntil: 'networkidle0' });
   await page.waitForFunction(() => window.__deckReady === true, { timeout: 15000 }).catch(() => {});
   await page.addStyleTag({ content: HIDE_CHROME });
+  await settleForShots(page);
   const ids = await page.$$eval('.slide', (slides) => slides.map((s) => s.id));
   const files = [];
   for (const [i, id] of ids.entries()) {

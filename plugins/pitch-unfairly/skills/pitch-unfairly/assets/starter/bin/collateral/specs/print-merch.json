@@ -1,0 +1,1179 @@
+{
+  "group": "print-merch",
+  "schema": "social-format@1 + print extension (trim, bleed_in, safe_in, visible, dpi, color, print_area)",
+  "checked": "2026-10-27",
+  "formats": [
+    {
+      "id": "print.ooh.bus_shelter.47x68",
+      "platform": "print",
+      "surface": "ad",
+      "placement": "Transit shelter (street furniture), backlit",
+      "name": "Bus shelter poster, 47.5 x 68.5 in (OAAA standard)",
+      "most_common": true,
+      "media": [
+        "image"
+      ],
+      "trim": {
+        "w": 47.5,
+        "h": 68.5,
+        "units": "in"
+      },
+      "bleed_in": 0,
+      "safe_in": 1.75,
+      "safe": {
+        "w": 44,
+        "h": 65,
+        "units": "in"
+      },
+      "visible": {
+        "w": 46,
+        "h": 67,
+        "units": "in"
+      },
+      "dpi": {
+        "min": 80,
+        "recommended": 150,
+        "note": "OAAA and TARC: 80-100 ppi at full size (160-200 at 1/2 scale); Pace: 150 dpi at full size, 300 at half size; TARC prefers 300 ppi at half scale (= 150 full)."
+      },
+      "canvas": {
+        "w": 7125,
+        "h": 10275
+      },
+      "aspect": "47.5:68.5",
+      "color": "CMYK (TARC: images saved as CMYK)",
+      "file": {
+        "types": [
+          "pdf",
+          "indd (packaged)",
+          "ai",
+          "psd"
+        ],
+        "notes": "TARC: print-quality PDF, fonts outlined, crop marks and bleed; or packaged InDesign/Illustrator; or PSD with trim/safety marked. Half-scale mechanical (23.75 x 34.25 in) is the OAAA convention."
+      },
+      "material": "Backlit: Duratrans, polypropylene, encapsulated 80 lb wet-strength paper, 0.020 styrene or opaline (Pace/Intersection). OAAA: reverse printing preferred for backlit; single section only.",
+      "notes": "OAAA cheat sheet and Pace (Intersection, Chicago) list 68.5 h x 47.5 w with live = finished; safety 65 x 44 (Pace, TARC). OAAA's bus shelter page gives copy area 67 x 46 (the area the frame shows) but an overall of 48 x 69 with H/W labels swapped relative to the copy area; treat 47.5 x 68.5 as trim. TARC says '68.5h x 47.5w with 1/4 in bleed on all four sides' and does not say whether 68.5 x 47.5 includes it; Pace lists no bleed. bleed_in=0 here; ask the operator. Dimensions vary by market and operator.",
+      "sources": [
+        {
+          "url": "https://oaaa.org/wp-content/uploads/2022/09/OOH-Print-Production-Specifications-Cheat-Sheet.pdf",
+          "title": "OAAA OOH Print Production Specifications Cheat Sheet",
+          "checked": "2026-10-27"
+        },
+        {
+          "url": "https://oaaa.org/resources/bus-shelters/",
+          "title": "OAAA: Bus Shelters",
+          "checked": "2026-10-27"
+        },
+        {
+          "url": "https://www.pacebus.com/sites/default/files/2020-06/PACE%20BUS%20-%20Shelter%20Ad%20MEDIA%20KIT.pdf",
+          "title": "Pace (Chicago) Bus Shelter Display production spec sheet, May 2020 (Intersection)",
+          "checked": "2026-10-27"
+        },
+        {
+          "url": "https://www.ridetarc.org/wp-content/uploads/2024/01/Shelter-Advertising-Rate-Card.pdf",
+          "title": "TARC Shelter Advertising Rate Card (2024)",
+          "checked": "2026-10-27"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "print.ooh.bus_shelter.47x68.outfront_trim",
+      "platform": "print",
+      "surface": "ad",
+      "placement": "Transit shelter poster (Outfront-spec frame)",
+      "name": "Bus shelter poster, 47.25 x 68.25 in trim",
+      "most_common": false,
+      "media": [
+        "image"
+      ],
+      "trim": {
+        "w": 47.25,
+        "h": 68.25,
+        "units": "in"
+      },
+      "bleed_in": 0,
+      "safe_in": {
+        "left": 2.375,
+        "right": 2.375,
+        "top": 1.78125,
+        "bottom": 1.78125
+      },
+      "safe": {
+        "w": 42.5,
+        "h": 64.6875,
+        "units": "in"
+      },
+      "visible": {
+        "w": 45,
+        "h": 66.25,
+        "units": "in"
+      },
+      "dpi": {
+        "min": 200,
+        "recommended": 200
+      },
+      "canvas": {
+        "w": 9450,
+        "h": 13650
+      },
+      "aspect": "47.25:68.25",
+      "color": null,
+      "file": {
+        "types": [
+          "pdf"
+        ],
+        "notes": "UWF: 'Set your document to this size with no bleed'; minimum 200 dpi at exact poster size, saved as PDF."
+      },
+      "material": "Vancouver/Outfront: 7 pt coated translucent bristol, screen printed one side; no styrene faces; do not laminate (heat makes it brittle behind glass).",
+      "notes": "Trim 47-1/4 x 68-1/4, visible opening 45 x 66-1/4, full safety 42-1/2 x 64-11/16 (UWF; same figures in City of Vancouver's Outfront Media shelter guidelines, which could not be fetched directly: Cloudflare-blocked, figures from its indexed text). Color mode not stated (null). Safe inset computed from trim minus safety.",
+      "sources": [
+        {
+          "url": "https://uwf.edu/finance-and-administration/departments/business-and-auxiliary-services/trolley-shelter-display-program/rates-artwork-and-reservations/",
+          "title": "UWF Trolley Shelter Display Program: rates, artwork and reservations",
+          "checked": "2026-10-27"
+        },
+        {
+          "url": "https://vancouver.ca/files/cov/transit-shelter-advertising-program-guidelines-and-printer-information.pdf",
+          "title": "City of Vancouver transit shelter advertising guidelines and printer information (Outfront Media)",
+          "checked": "2026-10-27"
+        }
+      ],
+      "confidence": "secondary"
+    },
+    {
+      "id": "print.ooh.pole_banner.18x36",
+      "platform": "print",
+      "surface": "ad",
+      "placement": "Street light-pole banner (pole pockets top and bottom)",
+      "name": "Pole banner, 18 x 36 in",
+      "most_common": false,
+      "media": [
+        "image"
+      ],
+      "trim": {
+        "w": 18,
+        "h": 36,
+        "units": "in"
+      },
+      "bleed_in": null,
+      "safe_in": {
+        "left": 1.25,
+        "right": 1.25,
+        "top": 4.0,
+        "bottom": 4.0
+      },
+      "safe": {
+        "w": 15.5,
+        "h": 28,
+        "units": "in"
+      },
+      "dpi": {
+        "min": 100,
+        "recommended": 150
+      },
+      "canvas": {
+        "w": 2700,
+        "h": 5400
+      },
+      "aspect": "18:36",
+      "color": "Full-color process; color mode not specified by sources",
+      "file": {
+        "types": [
+          "pdf",
+          "ai",
+          "eps"
+        ],
+        "notes": "Banners.com: vector (AI, EPS, PDF) ideal; outline fonts. Show Your Logo accepts ai, eps, pdf, jpg, png, psd, tif (50 MB max). Double-sided = two art files."
+      },
+      "material": "13 oz vinyl standard; 18 oz blockout/opaque scrim vinyl for year-round or double-sided (Banners.com; Show Your Logo uses Titan 18 oz opaque scrim).",
+      "notes": "Pole pockets consume the top and bottom 3-4 in of the face (Banners.com); Show Your Logo uses 3 in pockets top/bottom (poles up to 1.25 in dia) and its full-color safe area is listed 'plus bleed' without a bleed amount, so bleed_in=null; canvas = trim at 150 dpi with no bleed. Keep critical content 1 in+ inside all edges (Banners.com). Seattle's approved art example shows a 30 x 60 finished banner with 4 in bleed top & bottom into welded 3 in pockets; pocket/hem allowance is printer-specific, get the printer's template.",
+      "sources": [
+        {
+          "url": "https://showyourlogo.com/product/18x36-inch-opaque-single-banner",
+          "title": "Show Your Logo Boulevard single-sided banner 18x36",
+          "checked": "2026-10-27"
+        },
+        {
+          "url": "https://www.banners.com/c/pole-banner-design-guidelines-choosing-the-best-materials-sizes-and-layouts",
+          "title": "Banners.com: Pole banner design guidelines",
+          "checked": "2026-10-27"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "print.ooh.pole_banner.24x48",
+      "platform": "print",
+      "surface": "ad",
+      "placement": "Street light-pole banner (pole pockets top and bottom)",
+      "name": "Pole banner, 24 x 48 in",
+      "most_common": false,
+      "media": [
+        "image"
+      ],
+      "trim": {
+        "w": 24,
+        "h": 48,
+        "units": "in"
+      },
+      "bleed_in": null,
+      "safe_in": {
+        "left": 1.25,
+        "right": 1.25,
+        "top": 4.0,
+        "bottom": 4.0
+      },
+      "safe": {
+        "w": 21.5,
+        "h": 40,
+        "units": "in"
+      },
+      "dpi": {
+        "min": 100,
+        "recommended": 150
+      },
+      "canvas": {
+        "w": 3600,
+        "h": 7200
+      },
+      "aspect": "24:48",
+      "color": "Full-color process; color mode not specified by sources",
+      "file": {
+        "types": [
+          "pdf",
+          "ai",
+          "eps"
+        ],
+        "notes": "Banners.com: vector (AI, EPS, PDF) ideal; outline fonts. Show Your Logo accepts ai, eps, pdf, jpg, png, psd, tif (50 MB max). Double-sided = two art files."
+      },
+      "material": "13 oz vinyl standard; 18 oz blockout/opaque scrim vinyl for year-round or double-sided (Banners.com; Show Your Logo uses Titan 18 oz opaque scrim).",
+      "notes": "Pole pockets consume the top and bottom 3-4 in of the face (Banners.com); Show Your Logo uses 3 in pockets top/bottom (poles up to 1.25 in dia) and its full-color safe area is listed 'plus bleed' without a bleed amount, so bleed_in=null; canvas = trim at 150 dpi with no bleed. Keep critical content 1 in+ inside all edges (Banners.com). Seattle's approved art example shows a 30 x 60 finished banner with 4 in bleed top & bottom into welded 3 in pockets; pocket/hem allowance is printer-specific, get the printer's template. Banners.com names 18x48, 24x48 and 24x60 as the most common sizes.",
+      "sources": [
+        {
+          "url": "https://www.showyourlogo.com/product/24x48-inch-opaque-single-banner/",
+          "title": "Show Your Logo A1742 Boulevard single-sided banner 24x48",
+          "checked": "2026-10-27"
+        },
+        {
+          "url": "https://www.banners.com/c/pole-banner-design-guidelines-choosing-the-best-materials-sizes-and-layouts",
+          "title": "Banners.com: Pole banner design guidelines",
+          "checked": "2026-10-27"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "print.ooh.pole_banner.30x60",
+      "platform": "print",
+      "surface": "ad",
+      "placement": "Street light-pole banner (pole pockets top and bottom)",
+      "name": "Pole banner, 30 x 60 in",
+      "most_common": true,
+      "media": [
+        "image"
+      ],
+      "trim": {
+        "w": 30,
+        "h": 60,
+        "units": "in"
+      },
+      "bleed_in": null,
+      "safe_in": {
+        "left": 1.25,
+        "right": 1.25,
+        "top": 4.0,
+        "bottom": 4.0
+      },
+      "safe": {
+        "w": 27.5,
+        "h": 52,
+        "units": "in"
+      },
+      "dpi": {
+        "min": 100,
+        "recommended": 150
+      },
+      "canvas": {
+        "w": 4500,
+        "h": 9000
+      },
+      "aspect": "30:60",
+      "color": "Full-color process; color mode not specified by sources",
+      "file": {
+        "types": [
+          "pdf",
+          "ai",
+          "eps"
+        ],
+        "notes": "Banners.com: vector (AI, EPS, PDF) ideal; outline fonts. Show Your Logo accepts ai, eps, pdf, jpg, png, psd, tif (50 MB max). Double-sided = two art files."
+      },
+      "material": "13 oz vinyl standard; 18 oz blockout/opaque scrim vinyl for year-round or double-sided (Banners.com; Show Your Logo uses Titan 18 oz opaque scrim).",
+      "notes": "Pole pockets consume the top and bottom 3-4 in of the face (Banners.com); Show Your Logo uses 3 in pockets top/bottom (poles up to 1.25 in dia) and its full-color safe area is listed 'plus bleed' without a bleed amount, so bleed_in=null; canvas = trim at 150 dpi with no bleed. Keep critical content 1 in+ inside all edges (Banners.com). Seattle's approved art example shows a 30 x 60 finished banner with 4 in bleed top & bottom into welded 3 in pockets; pocket/hem allowance is printer-specific, get the printer's template. Seattle SDOT: 'Standard banner size is 30\" horizontal by 60\" vertical'; most city poles pre-approved for it. Main-message font about 1 in tall.",
+      "sources": [
+        {
+          "url": "https://www.showyourlogo.com/product/30-inch-x-60-inch-18-oz-opaque-material-rectangular-boulevard-single-sided-banner/",
+          "title": "Show Your Logo A1750 Boulevard single-sided banner 30x60",
+          "checked": "2026-10-27"
+        },
+        {
+          "url": "https://seattle.gov/documents/Departments/SDOT/PublicSpaceManagement/SDOTPoleBannerGuidelines.pdf",
+          "title": "Seattle SDOT Pole Banner Permitting Guidelines",
+          "checked": "2026-10-27"
+        },
+        {
+          "url": "https://seattle.gov/documents/departments/sdot/publicspacemanagement/example%20site%20plans/banner%20art%20example%20approved%20-%2020221103.pdf",
+          "title": "Seattle SDOT approved banner art example (2022-11-03)",
+          "checked": "2026-10-27"
+        },
+        {
+          "url": "https://www.banners.com/c/pole-banner-design-guidelines-choosing-the-best-materials-sizes-and-layouts",
+          "title": "Banners.com: Pole banner design guidelines",
+          "checked": "2026-10-27"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "print.ooh.pole_banner.30x96",
+      "platform": "print",
+      "surface": "ad",
+      "placement": "Street light-pole banner (pole pockets top and bottom)",
+      "name": "Pole banner, 30 x 96 in",
+      "most_common": false,
+      "media": [
+        "image"
+      ],
+      "trim": {
+        "w": 30,
+        "h": 96,
+        "units": "in"
+      },
+      "bleed_in": null,
+      "safe_in": null,
+      "safe": null,
+      "dpi": {
+        "min": 100,
+        "recommended": 150
+      },
+      "canvas": {
+        "w": 4500,
+        "h": 14400
+      },
+      "aspect": "30:96",
+      "color": "Full-color process; color mode not specified by sources",
+      "file": {
+        "types": [
+          "pdf",
+          "ai",
+          "eps"
+        ],
+        "notes": "Banners.com: vector (AI, EPS, PDF) ideal; outline fonts. Show Your Logo accepts ai, eps, pdf, jpg, png, psd, tif (50 MB max). Double-sided = two art files."
+      },
+      "material": "13 oz vinyl standard; 18 oz blockout/opaque scrim vinyl for year-round or double-sided (Banners.com; Show Your Logo uses Titan 18 oz opaque scrim).",
+      "notes": "Pole pockets consume the top and bottom 3-4 in of the face (Banners.com); Show Your Logo uses 3 in pockets top/bottom (poles up to 1.25 in dia) and its full-color safe area is listed 'plus bleed' without a bleed amount, so bleed_in=null; canvas = trim at 150 dpi with no bleed. Keep critical content 1 in+ inside all edges (Banners.com). Seattle's approved art example shows a 30 x 60 finished banner with 4 in bleed top & bottom into welded 3 in pockets; pocket/hem allowance is printer-specific, get the printer's template. No vendor safe area found for 30 x 96 (safe=null). City of Richardson, TX guidelines (403 to direct fetch; indexed text) describe a 30 x 96 banner with 4 in pole pockets and a 5 in safe zone; not verified. For comparison Show Your Logo's 24 x 96 lists a 21.5 x 88 safe area with 3 in pockets.",
+      "sources": [
+        {
+          "url": "https://www.cor.net/departments/communications/applications-and-permits/pole-banner-application/design-guidelines",
+          "title": "City of Richardson, TX: pole banner design guidelines",
+          "checked": "2026-10-27"
+        },
+        {
+          "url": "https://www.banners.com/c/pole-banner-design-guidelines-choosing-the-best-materials-sizes-and-layouts",
+          "title": "Banners.com: Pole banner design guidelines",
+          "checked": "2026-10-27"
+        },
+        {
+          "url": "https://www.showyourlogo.com/product/24x96-inch-opaque-single-banner/",
+          "title": "Show Your Logo A1748 Boulevard single-sided banner 24x96",
+          "checked": "2026-10-27"
+        }
+      ],
+      "confidence": "unverified"
+    },
+    {
+      "id": "print.poster.11x17",
+      "platform": "print",
+      "surface": "both",
+      "placement": "Poster (wall, campus, window)",
+      "name": "Poster, 11 x 17 in",
+      "most_common": false,
+      "media": [
+        "image"
+      ],
+      "trim": {
+        "w": 11,
+        "h": 17,
+        "units": "in"
+      },
+      "bleed_in": 0.125,
+      "safe_in": 0.125,
+      "dpi": {
+        "min": 150,
+        "recommended": 300,
+        "note": "4OVER4: 300 at full size for close viewing, 150 for posters read from a distance; Vistaprint's table: 11x17 at 300, 18x24 at 240, 24x36 at 200."
+      },
+      "canvas": {
+        "w": 3375,
+        "h": 5175
+      },
+      "aspect": "11:17",
+      "color": "CMYK",
+      "file": {
+        "types": [
+          "pdf"
+        ],
+        "notes": "Flattened/press-ready PDF, CMYK, bleed included, fonts outlined or embedded (4OVER4). Vistaprint also accepts SVG and AI."
+      },
+      "notes": "Bleed 0.125 in and safe 0.125 in from 4OVER4 (it states 18.25 x 24.25 for 18x24 with bleed). Vistaprint asks for 0.125 bleed but 0.25 in safe and +0.5 in for framed posters; its own size table is internally inconsistent, so 4OVER4 values are used. Use safe 0.25 when in doubt.",
+      "sources": [
+        {
+          "url": "https://v2.4over4.com/guide/free-poster-templates-how-to-design-a-poster-that-prints-sharp",
+          "title": "4OVER4: Free poster templates / how to design a poster that prints sharp",
+          "checked": "2026-10-27"
+        },
+        {
+          "url": "https://v2.4over4.com/guide/how-to-print-large-posters",
+          "title": "4OVER4: How to print large posters",
+          "checked": "2026-10-27"
+        },
+        {
+          "url": "https://vistaprint.com/hub/poster-printing-preparation-guide",
+          "title": "Vistaprint: Poster printing preparation guide",
+          "checked": "2026-10-27"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "print.poster.18x24",
+      "platform": "print",
+      "surface": "both",
+      "placement": "Poster (wall, campus, window)",
+      "name": "Poster, 18 x 24 in",
+      "most_common": false,
+      "media": [
+        "image"
+      ],
+      "trim": {
+        "w": 18,
+        "h": 24,
+        "units": "in"
+      },
+      "bleed_in": 0.125,
+      "safe_in": 0.125,
+      "dpi": {
+        "min": 150,
+        "recommended": 240,
+        "note": "4OVER4: 300 at full size for close viewing, 150 for posters read from a distance; Vistaprint's table: 11x17 at 300, 18x24 at 240, 24x36 at 200."
+      },
+      "canvas": {
+        "w": 4380,
+        "h": 5820
+      },
+      "aspect": "18:24",
+      "color": "CMYK",
+      "file": {
+        "types": [
+          "pdf"
+        ],
+        "notes": "Flattened/press-ready PDF, CMYK, bleed included, fonts outlined or embedded (4OVER4). Vistaprint also accepts SVG and AI."
+      },
+      "notes": "Bleed 0.125 in and safe 0.125 in from 4OVER4 (it states 18.25 x 24.25 for 18x24 with bleed). Vistaprint asks for 0.125 bleed but 0.25 in safe and +0.5 in for framed posters; its own size table is internally inconsistent, so 4OVER4 values are used. Use safe 0.25 when in doubt.",
+      "sources": [
+        {
+          "url": "https://v2.4over4.com/guide/free-poster-templates-how-to-design-a-poster-that-prints-sharp",
+          "title": "4OVER4: Free poster templates / how to design a poster that prints sharp",
+          "checked": "2026-10-27"
+        },
+        {
+          "url": "https://v2.4over4.com/guide/how-to-print-large-posters",
+          "title": "4OVER4: How to print large posters",
+          "checked": "2026-10-27"
+        },
+        {
+          "url": "https://vistaprint.com/hub/poster-printing-preparation-guide",
+          "title": "Vistaprint: Poster printing preparation guide",
+          "checked": "2026-10-27"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "print.poster.24x36",
+      "platform": "print",
+      "surface": "both",
+      "placement": "Poster (wall, campus, window)",
+      "name": "Poster, 24 x 36 in",
+      "most_common": true,
+      "media": [
+        "image"
+      ],
+      "trim": {
+        "w": 24,
+        "h": 36,
+        "units": "in"
+      },
+      "bleed_in": 0.125,
+      "safe_in": 0.125,
+      "dpi": {
+        "min": 150,
+        "recommended": 200,
+        "note": "4OVER4: 300 at full size for close viewing, 150 for posters read from a distance; Vistaprint's table: 11x17 at 300, 18x24 at 240, 24x36 at 200."
+      },
+      "canvas": {
+        "w": 4850,
+        "h": 7250
+      },
+      "aspect": "24:36",
+      "color": "CMYK",
+      "file": {
+        "types": [
+          "pdf"
+        ],
+        "notes": "Flattened/press-ready PDF, CMYK, bleed included, fonts outlined or embedded (4OVER4). Vistaprint also accepts SVG and AI."
+      },
+      "notes": "Bleed 0.125 in and safe 0.125 in from 4OVER4 (it states 18.25 x 24.25 for 18x24 with bleed). Vistaprint asks for 0.125 bleed but 0.25 in safe and +0.5 in for framed posters; its own size table is internally inconsistent, so 4OVER4 values are used. Use safe 0.25 when in doubt.",
+      "sources": [
+        {
+          "url": "https://v2.4over4.com/guide/free-poster-templates-how-to-design-a-poster-that-prints-sharp",
+          "title": "4OVER4: Free poster templates / how to design a poster that prints sharp",
+          "checked": "2026-10-27"
+        },
+        {
+          "url": "https://v2.4over4.com/guide/how-to-print-large-posters",
+          "title": "4OVER4: How to print large posters",
+          "checked": "2026-10-27"
+        },
+        {
+          "url": "https://vistaprint.com/hub/poster-printing-preparation-guide",
+          "title": "Vistaprint: Poster printing preparation guide",
+          "checked": "2026-10-27"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "print.ooh.wild_posting.24x36",
+      "platform": "print",
+      "surface": "ad",
+      "placement": "Wild Posting (snipes / wheat-paste)",
+      "name": "Wild posting poster, 24 x 36 in",
+      "most_common": true,
+      "media": [
+        "image"
+      ],
+      "trim": {
+        "w": 24,
+        "h": 36,
+        "units": "in"
+      },
+      "bleed_in": 0,
+      "safe_in": 0,
+      "safe": {
+        "w": 24,
+        "h": 36,
+        "units": "in"
+      },
+      "dpi": {
+        "min": null,
+        "recommended": 150,
+        "note": "DASH TWO gives no resolution; 150 from 4OVER4's guidance for posters read from a distance."
+      },
+      "canvas": {
+        "w": 3600,
+        "h": 5400
+      },
+      "aspect": "2:3",
+      "color": null,
+      "file": {
+        "types": null,
+        "notes": "Not stated by DASH TWO."
+      },
+      "notes": "DASH TWO (OOH media vendor): Wild Posting 36 h x 24 w, live area 36 x 24 (no bleed or margin listed). Posters are repeated in rows on construction walls, so edge-to-edge live area is normal. Larger wild-posting sizes (e.g. 46 x 60, 48 x 72) were not found in any vendor spec; omitted. OAAA's rail 2-sheet is 46 x 60 but is not a wild-posting spec.",
+      "sources": [
+        {
+          "url": "https://dashtwo.com/blog/outdoor-advertising-specs/",
+          "title": "DASH TWO: Outdoor advertising specs",
+          "checked": "2026-10-27"
+        },
+        {
+          "url": "https://v2.4over4.com/guide/how-to-print-large-posters",
+          "title": "4OVER4: How to print large posters",
+          "checked": "2026-10-27"
+        }
+      ],
+      "confidence": "secondary"
+    },
+    {
+      "id": "print.ooh.airport.diorama.standard",
+      "platform": "print",
+      "surface": "ad",
+      "placement": "Airport concourse diorama / spectacular (backlit)",
+      "name": "Airport standard diorama, 62 x 43 in",
+      "most_common": true,
+      "media": [
+        "image"
+      ],
+      "trim": {
+        "w": 62,
+        "h": 43,
+        "units": "in"
+      },
+      "bleed_in": 0,
+      "safe_in": null,
+      "visible": {
+        "w": 60,
+        "h": 41,
+        "units": "in"
+      },
+      "dpi": {
+        "min": 80,
+        "recommended": 100
+      },
+      "canvas": {
+        "w": 6200,
+        "h": 4300
+      },
+      "aspect": "62:43",
+      "color": "CMYK typical; not stated by OAAA",
+      "file": {
+        "types": null,
+        "notes": "Not stated; get the airport media owner's template."
+      },
+      "material": "Backlit. Screen print or litho on 0.010 clear cellulose or vinyl (print two sides if litho), or photographic Varicolor/Duratrans (OAAA).",
+      "notes": "OAAA gives overall and copy (visible) area; overall is used as trim, no bleed beyond it is stated. Safe area not stated (null); keep copy inside the visible area with margin. OAAA notes specs vary by seller. No ~2:1 wide airport backlit standard was found; the double diorama spectacular (~3:1) is the closest wide unit. OAAA cheat sheet: Airport Diorama 43 x 62, target 80-100 ppi at full size (160-200 at 1/2 scale).",
+      "sources": [
+        {
+          "url": "https://oaaa.org/resources/airport/",
+          "title": "OAAA: Airport",
+          "checked": "2026-10-27"
+        },
+        {
+          "url": "https://oaaa.org/wp-content/uploads/2022/09/OOH-Print-Production-Specifications-Cheat-Sheet.pdf",
+          "title": "OAAA OOH Print Production Specifications Cheat Sheet",
+          "checked": "2026-10-27"
+        },
+        {
+          "url": "https://www-archive.oaaa.org/Portals/0/Public%20PDFs/Standard%20OOH%20Media%20Formats.pdf",
+          "title": "OAAA Standard OOH Media Formats (2015)",
+          "checked": "2026-10-27"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "print.ooh.airport.diorama.double",
+      "platform": "print",
+      "surface": "ad",
+      "placement": "Airport concourse diorama / spectacular (backlit)",
+      "name": "Airport double diorama spectacular, 126 x 43 in",
+      "most_common": false,
+      "media": [
+        "image"
+      ],
+      "trim": {
+        "w": 126,
+        "h": 43,
+        "units": "in"
+      },
+      "bleed_in": 0,
+      "safe_in": null,
+      "visible": {
+        "w": 121.75,
+        "h": 41,
+        "units": "in"
+      },
+      "dpi": {
+        "min": 80,
+        "recommended": 100,
+        "note": "borrowed from OAAA airport diorama target; not stated for this unit"
+      },
+      "canvas": {
+        "w": 12600,
+        "h": 4300
+      },
+      "aspect": "126:43",
+      "color": "CMYK typical; not stated by OAAA",
+      "file": {
+        "types": null,
+        "notes": "Not stated; get the airport media owner's template."
+      },
+      "material": "Backlit. Screen print or litho on 0.010 clear cellulose or vinyl (print two sides if litho), or photographic Varicolor/Duratrans (OAAA).",
+      "notes": "OAAA gives overall and copy (visible) area; overall is used as trim, no bleed beyond it is stated. Safe area not stated (null); keep copy inside the visible area with margin. OAAA notes specs vary by seller. No ~2:1 wide airport backlit standard was found; the double diorama spectacular (~3:1) is the closest wide unit. Resolution not listed for this unit; 80-100 ppi taken from OAAA's airport diorama row.",
+      "sources": [
+        {
+          "url": "https://oaaa.org/resources/airport/",
+          "title": "OAAA: Airport",
+          "checked": "2026-10-27"
+        },
+        {
+          "url": "https://oaaa.org/wp-content/uploads/2022/09/OOH-Print-Production-Specifications-Cheat-Sheet.pdf",
+          "title": "OAAA OOH Print Production Specifications Cheat Sheet",
+          "checked": "2026-10-27"
+        },
+        {
+          "url": "https://www-archive.oaaa.org/Portals/0/Public%20PDFs/Standard%20OOH%20Media%20Formats.pdf",
+          "title": "OAAA Standard OOH Media Formats (2015)",
+          "checked": "2026-10-27"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "print.ooh.airport.spectacular.7x11",
+      "platform": "print",
+      "surface": "ad",
+      "placement": "Airport concourse diorama / spectacular (backlit)",
+      "name": "Airport 7 x 11 ft spectacular, 135 x 83 in",
+      "most_common": false,
+      "media": [
+        "image"
+      ],
+      "trim": {
+        "w": 135,
+        "h": 83,
+        "units": "in"
+      },
+      "bleed_in": 0,
+      "safe_in": null,
+      "visible": {
+        "w": 132,
+        "h": 80,
+        "units": "in"
+      },
+      "dpi": {
+        "min": 80,
+        "recommended": 100,
+        "note": "borrowed from OAAA airport diorama target; not stated for this unit"
+      },
+      "canvas": {
+        "w": 13500,
+        "h": 8300
+      },
+      "aspect": "135:83",
+      "color": "CMYK typical; not stated by OAAA",
+      "file": {
+        "types": null,
+        "notes": "Not stated; get the airport media owner's template."
+      },
+      "material": "Backlit. Screen print or litho on 0.010 clear cellulose or vinyl (print two sides if litho), or photographic Varicolor/Duratrans (OAAA).",
+      "notes": "OAAA gives overall and copy (visible) area; overall is used as trim, no bleed beyond it is stated. Safe area not stated (null); keep copy inside the visible area with margin. OAAA notes specs vary by seller. No ~2:1 wide airport backlit standard was found; the double diorama spectacular (~3:1) is the closest wide unit. Resolution not listed for this unit; 80-100 ppi taken from OAAA's airport diorama row.",
+      "sources": [
+        {
+          "url": "https://oaaa.org/resources/airport/",
+          "title": "OAAA: Airport",
+          "checked": "2026-10-27"
+        },
+        {
+          "url": "https://oaaa.org/wp-content/uploads/2022/09/OOH-Print-Production-Specifications-Cheat-Sheet.pdf",
+          "title": "OAAA OOH Print Production Specifications Cheat Sheet",
+          "checked": "2026-10-27"
+        },
+        {
+          "url": "https://www-archive.oaaa.org/Portals/0/Public%20PDFs/Standard%20OOH%20Media%20Formats.pdf",
+          "title": "OAAA Standard OOH Media Formats (2015)",
+          "checked": "2026-10-27"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "print.flyer.letter",
+      "platform": "print",
+      "surface": "both",
+      "placement": "One-pager / flyer (commercial print)",
+      "name": "Flyer, US Letter 8.5 x 11 in",
+      "most_common": true,
+      "media": [
+        "image",
+        "document"
+      ],
+      "trim": {
+        "w": 8.5,
+        "h": 11,
+        "units": "in"
+      },
+      "bleed_in": 0.125,
+      "safe_in": 0.125,
+      "dpi": {
+        "min": 300,
+        "recommended": 300
+      },
+      "canvas": {
+        "w": 2625,
+        "h": 3375
+      },
+      "aspect": "8.5:11",
+      "color": "CMYK",
+      "file": {
+        "types": [
+          "pdf",
+          "jpg",
+          "tiff",
+          "eps",
+          "ai",
+          "psd"
+        ],
+        "notes": "Press-ready PDF preferred; built at 8.75 x 11.25 with bleed (4OVER4)."
+      },
+      "notes": "4OVER4: 0.125 bleed every side, text at least 0.125 inside trim, CMYK 300 DPI. Mimeo's 8.5x11 template matches (1/8 bleed, safe 1/8 from cuts).",
+      "sources": [
+        {
+          "url": "https://www.4over4.com/faqs/flyers/how-much-bleed-should-i-add-to-my-flyer-design",
+          "title": "4OVER4 FAQ: How much bleed should I add to my flyer design",
+          "checked": "2026-10-27"
+        },
+        {
+          "url": "https://content.mimeo.com/pdf/Single-Sheet-Flyer_8.5x11.pdf",
+          "title": "Mimeo single-sheet flyer 8.5x11 template",
+          "checked": "2026-10-27"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "merch.tumbler.40oz_handle.wrap",
+      "platform": "merch",
+      "surface": "both",
+      "placement": "40 oz tumbler with handle (Quencher style), sublimation wrap",
+      "name": "40 oz tumbler with handle, wrap print file",
+      "most_common": true,
+      "media": [
+        "image"
+      ],
+      "trim": {
+        "w": 10.7,
+        "h": 5.23,
+        "units": "in"
+      },
+      "bleed_in": 0,
+      "print_area": {
+        "w": 10.7,
+        "h": 5.23,
+        "units": "in",
+        "placement": "Wrap around the straight upper body; handle sits on the wrap (colors near the handle may shift)."
+      },
+      "dpi": {
+        "min": 300,
+        "recommended": 300
+      },
+      "canvas": {
+        "w": 3210,
+        "h": 1569
+      },
+      "aspect": "10.7:5.23",
+      "color": "sRGB (sRGB IEC61966-2.1); sublimation",
+      "file": {
+        "types": [
+          "png",
+          "jpg"
+        ],
+        "notes": "Printful: PNG or JPEG, at least 300 DPI, sRGB; delete template guide layers."
+      },
+      "notes": "Printful 'Travel Mug with a Handle' 40 oz: print file 10.7 x 5.23 in (25 oz: 9 x 3.79). Printful's own product, not a Stanley blank; other vendors' 40 oz wraps differ, use the vendor template.",
+      "sources": [
+        {
+          "url": "https://www.printful.com/custom/mugs/personalized/travel-mug-with-a-handle",
+          "title": "Printful: Travel Mug with a Handle (25/40 oz), File guidelines tab",
+          "checked": "2026-10-27"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "merch.tumbler.40oz_stanley_quencher.imprint",
+      "platform": "merch",
+      "surface": "both",
+      "placement": "Stanley Quencher H2.0 FlowState 40 oz, one-side imprint",
+      "name": "Stanley Quencher 40 oz, promo imprint (one side)",
+      "most_common": false,
+      "media": [
+        "image"
+      ],
+      "trim": {
+        "w": 3.0625,
+        "h": 4,
+        "units": "in"
+      },
+      "bleed_in": 0,
+      "print_area": {
+        "w": 3.0625,
+        "h": 4,
+        "units": "in",
+        "placement": "One side, opposite the Stanley logo (4imprint). Laser-engraved version C171414-40-L: 1.5 x 1.5 in."
+      },
+      "dpi": {
+        "min": null,
+        "recommended": null
+      },
+      "canvas": null,
+      "aspect": "3.0625:4",
+      "color": "Spot colors, max 2 imprint colors (4imprint); not full color",
+      "file": {
+        "types": null,
+        "notes": "Vector spot-color art; 4imprint lists no dpi. If a raster is needed, 300 dpi gives 919 x 1200 px (derived, not sourced)."
+      },
+      "notes": "4imprint (Canada) C171414-40: imprint area 101 mm H x 77 mm W (4 x 3.0625 in), one-colour imprint included, max 2 colours, $65 setup. No full-wrap decoration found for genuine Stanley Quencher from 4imprint or Stanley; the US 4imprint listing was not found.",
+      "sources": [
+        {
+          "url": "https://www.4imprint.ca/product/C171414-40/Stanley-Quencher-H20-FlowState-Vacuum-Mug-with-Straw-40-oz",
+          "title": "4imprint (Canada): Stanley Quencher H2.0 FlowState 40 oz, item C171414-40",
+          "checked": "2026-10-27"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "merch.tumbler.20oz_skinny.wrap",
+      "platform": "merch",
+      "surface": "both",
+      "placement": "20 oz skinny / straight tumbler, full wrap",
+      "name": "20 oz skinny tumbler, wrap print file",
+      "most_common": true,
+      "media": [
+        "image"
+      ],
+      "trim": {
+        "w": 9.25,
+        "h": 7.91,
+        "units": "in"
+      },
+      "bleed_in": 0,
+      "print_area": {
+        "w": 9.25,
+        "h": 7.91,
+        "units": "in",
+        "placement": "360-degree wrap; front-to-back seam alignment not guaranteed."
+      },
+      "dpi": {
+        "min": 300,
+        "recommended": 300
+      },
+      "canvas": {
+        "w": 2775,
+        "h": 2373
+      },
+      "aspect": "9.25:7.91",
+      "color": "sRGB; UV printing (white underbase)",
+      "file": {
+        "types": [
+          "png",
+          "jpg"
+        ],
+        "notes": "Printful: PNG or JPEG, at least 300 DPI, sRGB."
+      },
+      "notes": "Printful Stainless Steel Tumbler 20 oz (3.11 x 8.42 in body): print file 9.25 x 7.91 in. SwiftPOD via MyDesigns uses 2850 x 2430 px (95:81) for its 20 oz straight skinny sublimation tumbler. Use the vendor's template.",
+      "sources": [
+        {
+          "url": "https://www.printful.com/custom/drinkware/tumblers/stainless-steel-tumbler",
+          "title": "Printful: Stainless Steel Tumbler (20 oz), File guidelines tab",
+          "checked": "2026-10-27"
+        },
+        {
+          "url": "https://mydesigns.io/product-catalog/tumblers/product/20oz-straight-skinny-tumbler",
+          "title": "MyDesigns (SwiftPOD): 20oz straight skinny tumbler",
+          "checked": "2026-10-27"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "merch.tshirt.front.large",
+      "platform": "merch",
+      "surface": "both",
+      "placement": "T-shirt DTG, front",
+      "name": "T-shirt front, large 15 x 18 in",
+      "most_common": true,
+      "media": [
+        "image"
+      ],
+      "trim": {
+        "w": 15,
+        "h": 18,
+        "units": "in"
+      },
+      "bleed_in": 0,
+      "print_area": {
+        "w": 15,
+        "h": 18,
+        "units": "in",
+        "placement": "front",
+        "sizes": "Bella+Canvas 3001 sizes L-5XL"
+      },
+      "dpi": {
+        "min": 150,
+        "recommended": 300,
+        "note": "Printful: at least 150 DPI, best not to exceed 300."
+      },
+      "canvas": {
+        "w": 4500,
+        "h": 5400
+      },
+      "aspect": "15:18",
+      "color": "sRGB (sRGB IEC61966-2.1); printer converts to CMYK. No Pantone matching on DTG.",
+      "file": {
+        "types": [
+          "png",
+          "jpg"
+        ],
+        "notes": "PNG with transparent background preferred."
+      },
+      "notes": "Printful 3001 file guidelines: Front, from size L: 15 x 18 in. Printful's 15 x 18 'large_front' replaced the legacy 12 x 16 front on 3001 (L-5XL), 3413 (L-4XL) and Cotton Heritage MC1082 (M-3XL). Placement (secondary, Printify): front print about 2-3 in below the neckline (3 in for a 6-8 in logo); back about 4-6 in below the collar; left chest 2.5-5 in square, 4-6 in below the collar. Printful: avoid semi-transparency (halftone instead); leave black areas transparent on black garments; no white ink on white garments; avoid perfect borders. Screen-print maxima from Custom Ink were not found (Custom Ink pages not indexed); 12 x 16 in is the widely cited industry max.",
+      "sources": [
+        {
+          "url": "https://www.printful.com/custom/mens/t-shirts/unisex-staple-t-shirt-bella-canvas-3001",
+          "title": "Printful: Unisex Staple T-Shirt | Bella + Canvas 3001, File guidelines tab (DTG)",
+          "checked": "2026-10-27"
+        },
+        {
+          "url": "https://help.printful.com/hc/en-us/articles/50263171283217-What-should-I-know-about-the-standard-15-18-print-placement-for-DTG-products",
+          "title": "Printful Help: standard 15x18 print placement for DTG products",
+          "checked": "2026-10-27"
+        },
+        {
+          "url": "https://www.printful.com/creating-dtg-file",
+          "title": "Printful: Create the perfect DTG file",
+          "checked": "2026-10-27"
+        },
+        {
+          "url": "https://printify.com/blog/t-shirt-design-size/",
+          "title": "Printify blog: T-shirt design size guide",
+          "checked": "2026-10-27"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "merch.tshirt.front.small_sizes",
+      "platform": "merch",
+      "surface": "both",
+      "placement": "T-shirt DTG, front",
+      "name": "T-shirt front, XS-M 11.5 x 13.8 in",
+      "most_common": false,
+      "media": [
+        "image"
+      ],
+      "trim": {
+        "w": 11.5,
+        "h": 13.8,
+        "units": "in"
+      },
+      "bleed_in": 0,
+      "print_area": {
+        "w": 11.5,
+        "h": 13.8,
+        "units": "in",
+        "placement": "front",
+        "sizes": "Bella+Canvas 3001 sizes XS-M"
+      },
+      "dpi": {
+        "min": 150,
+        "recommended": 300,
+        "note": "Printful: at least 150 DPI, best not to exceed 300."
+      },
+      "canvas": {
+        "w": 3450,
+        "h": 4140
+      },
+      "aspect": "11.5:13.8",
+      "color": "sRGB (sRGB IEC61966-2.1); printer converts to CMYK. No Pantone matching on DTG.",
+      "file": {
+        "types": [
+          "png",
+          "jpg"
+        ],
+        "notes": "PNG with transparent background preferred."
+      },
+      "notes": "Printful 3001: Front, XS-M: 11.5 x 13.8 in. Design one file at this size to cover every size, or one per size range. Placement (secondary, Printify): front print about 2-3 in below the neckline (3 in for a 6-8 in logo); back about 4-6 in below the collar; left chest 2.5-5 in square, 4-6 in below the collar. Printful: avoid semi-transparency (halftone instead); leave black areas transparent on black garments; no white ink on white garments; avoid perfect borders. Screen-print maxima from Custom Ink were not found (Custom Ink pages not indexed); 12 x 16 in is the widely cited industry max.",
+      "sources": [
+        {
+          "url": "https://www.printful.com/custom/mens/t-shirts/unisex-staple-t-shirt-bella-canvas-3001",
+          "title": "Printful: Unisex Staple T-Shirt | Bella + Canvas 3001, File guidelines tab (DTG)",
+          "checked": "2026-10-27"
+        },
+        {
+          "url": "https://help.printful.com/hc/en-us/articles/50263171283217-What-should-I-know-about-the-standard-15-18-print-placement-for-DTG-products",
+          "title": "Printful Help: standard 15x18 print placement for DTG products",
+          "checked": "2026-10-27"
+        },
+        {
+          "url": "https://www.printful.com/creating-dtg-file",
+          "title": "Printful: Create the perfect DTG file",
+          "checked": "2026-10-27"
+        },
+        {
+          "url": "https://printify.com/blog/t-shirt-design-size/",
+          "title": "Printify blog: T-shirt design size guide",
+          "checked": "2026-10-27"
+        }
+      ],
+      "confidence": "official"
+    },
+    {
+      "id": "merch.tshirt.back",
+      "platform": "merch",
+      "surface": "both",
+      "placement": "T-shirt DTG, back",
+      "name": "T-shirt back, 12 x 16 in",
+      "most_common": true,
+      "media": [
+        "image"
+      ],
+      "trim": {
+        "w": 12,
+        "h": 16,
+        "units": "in"
+      },
+      "bleed_in": 0,
+      "print_area": {
+        "w": 12,
+        "h": 16,
+        "units": "in",
+        "placement": "back",
+        "sizes": "Bella+Canvas 3001 all sizes"
+      },
+      "dpi": {
+        "min": 150,
+        "recommended": 300,
+        "note": "Printful: at least 150 DPI, best not to exceed 300."
+      },
+      "canvas": {
+        "w": 3600,
+        "h": 4800
+      },
+      "aspect": "12:16",
+      "color": "sRGB (sRGB IEC61966-2.1); printer converts to CMYK. No Pantone matching on DTG.",
+      "file": {
+        "types": [
+          "png",
+          "jpg"
+        ],
+        "notes": "PNG with transparent background preferred."
+      },
+      "notes": "Printful 3001: Back print, all sizes: 12 x 16 in. Sleeve print 4 x 3.5 in; inside/outside label 3 x 3 in. Placement (secondary, Printify): front print about 2-3 in below the neckline (3 in for a 6-8 in logo); back about 4-6 in below the collar; left chest 2.5-5 in square, 4-6 in below the collar. Printful: avoid semi-transparency (halftone instead); leave black areas transparent on black garments; no white ink on white garments; avoid perfect borders. Screen-print maxima from Custom Ink were not found (Custom Ink pages not indexed); 12 x 16 in is the widely cited industry max.",
+      "sources": [
+        {
+          "url": "https://www.printful.com/custom/mens/t-shirts/unisex-staple-t-shirt-bella-canvas-3001",
+          "title": "Printful: Unisex Staple T-Shirt | Bella + Canvas 3001, File guidelines tab (DTG)",
+          "checked": "2026-10-27"
+        },
+        {
+          "url": "https://help.printful.com/hc/en-us/articles/50263171283217-What-should-I-know-about-the-standard-15-18-print-placement-for-DTG-products",
+          "title": "Printful Help: standard 15x18 print placement for DTG products",
+          "checked": "2026-10-27"
+        },
+        {
+          "url": "https://www.printful.com/creating-dtg-file",
+          "title": "Printful: Create the perfect DTG file",
+          "checked": "2026-10-27"
+        },
+        {
+          "url": "https://printify.com/blog/t-shirt-design-size/",
+          "title": "Printify blog: T-shirt design size guide",
+          "checked": "2026-10-27"
+        }
+      ],
+      "confidence": "official"
+    }
+  ]
+}

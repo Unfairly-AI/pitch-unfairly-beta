@@ -1,0 +1,40 @@
+{
+  "engine": "collateral@1.0",
+  "accents": {
+    "colors": [],
+    "max": 1
+  },
+  "pieces": [
+    {
+      "id": "poster",
+      "file": "pieces/poster.html",
+      "format": "print.poster.24x36"
+    },
+    {
+      "id": "flyer",
+      "file": "pieces/flyer.html",
+      "format": "print.flyer.letter"
+    }
+  ],
+  "pages": {
+    "suffix": "Your brand",
+    "links": [
+      {
+        "slug": "brand-poster",
+        "title": "Poster",
+        "pieces": [
+          "poster"
+        ],
+        "caption": "One line on the piece, in the brand guide's own words."
+      },
+      {
+        "slug": "brand-flyer",
+        "title": "Flyer",
+        "pieces": [
+          "flyer"
+        ],
+        "caption": "One line on the piece, in the brand guide's own words."
+      }
+    ]
+  }
+}

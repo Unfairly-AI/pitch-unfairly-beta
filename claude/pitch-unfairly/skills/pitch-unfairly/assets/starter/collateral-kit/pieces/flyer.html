@@ -1,0 +1,19 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Flyer</title>
+<link rel="stylesheet" href="../.engine/brand.css">
+<style>
+  /* Placeholder: shows the canvas contract, not a look. Replace it with the brand's own one-pager.
+     .canvas is the full sheet, bleed included; lay out in cqw/cqh and keep copy inside the safe insets. */
+  * { box-sizing: border-box; margin: 0; }
+  .canvas { position: relative; overflow: hidden; container-type: size; width: var(--W); height: var(--H); background: var(--paper); color: var(--ink); font-family: var(--font-body); }
+  .live { position: absolute; left: calc(var(--bleed) + var(--safe-l)); right: calc(var(--bleed) + var(--safe-r)); top: calc(var(--bleed) + var(--safe-t)); bottom: calc(var(--bleed) + var(--safe-b)); padding: 6cqw; display: flex; flex-direction: column; justify-content: space-between; }
+  h1 { font-family: var(--font-display); font-weight: var(--display-weight); letter-spacing: var(--display-tracking); font-size: 8cqw; line-height: 1; }
+  .logo { font-weight: 700; font-size: 3.4cqw; }
+</style></head>
+<body>
+<div class="canvas"><div class="live">
+  <div class="logo" data-logo>Brand name</div>
+  <h1>One idea, said in a few words.</h1>
+</div></div>
+<script type="module">import { ready } from '../.engine/canvas.js'; ready();</script>
+</body></html>

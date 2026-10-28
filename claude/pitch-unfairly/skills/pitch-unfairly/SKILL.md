@@ -34,7 +34,7 @@ Run every npm command in the deck as `. ~/.pitch-unfairly/env.sh && npm run <scr
 
 ## 2. Read the workflow
 
-While setup runs, read `references/workflow.md` in this skill's folder in full and follow it from step 1 (its step 0 is the setup already running). It is the complete method (story, brand, composing, the three-mode checks, the design review, publishing, the hand-over, updating and taking decks offline) and it names the references to read along the way, which sit beside it in `references/`: `story.md`, `craft.md`, `voice.md`, `brand-kit.md`, `modes.md`, and `templates.md`. Read each one when the workflow says to, before the step that needs it.
+While setup runs, read `references/workflow.md` in this skill's folder in full and follow it from step 1 (its step 0 is the setup already running). It is the complete method, and it names the references to read along the way, which sit beside it in `references/`: `story.md`, `craft.md`, `voice.md`, `brand-kit.md`, `modes.md`, and `templates.md`. Read each one when the workflow says to, before the step that needs it.
 
 The first call to an Unfairly tool asks the user to sign in, which also sets up hosting for the deck.
 
@@ -42,7 +42,8 @@ The first call to an Unfairly tool asks the user to sign in, which also sets up 
 
 - Story before slides: write `story.md` (audience, the action after the last slide, angle, template, and one block per slide with its job, headline, proof, and source) and run `npm run story:check` before composing. Headlines state the point as a sentence, never a topic label. One job per slide.
 - Use the user's facts. Never invent numbers, quotes, customers, or logos; label example data on the slide.
-- A site (a scrolling page with live numbers, published like a deck) is built in the same project under `site/`: read the `sites` guide first. Start it from the starter's site toolbox (`npm run site:new -- data-proposal`, or `proposal`), whose hero stays calm and whose numbers sit in a glance band below it. Its figures come from `site/site.json`, never typed into the page, and `npm run site:audit` must end with "All modes clean" before it publishes.
+- A site (a scrolling page with live numbers, published like a deck) is built in the same project under `site/`: read the `sites` guide first. Start it from the starter's site toolbox (`npm run site:new -- data-proposal`, or `proposal`). Its figures come from `site/site.json`, never typed into the page, and `npm run site:audit` must end with "All modes clean" before it publishes.
+- Print, out-of-home and merch pieces go under `collateral/`: read the `collateral` guide first, and `npm run collateral:build` must pass before anything is printed.
 - Copy reads as written by a person, in its shortest true form: one idea per sentence, plain words, no em dashes, no stacked fragments or clauses, no filler lines (the `voice` guide has the rest).
 - No deck ships in the starter's house brand (magenta and cream, Sora and DM Sans). Use the user's saved kit (`brand_kit_get`), capture the brand from its website (`npm run brand:capture -- https://…`), or write an art direction for a brand that has no site.
 - The audit is mandatory: the deck isn't done until `npm run audit` ends with "All modes clean", and the design review (`deck_review_start`, `deck_review`) marks every slide ready. `npm run upload` refuses to publish without that review; there is no review bypass.

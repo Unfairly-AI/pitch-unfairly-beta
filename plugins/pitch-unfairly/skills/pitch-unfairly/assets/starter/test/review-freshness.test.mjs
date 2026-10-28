@@ -133,6 +133,25 @@ test('a site-format story.md puts its decision, next step, motion and audience i
   }
 });
 
+test('ACCEPTANCE: a sample site tells the reviewer it is a sample (review-context sample), so its band is judged as the disclosure', async () => {
+  const prior = process.cwd();
+  const root = await mkdtemp(join(tmpdir(), 'review-sample-'));
+  try {
+    process.chdir(root);
+    await write('site/site.json', JSON.stringify({ engine: 'sites@1.11', sample: true }));
+    await write('site/sections/01-hero.html', '<section data-section="hero"></section>');
+    await write('brand/brand.json', '{"schema":"brand-kit@1"}');
+    for (const mode of ['laptop', 'phone']) await write(`artifacts/site/${mode}/01-hero.png`, mode);
+    const { siteReviewContext } = await import('../bin/design-review.mjs');
+    assert.equal((await siteReviewContext()).sample, true);
+    await write('site/site.json', JSON.stringify({ engine: 'sites@1.11' }));
+    assert.equal((await siteReviewContext()).sample, undefined);
+  } finally {
+    process.chdir(prior);
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
 test('ACCEPTANCE: ten desktop sections with one phone shot fail, in review-files and at publish', () => inProject(async ({ blocker, context }) => {
   const ten = Array.from({ length: 10 }, (_, i) => `${String(i + 1).padStart(2, '0')}-s.png`);
   await rm('artifacts/site', { recursive: true });
