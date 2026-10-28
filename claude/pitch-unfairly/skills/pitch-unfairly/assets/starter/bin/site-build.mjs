@@ -105,7 +105,7 @@ export async function buildSite({ root = '.', out = 'dist-site' } = {}) {
 
   // A site in production reads its locked variants (site/variants); one still being built, the live toolbox.
   const toolbox = isLocked(at('site/variants')) ? variantCss(at('site/variants')) : await part('site/toolbox.css');
-  const css = [fontCss, brandCss(kit, fontFaceCss(kit, 'brand/')), await readFile(join(here, 'site/base.css'), 'utf8'), toolbox, await part('site/styles.css')].join('\n');
+  const css = [fontCss, brandCss(kit, fontFaceCss(kit, 'brand/'), 'brand/'), await readFile(join(here, 'site/base.css'), 'utf8'), toolbox, await part('site/styles.css')].join('\n');
   await writeFile(join(outDir, 'index.html'), pageShell({ site, body, css, model: site.model ?? {} }));
   // The page as plain text for agents; the host serves it at <link>/index.txt behind the link's gates.
   await writeFile(join(outDir, 'index.txt'), siteText({ site, body }));

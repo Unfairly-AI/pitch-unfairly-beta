@@ -41,7 +41,7 @@ export async function prepareEngine(root, set, kit) {
   const eng = join(root, 'collateral', '.engine');
   await rm(eng, { recursive: true, force: true });
   await mkdir(eng, { recursive: true });
-  for (const f of ['canvas.js', 'check.js', 'rules.mjs']) await cp(join(here, 'collateral', f), join(eng, f));
+  for (const f of ['canvas.js', 'check.js', 'rules.mjs', 'slices.js']) await cp(join(here, 'collateral', f), join(eng, f));
   let fontCss = '';
   for (const pkg of new Set(['display', 'body', 'mono'].map((r) => kit.typography?.[r]).filter((t) => t?.source === 'fontsource').map((t) => t.package))) {
     if (!fontDir(root, pkg)) throw new Error(`Font package ${pkg} isn't installed. Run npm run brand:apply.`);
@@ -111,7 +111,7 @@ async function main() {
           // Transparent merch art shows any half-painted join (two clipped boxes meeting mid-pixel) as a
           // line through the ink: fail the piece instead of cleaning the file up afterwards.
           const seams = hairlineRows(decodePng(await readFile(row.print)));
-          if (seams.length) row.problems.push(`print file has ${seams.length} hairline seam row(s) at y ${seams.slice(0, 8).join(', ')}: draw sliced type on one canvas per stack, clipped to whole device pixels`);
+          if (seams.length) row.problems.push(`print file has ${seams.length} hairline seam row(s) at y ${seams.slice(0, 8).join(', ')}: draw sliced type with drawSlices(DPR) from ../.engine/slices.js`);
         } else {
           row.print = join(OUT, 'print', `${p.id}.pdf`);
           await page.pdf({ path: row.print, width: `${f.trim.w + 2 * f.bleed}in`, height: `${f.trim.h + 2 * f.bleed}in`, printBackground: true, pageRanges: '1', scale: 96 / PX_IN });

@@ -1,6 +1,6 @@
 // The arguments for deck_upload_start when publishing a site:
 //   node bin/site-manifest.mjs > artifacts/site-start.json
-// {"kind":"site","title","story","review_id","engine","files":[{path,size,sha256}]}. Add the
+// {"kind":"site","title","story","review_id","engine","audit","files":[{path,size,sha256}]}. Add the
 // workspace (and a slug, if you want one) before passing it on; then save the
 // reply as artifacts/uploads.json and run: node bin/upload.mjs artifacts/uploads.json dist-site
 import { createHash } from 'node:crypto';
@@ -10,6 +10,7 @@ import { join, relative, sep } from 'node:path';
 import { siteAuditBlocker } from './site-audit.mjs';
 import { distFileProblem } from './site/public-files.mjs';
 import { ENGINE } from './site/version.mjs';
+import { digestFromFiles } from './site/gate.mjs';
 
 const blocker = await siteAuditBlocker();
 if (blocker) {
@@ -44,4 +45,14 @@ const site = JSON.parse(await readFile('site/site.json', 'utf8'));
 const story = await readFile('story.md', 'utf8').catch(() => '');
 // The host checks the review it issued (review_id) and the engine that built the site.
 const review = JSON.parse(await readFile('artifacts/review.json', 'utf8').catch(() => '{}'));
-console.log(JSON.stringify({ kind: 'site', title: `${site.sample ? 'Sample: ' : ''}${site.title}`, story, review_id: review.review_id ?? null, engine: ENGINE, files }, null, 2));
+// The audit result the host can check: the gate that ran and the digest of the files it passed
+// (digestFromFiles over this same file list, so the host recomputes it without the bytes).
+const stamp = JSON.parse(await readFile('artifacts/site-audit-pass.json', 'utf8'));
+const audit = stamp.gate ? { gate: stamp.gate.gate, clean: stamp.gate.clean, dist_digest: stamp.gate.dist_digest, widths: stamp.gate.widths, at: stamp.at } : null;
+if (audit && audit.dist_digest !== digestFromFiles(files)) {
+  console.error('✗ Not publishing: dist-site changed after its last clean audit. Run npm run site:audit again.');
+  process.exit(1);
+}
+// The slug the review was bound to, so deck_upload_start publishes the page the review covers.
+const binding = JSON.parse(await readFile('artifacts/review-binding.json', 'utf8').catch(() => 'null'));
+console.log(JSON.stringify({ kind: 'site', ...(binding?.deck ? { deck: binding.deck } : {}), title: `${site.sample ? 'Sample: ' : ''}${site.title}`, story, review_id: review.review_id ?? null, engine: ENGINE, audit, files }, null, 2));

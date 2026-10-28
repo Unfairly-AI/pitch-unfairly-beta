@@ -78,6 +78,14 @@ A piece imports `../.engine/canvas.js` and calls `ready()` when it is drawn:
 - **`ready(fn)`** waits for fonts and images, runs `fn` (draw a canvas texture there: it is drawn at
   the output resolution), then the build checks and renders.
 - **brand.css** carries the kit's tokens (`var(--accent)`, `var(--font-display)`, `--c-<extra>`).
+- **Sliced (stacked) headlines** are a `.stack` of `.row` windows, each `height: calc(var(--h) * 1em);
+  overflow: hidden`, with the word in a `<span>` at `top: calc(var(--o) * 1em)`. Draw them with
+  `ready(() => drawSlices(DPR))`, importing `drawSlices` from `../.engine/slices.js` and `DPR` from
+  `../.engine/canvas.js`. Left to the browser, each row is clipped on its own, and at print's
+  fractional pixel ratios every join prints as a hairline through the letters. `drawSlices` paints the
+  rows on one canvas, each clipped to whole device pixels.
+- **Masked textures** (`mask-image` fades on grain or swirls) can print hairlines at the mask edge in a
+  PDF. Bake the masked texture onto a canvas in `ready(fn)` instead.
 
 ## What the checks hold
 
@@ -94,7 +102,7 @@ A piece imports `../.engine/canvas.js` and calls `ready()` when it is drawn:
   - PDFs are the trim plus bleed in real inches, fonts embedded, at the format's resolution, capped
     so an 11 × 7 ft backlit stays a file a printer can open.
   - Merch PNGs are transparent and at the vendor's pixel size. A hairline seam (a half-transparent
-    row between solid ink, where two clipped boxes meet mid-pixel) fails the piece. Leave garment-colored areas empty;
+    row between solid ink, where two clipped boxes meet mid-pixel) fails the piece; draw sliced type with `drawSlices`. Leave garment-colored areas empty;
     don't print white ink on a white shirt.
 
 ## Rules

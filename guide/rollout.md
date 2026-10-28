@@ -130,8 +130,9 @@ Read the `collateral` guide. Then:
    `tee-art` and `tee-mockup`.
 
 Pitfalls with the pieces:
-- **Sliced-stack headlines.** Never clean up hairlines in the output after the build (with a sharp
-  pass or by hand). Fix the piece and rebuild. A broad clean-up pass erased thin letter bars on CU.
+- **Sliced-stack headlines.** Draw them with `drawSlices` (guide/collateral.md, the canvas
+  contract). Never clean up hairlines in the output after the build (with a sharp pass or by hand).
+  Fix the piece and rebuild. A broad clean-up pass erased thin letter bars on CU.
 - **White-ink merch.** Leave the areas that will be garment color empty. The piece page shows the
   art on the garment color by itself.
 

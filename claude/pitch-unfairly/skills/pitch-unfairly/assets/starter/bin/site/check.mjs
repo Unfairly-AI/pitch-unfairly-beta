@@ -6,6 +6,7 @@ import { ENGINE, engineProblem } from './version.mjs';
 import { copyExemptionProblems, copyFindings, faqFinding, simplicityFindings, LIMITS } from './copy.mjs';
 import { DEPRECATED_FACTS } from './fill.mjs';
 import { element, isLead, leadFindings } from './lead.mjs';
+import { bannedEntries, sourceBanned } from './banned.mjs';
 
 const text = (html) =>
   html
@@ -39,7 +40,7 @@ function factStrings(facts, prefix = '') {
  * exists(path): whether a local file referenced by the page exists.
  * today: an ISO day, for how old dated proof is (defaults to today).
  */
-export function checkSite({ site, sections, header = '', footer = '', styles = '', exists = () => true, today }) {
+export function checkSite({ site, sections, header = '', footer = '', styles = '', exists = () => true, today, kit = null }) {
   const errors = [];
   const warnings = [];
   if (!site.title) errors.push('site.json: add a "title".');
@@ -217,6 +218,12 @@ export function checkSite({ site, sections, header = '', footer = '', styles = '
   const found = leadFindings({ site, files, blocks: from(8), sampleBlocks: from(10), bandBlocks: from(11), ...(today ? { today } : {}) });
   errors.push(...found.errors);
   warnings.push(...found.warnings);
+  // The banned list (banned.json plus the kit's rules) came with engine 1.15: its source patterns
+  // block a block-severity entry unpinned or pinned 1.15+, and warn on an older pin.
+  const banned = bannedEntries(kit);
+  errors.push(...banned.problems);
+  const sources = [...files.map((f) => ({ name: f.where, kind: 'html', text: f.html })), { name: 'styles.css', kind: 'css', text: String(styles) }];
+  for (const f of sourceBanned(sources, banned.entries)) (f.severity === 'block' && from(15) ? errors : warnings).push(f.message);
   return { errors, warnings };
 }
 

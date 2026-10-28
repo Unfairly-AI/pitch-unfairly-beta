@@ -5,3 +5,12 @@ export const wordmark = "Pitch Unfairly";
 export const logos: Record<string, string> = {  };
 export const imagery: { url: string; role: string; alt: string; notes: string }[] = [
 ];
+export const lockups: { name: string; url: string; background: string; use: string }[] = [
+];
+export const textures: { name: string; url: string; kind: string; tint: string | null; blend: string; use: string }[] = [
+];
+export const elements: { name: string; kind: string; className: string | null; use: string; example: string | null }[] = [
+];
+export const typeRoles: string[] = [];
+export const gradients: string[] = [];
+export const messaging: { essence: string; taglines: string[]; key_messages: { area: string; headline: string; body: string }[]; attributes: string[] } = {"essence":"","taglines":[],"key_messages":[],"attributes":[]};

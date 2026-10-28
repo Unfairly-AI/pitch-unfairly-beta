@@ -1,4 +1,5 @@
-// Screenshot the brand board for review: artifacts/brand-board.png
+// Screenshot the brand board for review: artifacts/brand-board.png, plus
+// artifacts/brand-board-2.png when the kit has the brand-guide sections.
 // Usage: node bin/brand-board.mjs [base-url]
 import puppeteer from 'puppeteer';
 import { mkdir } from 'node:fs/promises';
@@ -23,6 +24,11 @@ try {
   await page.evaluate(() => document.fonts.ready);
   await page.screenshot({ path: 'artifacts/brand-board.png', captureBeyondViewport: false });
   console.log('artifacts/brand-board.png');
+  const more = await page.$('.board.more');
+  if (more) {
+    await more.screenshot({ path: 'artifacts/brand-board-2.png' });
+    console.log('artifacts/brand-board-2.png');
+  }
 } finally {
   await browser.close();
 }

@@ -18,6 +18,8 @@ import { serveDir } from './serve.mjs';
 import { refuseInCodexSandbox } from './browser-guard.mjs';
 import { settleForShots, stableLaunch } from './stable-shots.mjs';
 import { exerciseControls, printStateProblems, selectPdfState } from './site/interact.mjs';
+import { GATE, GATE_WIDTHS, distDigest, gateReport, runGate } from './site/gate.mjs';
+import { bannedEntries } from './site/banned.mjs';
 import { EXTRA_WIDTHS, PHONE_MAX, boxedTextProblems, brandDiff, layoutProblems, motionProblems, previewProblems, qualifierProblems, sampleBandProblems, sampleNames, visualSlop } from './site/page-lint.mjs';
 
 const STAMP = 'artifacts/site-audit-pass.json';
@@ -47,6 +49,8 @@ export async function siteAuditBlocker() {
   const stamp = JSON.parse(await readFile(STAMP, 'utf8').catch(() => 'null'));
   if (!stamp) return 'This site has no clean audit. Run `npm run site:audit` until it says "All modes clean".';
   if (stamp.fingerprint !== (await siteFingerprint())) return 'The site changed after its last clean audit. Run `npm run site:audit` again.';
+  // From 1.15 the stamp carries the QA gate's digest of dist-site: a rebuild after the audit is caught too.
+  if (stamp.gate && stamp.gate.dist_digest !== (await distDigest('dist-site').catch(() => null))) return 'dist-site changed after its last clean audit. Run `npm run site:audit` again.';
   return null;
 }
 
@@ -173,6 +177,7 @@ if (process.argv[1]?.endsWith('site-audit.mjs')) {
   const browser = await puppeteer.launch(stableLaunch());
   await rm(OUT, { recursive: true, force: true });
   const problems = [];
+  let gateResult = null;
   // minor: the engine version whose rule this is (8 for the 1.8 browser checks).
   const gate = (label, r, minor = 8) => {
     const say = (m) => (m.startsWith(label) ? m : `${label}: ${m}`);
@@ -295,6 +300,14 @@ if (process.argv[1]?.endsWith('site-audit.mjs')) {
     const small = await writeDeckPdf(browser, server.url, 'dist-site/deck.pdf', pdfReport);
     gate('PDF', pdfReport);
     small.forEach((x) => console.log(`  ! PDF: section "${x.name}" is ${x.pages} screens tall, so its page is scaled to ${Math.round(x.scale * 100)}%. Lay it out for the page with .is-pdf rules, fold detail into a toggle, or split the section.`));
+    // The QA gate (site/gate.mjs), after the PDF so its link resolves: 320 to 1920 wide, every state opened, the banned list with the
+    // kit's rules. Came with 1.15: blocks unpinned or pinned 1.15+, warns on an older pin.
+    const banned = bannedEntries(kit);
+    banned.problems.forEach((p) => problems.push(`banned list: ${p}`));
+    const gateRun = await runGate(browser, server.url, { entries: banned.entries, out: join(OUT, 'gate') });
+    gateResult = gateRun;
+    const lines = gateReport(gateRun).split('\n').filter((l) => /✗/.test(l)).map((l) => `gate: ${l.replace(/^\s*✗\s*/, '')}`);
+    gate('gate', { errors: lines, warnings: [] }, 15);
   } finally {
     await browser.close();
     await server.close();
@@ -306,6 +319,8 @@ if (process.argv[1]?.endsWith('site-audit.mjs')) {
   }
   // The section screenshots this clean pass took, per device, so a review can prove it saw exactly these.
   const { screenshotHashes } = await import('./design-review.mjs');
-  await writeFile(STAMP, JSON.stringify({ fingerprint: await siteFingerprint(), sections: built.sections, shots: await screenshotHashes(OUT), at: new Date().toISOString() }, null, 2));
-  console.log(`All modes clean: ${built.sections.length} sections at ${[...MODES.map((m) => m.width), ...EXTRA_WIDTHS].sort((a, b) => a - b).join(', ')}px. Look at every screenshot in ${OUT}/ before publishing. PDF: dist-site/deck.pdf`);
+  // The gate's own record: what it covered and whether it was clean (an older pin stamps with findings as warnings).
+  const gateStamp = gateResult ? { gate: GATE, clean: gateResult.findings.length === 0, dist_digest: await distDigest('dist-site'), pages: gateResult.pages, widths: GATE_WIDTHS, findings: gateResult.findings.length, contact_sheet: gateResult.sheet } : null;
+  await writeFile(STAMP, JSON.stringify({ fingerprint: await siteFingerprint(), sections: built.sections, shots: await screenshotHashes(OUT), gate: gateStamp, at: new Date().toISOString() }, null, 2));
+  console.log(`All modes clean: ${built.sections.length} sections at ${[...MODES.map((m) => m.width), ...EXTRA_WIDTHS].sort((a, b) => a - b).join(', ')}px, and the QA gate at ${GATE_WIDTHS.join(', ')}px with every state opened. Look at every screenshot in ${OUT}/ and the contact sheet (${OUT}/gate/contact-sheet.png) before publishing. PDF: dist-site/deck.pdf`);
 }

@@ -38,7 +38,11 @@ export function scaffold(root, name, { force = false, toolbox = TOOLBOX } = {}) 
   mkdirSync(sectionsDir, { recursive: true });
   // --force: the template replaces every section file there was.
   for (const f of readdirSync(sectionsDir)) if (f.endsWith('.html')) rmSync(join(sectionsDir, f));
-  for (const { file, html } of sections) writeFileSync(join(sectionsDir, file), html);
+  // A component's in-page link to a section this template doesn't have (the hero's "See the
+  // numbers" to #calculator in a proposal without one) points at the price, or the close.
+  const have = new Set(sections.flatMap(({ html }) => [...html.matchAll(/<section\b[^>]*\sid="([^"]+)"/g)].map((m) => m[1])));
+  const fallback = have.has('price') ? 'price' : 'next';
+  for (const { file, html } of sections) writeFileSync(join(sectionsDir, file), html.replace(/href="#([\w-]+)"/g, (a, id) => (id === 'top' || have.has(id) ? a : `href="#${fallback}"`)));
   const { $comment, ...example } = JSON.parse(readFileSync(join(toolbox, 'example.json'), 'utf8'));
   example.engine = `sites@${ENGINE.split('.').slice(0, 2).join('.')}`;
   writeFileSync(join(site, 'site.json'), `${JSON.stringify(example, null, 2)}\n`);

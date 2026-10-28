@@ -1,0 +1,69 @@
+{
+  "schema": "brand-kit@1",
+  "identity": {
+    "name": "Juniper Kiln",
+    "domain": "juniperkiln.example",
+    "wordmark": "Juniper Kiln",
+    "logos": { "primary": "logos/stacked.svg", "on_ink": "logos/horizontal-reversed.svg" },
+    "lockups": [
+      { "name": "stacked", "path": "logos/stacked.svg", "background": "light", "use": "Preferred. Print, signage, and anything square." },
+      { "name": "horizontal-reversed", "path": "logos/horizontal-reversed.svg", "background": "dark", "use": "Website masthead and dark photography only." }
+    ]
+  },
+  "palette": {
+    "paper": "#f4efe4",
+    "ink": "#1f2a24",
+    "accent": "#c2643b",
+    "accent_secondary": "#2f4a3a",
+    "highlight": "#e9b949",
+    "extras": [
+      { "name": "pine", "hex": "#2f4a3a", "group": "primary", "use": "Headlines and the logo field." },
+      { "name": "clay", "hex": "#c2643b", "group": "primary", "use": "Calls to action, one per view." },
+      { "name": "glaze", "hex": "#e9b949", "group": "secondary", "use": "Highlights and the bar under a word." },
+      { "name": "slip", "hex": "#d9cdb8", "group": "secondary" },
+      { "name": "ash", "hex": "#8a8f88", "group": "tertiary", "use": "Captions and rules." }
+    ],
+    "gradients": [
+      { "name": "firing", "kind": "linear", "angle": 120, "stops": [{ "color": "clay", "at": 0 }, { "color": "glaze", "at": 100 }], "use": "Event banners only." },
+      { "name": "kiln-glow", "kind": "radial", "stops": [{ "color": "#e9b949" }, { "color": "accent" }, { "color": "ink" }] }
+    ],
+    "applications": [
+      { "name": "Classes and workshops", "colors": ["pine", "glaze", "paper"], "notes": "Pine leads; glaze only for dates and prices." },
+      { "name": "Gallery shows", "colors": ["ink", "clay", "slip"], "notes": "Mostly ink and slip so the work carries the color." }
+    ]
+  },
+  "typography": {
+    "display": { "family": "Fraunces", "source": "fontsource", "package": "@fontsource-variable/fraunces", "weight": 700, "license": "open" },
+    "body": { "family": "Work Sans", "source": "fontsource", "package": "@fontsource-variable/work-sans", "license": "open" },
+    "roles": {
+      "eyebrow": { "font": "body", "weight": 600, "tracking": 0.14, "case": "uppercase", "scale": 0.7, "use": "Section labels above a headline." },
+      "quote": { "font": "display", "style": "italic", "weight": 400, "line_height": 1.2, "scale": 1.4, "use": "Student and visitor quotes." },
+      "headline": { "font": "display", "weight": 800, "tracking": -0.03, "line_height": 1, "use": "One per page." }
+    }
+  },
+  "style": { "radius": 6, "border_width": 2, "shadow": "none", "density": "balanced", "motion": "calm", "tilt": 0 },
+  "textures": [
+    { "name": "clay-grain", "path": "textures/clay-grain.svg", "kind": "accent", "use": "Fills knockout words; never behind body copy." },
+    { "name": "linen", "path": "textures/linen.svg", "kind": "background", "tint": "paper", "blend": "multiply", "use": "Quiet page background." }
+  ],
+  "elements": [
+    { "name": "photo-frame", "kind": "frame", "color": "pine", "weight": 14, "use": "Around one photograph per page." },
+    { "name": "quote-bracket", "kind": "bracket", "color": "clay", "weight": 3, "use": "Around pull quotes." },
+    { "name": "glaze-bar", "kind": "bar-under", "color": "glaze", "use": "Under one word in a headline." },
+    { "name": "hairline", "kind": "rule", "color": "ash", "weight": 1 },
+    { "name": "grain-word", "kind": "knockout-word", "texture": "clay-grain", "color": "accent", "use": "One big word on a cover." },
+    { "name": "stacked-headline", "kind": "stacked-word", "use": "Two short words stacked, the second offset right.", "example": "elements/stacked-word.svg" }
+  ],
+  "messaging": {
+    "essence": "Everyone can make something that lasts.",
+    "taglines": ["Make more mugs.", "Fired up on Fridays."],
+    "key_messages": [
+      { "area": "Classes", "headline": "Six weeks from first lump to finished set.", "body": "Small groups, one instructor, every glaze included." },
+      { "area": "Community", "headline": "An open studio, five nights a week." }
+    ],
+    "attributes": ["warm", "hands-on", "unhurried"]
+  },
+  "imagery": [],
+  "voice": ["Plain and warm."],
+  "rules": ["One clay accent per view."]
+}

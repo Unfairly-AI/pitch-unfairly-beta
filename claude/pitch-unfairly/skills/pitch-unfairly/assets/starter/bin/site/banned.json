@@ -1,0 +1,173 @@
+{
+  "$comment": "The house banned list: patterns a site must never ship. Each entry is a rule from guide/craft.md or guide/sites.md, or a correction the founder made on a real job. An entry with `detect` is enforced: `source` patterns by site:check, `dom` detectors (bin/site/banned.mjs) by site:audit and site:gate. An entry without `detect` goes to the critic's rubric (guide/banned.md). A client adds its own entries in brand/brand.json `rules` (see guide/banned.md). Add an entry and its detector in the same turn as the correction.",
+  "schema": "banned@1",
+  "entries": [
+    {
+      "id": "eyebrow",
+      "rule": "No eyebrows or kickers: no small uppercase label set over a heading.",
+      "why": "A label over a block that already says what it is is noise.",
+      "source": ["craft.md: Labels earn their place", "Bob, CU Anschutz v14, 2026-10-27: \"get rid of all eyebrows\""],
+      "severity": "block",
+      "detect": {
+        "dom": "eyebrow",
+        "source": [{ "in": "html", "pattern": "class=\"[^\"]*\\b(eyebrow|kicker|overline)\\b" }]
+      }
+    },
+    {
+      "id": "accent-text-on-light",
+      "rule": "No accent-coloured text on a light ground. Accent colours are for rules, frames and fills; text stays ink.",
+      "why": "A light accent (gold, yellow, pale green) on a light ground fails contrast and reads as decoration.",
+      "source": ["Bob, CU Anschutz v4, 2026-10-27: \"never gold text\""],
+      "severity": "block",
+      "detect": { "dom": "accent-text", "params": { "min_contrast": 4.5 } }
+    },
+    {
+      "id": "accent-underline-link",
+      "rule": "No accent-coloured underlines or bars under links and labels.",
+      "why": "An underline in the accent is a second link style and looks like a highlight, not a link.",
+      "source": ["Bob, CU Anschutz, 2026-10-27: gold underlines banned after v13 made them the secondary-action system"],
+      "severity": "block",
+      "detect": { "dom": "accent-underline" }
+    },
+    {
+      "id": "outlined-secondary",
+      "rule": "One primary action per screen; every other action is a text link. No outlined, ghost or bracketed secondary buttons.",
+      "why": "An outlined button competes with the primary and reads as a disabled or second-class button.",
+      "source": ["sites.md: One primary action per screen", "Bob, CU Anschutz v12, 2026-10-27: \"secondary button with outline feels like misuse / bad ux\""],
+      "severity": "block",
+      "detect": { "dom": "outlined-button" }
+    },
+    {
+      "id": "hover-lift",
+      "rule": "Nothing lifts on hover. Buttons press in; cards and tiles stay put.",
+      "why": "A hover lift is a template tell and moves the thing the reader is aiming at.",
+      "source": ["Bob, CU Anschutz v19, 2026-10-28: the service tile grid that lifts on hover"],
+      "severity": "block",
+      "detect": {
+        "dom": "hover-lift",
+        "source": [{ "in": "css", "pattern": ":hover[^{]*\\{[^}]*(translateY\\(\\s*-|translate\\([^,)]+,\\s*-|translate3d\\([^,)]+,\\s*-|translate:\\s*\\S+\\s+-)" }]
+      }
+    },
+    {
+      "id": "blur-noise-decoration",
+      "rule": "No blurred blobs, glows or noise filters as decoration. Use the brand's own textures, or nothing.",
+      "why": "Blur and generated noise read as amateur (sparkle dust).",
+      "source": ["craft.md 26 and 33", "Bob, CU Anschutz v4, 2026-10-27: \"hero looks like sparkle dust\""],
+      "severity": "block",
+      "detect": {
+        "dom": "blur-noise",
+        "source": [{ "in": "html", "pattern": "<feTurbulence" }, { "in": "css", "pattern": "feTurbulence" }]
+      }
+    },
+    {
+      "id": "image-reveal",
+      "rule": "Photos don't wipe, slide, zoom or unmask in. A photo is simply there.",
+      "why": "Wipes and clip-path reveals look old and hold the content back.",
+      "source": ["Bob, CU Anschutz v6, 2026-10-27: photo wipes \"really old school\""],
+      "severity": "block",
+      "detect": { "dom": "image-reveal" }
+    },
+    {
+      "id": "on-this-page-bar",
+      "rule": "No in-page \"On this page\" bar or jump-link strip.",
+      "why": "A page short enough to read doesn't need a table of contents; a long one needs folding, not a bar.",
+      "source": ["Bob, CU Anschutz v15, 2026-10-27: the \"On this page\" bar removed (it had only been restyled)"],
+      "severity": "block",
+      "detect": {
+        "dom": "jump-bar",
+        "source": [{ "in": "html", "pattern": ">\\s*(On this page|Jump to|In this section)\\s*<", "flags": "i" }]
+      }
+    },
+    {
+      "id": "visible-placeholder",
+      "rule": "No visible placeholders: no {{?…}}, \"To confirm\" chips, lorem ipsum, TBD, TODO or empty placeholder panels.",
+      "why": "Questions for the client go on the to-confirm list, never on the page.",
+      "source": ["Bob, CU Anschutz v20, 2026-10-28: \"To confirm\" chips on 10 pages"],
+      "severity": "block",
+      "detect": {
+        "dom": "placeholder",
+        "source": [{ "in": "html", "pattern": "\\{\\{\\?" }, { "in": "html", "pattern": "\\blorem ipsum\\b", "flags": "i" }]
+      }
+    },
+    {
+      "id": "crowded-hero",
+      "rule": "The hero is calm: the point, one primary action, at most one text link. No chips, no second button.",
+      "why": "Every first build crams the hero.",
+      "source": ["sites.md: The hero is calm", "Bob, CU Anschutz v26, 2026-10-28: \"why did you add services in the hero?\""],
+      "severity": "block",
+      "detect": { "dom": "crowded-hero" }
+    },
+    {
+      "id": "wall-of-text",
+      "rule": "No paragraph over the word limit outside a disclosure. Put detail one click away in a <details>.",
+      "why": "Walls of text don't get read.",
+      "source": ["sites.md: one click away (<details>)", "Bob, CU Anschutz v20, 2026-10-28: \"Lotttttt of walls of text\""],
+      "severity": "block",
+      "detect": { "dom": "wall-of-text", "params": { "words": 60 } }
+    },
+    {
+      "id": "native-select-desktop",
+      "rule": "No native select pickers on a desktop or tablet layout; use the brand's own menu (a native picker is fine on a phone).",
+      "why": "The OS picker ignores the brand and looks unfinished at desktop widths.",
+      "source": ["Bob, CU Anschutz v4, 2026-10-27: \"native picker\""],
+      "severity": "block",
+      "detect": { "dom": "native-select", "params": { "min_width": 768 } }
+    },
+    {
+      "id": "double-logo",
+      "rule": "One logo in the header.",
+      "why": "Two lockups side by side read as a co-brand nobody asked for.",
+      "source": ["Bob, CU Anschutz v4, 2026-10-27: \"double logos in header\""],
+      "severity": "block",
+      "detect": { "dom": "double-logo" }
+    },
+    {
+      "id": "draft-banner",
+      "rule": "No draft, preview or work-in-progress banner on the page.",
+      "why": "Draft status belongs in the note that carries the link.",
+      "source": ["Bob, CU Anschutz v6, 2026-10-27: the draft banner"],
+      "severity": "block",
+      "detect": { "dom": "draft-banner" }
+    },
+    {
+      "id": "clip-art",
+      "rule": "No clip-art: no CSS-drawn illustrations, cartoon objects, or supplied vectors used as decoration in tile grids.",
+      "why": "If an illustration wouldn't appear on the brand's own website, it doesn't go on the page.",
+      "source": ["craft.md 17", "Bob, CU Anschutz v19, 2026-10-28: \"looks like a 1990's illustration\", the animated cartoon tooth"],
+      "severity": "block",
+      "rubric": "Look for drawn or vector illustrations that decorate rather than explain: icon tiles, mascots, cartoon objects, CSS shapes. Each one is a blocking finding unless the brand's own site uses the same art the same way."
+    },
+    {
+      "id": "equal-weight-grid",
+      "rule": "No equal-weight grids of three or four identical cards. Give one item the weight, or use a list.",
+      "why": "An equal three-up says nothing is more important than anything else.",
+      "source": ["craft.md 15"],
+      "severity": "block",
+      "rubric": "A row of identical cards (same size, same parts, same emphasis) is a finding. Point to the card that should lead, or say the content wants a list."
+    },
+    {
+      "id": "campaign-art-on-web",
+      "rule": "Campaign compositions (sliced or stacked words, poster rows, bus-stop layouts) don't go on web pages.",
+      "why": "The brand guide's posters and banners are a different medium; the website example governs the site.",
+      "source": ["CU Anschutz retro, cause 2: sliced words on every service page, removed at v14"],
+      "severity": "block",
+      "rubric": "Compare each component with the guide page that governs it (the website example for the hero). A composition taken from a poster, banner or bus shelter is a blocking finding."
+    },
+    {
+      "id": "double-subheadline",
+      "rule": "One headline and at most one line under it. No second sub-headline.",
+      "why": "Two sub-headlines are an unedited draft.",
+      "source": ["Bob, CU Anschutz v15, 2026-10-27: \"What's with the double sub-headlines?\""],
+      "severity": "block",
+      "rubric": "Under any heading, two stacked lead lines or decks before the body is a finding: keep the stronger one."
+    },
+    {
+      "id": "invented-components",
+      "rule": "Add nothing the brief and spec don't call for: no carousels, explorers, pickers or interactive objects nobody asked for.",
+      "why": "Each invention adds surface for bugs and taste violations.",
+      "source": ["CU Anschutz retro, cause 6"],
+      "severity": "warn",
+      "rubric": "List every interactive component on the page and whether the brief or spec asked for it. One nobody asked for is a finding."
+    }
+  ]
+}

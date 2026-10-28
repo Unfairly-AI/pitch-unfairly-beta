@@ -62,7 +62,7 @@ export async function buildPage({ root = '.', out = 'artifacts/social/.page', pa
   });
   const mark = kit.identity?.logos?.mark ?? kit.identity?.logos?.icon ?? null;
   const brand = { name: kit.identity?.name ?? '', wordmark: kit.identity?.wordmark ?? kit.identity?.name ?? '', domain: kit.identity?.domain ?? '', mark: mark ? `brand/${mark}` : null };
-  const css = [fontCss, brandCss(kit, fontFaceCss(kit, 'brand/')), await readFile(join(here, 'social.css'), 'utf8'), existsSync(at('social/styles.css')) ? await readFile(at('social/styles.css'), 'utf8') : ''].join('\n');
+  const css = [fontCss, brandCss(kit, fontFaceCss(kit, 'brand/'), 'brand/'), await readFile(join(here, 'social.css'), 'utf8'), existsSync(at('social/styles.css')) ? await readFile(at('social/styles.css'), 'utf8') : ''].join('\n');
   await writeFile(at(join(out, 'social.css')), css);
   const data = { specs: formats, campaign, brand, fonts };
   const html = `<!doctype html>

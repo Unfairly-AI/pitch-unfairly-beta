@@ -24,6 +24,218 @@ const FALLBACK = {
   mono: 'ui-monospace, "SFMono-Regular", Menlo, monospace',
 };
 
+// The rich, optional sections (lockups, gradients, type roles, textures, graphic
+// elements, messaging) for a kit filled from a full brand guide. A kit without
+// them generates exactly what it did before they existed.
+const KEBAB = /^[a-z][a-z0-9-]{0,30}$/;
+const IMAGE_FILE = /\.(svg|png|jpe?g|webp|gif|avif)$/i;
+const LOCKUP_BACKGROUNDS = ['light', 'dark', 'any'];
+const GRADIENT_KINDS = ['linear', 'radial'];
+const TYPE_FONTS = ['display', 'body', 'mono'];
+const TYPE_STYLES = ['normal', 'italic'];
+const TYPE_CASES = ['none', 'uppercase', 'lowercase'];
+const TEXTURE_KINDS = ['background', 'accent'];
+const BLENDS = ['normal', 'multiply', 'screen', 'overlay', 'soft-light'];
+export const ELEMENT_KINDS = ['frame', 'bracket', 'bar-under', 'rule', 'stacked-word', 'sliced-word', 'knockout-word', 'other'];
+const LIMITS = { extras: 24, rules: 40, lockups: 12, gradients: 12, applications: 12, roles: 12, textures: 24, elements: 20 };
+
+/** The CSS token a palette role is written to (accent_secondary → --accent-2, border → --border-color). */
+const roleToken = (role) => `--${role.replaceAll('_', '-').replace('accent-secondary', 'accent-2').replace(/^border$/, 'border-color')}`;
+
+/**
+ * A color field's CSS value: a hex as is, a palette role as its token, a
+ * palette.extras name as var(--c-<name>). null when the ref names nothing.
+ */
+export function colorCss(ref, palette = {}) {
+  if (typeof ref !== 'string') return null;
+  if (HEX.test(ref)) return ref;
+  if (ROLES.includes(ref)) return `var(${roleToken(ref)})`;
+  if ((palette.extras ?? []).some((e) => e?.name === ref)) return `var(--c-${ref})`;
+  return null;
+}
+
+/** A plain relative path inside brand/: no absolute path, backslash, or . / .. segment. */
+const plainPath = (p) => typeof p === 'string' && p.length > 0 && !p.startsWith('/') && !/^[A-Za-z]:/.test(p) && !p.includes('\\')
+  && p.split('/').every((s) => s && s !== '.' && s !== '..');
+
+const isNum = (v, lo, hi) => typeof v === 'number' && Number.isFinite(v) && v >= lo && v <= hi;
+
+function richErrors(kit) {
+  const errors = [];
+  const palette = kit?.palette ?? {};
+  const text = (v, max, at, { required = false } = {}) => {
+    if (v == null) { if (required) errors.push(`${at} is required`); return; }
+    if (typeof v !== 'string') errors.push(`${at} must be text`);
+    else if (required && !v.trim()) errors.push(`${at} is required`);
+    else if (v.length > max) errors.push(`${at} is ${v.length} characters; the limit is ${max}`);
+  };
+  const oneOf = (v, list, at) => { if (v != null && !list.includes(v)) errors.push(`${at} must be ${list.join(', ')}`); };
+  const range = (v, lo, hi, at) => { if (v != null && !isNum(v, lo, hi)) errors.push(`${at} must be a number from ${lo} to ${hi}`); };
+  const color = (v, at) => { if (v != null && !colorCss(v, palette)) errors.push(`${at}: "${v}" is not a hex, a palette role, or a palette.extras name`); };
+  const file = (v, at, { required = true } = {}) => {
+    if (v == null) { if (required) errors.push(`${at} is required`); return; }
+    if (!plainPath(v)) errors.push(`${at}: bad path ${v} (a relative path inside brand/)`);
+    else if (!IMAGE_FILE.test(v)) errors.push(`${at}: ${v} must be an image (svg, png, jpg, webp, gif, avif)`);
+  };
+  const list = (v, max, at) => {
+    if (v == null) return [];
+    if (!Array.isArray(v)) { errors.push(`${at} must be a list`); return []; }
+    if (v.length > max) errors.push(`${at} has ${v.length} entries; the limit is ${max}`);
+    return v;
+  };
+  const named = (items, at) => {
+    const seen = new Set();
+    for (const [i, item] of items.entries()) {
+      if (!KEBAB.test(item?.name ?? '')) errors.push(`${at}[${i}].name must be kebab-case (a-z, 0-9, -), up to 31 characters`);
+      else if (seen.has(item.name)) errors.push(`${at}: the name "${item.name}" is used twice`);
+      seen.add(item?.name);
+    }
+  };
+
+  // palette.extras gain group and use; up to 24 of them.
+  const extras = list(palette.extras, LIMITS.extras, 'palette.extras');
+  for (const [i, e] of extras.entries()) {
+    if (e?.group != null && !KEBAB.test(e.group)) errors.push(`palette.extras[${i}].group must be kebab-case`);
+    text(e?.use, 200, `palette.extras[${i}].use`);
+  }
+
+  const lockups = list(kit?.identity?.lockups, LIMITS.lockups, 'identity.lockups');
+  named(lockups, 'identity.lockups');
+  for (const [i, l] of lockups.entries()) {
+    file(l?.path, `identity.lockups[${i}].path`);
+    oneOf(l?.background, LOCKUP_BACKGROUNDS, `identity.lockups[${i}].background`);
+    text(l?.use, 300, `identity.lockups[${i}].use`);
+  }
+
+  const gradients = list(palette.gradients, LIMITS.gradients, 'palette.gradients');
+  named(gradients, 'palette.gradients');
+  for (const [i, g] of gradients.entries()) {
+    const at = `palette.gradients[${i}]`;
+    oneOf(g?.kind, GRADIENT_KINDS, `${at}.kind`);
+    if (g?.angle != null && g.kind === 'radial') errors.push(`${at}.angle is for linear gradients only`);
+    range(g?.angle, 0, 360, `${at}.angle`);
+    if (!Array.isArray(g?.stops) || g.stops.length < 2 || g.stops.length > 6) errors.push(`${at}.stops needs 2 to 6 stops`);
+    for (const [j, s] of (Array.isArray(g?.stops) ? g.stops : []).entries()) {
+      if (s?.color == null) errors.push(`${at}.stops[${j}].color is required`);
+      color(s?.color, `${at}.stops[${j}].color`);
+      range(s?.at, 0, 100, `${at}.stops[${j}].at`);
+    }
+    text(g?.use, 300, `${at}.use`);
+  }
+
+  const applications = list(palette.applications, LIMITS.applications, 'palette.applications');
+  for (const [i, a] of applications.entries()) {
+    const at = `palette.applications[${i}]`;
+    text(a?.name, 60, `${at}.name`, { required: true });
+    for (const [j, c] of list(a?.colors, 8, `${at}.colors`).entries()) {
+      if (c == null) errors.push(`${at}.colors[${j}] is empty`);
+      color(c, `${at}.colors[${j}]`);
+    }
+    text(a?.notes, 400, `${at}.notes`);
+  }
+
+  const roles = kit?.typography?.roles;
+  if (roles != null) {
+    if (typeof roles !== 'object' || Array.isArray(roles)) errors.push('typography.roles must be an object keyed by role name');
+    else {
+      const keys = Object.keys(roles);
+      if (keys.length > LIMITS.roles) errors.push(`typography.roles has ${keys.length} roles; the limit is ${LIMITS.roles}`);
+      for (const key of keys) {
+        const r = roles[key] ?? {};
+        const at = `typography.roles.${key}`;
+        if (!KEBAB.test(key)) errors.push(`typography.roles: "${key}" must be a kebab-case role name`);
+        oneOf(r.font, TYPE_FONTS, `${at}.font`);
+        const font = r.font ?? 'body';
+        if (TYPE_FONTS.includes(font) && !kit?.typography?.[font]) errors.push(`${at}.font is "${font}", and the kit has no typography.${font}`);
+        range(r.weight, 1, 1000, `${at}.weight`);
+        oneOf(r.style, TYPE_STYLES, `${at}.style`);
+        range(r.tracking, -0.2, 0.5, `${at}.tracking`);
+        range(r.line_height, 0.6, 3, `${at}.line_height`);
+        oneOf(r.case, TYPE_CASES, `${at}.case`);
+        range(r.scale, 0.3, 4, `${at}.scale`);
+        text(r.use, 200, `${at}.use`);
+      }
+    }
+  }
+
+  const textures = list(kit?.textures, LIMITS.textures, 'textures');
+  named(textures, 'textures');
+  for (const [i, t] of textures.entries()) {
+    file(t?.path, `textures[${i}].path`);
+    if (t?.kind == null) errors.push(`textures[${i}].kind is required (${TEXTURE_KINDS.join(' or ')})`);
+    oneOf(t?.kind, TEXTURE_KINDS, `textures[${i}].kind`);
+    color(t?.tint, `textures[${i}].tint`);
+    oneOf(t?.blend, BLENDS, `textures[${i}].blend`);
+    text(t?.use, 300, `textures[${i}].use`);
+  }
+
+  const textureNames = new Set(textures.map((t) => t?.name));
+  const elements = list(kit?.elements, LIMITS.elements, 'elements');
+  named(elements, 'elements');
+  for (const [i, el] of elements.entries()) {
+    const at = `elements[${i}]`;
+    if (el?.kind == null) errors.push(`${at}.kind is required`);
+    oneOf(el?.kind, ELEMENT_KINDS, `${at}.kind`);
+    color(el?.color, `${at}.color`);
+    range(el?.weight, 0, 64, `${at}.weight`);
+    if (el?.texture != null && !textureNames.has(el.texture)) errors.push(`${at}.texture: "${el.texture}" is not one of the kit's textures`);
+    text(el?.use, 400, `${at}.use`);
+    file(el?.example, `${at}.example`, { required: false });
+  }
+
+  const m = kit?.messaging;
+  if (m != null) {
+    if (typeof m !== 'object' || Array.isArray(m)) errors.push('messaging must be an object');
+    else {
+      text(m.essence, 200, 'messaging.essence');
+      for (const [i, t] of list(m.taglines, 12, 'messaging.taglines').entries()) text(t, 160, `messaging.taglines[${i}]`, { required: true });
+      for (const [i, k] of list(m.key_messages, 12, 'messaging.key_messages').entries()) {
+        text(k?.area, 60, `messaging.key_messages[${i}].area`, { required: true });
+        text(k?.headline, 160, `messaging.key_messages[${i}].headline`, { required: true });
+        text(k?.body, 800, `messaging.key_messages[${i}].body`);
+      }
+      for (const [i, a] of list(m.attributes, 24, 'messaging.attributes').entries()) text(a, 60, `messaging.attributes[${i}]`, { required: true });
+    }
+  }
+
+  list(kit?.rules, LIMITS.rules, 'rules');
+  return errors;
+}
+
+/**
+ * Things worth a look that don't stop the kit: a type role asking for a weight or
+ * style its font's files don't include (the browser synthesizes it), a
+ * knockout-word with no texture to fill it.
+ */
+export function kitWarnings(kit) {
+  const warnings = [];
+  for (const [key, r] of Object.entries(kit?.typography?.roles ?? {})) {
+    const t = kit?.typography?.[r?.font ?? 'body'];
+    if (t?.source !== 'files' || !Array.isArray(t.files)) continue;
+    const weight = r.weight ?? t.weight ?? 400;
+    const style = r.style ?? 'normal';
+    if (!t.files.some((f) => (f.weight ?? 400) === weight && (f.style ?? 'normal') === style)) {
+      warnings.push(`typography.roles.${key} asks for ${t.family} ${weight} ${style}, which brand/fonts doesn't include; the browser will synthesize it`);
+    }
+  }
+  for (const el of kit?.elements ?? []) {
+    if (el?.kind === 'knockout-word' && !el.texture) warnings.push(`elements "${el.name}" is a knockout-word with no texture; it gets no CSS class until it names one`);
+  }
+  return warnings;
+}
+
+/** Every file under brand/ the kit names, for existence checks: [{ what, path }]. */
+export function kitFilePaths(kit) {
+  const out = [];
+  for (const role of ['display', 'body', 'mono']) for (const f of kit?.typography?.[role]?.files ?? []) out.push({ what: 'font file', path: f.path });
+  for (const [key, path] of Object.entries(kit?.identity?.logos ?? {})) if (path) out.push({ what: `logo ${key}`, path });
+  for (const img of kit?.imagery ?? []) out.push({ what: 'image', path: img.path });
+  for (const l of kit?.identity?.lockups ?? []) out.push({ what: `lockup ${l.name}`, path: l.path });
+  for (const t of kit?.textures ?? []) out.push({ what: `texture ${t.name}`, path: t.path });
+  for (const el of kit?.elements ?? []) if (el.example) out.push({ what: `element example ${el.name}`, path: el.example });
+  return out;
+}
+
 /** Returns a list of problems; empty means the kit is usable. */
 export function validateKit(kit) {
   const errors = [];
@@ -33,9 +245,10 @@ export function validateKit(kit) {
   for (const role of ROLES) {
     if (palette[role] != null && !HEX.test(palette[role])) errors.push(`palette.${role} must be a hex color, got ${palette[role]}`);
   }
-  for (const [i, extra] of (palette.extras ?? []).entries()) {
+  for (const [i, extra] of (Array.isArray(palette.extras) ? palette.extras : []).entries()) {
     if (!/^[a-z][a-z0-9-]*$/.test(extra?.name ?? '') || !HEX.test(extra?.hex ?? '')) errors.push(`palette.extras[${i}] needs a kebab-case name and a hex`);
   }
+  errors.push(...richErrors(kit));
   for (const role of ['display', 'body', 'mono']) {
     const t = kit?.typography?.[role];
     if (!t) { if (role !== 'mono') errors.push(`typography.${role} is required`); continue; }
@@ -93,8 +306,12 @@ export function resolvePalette(p) {
   };
 }
 
-/** brand.css: the tokens every slide reads. */
-export function brandCss(kit, fontFaces = '') {
+/**
+ * brand.css: the tokens every slide reads. relPrefix is how the stylesheet
+ * reaches brand/ (texture files): '../../brand/' from src/brand/brand.css, 'brand/'
+ * for a page that inlines the CSS next to a copied brand/ folder.
+ */
+export function brandCss(kit, fontFaces = '', relPrefix = '../../brand/') {
   const p = resolvePalette(kit.palette);
   const t = kit.typography;
   const s = kit.style ?? {};
@@ -115,7 +332,7 @@ export function brandCss(kit, fontFaces = '') {
     '/* Generated by `npm run brand:apply` from brand/brand.json. Edit the kit, not this file. */',
     fontFaces.trim(),
     ':root {',
-    ...ROLES.map((r) => `  --${r.replaceAll('_', '-').replace('accent-secondary', 'accent-2').replace(/^border$/, 'border-color')}: ${p[r]};`),
+    ...ROLES.map((r) => `  ${roleToken(r)}: ${p[r]};`),
     ...(kit.palette.extras ?? []).map((e) => `  --c-${e.name}: ${e.hex};`),
     ...(kit.palette.data ?? []).map((hex, i) => `  --data-${i + 1}: ${hex};`),
     '',
@@ -160,7 +377,81 @@ export function brandCss(kit, fontFaces = '') {
   if (texture) {
     lines.push('', '.slide::before {', "  content: '';", '  position: absolute;', '  inset: 0;', '  pointer-events: none;', `  background: ${texture};`, `  opacity: ${s.texture === 'grain' ? 0.08 : 1};`, '}');
   }
+  lines.push(...richCss(kit, relPrefix));
   return `${lines.filter((l, i) => l !== '' || lines[i - 1] !== '').join('\n')}\n`;
+}
+
+/** The CSS class an element gets, or null for kinds described only in words and an example. */
+export function elementClass(el) {
+  if (['frame', 'bracket', 'bar-under', 'rule'].includes(el?.kind)) return `el-${el.name}`;
+  if (el?.kind === 'knockout-word' && el.texture) return `el-${el.name}`;
+  return null;
+}
+
+/** Gradients, type roles, textures, and graphic elements; nothing at all for a kit without them. */
+function richCss(kit, relPrefix) {
+  const palette = kit.palette ?? {};
+  const c = (ref, fallback) => (ref != null ? colorCss(ref, palette) : null) ?? fallback;
+  const vars = [];
+  const rules = [];
+
+  for (const g of palette.gradients ?? []) {
+    const stops = g.stops.map((st) => `${c(st.color)}${st.at != null ? ` ${st.at}%` : ''}`).join(', ');
+    vars.push((g.kind ?? 'linear') === 'radial'
+      ? `  --g-${g.name}: radial-gradient(circle, ${stops});`
+      : `  --g-${g.name}: linear-gradient(${g.angle != null ? `${g.angle}deg, ` : ''}${stops});`);
+  }
+
+  for (const [role, r] of Object.entries(kit.typography?.roles ?? {})) {
+    const v = `--type-${role}`;
+    const props = [`  font-family: var(${v}-font);`];
+    vars.push(`  ${v}-font: var(--font-${r.font ?? 'body'});`);
+    const set = (key, value, prop, css = `var(${v}-${key})`) => {
+      if (value == null) return;
+      vars.push(`  ${v}-${key}: ${value};`);
+      props.push(`  ${prop}: ${css};`);
+    };
+    set('weight', r.weight, 'font-weight');
+    set('style', r.style, 'font-style');
+    set('tracking', r.tracking != null ? `${r.tracking}em` : null, 'letter-spacing');
+    set('line', r.line_height, 'line-height');
+    set('case', r.case, 'text-transform');
+    set('scale', r.scale, 'font-size', `calc(1em * var(${v}-scale))`);
+    rules.push('', `.type-${role} {`, ...props, '}');
+  }
+
+  for (const t of kit.textures ?? []) vars.push(`  --tex-${t.name}: url("${relPrefix}${t.path}");`);
+
+  for (const el of kit.elements ?? []) {
+    const cls = elementClass(el);
+    if (!cls) continue;
+    const sel = `.${cls}`;
+    if (el.kind === 'frame') {
+      rules.push('', `${sel} {`, `  border: ${el.weight ?? 12}px solid ${c(el.color, 'var(--accent)')};`, '}');
+    } else if (el.kind === 'bracket') {
+      const w = `${el.weight ?? 2}px`;
+      rules.push('', `${sel} {`, '  position: relative;', '  padding-inline: 0.9em;', '}',
+        '', `${sel}::before, ${sel}::after {`, "  content: '';", '  position: absolute;', '  top: 0;', '  bottom: 0;', '  width: 0.6em;',
+        `  border: 0 solid ${c(el.color, 'var(--accent)')};`, '  pointer-events: none;', '}',
+        '', `${sel}::before {`, '  left: 0;', `  border-left-width: ${w};`, `  border-top-width: ${w};`, `  border-bottom-width: ${w};`, '}',
+        '', `${sel}::after {`, '  right: 0;', `  border-right-width: ${w};`, `  border-top-width: ${w};`, `  border-bottom-width: ${w};`, '}');
+    } else if (el.kind === 'bar-under') {
+      // weight, when set, is the bar's height as a percent of the line.
+      const top = el.weight != null ? 100 - el.weight : 58;
+      rules.push('', `${sel} {`, `  background: linear-gradient(transparent ${top}%, ${c(el.color, 'var(--highlight)')} ${top}%) no-repeat;`,
+        '  box-decoration-break: clone;', '  -webkit-box-decoration-break: clone;', '  padding-inline: 0.08em;', '}');
+    } else if (el.kind === 'rule') {
+      rules.push('', `${sel} {`, '  border: 0;', `  border-top: ${el.weight ?? 2}px solid ${c(el.color, 'var(--border-color)')};`, '}');
+    } else if (el.kind === 'knockout-word') {
+      rules.push('', `${sel} {`, `  color: ${c(el.color, 'var(--ink)')};`, '}',
+        '', '@supports (-webkit-background-clip: text) or (background-clip: text) {', `  ${sel} {`,
+        `    background: var(--tex-${el.texture}) center / cover;`, '    -webkit-background-clip: text;', '    background-clip: text;', '    color: transparent;',
+        // Fills the letters even on .display, whose color the deck sets after the brand CSS.
+        '    -webkit-text-fill-color: transparent;', '  }', '}');
+    }
+  }
+
+  return [...(vars.length ? ['', ':root {', ...vars, '}'] : []), ...rules];
 }
 
 /** @font-face rules for fonts shipped as files in brand/fonts/. */
@@ -201,6 +492,27 @@ export function assetModule(kit, relPrefix) {
     imports.push(`import ${id} from '${relPrefix}${img.path}?url';`);
     return `  { url: ${id}, role: ${JSON.stringify(img.role ?? 'other')}, alt: ${JSON.stringify(img.alt ?? '')}, notes: ${JSON.stringify(img.notes ?? '')} },`;
   });
+  const j = JSON.stringify;
+  const lockups = (kit.identity?.lockups ?? []).map((l, i) => {
+    imports.push(`import lockup_${i} from '${relPrefix}${l.path}?url';`);
+    return `  { name: ${j(l.name)}, url: lockup_${i}, background: ${j(l.background ?? 'any')}, use: ${j(l.use ?? '')} },`;
+  });
+  const textures = (kit.textures ?? []).map((t, i) => {
+    imports.push(`import tex_${i} from '${relPrefix}${t.path}?url';`);
+    const tint = t.tint != null ? colorCss(t.tint, kit.palette) : null;
+    return `  { name: ${j(t.name)}, url: tex_${i}, kind: ${j(t.kind)}, tint: ${j(tint)}, blend: ${j(t.blend ?? 'normal')}, use: ${j(t.use ?? '')} },`;
+  });
+  const elements = (kit.elements ?? []).map((el, i) => {
+    if (el.example) imports.push(`import el_${i} from '${relPrefix}${el.example}?url';`);
+    return `  { name: ${j(el.name)}, kind: ${j(el.kind)}, className: ${j(elementClass(el))}, use: ${j(el.use ?? '')}, example: ${el.example ? `el_${i}` : 'null'} },`;
+  });
+  const m = kit.messaging ?? {};
+  const messaging = {
+    essence: m.essence ?? '',
+    taglines: m.taglines ?? [],
+    key_messages: (m.key_messages ?? []).map((k) => ({ area: k.area, headline: k.headline, body: k.body ?? '' })),
+    attributes: m.attributes ?? [],
+  };
   return [
     '// Generated by `npm run brand:apply`. Edit brand/brand.json instead.',
     ...imports,
@@ -211,6 +523,19 @@ export function assetModule(kit, relPrefix) {
     'export const imagery: { url: string; role: string; alt: string; notes: string }[] = [',
     ...imagery,
     '];',
+    // The rich sections, empty for a kit filled from a website.
+    'export const lockups: { name: string; url: string; background: string; use: string }[] = [',
+    ...lockups,
+    '];',
+    'export const textures: { name: string; url: string; kind: string; tint: string | null; blend: string; use: string }[] = [',
+    ...textures,
+    '];',
+    'export const elements: { name: string; kind: string; className: string | null; use: string; example: string | null }[] = [',
+    ...elements,
+    '];',
+    `export const typeRoles: string[] = ${j(Object.keys(kit.typography?.roles ?? {}))};`,
+    `export const gradients: string[] = ${j((kit.palette?.gradients ?? []).map((g) => g.name))};`,
+    `export const messaging: { essence: string; taglines: string[]; key_messages: { area: string; headline: string; body: string }[]; attributes: string[] } = ${j(messaging)};`,
     '',
   ].join('\n');
 }

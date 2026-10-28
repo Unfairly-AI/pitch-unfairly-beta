@@ -131,7 +131,7 @@ function pageLib(color) {
 }
 
 /** Run fn(helpers, arg) in the page, with the color and page helpers in scope. */
-function inPage(page, fn, arg) {
+export function inPage(page, fn, arg) {
   return page.evaluate(`(() => { const color = (${colorLib})(); const H = { color, ...(${pageLib})(color) }; return (${fn})(H, ${JSON.stringify(arg ?? null)}); })()`);
 }
 
@@ -239,7 +239,8 @@ function brandAllowlist(kit) {
     }
   }
   const p = kit?.palette ?? {};
-  const hexes = [...Object.values(p).filter((v) => typeof v === 'string'), ...(p.extras ?? []).map((e) => e.hex), ...(p.data ?? [])];
+  // A gradient's hex stops are the brand's colors too (named stops resolve to colors already listed).
+  const hexes = [...Object.values(p).filter((v) => typeof v === 'string'), ...(p.extras ?? []).map((e) => e.hex), ...(p.data ?? []), ...(p.gradients ?? []).flatMap((g) => (g?.stops ?? []).map((s) => s?.color)).filter((c) => typeof c === 'string' && c.startsWith('#'))];
   for (const hex of hexes) {
     const c = COLOR.parse(hex);
     if (c) colors.push(c);

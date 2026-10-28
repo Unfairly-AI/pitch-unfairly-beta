@@ -12,7 +12,7 @@ These hold for every site and every proposal kit, from the first message to the 
 2. **"Done" and "clean" quote the gate.** Never call a build done, clean, fixed or ready unless you can point to the gate's output for that exact build: the audit, the critic's findings and the server review, all on the same fingerprint. Quote the line ("All modes clean", "0 blocking findings"). A reviewer still running means not done. A restyle is not a fix.
 3. **Add nothing the brief and the spec don't call for.** No carousel, explorer, picker, tile grid, chip row, hover lift or illustration that nobody asked for. If you think the page needs a new component, write it on the spec sheet as a proposal (what job it does, which guide page or brief line it serves) and build it only once it's accepted.
 4. **Rebuild a component on its third fix.** When the same component needs fixing a third time, delete its rules and write it again under fresh class names from the spec. Never stack another override on top. A stylesheet whose sections are named for review rounds is a stylesheet nobody can trust.
-5. **A correction becomes a rule in the same turn.** When the founder or client corrects something ("no eyebrows", "no outlined secondary buttons"), add it to the banned list in that same turn, with a detector where one is possible (a selector, a computed-style test, a word pattern), and rerun the check. Project-specific entries go in `brand/brand.json` `rules`; ones that apply to every client go in the engine's banned-patterns file, through the engine. A memory note or a promise to remember is not enough.
+5. **A correction becomes a rule in the same turn.** When the founder or client corrects something ("no eyebrows", "no outlined secondary buttons"), add it to the banned list in that same turn, with a detector where one is possible (a selector, a computed-style test, a word pattern), and rerun the check. Project-specific entries go in `brand/brand.json` `rules`; ones that apply to every client go in the engine's banned-patterns file (`bin/site/banned.json`), through the engine. The `banned` guide says how to write the entry and its detector. A memory note or a promise to remember is not enough.
 
 ## Understand the company before writing
 
@@ -38,9 +38,9 @@ When the engine has `site:intake`, run `npm run site:intake -- <guide.pdf> <draf
 ### Inputs
 
 - **The brand guide**, as the PDF the client sent, with its date. Rasterize every page at 2000 px wide into `brand/references/guide/p-NN.png` (`pdftoppm -png -scale-to-x 2000 -scale-to-y -1`), extract its text with `pdftotext -layout`, and list its links with `pdfinfo -url`. The download links for logos and assets are link annotations, so they never show up in the text.
-- **The content drafts**, one file per page or service, in whatever form the client sent. The engine's copy lock (`npm run site:copy-lock`) extracts them to JSON the build reads and holds every later build to them, both ways: no source sentence dropped, nothing added that isn't in a draft. Typos in the drafts are kept and listed for the client, never fixed in silence.
+- **The content drafts**, one file per page or service, in whatever form the client sent. Extract them, word for word, to the JSON or HTML the build reads, and map each draft to its copy in `site/copy-lock.json`. The engine's copy lock (`npm run site:copy-lock`) then holds every build to the drafts, both ways: no source sentence dropped or moved, nothing added that isn't in a draft. Typos in the drafts are kept and listed for the client in `artifacts/copy-lock/to-confirm.md`, never fixed in silence; a page that quietly corrects one fails as a change. A `{{?…}}` placeholder fails a production build (`-- --draft` lists it instead). Extraction itself is still by hand until `site:intake` exists.
 - **The sitemap**, if there is one. It fixes the page list. Don't add pages it doesn't have.
-- **The house banned list**, which is the engine's banned-patterns file plus every correction already recorded for this client in `brand/brand.json` `rules`.
+- **The house banned list**, which is the engine's banned-patterns file (`bin/site/banned.json`, listed in the `banned` guide) plus every correction already recorded for this client in `brand/brand.json` `rules`.
 
 ### Output 1: `brand/brand.json`
 
@@ -161,7 +161,9 @@ Commands, from the project folder:
 - `npm run site:check` checks the source in a second. Run it often. `-- --latest` checks it as if pinned to the current engine.
 - `npm run site:upgrade` lists what the current engine's rules would newly block on an older pin; `-- --write` re-pins `site.json` to it.
 - `npm run site:build` builds `dist-site/`, a static folder that works on any host. Beside `index.html` it writes `index.txt`, the page as plain text for AI agents, from the same filled sections. Once published, the host serves it at `<link>/index.txt` behind the link's own gates and points agents at it from the page; decorative text that would only add noise (a marquee repeating a heading) can be marked `data-text="skip"`.
-- `npm run site:audit` checks, builds, opens the page at 390, 1280, and 1920 wide, screenshots every section into `artifacts/site/`, works every control, checks tap targets on the phone, and writes the PDF (`dist-site/deck.pdf`). Publishing needs a clean audit newer than every edit. `-- --latest` audits as if pinned to the current engine.
+- `npm run site:audit` checks, builds, opens the page at 390, 1280, and 1920 wide, screenshots every section into `artifacts/site/`, works every control, checks tap targets on the phone, runs the QA gate (below), and writes the PDF (`dist-site/deck.pdf`). Publishing needs a clean audit newer than every edit. `-- --latest` audits as if pinned to the current engine.
+- `npm run site:gate -- <dir>` runs the QA gate on any built folder, a multi-page site included, and stamps the result.
+- `npm run site:copy-lock` holds the copy to the client's drafts (see Intake).
 - `npm run -s site:manifest` prints the arguments for `deck_upload_start`.
 
 ## Numbers come from the model
@@ -365,6 +367,23 @@ A sample built to show a prospect what their own proposal could look like declar
   - Money prints as whole dollars (`money`) or cents (`money_exact` always prints two digits), never "$158.4".
 - **Conviction.** More than four hedges ("illustrative", "not a forecast", "actual results vary") on a page earns a warning: keep one qualifier beside each figure and say the rest plainly. In the plan, a headline that invites ("Explore…", "Discover…") instead of claiming fails.
 
+## The QA gate
+
+The gate looks at every page the way a reader can reach it, so the founder never has to. It crawls the site from `/` through its internal links, and opens every page at 320, 360, 390, 768, 1024, 1280, 1440 and 1920 wide. On each it scrolls the whole page so lazy images and reveals arrive, then opens every state in turn: every `<details>`, each menu, picker or disclosure (`aria-expanded`), each tab, each pressed-state choice, and each form submitted empty. In every state it checks:
+
+- the page doesn't scroll sideways, and nothing runs off the screen
+- no text is cut off by its box, an ellipsis or a line clamp, and no text lies over other text
+- no grid leaves an empty cell (a three-up of seven leaves two)
+- no column is so narrow it sets about one word per line
+- below 768 wide, every tap target is at least 44px each way (a link inside running text is exempt)
+- every image loads and the page throws no script errors
+
+At the top of each page the primary action (`data-primary`, a filled `data-cta`, or the first filled button) must be on the first screen; a form page passes when its first field is. Mark a page `data-no-primary` if it truly has none. Each page is also checked for the same photo twice (size variants and formats count as one), and run against the banned list (the `banned` guide) at 1280 and 390 with motion on. The crawl fails any internal link that 404s and any `#fragment` the target page doesn't have.
+
+It writes `artifacts/gate/report.txt`, `gate.json` (the stamp, with every finding), the first screen of every page at every width in `shots/`, and `contact-sheet.png`: a row per page and a column per width, outlined red where something was found. Look at the contact sheet before you call the build clean.
+
+For a one-page engine site, `site:audit` runs the gate on `dist-site` (it blocks from `sites@1.15`, and warns on an older pin) and records it in the audit stamp; `site:manifest` sends that record to the host as `audit` (the gate, whether it was clean, and `dist_digest`, a sha256 over the manifest's own file list, so the host can check it against the files it receives). For a multi-page site built around the engine, build the folder, then `npm run site:gate -- <dir> --brand brand/brand.json` until it says "Gate clean". `node bin/upload.mjs` refuses any folder of pages without a clean stamp for exactly those files (`--gate <stamp>` names one elsewhere). `--widths` or `--pages` give a quick partial look and never stamp clean.
+
 ## What the audit checks beyond the screenshots
 
 From engine 1.8, `site:audit` also:
@@ -421,7 +440,7 @@ Every published version keeps its project files. To make a new site from one tha
 
 ## The critic, before publish
 
-A site built from a client's brand guide gets one design critic before it publishes, never a chain of critics after. It runs on a build that has passed the engine's QA gate (`site:audit` with the banned-patterns checks), and it is the last look before the server's design review. Nothing reaches the client's link, or the founder's, until it has no blocking findings.
+A site built from a client's brand guide gets one design critic before it publishes, never a chain of critics after. It runs on a build that has passed the engine's QA gate (`site:audit` for a one-page engine site, `site:gate` for a multi-page site; both run the banned list), and it is the last look before the server's design review. Nothing reaches the client's link, or the founder's, until it has no blocking findings.
 
 **What the critic is given.** The locked spec sheet (`brand/spec.md`), the banned list (the engine's entries and the kit's `rules`), the page-role map (`brand/roles.json`), and side-by-side screenshots: each component of the build, at 1440 and 390, next to the guide page that governs it according to the map (on CU, the hero beside page 33, frames and grounds beside pages 25 and 26). It is not given campaign or print pages to grade a web page against. A critic shown every page of the guide rewards posters on a website.
 
@@ -444,7 +463,7 @@ Everything else is noted for the hand-over, not looped on.
 ## Publish
 
 1. `npm run site:audit` until it says "All modes clean", then look at every screenshot in `artifacts/site/` (phone, laptop, wide) as you would a deck's. For a site built from a client's brand guide, run the critic on this same build (above) until it has no blocking findings.
-2. `npm run -s review-files -- --site` (after a clean audit of the current source) records the exact source state the review covers (fingerprint, story, engine, every laptop and phone section) and prepares the laptop and phone sections plus brand evidence for the existing `deck_review_start` / `deck_review` tools. Upload its file list through that protocol and save the returned review JSON as `artifacts/review.json`. Review at most 16 sections per call. Fix blockers in one batch, rerun the audit and confirm once. Sites pinned to `sites@1.7` or newer require a current site-format review covering every section; the upload command refuses a missing, stale or blocked review. If more than 16 sections are necessary, do not omit any from the review: keep the draft unpublished until complete review coverage is available.
+2. `npm run -s review-files -- --site --deck <slug>` (after a clean audit of the current source, with the slug you'll publish to) records the exact source state the review covers (fingerprint, story, engine, every laptop and phone section) and prepares the laptop and phone sections plus brand evidence for the existing `deck_review_start` / `deck_review` tools. Upload its file list through that protocol. On the review's first `deck_review` call, also pass `deck` and `files` from `artifacts/review-binding.json`: the host binds the review to that page and that exact build, publishes the page to its client link only from it, and only once. Save the returned review JSON as `artifacts/review.json`. Review at most 16 sections per call. Fix blockers in one batch, rerun the audit and confirm once. Sites pinned to `sites@1.7` or newer require a current site-format review covering every section; the upload command refuses a missing, stale or blocked review. If more than 16 sections are necessary, do not omit any from the review: keep the draft unpublished until complete review coverage is available.
 3. `npm run -s source:pack`.
-4. `npm run -s site:manifest > artifacts/site-start.json`. Pass it to `deck_upload_start` with the workspace, the source size, and a password if the content is confidential. Save the reply as `artifacts/uploads.json`.
-5. `node bin/upload.mjs artifacts/uploads.json dist-site`, then `deck_publish`. Named links (`deck_link`) and the password (`deck_password`) work as for decks.
+4. `npm run -s site:manifest > artifacts/site-start.json` (it carries the bound `deck` and the gate's `audit`). Pass it to `deck_upload_start` with the workspace, the source size, and a password if the content is confidential. Save the reply as `artifacts/uploads.json`.
+5. `node bin/upload.mjs artifacts/uploads.json dist-site`, then `deck_publish`. Upload refuses a build its review wasn't bound to. To put an unreviewed build on the page's private preview instead, pass `draft: true` to `deck_upload_start`; the client link doesn't move. Named links (`deck_link`) and the password (`deck_password`) work as for decks.

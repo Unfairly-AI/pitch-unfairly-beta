@@ -255,7 +255,7 @@ html { scroll-padding-top: calc(var(--tb-top-h) + 12px); }
 .tb-slider { display: grid; gap: 6px; font-size: 15px; color: var(--ink); }
 .tb-slider-top { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
 .tb-slider output { font: var(--display-weight) 19px/1 var(--font-display); font-variant-numeric: tabular-nums; }
-.tb-slider input[type='range'] { width: 100%; height: 32px; accent-color: var(--accent); margin: 0; }
+.tb-slider input[type='range'] { width: 100%; height: 44px; accent-color: var(--accent); margin: 0; }
 .tb-calc-summary { grid-column: 1 / -1; margin: 0 0 12px; font: 500 15px/1.5 var(--font-body); color: var(--ink-muted); }
 .tb-calc-out { display: grid; gap: 28px; min-width: 0; }
 .tb-answer { padding-bottom: 24px; border-bottom: 1px solid var(--ink); }
@@ -608,6 +608,8 @@ html { scroll-padding-top: calc(var(--tb-top-h) + 12px); }
   .tb-stat:nth-child(3) { padding-left: 0; border-left: 0; }
   .tb-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .tb-tiers, .tb-team { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* An odd item left alone in two columns takes the whole row, so no cell is empty. */
+  :is(.tb-cards, .tb-tiers, .tb-team, .tb-glance-nums, .tb-stats) > :last-child:nth-child(odd) { grid-column: 1 / -1; }
   .tb-faq-intro { position: static; }
   .tb-timeline { --n-col: 1; }
 }
@@ -723,6 +725,10 @@ html { scroll-padding-top: calc(var(--tb-top-h) + 12px); }
   .tb-viewer-when { grid-column: 2; grid-row: auto; text-align: left; }
   .tb-viewer-read { display: none; }
   .tb-top .tb-btn { display: none; }
+}
+/* A small phone (320, 360) keeps the primary action on the first screen: the art follows the copy. */
+@media (max-width: 380px) {
+  .tb-hero-art { order: 0; max-width: 180px; margin: 20px 0 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {

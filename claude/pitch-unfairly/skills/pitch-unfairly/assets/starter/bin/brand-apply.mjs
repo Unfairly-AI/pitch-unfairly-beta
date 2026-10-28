@@ -1,26 +1,22 @@
 // Turn brand/brand.json into the files the deck reads:
 //   src/brand/brand.css  tokens (colors, type, physical style, motion)
 //   src/brand/fonts.ts   Fontsource imports
-//   src/brand/assets.ts  logo and imagery URLs
+//   src/brand/assets.ts  logo, imagery, lockup, texture, and element URLs
 // Installs any Fontsource package the kit names. Run after every kit change.
 import { execFileSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { assetModule, brandCss, fontFaceCss, fontImports, validateKit } from './brand-lib.mjs';
+import { assetModule, brandCss, fontFaceCss, fontImports, kitFilePaths, kitWarnings, validateKit } from './brand-lib.mjs';
 
 const kitPath = process.argv[2] ?? 'brand/brand.json';
 const kit = JSON.parse(await readFile(kitPath, 'utf8'));
 const errors = validateKit(kit);
-for (const role of ['display', 'body', 'mono']) {
-  for (const f of kit.typography?.[role]?.files ?? []) {
-    if (!existsSync(join('brand', f.path))) errors.push(`missing font file brand/${f.path}`);
-  }
+// Fonts, logos, imagery, lockups, textures, and element examples must all be in brand/.
+for (const { what, path } of kitFilePaths(kit)) {
+  if (typeof path === 'string' && path && !existsSync(join('brand', path))) errors.push(`missing ${what}: brand/${path}`);
 }
-for (const [key, path] of Object.entries(kit.identity?.logos ?? {})) {
-  if (path && !existsSync(join('brand', path))) errors.push(`missing logo ${key}: brand/${path}`);
-}
-for (const img of kit.imagery ?? []) if (!existsSync(join('brand', img.path))) errors.push(`missing image brand/${img.path}`);
+for (const w of kitWarnings(kit)) console.warn(`  ! ${w}`);
 if (errors.length) {
   console.error(`brand/brand.json has ${errors.length} problem(s):`);
   errors.forEach((e) => console.error(`  ✗ ${e}`));
@@ -55,7 +51,7 @@ for (const pkg of missing) {
 }
 
 await mkdir('src/brand', { recursive: true });
-await writeFile('src/brand/brand.css', brandCss(kit, fontFaceCss(kit, '../../brand/')));
+await writeFile('src/brand/brand.css', brandCss(kit, fontFaceCss(kit, '../../brand/'), '../../brand/'));
 await writeFile('src/brand/fonts.ts', fontImports(kit));
 await writeFile('src/brand/assets.ts', assetModule(kit, '../../brand/'));
 console.log(`Applied ${kit.identity?.name ?? 'brand'}: src/brand/brand.css, fonts.ts, assets.ts`);

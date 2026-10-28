@@ -1,4 +1,5 @@
-// Print the files a design review needs, for deck_review_start:
+// Print the files a design review needs, for deck_review_start (a site: -- --site --deck <slug>,
+// which also writes artifacts/review-binding.json, the deck and files deck_review binds to):
 // [{ path, size }] for artifacts/stage/*.png, each slide's phone screenshot
 // (artifacts/mobile/*.png, same names), and both contact sheets.
 import { copyFile, mkdir, readdir, rm, stat, writeFile } from 'node:fs/promises';
@@ -36,6 +37,16 @@ if (site) {
   }
 }
 await mkdir('artifacts', { recursive: true });
+// For a site: the binding the host records on the review's first deck_review call (deck and files).
+if (site) {
+  const { REVIEW_BINDING, reviewBinding } = await import('./design-review.mjs');
+  const at = process.argv.indexOf('--deck');
+  const binding = await reviewBinding('dist-site', at >= 0 ? process.argv[at + 1] : null);
+  await writeFile(REVIEW_BINDING, JSON.stringify(binding, null, 2));
+  console.error(binding.deck
+    ? `Pass deck "${binding.deck}" and the files in ${REVIEW_BINDING} on this review's first deck_review call; publish with the same deck slug.`
+    : `Pass --deck <the page's slug> so the review can be bound to this build (${REVIEW_BINDING} has the files but no deck).`);
+}
 // For a site: the fingerprint, story hash, engine, time and section list this review covers (design-review.mjs).
 await writeFile('artifacts/review-context.json', JSON.stringify(context));
 files.push({ path: 'review-context.json', size: (await stat('artifacts/review-context.json')).size });

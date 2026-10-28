@@ -144,3 +144,30 @@ export async function designReviewBlocker({ site = false } = {}) {
   }
   return null;
 }
+
+// ---------- Binding a page's review to its build ----------
+// The deck host binds a site's review to one build of one page on its first deck_review call:
+// deck (the slug you'll pass to deck_upload_start) and files (the build's file list, exactly as
+// deck_upload_start takes it). It then publishes that page to its client link only from that
+// exact build, once. review-files -- --site writes the pair to artifacts/review-binding.json;
+// pass both to deck_review. A draft (deck_upload_start with draft: true) needs no binding.
+export const REVIEW_BINDING = 'artifacts/review-binding.json';
+
+/** { deck, files } for deck_review, from a built folder. */
+export async function reviewBinding(dir, deck) {
+  const { distFiles } = await import('./site/gate.mjs');
+  const slug = String(deck ?? '').trim().toLowerCase();
+  // No build yet (an audit that wrote no dist-site): no files to bind; reviewBindingProblem refuses the publish.
+  return { deck: slug || null, files: await distFiles(dir).catch(() => []) };
+}
+
+/** Why this build can't publish on its bound review, or null. draft: the upload goes to the preview. */
+export async function reviewBindingProblem(dir, { draft = false } = {}) {
+  if (draft) return null;
+  const binding = JSON.parse(await readFile(REVIEW_BINDING, 'utf8').catch(() => 'null'));
+  if (!binding?.files?.length) return `there is no review binding (${REVIEW_BINDING}). Run npm run -s review-files -- --site --deck <slug>, and pass its deck and files on the review's first deck_review call`;
+  if (!binding.deck) return `${REVIEW_BINDING} names no deck. Run review-files again with --deck <the page's slug>`;
+  const { digestFromFiles, distFiles } = await import('./site/gate.mjs');
+  if (digestFromFiles(binding.files) !== digestFromFiles(await distFiles(dir))) return `the review was bound to another build of ${dir}. Run the audit and review-files again, then a new deck_review with the new deck and files`;
+  return null;
+}

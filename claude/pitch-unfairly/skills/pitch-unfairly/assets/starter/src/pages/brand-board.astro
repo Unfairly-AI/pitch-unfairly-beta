@@ -1,11 +1,15 @@
 ---
 // The brand board: one 1920x1080 page that shows the kit at a glance, for the
 // user to confirm before any deck is composed. Not part of the published deck.
+// A kit filled from a full brand guide (lockups, color tiers, gradients, type
+// roles, textures, graphic elements, messaging) gets a second sheet for those;
+// a kit without them shows the first sheet only.
 import '../brand/fonts';
 import '../brand/brand.css';
 import '../styles/deck.css';
 import kit from '../../brand/brand.json';
-import { brandName, imagery, logos } from '../brand/assets';
+import { brandName, elements, gradients, imagery, lockups, logos, messaging, textures, typeRoles } from '../brand/assets';
+import { colorCss } from '../../bin/brand-lib.mjs';
 
 const roles = [
   ['paper', '--paper'], ['surface', '--surface'], ['ink', '--ink'], ['ink_muted', '--ink-muted'],
@@ -15,6 +19,24 @@ const roles = [
 const palette = kit.palette as Record<string, unknown>;
 const type = kit.typography as Record<string, { family: string; license?: string; stand_in_for?: string | null; weight?: number }>;
 const style = kit.style as Record<string, unknown>;
+type Extra = { name: string; hex: string; group?: string; use?: string };
+type Application = { name: string; colors?: string[]; notes?: string };
+type Role = { font?: string; use?: string };
+const extras = (palette.extras ?? []) as Extra[];
+const extraGroups = [...new Set(extras.filter((e) => e.group || e.use).map((e) => e.group ?? 'other'))];
+const tiered = extraGroups.length > 0;
+const applications = (palette.applications ?? []) as Application[];
+const roleSpecs = ((kit.typography as Record<string, unknown>).roles ?? {}) as Record<string, Role>;
+const gradientSpecs = (palette.gradients ?? []) as { name: string; use?: string }[];
+const paint = (ref: string) => colorCss(ref, palette) ?? 'transparent';
+const hasMessaging = Boolean(messaging.essence || messaging.taglines.length || messaging.key_messages.length || messaging.attributes.length);
+const rich = lockups.length > 0 || tiered || gradients.length > 0 || applications.length > 0 || typeRoles.length > 0 || textures.length > 0 || elements.length > 0 || hasMessaging;
+const sample = (kind: string) => ({
+  frame: 'A framed block',
+  bracket: 'A sentence held between the brackets.',
+  'bar-under': 'Underlined',
+  'knockout-word': 'Grain',
+}[kind] ?? 'Sample');
 const typeNote = (role: string) => {
   const t = type[role];
   if (!t) return '';
@@ -78,6 +100,138 @@ const typeNote = (role: string) => {
       </section>
     </main>
 
+    {rich && (
+      <main class="slide board more">
+        <header>
+          <p class="eyebrow">Brand board · from the guide</p>
+          <p class="fine">Each section shows only what the kit defines.</p>
+        </header>
+
+        {lockups.length > 0 && (
+          <section class="lockups">
+            <h2 class="eyebrow">Logo lockups</h2>
+            <div class="row">
+              {lockups.map((l) => (
+                <figure class:list={['lockup', l.background]}>
+                  <img src={l.url} alt={`${brandName} ${l.name}`} />
+                  <figcaption><b>{l.name}</b><span>{l.use || `on ${l.background}`}</span></figcaption>
+                </figure>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {tiered && (
+          <section class="tiers">
+            <h2 class="eyebrow">Color tiers</h2>
+            {extraGroups.map((group) => (
+              <div class="tier">
+                <p class="fine">{group}</p>
+                <div class="row">
+                  {extras.filter((e) => (e.group ?? 'other') === group).map((e) => (
+                    <figure class="swatch">
+                      <i style={`background: var(--c-${e.name})`}></i>
+                      <figcaption><b>{e.name}</b><span>{e.hex}</span>{e.use && <span>{e.use}</span>}</figcaption>
+                    </figure>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </section>
+        )}
+
+        {gradients.length > 0 && (
+          <section class="gradients">
+            <h2 class="eyebrow">Gradients</h2>
+            <div class="row">
+              {gradientSpecs.map((g) => (
+                <figure class="swatch wide">
+                  <i style={`background: var(--g-${g.name})`}></i>
+                  <figcaption><b>{g.name}</b>{g.use && <span>{g.use}</span>}</figcaption>
+                </figure>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {applications.length > 0 && (
+          <section class="applications">
+            <h2 class="eyebrow">Color by context</h2>
+            {applications.map((a) => (
+              <div class="application">
+                <div class="set">{(a.colors ?? []).map((c) => <i style={`background: ${paint(c)}`} title={c}></i>)}</div>
+                <p><b>{a.name}</b>{a.notes && <span class="fine-note"> {a.notes}</span>}</p>
+              </div>
+            ))}
+          </section>
+        )}
+
+        {typeRoles.length > 0 && (
+          <section class="roles">
+            <h2 class="eyebrow">Type roles</h2>
+            {typeRoles.map((role) => (
+              <div class="role">
+                <p class={`type-${role} specimen-line`}>The brand speaks in this voice.</p>
+                <p class="fine-note"><b>{role}</b> · {roleSpecs[role]?.font ?? 'body'}{roleSpecs[role]?.use ? ` · ${roleSpecs[role].use}` : ''}</p>
+              </div>
+            ))}
+          </section>
+        )}
+
+        {textures.length > 0 && (
+          <section class="textures">
+            <h2 class="eyebrow">Textures</h2>
+            <div class="row">
+              {textures.map((t) => (
+                <figure class="tile">
+                  <i style={`background: ${t.tint ?? 'var(--surface)'} url("${t.url}") center / cover; background-blend-mode: ${t.blend};`}></i>
+                  <figcaption><b>{t.name}</b><span>{t.kind}{t.use ? ` · ${t.use}` : ''}</span></figcaption>
+                </figure>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {elements.length > 0 && (
+          <section class="elements">
+            <h2 class="eyebrow">Graphic elements</h2>
+            <div class="row">
+              {elements.map((el) => (
+                <figure class="element">
+                  <div class="stage">
+                    {el.className && el.kind === 'frame' && <div class={`${el.className} framed`}>{sample(el.kind)}</div>}
+                    {el.className && el.kind === 'bracket' && <p class={el.className}>{sample(el.kind)}</p>}
+                    {el.className && el.kind === 'bar-under' && <p class="display word"><span class={el.className}>{sample(el.kind)}</span></p>}
+                    {el.className && el.kind === 'rule' && <hr class={el.className} />}
+                    {el.className && el.kind === 'knockout-word' && <p class={`knockout ${el.className}`}>{sample(el.kind)}</p>}
+                    {!el.className && el.example && <img src={el.example} alt={`${el.name} in the brand guide`} />}
+                    {!el.className && !el.example && <p class="fine-note">Described in words only.</p>}
+                  </div>
+                  <figcaption><b>{el.name}</b><span>{el.kind}{el.use ? ` · ${el.use}` : ''}</span></figcaption>
+                </figure>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {hasMessaging && (
+          <section class="messaging">
+            <h2 class="eyebrow">Messaging</h2>
+            {messaging.essence && <p class="display essence">{messaging.essence}</p>}
+            {messaging.taglines.length > 0 && <ul class="taglines">{messaging.taglines.map((t) => <li>{t}</li>)}</ul>}
+            {messaging.key_messages.map((k) => (
+              <div class="key">
+                <p class="fine">{k.area}</p>
+                <p class="h">{k.headline}</p>
+                {k.body && <p class="fine-note">{k.body}</p>}
+              </div>
+            ))}
+            {messaging.attributes.length > 0 && <p class="fine-note">{messaging.attributes.join(', ')}</p>}
+          </section>
+        )}
+      </main>
+    )}
+
     <style>
       body { background: var(--letterbox); }
       .board {
@@ -117,6 +271,47 @@ const typeNote = (role: string) => {
       .imagery { display: flex; gap: 16px; align-items: flex-end; flex-wrap: wrap; }
       .imagery img { height: 170px; width: auto; max-width: 260px; object-fit: cover; border-radius: calc(var(--radius) * 0.5); }
       .notes { flex-basis: 100%; text-transform: none; letter-spacing: 0; }
+
+      /* The second sheet grows with the guide instead of clipping it. */
+      .more {
+        display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: none; grid-auto-rows: min-content; grid-template-areas: none;
+        gap: 48px 64px; height: auto; min-height: 1080px; overflow: visible; margin-top: 40px;
+      }
+      .more header { grid-area: auto; grid-column: 1 / -1; }
+      .more section { display: grid; gap: 16px; align-content: start; }
+      .more .lockups, .more .elements, .more .messaging { grid-column: 1 / -1; }
+      .more h2.eyebrow { margin: 0; }
+      .more .row { display: flex; flex-wrap: wrap; gap: 20px; }
+      .more figure { margin: 0; display: grid; gap: 8px; align-content: start; }
+      .more figcaption { display: grid; gap: 2px; font: 500 15px/1.35 var(--font-mono); max-width: 34ch; }
+      .more figcaption span, .fine-note { color: var(--ink-muted); font-size: 16px; line-height: 1.4; }
+      .lockup { padding: 20px; border-radius: calc(var(--radius) * 0.5); border: 1px solid var(--tint-3); background: var(--paper); }
+      .lockup.dark { background: var(--night); color: var(--on-night); }
+      .lockup.dark figcaption span { color: color-mix(in oklab, var(--on-night) 70%, var(--night)); }
+      .lockup img { height: 72px; width: auto; max-width: 340px; object-fit: contain; }
+      .swatch i, .tile i { display: block; width: 120px; aspect-ratio: 1.3; border-radius: calc(var(--radius) * 0.4); border: 1px solid var(--tint-3); }
+      .swatch.wide i { width: 240px; }
+      .tile i { width: 180px; }
+      .tier { display: grid; gap: 8px; }
+      .application { display: grid; gap: 6px; }
+      .application .set { display: flex; }
+      .application .set i { width: 56px; height: 40px; border: 1px solid var(--tint-3); }
+      .application .set i:first-child { border-radius: 8px 0 0 8px; }
+      .application .set i:last-child { border-radius: 0 8px 8px 0; }
+      .application p { font-size: 18px; }
+      .role { display: grid; gap: 4px; }
+      .specimen-line { font-size: 30px; }
+      .element { width: 380px; }
+      .element .stage { min-height: 150px; display: grid; place-items: center; padding: 16px; background: var(--surface); border-radius: calc(var(--radius) * 0.5); }
+      .element .stage img { max-height: 150px; max-width: 100%; object-fit: contain; }
+      .framed { padding: 24px 32px; font-size: 20px; }
+      .element .word { font-size: 56px; }
+      .element hr { width: 100%; }
+      .knockout { font: var(--display-weight) 96px/1 var(--font-display); letter-spacing: var(--display-tracking); }
+      .essence { font-size: 48px; max-width: 30ch; }
+      .taglines { display: flex; flex-wrap: wrap; gap: 12px 32px; font-size: 22px; padding: 0; list-style: none; }
+      .key { display: grid; gap: 4px; max-width: 70ch; }
+      .key .h { font: 600 24px/1.25 var(--font-body); }
     </style>
   </body>
 </html>
