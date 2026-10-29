@@ -101,6 +101,8 @@ test('a full capture still writes the draft kit, the logo and the references', a
     assert.equal(kit.palette.accent, '#c82828');
     assert.equal(kit.identity.logos.primary, 'logos/primary.svg');
     assert.match(await readFile(join(out, 'logos/primary.svg'), 'utf8'), /<rect\/>/);
+    const gaps = kit.sources.gaps.map((g) => g.field);
+    for (const field of ['positioning.statement', 'messaging.pillars', 'voice.rules', 'design.icon_style', 'design.motion']) assert.ok(gaps.includes(field), field);
     assert.equal(result.references.length, 4);
   } finally { await rm(root, { recursive: true, force: true }); }
 });

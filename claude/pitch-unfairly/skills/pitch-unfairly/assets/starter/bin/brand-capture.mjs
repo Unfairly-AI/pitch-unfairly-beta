@@ -15,6 +15,7 @@ import { copyFile, mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { withTransparentBackground } from './brand-capture-evidence.mjs';
+import { brandGaps } from './brand-lib.mjs';
 import { refuseInCodexSandbox } from './browser-guard.mjs';
 import { captureReference, categoryOf, matchFont, proofPng, standInEntry } from './font-match.mjs';
 
@@ -361,6 +362,9 @@ const kit = {
   },
 };
 
+// What a website can't show (positioning, messaging, voice, design treatments) is listed, not guessed.
+kit.sources.gaps = brandGaps(kit, { seeds: pages.map((p) => p.description), unreviewed: kit.sources.unreviewed });
+
 const evidence = {
   urls,
   meta: pages.map((p) => ({ url: p.url, title: p.title, description: p.description, themeColor: p.themeColor })),
@@ -385,6 +389,7 @@ log(`  display: ${typeLine(display, 'display')}; body: ${typeLine(body, 'body')}
 for (const [role, m] of Object.entries(fontMatches)) if (m.confidence === 'low') log(`  ${role}: no open font is close to ${role === 'display' ? display.stand_in_for : body.stand_in_for}; ask for the font files.`);
 log(`  style: radius ${kit.style.radius}px, border ${kit.style.border_width}px, shadow ${shadow}`);
 log(`  logo: ${logos.primary ?? 'not found'}; imagery: ${imagery.length} files`);
+log(`  not on the site (sources.gaps): ${kit.sources.gaps.map((g) => g.field).join(', ')}. Ask the user, or fill them from their guide; never guess.`);
 log(`Evidence and screenshots: brand/capture/. Review them, fix the kit, then npm run brand:apply && npm run brand:board.`);
 return { plan, references, kit };
 }

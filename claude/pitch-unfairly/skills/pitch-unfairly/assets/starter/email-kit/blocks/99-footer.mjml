@@ -1,0 +1,7 @@
+<!-- A campaign or newsletter needs a way out and the sender's postal address. The platform fills both in. -->
+<mj-section padding="40px 0 32px" css-class="em-paper">
+  <mj-column>
+    <mj-text font-size="13px" color="{{color.ink_muted}}" css-class="em-ink">[[address]]</mj-text>
+    <mj-text font-size="13px" padding="8px 32px 0" css-class="em-ink"><a href="[[unsubscribe]]" style="color: {{color.ink_muted}};">Unsubscribe</a></mj-text>
+  </mj-column>
+</mj-section>

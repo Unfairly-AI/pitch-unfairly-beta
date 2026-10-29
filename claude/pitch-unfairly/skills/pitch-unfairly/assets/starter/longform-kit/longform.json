@@ -1,0 +1,13 @@
+{
+  "engine": "longform@1.0",
+  "title": "The document's title",
+  "short_title": "Short title for the running header",
+  "description": "One sentence on what the reader gets from it.",
+  "lang": "en",
+  "page": "letter",
+  "margins": { "top": 0.9, "bottom": 0.85, "left": 0.85, "right": 0.85 },
+  "contents_title": "Contents",
+  "download_label": "Download the PDF",
+  "neutrals": [],
+  "facts": {}
+}

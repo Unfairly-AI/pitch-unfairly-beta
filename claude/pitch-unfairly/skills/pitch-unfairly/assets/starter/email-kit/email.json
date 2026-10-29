@@ -1,0 +1,12 @@
+{
+  "engine": "email@1.0",
+  "kind": "campaign",
+  "platform": "mailchimp",
+  "from_name": "The sender's name",
+  "subject": "The subject line, one clear promise",
+  "preheader": "The second reason to open it, in the words the inbox shows next to the subject.",
+  "fonts": {},
+  "merge": {},
+  "neutrals": [],
+  "facts": {}
+}

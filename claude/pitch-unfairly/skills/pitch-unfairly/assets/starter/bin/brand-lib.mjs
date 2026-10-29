@@ -224,6 +224,47 @@ export function kitWarnings(kit) {
   return warnings;
 }
 
+/**
+ * What the brand hasn't defined yet, in brand-kit@2's terms (positioning,
+ * messaging pillars and proof, voice, design treatments), each with the
+ * question that fills it. A website capture measures looks; it can't know
+ * these, so they're listed for a person or the Steal Brand shelf to fill,
+ * never guessed. `seeds` are the site's own words that may help answer
+ * (its meta descriptions); they are evidence, not answers.
+ * Mirrors kitGaps in unfairly-app (src/lib/brand/brand-kit-v2.ts).
+ */
+export function brandGaps(kit, { seeds = [], unreviewed = [] } = {}) {
+  const gaps = [];
+  const add = (missing, field, ask, extra = {}) => { if (missing) gaps.push({ field, ask, ...extra }); };
+  const p = kit?.positioning ?? {};
+  const m = kit?.messaging ?? {};
+  const v = kit?.voice;
+  const voice = Array.isArray(v) ? { notes: v } : v ?? {};
+  const seed = seeds.filter(Boolean).length ? { seeds: [...new Set(seeds.filter(Boolean))].slice(0, 4) } : {};
+  add(!p.statement, 'positioning.statement', 'In one sentence: for whom is this the category that does what?', seed);
+  add(!p.audience, 'positioning.audience', "Who is it for, in the brand's own words?");
+  add(!p.category, 'positioning.category', 'What shelf does a buyer file it on?');
+  add(!m.pillars?.length, 'messaging.pillars', 'What are the three or four things the brand always says, and the claim behind each?');
+  add(!m.proof_points?.length, 'messaging.proof_points', 'What proves those claims (a customer, a number, a quote), and where does each come from?');
+  add(!voice.tone?.length, 'voice.tone', 'Three to five words for how the brand sounds.');
+  add(!voice.rules?.length && !voice.banned?.length, 'voice.rules', 'Words the brand never uses, words it prefers, and how long its sentences run.');
+  // A treatment is a recipe (treatment@1), so the kit's prose is a seed for one, never the slot.
+  const style = kit?.style ?? {};
+  const prose = { photo_treatment: style.photo_treatment, illustration_style: style.illustration_style, motion: style.motion && !unreviewed.includes('style.motion') ? `motion: ${style.motion}` : null, layout_move: style.layout_notes };
+  for (const slot of ['icon_style', 'illustration_style', 'photo_treatment', 'motion', 'layout_move']) {
+    add(!kit?.design?.[slot] && !kit?.design?.system, `design.${slot}`, `Pick a ${slot.replace(/_/g, ' ')} from the Steal Design shelf, or write the brand's own as a recipe.`, prose[slot] ? { seed: prose[slot] } : {});
+  }
+  // Email and other outputs without SVG or web fonts.
+  const email = (kit?.identity?.lockups ?? []).filter((l) => (Array.isArray(l.use) ? l.use : [l.use]).some((u) => /\bemail\b/.test(u ?? '')) && (l.format === 'png' || /\.png$/i.test(l.file ?? l.path ?? '')));
+  add(!email.some((l) => (l.on ?? l.background) !== 'dark'), 'identity.lockups.email', 'A PNG logo at 2× for email on a light background.');
+  add(!email.some((l) => (l.on ?? l.background) === 'dark'), 'identity.lockups.email_dark', 'A PNG logo at 2× for email in dark mode.');
+  for (const face of ['display', 'body']) {
+    const t = kit?.typography?.[face];
+    add(!t?.fallback_stack, `typography.${face}.fallback_stack`, `The font stack email uses for ${face} text when ${t?.family ?? 'the brand font'} can't load (e.g. "Arial, Helvetica, sans-serif").`);
+  }
+  return gaps;
+}
+
 /** Every file under brand/ the kit names, for existence checks: [{ what, path }]. */
 export function kitFilePaths(kit) {
   const out = [];

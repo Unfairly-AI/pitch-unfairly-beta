@@ -47,7 +47,11 @@
     "collateral:pages": "node bin/collateral-pages.mjs",
     "collateral:publish": "node bin/collateral-publish.mjs",
     "collateral:live": "node bin/collateral-live.mjs",
-    "test": "node --test 'test/*.test.mjs'"
+    "test": "node --test 'test/*.test.mjs'",
+    "longform:new": "node bin/longform-new.mjs",
+    "longform:build": "node bin/brand-apply.mjs && node bin/longform-build.mjs",
+    "email:new": "node bin/email-new.mjs",
+    "email:build": "node bin/brand-apply.mjs && node bin/email-build.mjs"
   },
   "dependencies": {
     "@fontsource-variable/dm-sans": "^5.3.0",
@@ -55,6 +59,7 @@
     "@fontsource-variable/sora": "^5.3.0",
     "astro": "^7.3.2",
     "d3-geo": "^3.1.1",
+    "mjml": "5.4.1",
     "puppeteer": "^25.11.0",
     "read-excel-file": "^9.3.12",
     "topojson-client": "^3.1.0",

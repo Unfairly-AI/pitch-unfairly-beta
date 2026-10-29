@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { assetModule, brandCss, colorCss, cssFamily, fontFaceCss, fontImports, kitFilePaths, kitWarnings, resolvePalette, validateKit } from '../bin/brand-lib.mjs';
+import { assetModule, brandCss, brandGaps, colorCss, cssFamily, fontFaceCss, fontImports, kitFilePaths, kitWarnings, resolvePalette, validateKit } from '../bin/brand-lib.mjs';
 
 const starter = new URL('../', import.meta.url);
 const read = (rel) => readFileSync(new URL(rel, starter), 'utf8');
@@ -241,4 +241,18 @@ test('assets.ts exports lockups, textures, elements, type roles, gradients, and 
   const kit = rich();
   kit.identity.lockups = [{ name: 'mark', path: 'logos/stacked.svg' }];
   assert.match(assetModule(kit, '../../brand/'), /\{ name: "mark", url: lockup_0, background: "any", use: "" \}/);
+});
+
+test('brandGaps lists what a capture cannot know, with the site\'s own words as seeds', () => {
+  const kit = { ...base(), style: { motion: 'crisp', photo_treatment: 'Bright daylight, people at work.' } };
+  const gaps = brandGaps(kit, { seeds: ['Scheduling that fills cancellations.', ''], unreviewed: ['style.motion'] });
+  const fields = gaps.map((g) => g.field);
+  assert.ok(fields.includes('positioning.statement'));
+  assert.ok(fields.includes('design.icon_style'));
+  assert.ok(fields.includes('design.motion'), 'an unreviewed capture default is still a gap');
+  assert.equal(gaps.find((g) => g.field === 'design.motion').seed, undefined, 'an unreviewed default is no seed');
+  assert.equal(gaps.find((g) => g.field === 'design.photo_treatment').seed, 'Bright daylight, people at work.', 'prose seeds a recipe, never fills the slot');
+  for (const f of ['design.layout_move', 'identity.lockups.email', 'identity.lockups.email_dark', 'typography.body.fallback_stack']) assert.ok(fields.includes(f), f);
+  assert.deepEqual(gaps.find((g) => g.field === 'positioning.statement').seeds, ['Scheduling that fills cancellations.']);
+  assert.equal(validateKit({ ...kit, sources: { gaps } }).length, 0, 'gaps live in sources, so the kit stays brand-kit@1');
 });

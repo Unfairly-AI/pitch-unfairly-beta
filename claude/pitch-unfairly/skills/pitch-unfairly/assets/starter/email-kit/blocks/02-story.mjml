@@ -1,0 +1,7 @@
+<mj-section padding="24px 0" css-class="em-paper">
+  <mj-column>
+    <mj-text font-family="{{font.display}}" font-size="34px" line-height="1.1" font-weight="700" css-class="em-ink">The one thing this email says</mj-text>
+    <mj-text padding="16px 32px 24px" css-class="em-ink">Write it for one reader, and end on the one thing they do next.</mj-text>
+    <mj-button href="https://example.com">The one action</mj-button>
+  </mj-column>
+</mj-section>

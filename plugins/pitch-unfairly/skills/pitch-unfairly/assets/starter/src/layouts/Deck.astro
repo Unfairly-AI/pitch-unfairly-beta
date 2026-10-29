@@ -41,7 +41,7 @@ const { title, description = '' } = Astro.props;
       <button type="button" data-go="prev" aria-label="Previous slide">‹</button>
       <span class="deck-count" aria-live="polite"><b id="deck-current">1</b> / <span id="deck-total">1</span></span>
       <button type="button" data-go="next" aria-label="Next slide">›</button>
-      <button type="button" data-go="notes" class="deck-text-btn" aria-pressed="false">Notes</button>
+      <button type="button" data-go="present" class="deck-text-btn">Present</button>
       <a class="deck-text-btn" href="deck.pdf" download>PDF</a>
     </nav>
     <aside class="deck-notes" id="deck-notes" hidden></aside>
@@ -65,7 +65,6 @@ const { title, description = '' } = Astro.props;
         if (framed) window.parent.postMessage(message, '*');
       };
       const notesEl = document.getElementById('deck-notes');
-      const notesBtn = document.querySelector<HTMLButtonElement>('[data-go="notes"]');
       const played = new Set<number>();
       let current = -1;
 
@@ -144,12 +143,17 @@ const { title, description = '' } = Astro.props;
           el.addEventListener('click', () => go(current + (el.dataset.go === 'prev' ? -1 : 1)));
         });
 
+        // Speaker notes are for the presenter, so only the N key shows them;
+        // a reader of a sent link gets no button for them.
         const toggleNotes = () => {
-          if (!notesEl || !notesBtn) return;
-          notesEl.hidden = !notesEl.hidden;
-          notesBtn.setAttribute('aria-pressed', String(!notesEl.hidden));
+          if (notesEl) notesEl.hidden = !notesEl.hidden;
         };
-        notesBtn?.addEventListener('click', toggleNotes);
+        const present = () => {
+          if (framed) toFrame({ type: 'deck:fullscreen' });
+          else if (document.fullscreenElement) document.exitFullscreen();
+          else html.requestFullscreen?.();
+        };
+        document.querySelector('[data-go="present"]')?.addEventListener('click', present);
 
         addEventListener('keydown', (event) => {
           const target = event.target as HTMLElement;
@@ -161,11 +165,8 @@ const { title, description = '' } = Astro.props;
           else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(key)) go(current - 1);
           else if (key === 'Home') go(0);
           else if (key === 'End') go(slides.length - 1);
-          else if (key === 'f') {
-            if (framed) toFrame({ type: 'deck:fullscreen' });
-            else if (document.fullscreenElement) document.exitFullscreen();
-            else html.requestFullscreen?.();
-          } else if (key === 'n') toggleNotes();
+          else if (key === 'f') present();
+          else if (key === 'n') toggleNotes();
           else return;
           event.preventDefault();
         });

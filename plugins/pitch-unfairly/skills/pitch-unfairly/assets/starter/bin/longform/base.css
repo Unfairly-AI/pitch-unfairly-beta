@@ -1,0 +1,38 @@
+/* The long-form engine's structure: the reading layout on screen, and the page
+   rules in print. It carries no look: type, color and spacing come from the brand
+   tokens and the document's own styles.css. */
+.lf-layout { display: block; }
+.lf-rail { display: none; }
+.lf-main { min-width: 0; }
+.lf-bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.lf-bar-title { display: inline-flex; align-items: center; min-height: 44px; text-decoration: none; min-width: 0; overflow-wrap: anywhere; }
+.lf-download { flex: none; display: inline-flex; align-items: center; min-height: 44px; }
+.lf-toc-mobile summary { min-height: 44px; display: flex; align-items: center; cursor: pointer; }
+.lf-toc-mobile a, .lf-rail a { display: flex; gap: 0.6em; align-items: baseline; min-height: 44px; padding-block: 0.6em; text-decoration: none; }
+.lf-toc-mobile ol, .lf-rail ol, .lf-toc { list-style: none; margin: 0; padding: 0; }
+[data-chapter] { scroll-margin-top: 80px; }
+.print-only { display: none !important; }
+@media (min-width: 1100px) {
+  .lf-layout { display: grid; grid-template-columns: minmax(13rem, 17rem) minmax(0, 1fr); }
+  .lf-rail { display: block; position: sticky; top: 64px; align-self: start; max-height: calc(100vh - 64px); overflow: auto; }
+  .lf-rail a { min-height: 0; padding-block: 0.35em; }
+  .lf-toc-mobile { display: none; }
+}
+
+/* The contents page: title, dotted leader, page number. */
+.lf-toc a { display: grid; grid-template-columns: 2.2em minmax(0, 1fr) auto; gap: 0.6em; align-items: baseline; text-decoration: none; }
+.lf-toc-p { font-variant-numeric: tabular-nums; }
+
+@media print {
+  html, body { background: var(--paper); }
+  [data-print-hide], .lf-bar, .lf-rail, .lf-toc-mobile, .progress { display: none !important; }
+  .print-only { display: revert !important; }
+  .lf-layout { display: block; }
+  [data-chapter] { break-before: page; }
+  h1, h2, h3, h4, h5 { break-after: avoid; break-inside: avoid; }
+  figure, table, blockquote, pre, img, svg, .lf-keep, [data-keep] { break-inside: avoid; }
+  p, li, dd { orphans: 2; widows: 2; }
+  a { text-decoration: none; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .js .reveal { opacity: 1 !important; transform: none !important; }
+}

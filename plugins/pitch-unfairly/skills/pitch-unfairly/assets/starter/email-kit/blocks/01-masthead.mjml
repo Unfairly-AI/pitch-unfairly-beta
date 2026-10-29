@@ -1,0 +1,7 @@
+<!-- One block per file, in file-name order: an mj-section (or mj-wrapper) each.
+     Colors and fonts come from the brand: {{color.accent}}, {{font.display}}. -->
+<mj-section padding="32px 0 8px" css-class="em-paper">
+  <mj-column>
+    <mj-text font-family="{{font.display}}" font-weight="700" font-size="18px" css-class="em-ink">The sender's name</mj-text>
+  </mj-column>
+</mj-section>
