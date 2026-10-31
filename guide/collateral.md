@@ -127,8 +127,9 @@ itself by shape, and list it once per format.
   its PDF at that scale, as the media owner's spec asks; past 200 in, a full-size page breaks PDF's
   page limit.
 - **One link holds them all.** List every piece on one link in `pages`; its page groups them by
-  family, names each by its placement and real size, and numbers the files in that order, so the
-  gallery's Formats tab reads "Muni bus king", "BART liveboard" in the same order.
+  family, names each by its placement and real size, and writes the files into a numbered folder
+  per family (`files/01-Transit/01-Muni-bus-king.pdf`). The gallery's Formats tab shows each folder
+  as a heading, in the same order, and its Download all zips them with the same folders.
 
 ## Rules
 

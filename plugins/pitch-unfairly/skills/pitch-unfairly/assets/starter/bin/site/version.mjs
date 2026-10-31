@@ -1,7 +1,7 @@
 // The sites engine's version. A site pins the engine it was built with in
 // site.json ("engine": "sites@1.1"), so it keeps building the same way while
 // the engine moves on. Same major and at least the pinned minor is compatible.
-export const ENGINE = '1.20.0';
+export const ENGINE = '1.20.1';
 
 /** Why this engine can't build a site pinned to `pin`, or null when it can. */
 export function engineProblem(pin, engine = ENGINE) {

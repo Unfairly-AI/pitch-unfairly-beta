@@ -141,9 +141,11 @@ try {
       if (it.role === 'merch') {
         // Art shows on its garment: white ink vanishes on a light page.
         const ground = it.ground ?? groundFor((await inspect(join(ART, it.proof))).lum);
+        await mkdir(dirname(join(dir, it.view)), { recursive: true });
         await writeView(join(ART, it.proof), join(dir, it.view), { png: true });
         figs.push(`<figure class="art"><img src="${it.view}" alt="${esc(it.alt)}" style="background:${ground}"></figure>`);
       } else {
+        await mkdir(dirname(join(dir, it.view)), { recursive: true });
         await writeView(join(ART, it.proof), join(dir, it.view));
         if (!placed) figs.push(`<figure><img src="${it.view}" alt="${esc(it.alt)}"></figure>`);
       }

@@ -116,6 +116,7 @@ export function planPages(set, { formatOf, titleOf }) {
 
     const variants = [...new Set(real.map((p) => p.variant).filter(Boolean))];
     const placedSizes = new Set(real.map((x) => x.format)).size;
+    const families = [];
     const items = [];
     const counts = {};
     for (const p of pieces) {
@@ -132,8 +133,13 @@ export function planPages(set, { formatOf, titleOf }) {
       const it = { id: p.id, role, proof: `proof/${p.id}.png` };
       // A set of placements names its files after them, numbered in the link's order: the gallery's
       // Formats tab lists them by file name ("07-BART-car-card" reads "BART car card").
+      // ...in a folder per family ("01-Transit/01-Muni-bus-king"), which the gallery shows as a heading.
+      const slugOf = (t) => t.replace(/['’]/g, '').replace(/[^A-Za-z0-9.]+/g, '-').replace(/^-|-$/g, '');
+      const family = placedSizes > 1 ? fmt?.spec?.family : null;
+      if (family && !families.includes(family)) families.push(family);
+      const folder = family ? `${String(families.indexOf(family) + 1).padStart(2, '0')}-${slugOf(family)}/` : '';
       const stem = placedSizes > 1 && fmt?.spec?.name
-        ? `${String(items.length + 1).padStart(2, '0')}-${fmt.spec.name.replace(/['’]/g, '').replace(/[^A-Za-z0-9.]+/g, '-').replace(/^-|-$/g, '')}`
+        ? `${folder}${String(items.length + 1).padStart(2, '0')}-${slugOf(fmt.spec.name)}`
         : p.id;
       // The view and the download are always different files: an <a download> pointing at an
       // image the page also shows opens in the frame instead of saving.

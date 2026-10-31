@@ -148,7 +148,7 @@ test('ACCEPTANCE: the seam check finds a half-transparent row between solid ink,
   assert.deepEqual(hairlineRows(decodePng(png(60, 9, () => 255))), []);
 });
 
-test('ACCEPTANCE: one design in many placements is one print link: each file named after its placement, in order, screens as JPG', () => {
+test('ACCEPTANCE: one design in many placements is one print link: each file named after its placement, in its family folder, in order, screens as JPG', () => {
   const city = {
     pieces: [
       { id: 'king', file: 'p.html', format: 'print.ooh.sf.muni_king' },
@@ -164,7 +164,8 @@ test('ACCEPTANCE: one design in many placements is one print link: each file nam
   assert.equal(l.type, 'print', 'digital screens ride with the print placements they are bought with');
   assert.equal(l.spec, '4 placements, one design');
   assert.deepEqual(l.items.map((i) => i.download), [
-    'files/01-Muni-bus-king.pdf', 'files/02-Bulletin-14-x-48-ft-Outfront.pdf', 'files/03-BART-liveboard.jpg', 'files/04-Fishermans-Wharf-LED.jpg',
+    'files/01-Transit/01-Muni-bus-king.pdf', 'files/02-Billboards/02-Bulletin-14-x-48-ft-Outfront.pdf',
+    'files/03-Digital-OOH/03-BART-liveboard.jpg', 'files/03-Digital-OOH/04-Fishermans-Wharf-LED.jpg',
   ]);
   assert.deepEqual(l.items.map((i) => i.label), ['Print PDF', 'Print PDF · 1/2 in = 1 ft mechanical', 'Screen image JPG · 1080 × 1920', 'Screen image JPG · 696 × 336']);
   assert.deepEqual(l.items.map((i) => i.size), ['144 × 30 in', '576 × 168 in, 8 in bleed', '1080 × 1920 px', '696 × 336 px']);

@@ -1,6 +1,6 @@
 {
   "name": "pitch-unfairly",
-  "version": "0.33.0",
+  "version": "0.33.1",
   "description": "Builds on-brand presentation decks as interactive websites, with PDF export and desktop, phone, and PDF checks, and publishes them to unlisted links.",
   "author": {
     "name": "Unfairly AI",

@@ -1,6 +1,6 @@
 // The collateral engine's version. A collateral set pins it in collateral/collateral.json
 // ("engine": "collateral@1.0") so it keeps rendering the same way while the engine moves on.
-export const COLLATERAL_ENGINE = '1.2.0';
+export const COLLATERAL_ENGINE = '1.2.1';
 
 /** Why this engine can't render a set pinned to `pin`, or null when it can. */
 export function collateralEngineProblem(pin, engine = COLLATERAL_ENGINE) {
