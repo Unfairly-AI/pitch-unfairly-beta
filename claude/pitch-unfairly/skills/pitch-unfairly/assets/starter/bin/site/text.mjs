@@ -11,9 +11,11 @@
 // Relative links stay relative: the host serves a version's .txt and .json
 // files beside <link>/index.txt, behind the same gates, so they resolve.
 
-const DROP = new Set(['script', 'style', 'svg', 'template', 'nav', 'button', 'select', 'textarea', 'input', 'canvas', 'iframe', 'video', 'audio', 'object', 'head', 'title']);
+const DROP = new Set(['script', 'style', 'svg', 'template', 'nav', 'button', 'select', 'textarea', 'input', 'canvas', 'iframe', 'video', 'audio', 'object', 'head', 'title', 'noscript']);
 const VOID = new Set(['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'source', 'track', 'wbr']);
 const BLOCK = new Set(['p', 'div', 'section', 'article', 'header', 'footer', 'main', 'nav', 'aside', 'figure', 'figcaption', 'blockquote', 'dl', 'dt', 'dd', 'form', 'fieldset', 'details', 'summary', 'address']);
+// Characters that render as nothing: kept out so hidden words can't ride along between visible ones.
+const INVISIBLE = /[\u200b-\u200d\u2060\ufeff\u00ad]/g;
 const NAMED = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ', mdash: '-', ndash: '-', hellip: '...', rsquo: "'", lsquo: "'", rdquo: '"', ldquo: '"', middot: '·', times: '×', copy: '©', reg: '®', trade: '™', rarr: '→', larr: '←', bull: '•', euro: '€', pound: '£', yen: '¥', deg: '°', plusmn: '±', le: '≤', ge: '≥', minus: '−', thinsp: ' ', ensp: ' ', emsp: ' ', zwj: '', zwnj: '', shy: '' };
 
 export function decodeEntities(s) {
@@ -40,7 +42,7 @@ function parse(html) {
   for (let m = re.exec(html); m; m = re.exec(html)) {
     const [, closing, rawTag, rest, text] = m;
     if (text !== undefined) {
-      stack.at(-1).kids.push({ text: decodeEntities(text) });
+      stack.at(-1).kids.push({ text: decodeEntities(text).replace(INVISIBLE, '') });
       continue;
     }
     if (!rawTag) continue;
@@ -64,7 +66,7 @@ function parse(html) {
 }
 
 const hiddenNode = (n) =>
-  DROP.has(n.tag) || 'hidden' in n.attrs || n.attrs['aria-hidden'] === 'true' || n.attrs['data-text'] === 'skip' || /(^|;)\s*display\s*:\s*none/i.test(n.attrs.style ?? '');
+  DROP.has(n.tag) || 'hidden' in n.attrs || n.attrs['aria-hidden'] === 'true' || n.attrs['data-text'] === 'skip' || /(^|;)\s*(display\s*:\s*none|visibility\s*:\s*hidden)/i.test(n.attrs.style ?? '');
 
 const squash = (s) => s.replace(/[ \t\r\n\f]+/g, ' ');
 
@@ -122,8 +124,8 @@ function table(n) {
   return [line(rows[0]), line(Array(width).fill('---')), ...rows.slice(1).map(line)].join('\n');
 }
 
-/** Block-level rendering: each block is separated by a blank line. */
-function blocks(n, out, list = null) {
+/** Block-level rendering: each block is separated by a blank line. Headings sit `depth` levels below the page's. */
+function blocks(n, out, depth = 1) {
   let run = '';
   let prevInline = null;
   const flush = () => {
@@ -142,7 +144,7 @@ function blocks(n, out, list = null) {
     if (h) {
       flush();
       const t = clean(inline(k)).replace(/\n+/g, ' ');
-      if (t) out.push(`${'#'.repeat(Math.min(6, Number(h[1]) + 1))} ${t}`);
+      if (t) out.push(`${'#'.repeat(Math.min(6, Number(h[1]) + depth))} ${t}`);
     } else if (k.tag === 'ul' || k.tag === 'ol') {
       flush();
       const items = [];
@@ -150,9 +152,7 @@ function blocks(n, out, list = null) {
       for (const li of k.kids) {
         if (li.tag !== 'li' || hiddenNode(li)) continue;
         i += 1;
-        const inner = [];
-        blocks(li, inner);
-        const body = inner.join('\n').replace(/\n/g, '\n  ');
+        const body = blocks(li, [], depth).join('\n').replace(/\n/g, '\n  ');
         if (body) items.push(`${k.tag === 'ol' ? `${i}.` : '-'} ${body}`);
       }
       if (items.length) out.push(items.join('\n'));
@@ -168,7 +168,7 @@ function blocks(n, out, list = null) {
       flush();
     } else if (BLOCK.has(k.tag) || k.tag === 'li') {
       flush();
-      blocks(k, out, list);
+      blocks(k, out, depth);
     } else {
       const t = inline(k);
       if (t && prevInline && (apart(prevInline) || apart(k)) && /\S$/.test(run) && /^\S/.test(t)) run += ' ';
@@ -194,4 +194,45 @@ export function siteText({ site, body }) {
   const title = `${site.sample ? 'Sample: ' : ''}${site.title ?? 'Site'}`;
   const head = [`# ${title}`, site.description ? String(site.description).trim() : ''].filter(Boolean);
   return `${[...head, htmlToText(body)].filter(Boolean).join('\n\n')}\n`;
+}
+
+// Slide decks: each starter slide (section.slide) is "## N. <its aria-label>"
+// and its words. The decks host (unfairly-app apps/decks/src/lib/html-text.ts,
+// a port of this file) makes the same text from a version's index.html when
+// the version shipped no index.txt, so the two must agree; change both.
+const isSlide = (n) => n.tag === 'section' && /(^|\s)slide(\s|$)/.test(n.attrs.class ?? '');
+
+/** Every visible starter slide in page order; none for a page that isn't a slide deck. */
+function slides(n, found = []) {
+  for (const k of n.kids) {
+    if (k.text !== undefined || hiddenNode(k)) continue;
+    if (isSlide(k)) found.push(k);
+    else slides(k, found);
+  }
+  return found;
+}
+
+/** Each slide's label, words and speaker notes, in order. */
+export function deckSlides(html) {
+  return slides(parse(html)).map((slide) => ({
+    label: clean(slide.attrs['aria-label'] ?? '').replace(/\n+/g, ' '),
+    words: blocks(slide, [], 2).join('\n\n'),
+    notes: clean(slide.attrs['data-notes'] ?? ''),
+  }));
+}
+
+/**
+ * index.html as the text an agent reads, exactly as the host's fallback makes
+ * it: "# <title>", then each slide as "## N. <label>" and its words, or, for a
+ * page without slides, the page itself. Null when there are no words to give.
+ * `head` lines go under the title; `notes` adds each slide's speaker notes.
+ */
+export function pageText(html, title, { head = [], notes = false } = {}) {
+  const deck = deckSlides(html);
+  const body = deck.length
+    ? deck.map((s, i) => [`## ${i + 1}.${s.label ? ` ${s.label}` : ''}`, s.words, notes && s.notes ? `Speaker notes: ${s.notes}` : ''].filter(Boolean).join('\n\n'))
+    : [htmlToText(html)];
+  const text = body.join('\n\n').trim();
+  if (!text || (deck.length && !deck.some((s) => s.words))) return null;
+  return `${[`# ${clean(title).replace(/\n+/g, ' ')}`, ...head.filter(Boolean)].join('\n\n')}\n\n${text}\n`;
 }

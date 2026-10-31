@@ -8,7 +8,9 @@ How the starter renders each mode, and the traps that have broken real decks.
 
 **Phone (below 800px).** Same stack, but each slide is the screen itself, `100svh` tall, laid out at phone size instead of scaled. The tokens in `deck.css` switch to the phone scale. Each slide's own `@media (max-width: 799px)` block handles the rest: usually a single column, smaller fixed sizes, and `mobile-hide` on secondary content.
 
-**PDF.** `npm run pdf` renders `dist/deck.pdf` on request (`bin/pdf.mjs`; `npm run build` doesn't): it opens `/?pdf=1` at 1920×1080 in screen media, waits for `window.__deckReady` (fonts and every image loaded), then prints one 1920×1080 page per slide. `?pdf=1` adds `is-pdf` and `is-static` to `<html>` before first paint: every slide visible at full size, animations at their end state, controls hidden. Because the PDF prints the same stage as present mode, there is no separate print stylesheet to keep in sync. The audit renders the PDF the same way to count its pages.
+**PDF.** `npm run pdf` renders `dist/deck.pdf` on request (`bin/pdf.mjs`; `npm run build` doesn't): it opens `/?pdf=1` at 1920×1080 in screen media, waits for `window.__deckReady` (fonts and every image loaded), then prints one 1920×1080 page per slide. `?pdf=1` adds `is-pdf` and `is-static` to `<html>` before first paint: every slide visible at full size, animations at their end state, controls hidden. Because the PDF prints the same stage as present mode, there is no separate print stylesheet to keep in sync. The audit renders the PDF the same way to count its pages. The PDF is tagged, has an outline from each slide's headline, and carries the deck's title, the company as author (the brand kit's name), the story's Kernel as subject, and the company and slide labels as keywords (a `keywords` prop on `Deck` overrides them).
+
+**Text (`dist/index.txt`).** `npm run build` writes the deck as plain text for AI agents (`bin/deck-text.mjs`): `# <title>`, the story's Kernel and Audience lines, then each slide as `## N. <its label>` and its words, in page order. The host serves it at `<link>/index.txt` and puts it in the frame page, which is all an assistant handed the link reads; versions without one get the same text made from `index.html` on the host. Speaker notes stay out unless `story.md` has a `Notes: public` line. Anything `hidden`, `aria-hidden="true"`, `display: none` or `data-text="skip"` is left out.
 
 ## Rules
 
@@ -34,6 +36,20 @@ How the starter renders each mode, and the traps that have broken real decks.
 10. **Scaling a slide to make it fit.** `transform: scale(0.85)` on one slide makes its type smaller than its neighbors and looks broken. Tighten the content instead.
 11. **Desktop alignment leaves holes on phones.** `justify-content: flex-end` or `space-between` that looks balanced on the stage can strand content at the bottom of a phone screen. Center or start-align in the phone block.
 12. **The controls cover a corner.** On the stage they sit bottom right (they fade while presenting); on phones, top right. Keep important content out of those corners.
+
+## Read by machines
+
+People hand the link or the PDF to an assistant. It reads `index.txt` (or the frame page's copy of it) and the PDF's text layer, often with page images. So what the slides show is what those carry, and nothing else:
+
+- **One real-text `h1` or `h2` per slide.** It is the PDF outline's entry and the slide's line in `index.txt`. A headline drawn as an image or SVG reads as nothing.
+- **`alt` on every image**: what it shows, or `alt=""` for decoration. Logos in a customer wall get their company's name.
+- **No near-invisible text.** Text faded to nothing, under 4px, the color of its background, clipped away or parked off the slide is still in the PDF's text layer, so a model reads words nobody sees. Delete it or show it.
+- **The PDF shows what the screen shows.** Every word visible on screen must be visible at `?pdf=1`. Hover-only content is a `.hover-only` element inside a `.hover-host`; the PDF shows it where it sits, so place it where it reads as a caption. Counters print their value and entrances their end.
+- **DOM order is reading order.** Headline, then subhead, proof and attribution, each logical unit (one person's name, role and bio) inside one container. Don't reorder with CSS `order`, reversed flex or absolute moves; extractors that follow the content stream (PyMuPDF, `pdftotext -raw`) read the page order.
+- **Grids read line by line in some extractors.** Ones that sort by position (`pdftotext`'s default, PyMuPDF with `sort=True`) read text whose lines align across columns as one line across the slide: a three-card row prints its three titles, then its bodies. Measured October 31, 2026 with poppler 26.06 and PyMuPDF 1.28: no CSS column flow or stagger fixes this. A list keeps its order when it sits in one column, on one row, or with items under 0.8em apart (each row then reads as one line); a card reads whole when its title and body share a type size. The audit notes lists `pdftotext` reads out of order.
+- **Every `story.md` headline appears, in order, in `index.txt` and in the PDF's text.** If a slide says it differently, update `story.md` or the slide.
+
+The audit checks each of these (the PDF text checks need poppler's `pdftotext`; it says when they were skipped).
 
 ## Hosting
 

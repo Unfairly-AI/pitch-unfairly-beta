@@ -1,7 +1,10 @@
 // Layout audit for every mode the deck has to work in.
 // Usage: node bin/audit.mjs [base-url]   (exits 1 when anything needs fixing)
 import puppeteer from 'puppeteer';
-import { countPdfPages, renderPdf } from './render-pdf.mjs';
+import { readFile } from 'node:fs/promises';
+import { countPdfPages, renderPdf, settle } from './render-pdf.mjs';
+import { READ_CONTRAST, headlineOrderProblem, listOrderProblem, missingInPdf, pdfPagesText, readability, storyHeadlines, visibleWords } from './deck-checks.mjs';
+import { deckIndexText } from './deck-text.mjs';
 import { assertThisDeck } from './this-deck.mjs';
 import { clearStamp, stampPass } from './audit-stamp.mjs';
 import { blend, contrastFloor, contrastRatio, luminance, parseColor } from './contrast.mjs';
@@ -34,8 +37,14 @@ const MODES = [
 const PHONE_BODY_MIN = 15;
 
 const problems = [];
+const notes = [];
 let slideCount = 0;
 const report = (mode, msg) => problems.push(`${mode}: ${msg}`);
+// Read by machines: the stage's words and lists, for the screen and PDF checks below.
+let stageWords = null;
+let stageLists = [];
+const story = await readFile('story.md', 'utf8').catch(() => '');
+const headlines = storyHeadlines(story);
 
 // On brand: slides take every color from the brand kit's tokens. A raw color
 // in a slide is a color the kit doesn't control.
@@ -123,9 +132,9 @@ try {
         const name = slide.id;
         const box = slide.getBoundingClientRect();
 
+        // Exactly one, in real text: the readability checks (stage) say so.
         const headline = slide.querySelector('h1, h2');
-        if (!headline) out.issues.push(`${name}: no h1/h2 headline`);
-        else {
+        if (headline) {
           const lines = Math.round(headline.getBoundingClientRect().height / parseFloat(getComputedStyle(headline).lineHeight));
           if (lines > maxLines) out.issues.push(`${name}: headline wraps to ${lines} lines (max ${maxLines}); shorten it or widen its column`);
         }
@@ -326,6 +335,18 @@ try {
       return out;
     }, minFont, maxLines, mode === 'stage', large, checkContrast, PHONE_BODY_MIN);
 
+    // What a machine reads off the stage, which is what the PDF prints.
+    if (mode === 'stage') {
+      await page.evaluate(settle);
+      await page.addScriptTag({ content: READ_CONTRAST });
+      result.issues.push(...await page.evaluate(readability));
+      stageWords = await page.evaluate(visibleWords);
+      stageLists = await page.evaluate(() => [...document.querySelectorAll('.slide')].map((slide) =>
+        [...slide.querySelectorAll('ul, ol')]
+          .map((list) => [...list.children].filter((li) => li.tagName === 'LI' && li.getClientRects().length).map((li) => li.innerText.trim()).filter(Boolean))
+          .filter((items) => items.length >= 3)));
+    }
+
     if (mode === 'stage' && result.boxed.length > Math.ceil(result.slides / 2)) {
       result.issues.push(`${result.boxed.length} of ${result.slides} slides put their content in bordered or shadowed boxes (${result.boxed.join(', ')}). At most half may; let type, numbers, images, and color carry the rest`);
     }
@@ -350,6 +371,30 @@ try {
     await page.close();
   }
 
+  // On screen, every slide shows what its PDF page shows: nothing only the
+  // screen has (text the PDF leaves hidden, a state only JavaScript reaches).
+  if (stageWords) {
+    const page = await browser.newPage();
+    await page.setViewport({ width: 1920, height: 1080 });
+    await page.goto(`${base}/`, { waitUntil: 'load' });
+    await page.waitForFunction(() => window.__deckReady === true, { timeout: 15000 }).catch(() => {});
+    await page.evaluate(() => document.documentElement.classList.remove('is-armed'));
+    await page.evaluate(settle);
+    const gone = missingInPdf(await page.evaluate(visibleWords), stageWords);
+    gone.forEach(({ id, words }) => report('pdf', `${id}: on screen but missing from the PDF (?pdf=1): "${words.slice(0, 6).join(' ')}"${words.length > 6 ? ` and ${words.length - 6} more` : ''}; show it in the static state too`));
+    if (!gone.length) console.log('✓ pdf: every slide shows the same words on screen and in print');
+    await page.close();
+  }
+
+  // index.txt (what an assistant handed the link reads) carries every story headline, in order.
+  if (headlines.length) {
+    const html = await fetch(`${base}/`).then((r) => r.text()).catch(() => '');
+    const text = deckIndexText(html, story) ?? '';
+    const miss = headlineOrderProblem(headlines, text);
+    if (miss) report('text', `index.txt: story.md's headline for "${miss.slide}" is ${miss.why} ("${miss.headline}"); make the slide say it, or update story.md`);
+    else console.log(`✓ text: index.txt reads all ${headlines.length} story headlines in order`);
+  }
+
   // The real PDF: one 16:9 page per slide. --quick skips it while iterating.
   const bytes = process.argv.includes('--quick') ? null : await renderPdf(browser, base).catch((error) => {
     report('pdf', `export failed: ${error.message}`);
@@ -363,10 +408,27 @@ try {
     await page.close();
     if (pages !== slides) report('pdf', `${pages} pages for ${slides} slides (a slide is spilling onto extra pages)`);
     else console.log(`✓ pdf: ${pages} pages, ${(bytes.length / 1024).toFixed(0)} KB`);
+
+    // Its text layer, as poppler's pdftotext reads it: every story headline in
+    // order, and lists in their own order (advice only: text extractors that
+    // sort by position read aligned columns line by line across the slide).
+    const text = await pdfPagesText(bytes);
+    if (!text) notes.push('pdf text: not checked (install poppler for pdftotext)');
+    else {
+      const miss = headlines.length ? headlineOrderProblem(headlines, text.join('\n')) : null;
+      if (miss) report('pdf', `text layer: story.md's headline for "${miss.slide}" is ${miss.why} ("${miss.headline}"); set it as live text on its slide`);
+      else if (headlines.length) console.log(`✓ pdf: the text layer reads all ${headlines.length} story headlines in order`);
+      stageLists.forEach((lists, i) => lists.forEach((items) => {
+        const read = listOrderProblem(items, text[i] ?? '');
+        if (read) notes.push(`pdf page ${i + 1}: pdftotext reads a ${items.length}-item list as "${read.slice(0, 4).join(' / ')}…". Readers that sort by position read aligned items line by line; for list order, stack it in one column, keep it on one row, or set the items under 0.8em apart so each row reads as a line`);
+      }));
+    }
   }
 } finally {
   await browser.close();
 }
+
+notes.forEach((n) => console.log(`  ! ${n}`));
 
 if (problems.length) {
   console.error(`\n${problems.length} problem${problems.length === 1 ? '' : 's'} to fix before shipping:`);

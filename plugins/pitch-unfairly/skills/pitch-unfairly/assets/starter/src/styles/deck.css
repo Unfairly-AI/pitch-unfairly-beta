@@ -307,6 +307,22 @@ svg {
   to { opacity: 1; transform: none; }
 }
 
+/*
+  Hover-only content: a .hover-only element inside a .hover-host shows when
+  the host is hovered or focused. A PDF can't be hovered, so ?pdf=1 shows it
+  where it sits, as the caption it is. Place it where a caption reads well.
+*/
+.hover-host .hover-only {
+  opacity: 0;
+  transition: opacity var(--dur-hover) var(--ease-hover);
+}
+
+.hover-host:hover .hover-only,
+.hover-host:focus-within .hover-only,
+html.is-static .hover-only {
+  opacity: 1;
+}
+
 /* ---------- Motion kit ----------
    Showpieces that animate the slide's point. Each one's resting style is its
    finished state, so PDF, reduced motion, and no-JS all show the end. */

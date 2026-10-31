@@ -3,13 +3,18 @@
 import '../brand/fonts';
 import '../brand/brand.css';
 import '../styles/deck.css';
+import { brandName } from '../brand/assets';
 
 interface Props {
   title: string;
   description?: string;
+  /** The PDF's Keywords. Defaults to the company and the slide labels. */
+  keywords?: string;
 }
 
-const { title, description = '' } = Astro.props;
+// The company (the brand kit's name) is the PDF's Author; the story's Kernel,
+// from the built index.txt, is its Subject.
+const { title, description = '', keywords = '' } = Astro.props;
 ---
 
 <!doctype html>
@@ -31,6 +36,8 @@ const { title, description = '' } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
+    {brandName && <meta name="author" content={brandName} />}
+    {keywords && <meta name="keywords" content={keywords} />}
   </head>
   <body>
     <main class="stage" id="stage">
