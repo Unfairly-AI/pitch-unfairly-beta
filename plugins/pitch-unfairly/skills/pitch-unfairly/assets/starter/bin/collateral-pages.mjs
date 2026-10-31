@@ -71,7 +71,10 @@ h1{margin:0;font-family:${font('display')};font-size:clamp(34px,5vw,60px);font-w
 .proofs figure.art img{box-shadow:none}.proofs.n2 figure img{max-height:70vh}
 .note{margin:32px 0 22px;max-width:640px;padding:12px 20px;border-left:2px solid var(--accent);border-right:2px solid var(--accent)}.note p{margin:0;font-size:17px;line-height:1.45}
 .dls{display:flex;flex-wrap:wrap;gap:12px}.dl{display:inline-flex;align-items:center;gap:12px;padding:13px 20px;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:15px;text-decoration:none;border-radius:4px}.dl span{font-weight:400;font-size:13px}
-@media(max-width:640px){.proofs.n2{grid-template-columns:1fr}}`;
+@media(max-width:640px){.proofs.n2{grid-template-columns:1fr}}
+.family{margin:44px 0 14px;font-size:20px;font-weight:700}.placed{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:24px;align-items:center;padding:18px 0;border-top:1px solid color-mix(in srgb,var(--ink) 12%,var(--paper))}
+.placed img{display:block;max-width:100%;max-height:340px;box-shadow:0 6px 18px rgb(0 0 0/.12)}.placed strong{display:block;font-size:16px}.placed small{display:block;margin:4px 0 12px;color:var(--muted);font-size:14px}
+.placed .dl{padding:9px 14px;font-size:13px}@media(max-width:640px){.placed{grid-template-columns:1fr;gap:12px}}`;
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const mb = (n) => (n >= 1048576 ? `${(n / 1048576).toFixed(1)} MB` : `${Math.max(1, Math.round(n / 1024))} KB`);
@@ -132,6 +135,8 @@ try {
     await copyFile(logoSrc, join(dir, logo));
     const figs = [];
     const dls = [];
+    const placed = l.sizes > 1;
+    let family = null;
     for (const it of l.items) {
       if (it.role === 'merch') {
         // Art shows on its garment: white ink vanishes on a light page.
@@ -140,17 +145,26 @@ try {
         figs.push(`<figure class="art"><img src="${it.view}" alt="${esc(it.alt)}" style="background:${ground}"></figure>`);
       } else {
         await writeView(join(ART, it.proof), join(dir, it.view));
-        figs.push(`<figure><img src="${it.view}" alt="${esc(it.alt)}"></figure>`);
+        if (!placed) figs.push(`<figure><img src="${it.view}" alt="${esc(it.alt)}"></figure>`);
       }
       if (it.download) {
-        await copyFile(join(ART, it.source), join(dir, it.download));
-        dls.push(`<a class="dl" href="${it.download}" download>${esc(it.label)}<span>${mb((await stat(join(dir, it.download))).size)}</span></a>`);
+        if (it.download.endsWith('.jpg') && it.source.endsWith('.png')) {
+          const { default: sharp } = await import('sharp');
+          await sharp(join(ART, it.source)).flatten({ background: '#000000' }).jpeg({ quality: 95, chromaSubsampling: '4:4:4' }).toFile(join(dir, it.download));
+        } else await copyFile(join(ART, it.source), join(dir, it.download));
+        const dl = `<a class="dl" href="${it.download}" download>${esc(it.label)}<span>${mb((await stat(join(dir, it.download))).size)}</span></a>`;
+        if (!placed) dls.push(dl);
+        else {
+          // Each placement on its own row, under its family: its picture, its name and real size, its file.
+          if (it.family && it.family !== family) { family = it.family; figs.push(`<h2 class="family">${esc(family)}</h2>`); }
+          figs.push(`<figure class="placed"><img src="${it.view}" alt="${esc(it.placement)}" loading="lazy"><figcaption><strong>${esc(it.placement)}</strong><small>${esc(it.size)}</small>${dl}</figcaption></figure>`);
+        }
       }
     }
     const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(l.title)} · ${esc(kit.identity?.name ?? '')}</title><style>${css}</style></head>
 <body><header><img class="logo" src="${logo}" alt="${esc(kit.identity?.name ?? '')}"></header>
 <main><p class="eyebrow"><i></i>${esc(l.eyebrow)}</p><h1>${esc(l.title)}</h1><p class="spec">${esc(l.spec)}</p>
-<div class="proofs n${figs.length}">${figs.join('')}</div>
+${placed ? `<div class="placements">${figs.join('')}</div>` : `<div class="proofs n${figs.length}">${figs.join('')}</div>`}
 ${l.caption ? `<div class="note"><p>${esc(l.caption)}</p></div>` : ''}<div class="dls">${dls.join('')}</div></main></body></html>\n`;
     await writeFile(join(dir, 'index.html'), html);
     const files = [];

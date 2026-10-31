@@ -105,6 +105,31 @@ A piece imports `../.engine/canvas.js` and calls `ready()` when it is drawn:
     row between solid ink, where two clipped boxes meet mid-pixel) fails the piece; draw sliced type with `drawSlices`. Leave garment-colored areas empty;
     don't print white ink on a white shirt.
 
+## One design in every placement
+
+A city campaign buys dozens of sizes at once: bus kings and tails, shelters, kiosks, platform
+posters, 48 ft bulletins, airport screens. Don't design each one. Write one piece that rearranges
+itself by shape, and list it once per format.
+- **Lay it out by shape.** Size everything in container units and pick the arrangement with
+  `@container canvas (min-aspect-ratio: …)`: portrait and square (copy at the foot), wide (copy
+  beside the photo) and long-and-low (a stat that reads at speed). Keep copy inside
+  `--bleed + --safe-*`, and give it a margin of its own (`max(var(--safe-l), 4cqmin)`) where a spec
+  states no safe area.
+- **No blend modes or CSS filters on print pieces.** Either one flattens the whole PDF into one
+  bitmap: the type stops being vector and a shelter poster weighs 37 MB instead of 1.5. Grade the
+  photo in its file and use plain opacity for tints.
+- **City files.** `bin/collateral/specs/` reads every `.json` in it. `ooh-san-francisco.json` lists
+  San Francisco's placements with a published size, by media owner (Intersection for Muni, Clear
+  Channel, Outfront for BART, Caltrain and billboards, SFO), each with its source and confidence.
+  Add a market the same way. A digital screen there has `"platform": "digital"` and its `canvas` in
+  pixels; it renders as a JPG, the format media owners ask for.
+- **Mechanicals.** A format with `mechanical` (`{ "scale": 1/24, "label": "1/2 in = 1 ft" }`) writes
+  its PDF at that scale, as the media owner's spec asks; past 200 in, a full-size page breaks PDF's
+  page limit.
+- **One link holds them all.** List every piece on one link in `pages`; its page groups them by
+  family, names each by its placement and real size, and numbers the files in that order, so the
+  gallery's Formats tab reads "Muni bus king", "BART liveboard" in the same order.
+
 ## Rules
 
 - Follow the brand's own examples. When its guidelines show the piece you're making, match the

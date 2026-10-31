@@ -4,11 +4,13 @@ import { PX_IN, printFormats, resolveFormat, selectPrint } from '../bin/collater
 
 const formats = printFormats();
 
-test('every print and merch format traces to a source and states its size', () => {
-  assert.ok(formats.length >= 20);
+test('every print, merch and digital format traces to a source and states its size', () => {
+  assert.ok(formats.length >= 60);
+  assert.equal(new Set(formats.map((f) => f.id)).size, formats.length, 'format ids are unique across spec files');
   for (const f of formats) {
-    assert.ok(['print', 'merch'].includes(f.platform), `${f.id} platform ${f.platform}`);
-    assert.ok(f.trim?.w > 0 && f.trim?.h > 0, `${f.id} has no trim`);
+    assert.ok(['print', 'merch', 'digital'].includes(f.platform), `${f.id} platform ${f.platform}`);
+    if (f.platform === 'digital') assert.ok(f.canvas?.w > 0 && f.canvas?.h > 0, `${f.id} has no pixel size`);
+    else assert.ok(f.trim?.w > 0 && f.trim?.h > 0, `${f.id} has no trim`);
     assert.ok(f.sources?.length && f.sources.every((s) => /^https?:\/\//.test(s.url)), `${f.id} sources`);
     assert.ok(['official', 'secondary', 'unverified'].includes(f.confidence), `${f.id} confidence`);
   }
@@ -44,4 +46,32 @@ test('merch resolves as merch, social ids resolve through the social registry, u
   assert.equal(resolveFormat('print.nope'), null);
   assert.ok(selectPrint(formats, ['merch']).every((f) => f.platform === 'merch'));
   assert.ok(selectPrint(formats, ['print.poster.*']).length >= 3);
+});
+
+test('ACCEPTANCE: a city file adds its placements: every San Francisco format resolves, screens at their pixels', () => {
+  const sf = formats.filter((f) => f.market === 'San Francisco');
+  assert.ok(sf.length >= 40, `${sf.length} San Francisco formats`);
+  for (const s of sf) {
+    const f = resolveFormat(s.id);
+    assert.ok(f, s.id);
+    assert.ok(s.family && s.owner, `${s.id} names its family and media owner`);
+    if (s.platform === 'digital') {
+      assert.equal(f.kind, 'screen');
+      assert.deepEqual(f.layout, { w: s.canvas.w, h: s.canvas.h });
+    } else assert.equal(f.kind, 'print');
+  }
+  // Outfront's 14 x 48 bulletin: 48 ft viewable plus 8 in bleed, safety 23.25 x 6.25 in at 1/2 in = 1 ft.
+  const b = resolveFormat('print.ooh.sf.bulletin_outfront');
+  assert.deepEqual(b.trim, { w: 576, h: 168 });
+  assert.equal(b.bleed, 8);
+  assert.equal(b.safe.l, 9);
+  assert.deepEqual(b.spec.mechanical, { scale: 1 / 24, label: '1/2 in = 1 ft' });
+});
+
+test('a mechanical stays under PDF\'s 200 in page limit', () => {
+  for (const s of formats.filter((x) => x.trim)) {
+    const f = resolveFormat(s.id);
+    const k = s.mechanical?.scale ?? 1;
+    assert.ok((f.trim.w + 2 * f.bleed) * k <= 200 && (f.trim.h + 2 * f.bleed) * k <= 200, `${s.id} prints ${(f.trim.w + 2 * f.bleed) * k} in wide: give it a mechanical scale`);
+  }
 });

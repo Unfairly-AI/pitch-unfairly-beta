@@ -21,3 +21,19 @@ and a value that can't be sourced is null with a note. Never guess. Each format 
   "most_common": true
 }
 ```
+
+## More spec files: markets and screens
+
+Every `.json` in this folder is read (print-merch.json first; an id is used once). A market file such
+as `ooh-san-francisco.json` adds `"market"`, `"family"` (Transit, Rail, Street furniture, Billboards,
+Airport, Digital OOH, Wild posting) and `"owner"` (the media owner) to each format, and may add:
+
+```json
+{
+  "mechanical": { "scale": 0.0416667, "label": "1/2 in = 1 ft" },   // the PDF is drawn at this scale
+  "platform": "digital", "canvas": { "w": 1400, "h": 400 },          // a digital screen, in pixels
+  "safe_px": { "left": 0, "right": 0, "top": 0, "bottom": 0 }        // optional, for a screen
+}
+```
+
+A format whose trim plus bleed passes 200 in needs a `mechanical`; the registry test enforces it.

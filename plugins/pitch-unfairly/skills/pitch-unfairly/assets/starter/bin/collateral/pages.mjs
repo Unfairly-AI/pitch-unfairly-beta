@@ -96,7 +96,8 @@ export function planPages(set, { formatOf, titleOf }) {
     if (!real.length) { problems.push(`${where}: holds no piece with a format (a mockup alone has nothing to download)`); continue; }
     const fmts = real.map((p) => [p, formatOf(p.format)]);
     for (const [p, f] of fmts) if (!f) problems.push(`${where}: piece "${p.id}" has unknown format ${p.format}`);
-    const kinds = [...new Set(fmts.map(([, f]) => f?.kind).filter(Boolean))];
+    // A digital out-of-home screen rides with the print placements it's bought alongside.
+    const kinds = [...new Set(fmts.map(([, f]) => (f?.kind === 'screen' && f.spec?.platform === 'digital' ? 'print' : f?.kind)).filter(Boolean))];
     if (kinds.length > 1) problems.push(`${where}: mixes ${kinds.join(' and ')} pieces; one link is one type`);
     const type = TYPE_OF_KIND[kinds[0]];
     if (l.type && type && l.type !== type) problems.push(`${where}: says type ${l.type} but its pieces are ${type} (from their formats)`);
@@ -114,6 +115,7 @@ export function planPages(set, { formatOf, titleOf }) {
     }
 
     const variants = [...new Set(real.map((p) => p.variant).filter(Boolean))];
+    const placedSizes = new Set(real.map((x) => x.format)).size;
     const items = [];
     const counts = {};
     for (const p of pieces) {
@@ -125,21 +127,33 @@ export function planPages(set, { formatOf, titleOf }) {
       const fmt = p.mockup ? null : formatOf(p.format);
       const role = p.mockup ? 'mockup' : fmt?.kind;
       const i = (seen[role] = (seen[role] ?? -1) + 1);
-      const side = sideLabel(i, counts[role]);
+      // Pieces in different sizes are named by their placement, not numbered.
+      const side = new Set(real.map((x) => x.format)).size > 1 ? '' : sideLabel(i, counts[role]);
       const it = { id: p.id, role, proof: `proof/${p.id}.png` };
+      // A set of placements names its files after them, numbered in the link's order: the gallery's
+      // Formats tab lists them by file name ("07-BART-car-card" reads "BART car card").
+      const stem = placedSizes > 1 && fmt?.spec?.name
+        ? `${String(items.length + 1).padStart(2, '0')}-${fmt.spec.name.replace(/['’]/g, '').replace(/[^A-Za-z0-9.]+/g, '-').replace(/^-|-$/g, '')}`
+        : p.id;
       // The view and the download are always different files: an <a download> pointing at an
       // image the page also shows opens in the frame instead of saving.
       if (role === 'merch') {
-        it.view = `files/${p.id}-view.png`;
+        it.view = `files/${stem}-view.png`;
         it.source = `print/${p.id}.png`;
-        it.download = `files/${p.id}.png`;
+        it.download = `files/${stem}.png`;
         it.label = `Print art PNG${side} · ${fmt.dpi.rec} dpi, transparent`;
       } else {
-        it.view = `files/${p.id}-view.jpg`;
-        if (role === 'print') { it.source = `print/${p.id}.pdf`; it.download = `files/${p.id}.pdf`; it.label = `Print PDF${side}`; }
-        if (role === 'screen') { it.source = `proof/${p.id}.png`; it.download = `files/${p.id}.png`; it.label = `Post image PNG${side} · ${fmt.spec.canvas.w} × ${fmt.spec.canvas.h}`; }
+        it.view = `files/${stem}-view.jpg`;
+        if (role === 'print') { it.source = `print/${p.id}.pdf`; it.download = `files/${stem}.pdf`; it.label = `Print PDF${side}${fmt.spec?.mechanical ? ` · ${fmt.spec.mechanical.label} mechanical` : ''}`; }
+        if (role === 'screen') {
+          // A digital out-of-home screen takes a JPG (the media owners' specs); a social post keeps its PNG.
+          const jpg = fmt.spec.platform === 'digital';
+          it.source = `proof/${p.id}.png`; it.download = `files/${stem}.${jpg ? 'jpg' : 'png'}`;
+          it.label = `${jpg ? 'Screen image JPG' : 'Post image PNG'}${side} · ${fmt.spec.canvas.w} × ${fmt.spec.canvas.h}`;
+        }
       }
       it.alt = `${l.title}${side ? ` (${side.replace(' · ', '')})` : ''}`;
+      if (fmt) { it.placement = fmt.spec?.name ?? p.format; it.size = fmt.kind === 'screen' ? `${fmt.spec.canvas.w} × ${fmt.spec.canvas.h} px` : specLine(fmt).replace(/^.*? · (?=[^·]*$)/, ''); it.family = fmt.spec?.family ?? null; }
       if (role === 'merch' && l.ground) it.ground = l.ground;
       items.push(it);
     }
@@ -149,7 +163,9 @@ export function planPages(set, { formatOf, titleOf }) {
       title: l.title,
       page_title: pages.suffix ? `${l.title} · ${pages.suffix}` : l.title,
       eyebrow: eyebrow(type, variants.length === 1 ? variants[0] : null, pages.variants),
-      spec: fmts[0][1] ? specLine(fmts[0][1], real.length) : '',
+      // One design in many sizes (a city's out-of-home placements): each piece is named on the page instead.
+      sizes: new Set(real.map((p) => p.format)).size,
+      spec: new Set(real.map((p) => p.format)).size > 1 ? `${real.length} placements, one design` : fmts[0][1] ? specLine(fmts[0][1], real.length) : '',
       caption: l.caption ?? '',
       items,
     });

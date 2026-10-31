@@ -114,7 +114,21 @@ async function main() {
           if (seams.length) row.problems.push(`print file has ${seams.length} hairline seam row(s) at y ${seams.slice(0, 8).join(', ')}: draw sliced type with drawSlices(DPR) from ../.engine/slices.js`);
         } else {
           row.print = join(OUT, 'print', `${p.id}.pdf`);
-          await page.pdf({ path: row.print, width: `${f.trim.w + 2 * f.bleed}in`, height: `${f.trim.h + 2 * f.bleed}in`, printBackground: true, pageRanges: '1', scale: 96 / PX_IN });
+          // A billboard's file is a mechanical at the scale its media owner asks for (1/2 in = 1 ft):
+          // past 200 in a full-size page breaks PDF's page limit, and printers enlarge the mechanical.
+          // A piece lays out in container units, so it's drawn again at the mechanical's own size.
+          const scale = f.spec?.mechanical?.scale ?? 1;
+          if (scale !== 1) {
+            const mw = Math.round(W * scale), mh = Math.round(H * scale);
+            const mq = new URLSearchParams(q);
+            mq.set('w', mw); mq.set('h', mh); mq.set('dpr', 4);
+            for (const k of ['bleed', 'safeL', 'safeR', 'safeT', 'safeB']) if (mq.has(k)) mq.set(k, +mq.get(k) * scale);
+            await page.setViewport({ width: mw, height: mh, deviceScaleFactor: 4 });
+            await page.goto(`${server.url}/collateral/${p.file}?${mq}`, { waitUntil: 'load' });
+            await page.waitForSelector('body[data-ready="1"]', { timeout: 180000 });
+            row.mechanical = f.spec.mechanical;
+          }
+          await page.pdf({ path: row.print, width: `${(f.trim.w + 2 * f.bleed) * scale}in`, height: `${(f.trim.h + 2 * f.bleed) * scale}in`, printBackground: true, pageRanges: '1', scale: 96 / PX_IN });
         }
       }
       report.push(row);

@@ -1,4 +1,4 @@
-// The print and merch formats collateral pieces can name, with finished size, bleed, safe area,
+// The print, merch and digital out-of-home formats collateral pieces can name, with finished size, bleed, safe area,
 // resolution and sources. Social formats (npm run social:formats) work too.
 //   npm run collateral:formats [-- print.poster merch --json --sources]
 import { printFormats, resolveFormat, selectPrint } from './collateral/registry.mjs';
@@ -13,8 +13,13 @@ if (args.includes('--json')) {
 const inch = (n) => `${+n.toFixed(3)}`;
 for (const s of chosen) {
   const f = resolveFormat(s.id, { print: chosen });
+  if (f.kind === 'screen') {
+    console.log(`  ${s.id.padEnd(46)} ${`${s.canvas.w}×${s.canvas.h} px`.padEnd(16)} digital screen${s.confidence !== 'official' ? ` [${s.confidence}]` : ''}`);
+    if (args.includes('--sources')) for (const src of s.sources ?? []) console.log(`      ${src.url}`);
+    continue;
+  }
   const safe = [f.safe.t, f.safe.r, f.safe.b, f.safe.l].every((x) => x === f.safe.t) ? inch(f.safe.t) : [f.safe.t, f.safe.r, f.safe.b, f.safe.l].map(inch).join('/');
-  console.log(`  ${s.id.padEnd(46)} ${`${inch(f.trim.w)}×${inch(f.trim.h)} in`.padEnd(16)} bleed ${inch(f.bleed)}  safe ${safe}  ${f.dpi.rec} ppi${s.most_common ? '  ★' : ''}${s.confidence !== 'official' ? ` [${s.confidence}]` : ''}`);
+  console.log(`  ${s.id.padEnd(46)} ${`${inch(f.trim.w)}×${inch(f.trim.h)} in`.padEnd(16)} bleed ${inch(f.bleed)}  safe ${safe}  ${f.dpi.rec} ppi${s.mechanical ? `  (${s.mechanical.label} mechanical)` : ''}${s.most_common ? '  ★' : ''}${s.confidence !== 'official' ? ` [${s.confidence}]` : ''}`);
   if (args.includes('--sources')) for (const src of s.sources ?? []) console.log(`      ${src.url}`);
 }
 console.log(`\n${chosen.length} formats. ★ = the most common size of its kind. Use the printer's or vendor's template when they have one.`);

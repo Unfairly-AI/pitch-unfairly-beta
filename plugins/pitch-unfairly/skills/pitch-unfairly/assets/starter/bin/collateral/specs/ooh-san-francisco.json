@@ -1,0 +1,1378 @@
+{
+ "group": "ooh-san-francisco",
+ "schema": "print-format@1 (print) + digital (canvas px)",
+ "checked": "2026-10-30",
+ "notes": "San Francisco's out-of-home placements with published sizes, by media owner: Intersection (Muni), Clear Channel (shelters, newsracks, SFO), Outfront (BART, Caltrain, billboards), JCDecaux (kiosks; no published spec). Not listed, no published size: Muni kongs, ultra super kings, headliners, fullbacks and wraps; BART and Caltrain station dominations; BART triptychs and livescapes (screens with gaps); JCDecaux columns and totems.",
+ "formats": [
+  {
+   "id": "print.ooh.sf.muni_king",
+   "platform": "print",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Transit",
+   "owner": "Intersection (SFMTA)",
+   "placement": "Muni bus king",
+   "name": "Muni bus king",
+   "trim": {
+    "w": 144,
+    "h": 30,
+    "units": "in"
+   },
+   "bleed_in": 0,
+   "safe_in": 0,
+   "dpi": {
+    "min": 80,
+    "recommended": 100,
+    "note": "at finished size"
+   },
+   "confidence": "official",
+   "notes": "Size from Intersection's SF kit; bleed and safe area not published. OAAA transit guidance: 80-100 ppi at full size (1/4 scale at 320-400 ppi).",
+   "sources": [
+    {
+     "url": "https://ixn-p-81a77edd0ffa.s3.amazonaws.com/wp-content/uploads/2017/08/01122455/san-francisco-SFMTA-ooh-transit-advertising-media-kit-intersection-4.pdf",
+     "title": "Intersection, SFMTA San Francisco media kit",
+     "checked": "2026-10-30"
+    },
+    {
+     "url": "https://oaaa.org/wp-content/uploads/2022/09/OOH-Print-Production-Specifications-Cheat-Sheet.pdf",
+     "title": "OAAA OOH Print Production Specifications Cheat Sheet",
+     "checked": "2026-10-30"
+    }
+   ]
+  },
+  {
+   "id": "print.ooh.sf.muni_queen",
+   "platform": "print",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Transit",
+   "owner": "Intersection (SFMTA)",
+   "placement": "Muni bus queen",
+   "name": "Muni bus queen",
+   "trim": {
+    "w": 88,
+    "h": 30,
+    "units": "in"
+   },
+   "bleed_in": 0,
+   "safe_in": 0,
+   "dpi": {
+    "min": 80,
+    "recommended": 100,
+    "note": "at finished size"
+   },
+   "confidence": "official",
+   "notes": "Bleed not published. OAAA transit guidance: 80-100 ppi at full size (1/4 scale at 320-400 ppi).",
+   "sources": [
+    {
+     "url": "https://ixn-p-81a77edd0ffa.s3.amazonaws.com/wp-content/uploads/2017/08/01122455/san-francisco-SFMTA-ooh-transit-advertising-media-kit-intersection-4.pdf",
+     "title": "Intersection, SFMTA San Francisco media kit",
+     "checked": "2026-10-30"
+    },
+    {
+     "url": "https://oaaa.org/wp-content/uploads/2022/09/OOH-Print-Production-Specifications-Cheat-Sheet.pdf",
+     "title": "OAAA OOH Print Production Specifications Cheat Sheet",
+     "checked": "2026-10-30"
+    }
+   ]
+  },
+  {
+   "id": "print.ooh.sf.muni_tail",
+   "platform": "print",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Transit",
+   "owner": "Intersection (SFMTA)",
+   "placement": "Muni bus tail",
+   "name": "Muni bus tail",
+   "trim": {
+    "w": 70,
+    "h": 21,
+    "units": "in"
+   },
+   "bleed_in": 0,
+   "safe_in": 0,
+   "dpi": {
+    "min": 80,
+    "recommended": 100,
+    "note": "at finished size"
+   },
+   "confidence": "official",
+   "notes": "Bleed not published; other systems use 72 x 21. OAAA transit guidance: 80-100 ppi at full size (1/4 scale at 320-400 ppi).",
+   "sources": [
+    {
+     "url": "https://ixn-p-81a77edd0ffa.s3.amazonaws.com/wp-content/uploads/2017/08/01122455/san-francisco-SFMTA-ooh-transit-advertising-media-kit-intersection-4.pdf",
+     "title": "Intersection, SFMTA San Francisco media kit",
+     "checked": "2026-10-30"
+    },
+    {
+     "url": "https://oaaa.org/wp-content/uploads/2022/09/OOH-Print-Production-Specifications-Cheat-Sheet.pdf",
+     "title": "OAAA OOH Print Production Specifications Cheat Sheet",
+     "checked": "2026-10-30"
+    }
+   ]
+  },
+  {
+   "id": "print.ooh.sf.muni_bus_card",
+   "platform": "print",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Transit",
+   "owner": "Intersection (SFMTA)",
+   "placement": "Muni bus interior card",
+   "name": "Muni bus interior card",
+   "trim": {
+    "w": 28,
+    "h": 11,
+    "units": "in"
+   },
+   "bleed_in": 0,
+   "safe_in": 0,
+   "dpi": {
+    "min": null,
+    "recommended": 150,
+    "note": "at finished size"
+   },
+   "confidence": "official",
+   "notes": "Bleed and resolution not published; 150 dpi used for output.",
+   "sources": [
+    {
+     "url": "https://ixn-p-81a77edd0ffa.s3.amazonaws.com/wp-content/uploads/2017/08/01122455/san-francisco-SFMTA-ooh-transit-advertising-media-kit-intersection-4.pdf",
+     "title": "Intersection, SFMTA San Francisco media kit",
+     "checked": "2026-10-30"
+    }
+   ]
+  },
+  {
+   "id": "print.ooh.sf.muni_rail_card",
+   "platform": "print",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Rail",
+   "owner": "Intersection (SFMTA)",
+   "placement": "Muni light rail interior card",
+   "name": "Muni light rail interior card",
+   "trim": {
+    "w": 24,
+    "h": 8.5,
+    "units": "in"
+   },
+   "bleed_in": 0,
+   "safe_in": 0,
+   "dpi": {
+    "min": null,
+    "recommended": 150,
+    "note": "at finished size"
+   },
+   "confidence": "official",
+   "notes": "Bleed and resolution not published; 150 dpi used for output.",
+   "sources": [
+    {
+     "url": "https://ixn-p-81a77edd0ffa.s3.amazonaws.com/wp-content/uploads/2017/08/01122455/san-francisco-SFMTA-ooh-transit-advertising-media-kit-intersection-4.pdf",
+     "title": "Intersection, SFMTA San Francisco media kit",
+     "checked": "2026-10-30"
+    }
+   ]
+  },
+  {
+   "id": "print.ooh.sf.cable_car_queen",
+   "platform": "print",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Transit",
+   "owner": "Intersection (SFMTA)",
+   "placement": "Cable car queen",
+   "name": "Cable car queen",
+   "trim": {
+    "w": 88,
+    "h": 21,
+    "units": "in"
+   },
+   "bleed_in": 0,
+   "safe_in": 0,
+   "dpi": {
+    "min": 80,
+    "recommended": 100,
+    "note": "at finished size"
+   },
+   "confidence": "official",
+   "notes": "Part of a branded cable car. Bleed not published.",
+   "sources": [
+    {
+     "url": "https://ixn-p-81a77edd0ffa.s3.amazonaws.com/wp-content/uploads/2017/08/01122455/san-francisco-SFMTA-ooh-transit-advertising-media-kit-intersection-4.pdf",
+     "title": "Intersection, SFMTA San Francisco media kit",
+     "checked": "2026-10-30"
+    }
+   ]
+  },
+  {
+   "id": "print.ooh.sf.cable_car_headlight",
+   "platform": "print",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Transit",
+   "owner": "Intersection (SFMTA)",
+   "placement": "Cable car headlight, Powell lines",
+   "name": "Cable car headlight, Powell lines",
+   "trim": {
+    "w": 19,
+    "h": 21,
+    "units": "in"
+   },
+   "bleed_in": 0,
+   "safe_in": 0,
+   "dpi": {
+    "min": null,
+    "recommended": 150,
+    "note": "at finished size"
+   },
+   "confidence": "official",
+   "notes": "Powell lines only. Bleed not published.",
+   "sources": [
+    {
+     "url": "https://ixn-p-81a77edd0ffa.s3.amazonaws.com/wp-content/uploads/2017/08/01122455/san-francisco-SFMTA-ooh-transit-advertising-media-kit-intersection-4.pdf",
+     "title": "Intersection, SFMTA San Francisco media kit",
+     "checked": "2026-10-30"
+    }
+   ]
+  },
+  {
+   "id": "print.ooh.sf.muni_two_sheet",
+   "platform": "print",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Rail",
+   "owner": "Intersection (SFMTA)",
+   "placement": "Muni two-sheet",
+   "name": "Muni two-sheet",
+   "trim": {
+    "w": 60,
+    "h": 46,
+    "units": "in"
+   },
+   "bleed_in": 0,
+   "safe_in": 0,
+   "dpi": {
+    "min": 80,
+    "recommended": 100,
+    "note": "at finished size"
+   },
+   "confidence": "official",
+   "notes": "OAAA: 1/2 scale 30 x 23 at 160-200 ppi.",
+   "sources": [
+    {
+     "url": "https://ixn-p-81a77edd0ffa.s3.amazonaws.com/wp-content/uploads/2017/08/01122455/san-francisco-SFMTA-ooh-transit-advertising-media-kit-intersection-4.pdf",
+     "title": "Intersection, SFMTA San Francisco media kit",
+     "checked": "2026-10-30"
+    },
+    {
+     "url": "https://oaaa.org/wp-content/uploads/2022/09/OOH-Print-Production-Specifications-Cheat-Sheet.pdf",
+     "title": "OAAA OOH Print Production Specifications Cheat Sheet",
+     "checked": "2026-10-30"
+    }
+   ]
+  },
+  {
+   "id": "print.ooh.sf.bart_two_sheet",
+   "platform": "print",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Rail",
+   "owner": "Outfront (BART)",
+   "placement": "BART station two-sheet",
+   "name": "BART station two-sheet",
+   "trim": {
+    "w": 60,
+    "h": 46,
+    "units": "in"
+   },
+   "bleed_in": 0,
+   "safe_in": 0,
+   "dpi": {
+    "min": 80,
+    "recommended": 100,
+    "note": "at finished size"
+   },
+   "confidence": "secondary",
+   "notes": "Outfront lists two-sheets at BART; the size is the OAAA rail two-sheet standard, not a BART sheet. Confirm with Outfront.",
+   "sources": [
+    {
+     "url": "https://oaaa.org/wp-content/uploads/2022/09/OOH-Print-Production-Specifications-Cheat-Sheet.pdf",
+     "title": "OAAA OOH Print Production Specifications Cheat Sheet",
+     "checked": "2026-10-30"
+    }
+   ]
+  },
+  {
+   "id": "print.ooh.sf.bart_car_card",
+   "platform": "print",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Rail",
+   "owner": "Outfront (BART)",
+   "placement": "BART interior car card",
+   "name": "BART interior car card",
+   "trim": {
+    "w": 28,
+    "h": 11,
+    "units": "in"
+   },
+   "bleed_in": 0,
+   "safe_in": 0,
+   "dpi": {
+    "min": null,
+    "recommended": 150,
+    "note": "at finished size"
+   },
+   "confidence": "secondary",
+   "notes": "OAAA standard rack card; not confirmed for BART.",
+   "sources": [
+    {
+     "url": "https://www-archive.oaaa.org/Portals/0/Public%20PDFs/Standard%20OOH%20Media%20Formats.pdf",
+     "title": "OAAA Standard OOH Media Formats",
+     "checked": "2026-10-30"
+    }
+   ]
+  },
+  {
+   "id": "print.ooh.sf.caltrain_kong",
+   "platform": "print",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Rail",
+   "owner": "Outfront (Caltrain)",
+   "placement": "Caltrain kong, exterior",
+   "name": "Caltrain kong, exterior",
+   "trim": {
+    "w": 288,
+    "h": 41,
+    "units": "in"
+   },
+   "bleed_in": 0,
+   "safe_in": 0,
+   "dpi": {
+    "min": 80,
+    "recommended": 100,
+    "note": "at finished size"
+   },
+   "confidence": "official",
+   "notes": "2 per car, 14 per train; all 7 cars sold together. Mechanical at 1/4 scale per OAAA transit guidance.",
+   "sources": [
+    {
+     "url": "https://www.caltrain.com/media/1592/download",
+     "title": "Outfront, Caltrain media specifications (rev. 06/01/2026)",
+     "checked": "2026-10-30"
+    },
+    {
+     "url": "https://oaaa.org/wp-content/uploads/2022/09/OOH-Print-Production-Specifications-Cheat-Sheet.pdf",
+     "title": "OAAA OOH Print Production Specifications Cheat Sheet",
+     "checked": "2026-10-30"
+    }
+   ],
+   "mechanical": {
+    "scale": 0.25,
+    "label": "1/4 scale"
+   }
+  },
+  {
+   "id": "print.ooh.sf.caltrain_headliner",
+   "platform": "print",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Rail",
+   "owner": "Outfront (Caltrain)",
+   "placement": "Caltrain headliner",
+   "name": "Caltrain headliner",
+   "trim": {
+    "w": 62,
+    "h": 11,
+    "units": "in"
+   },
+   "bleed_in": 0,
+   "safe_in": 0,
+   "dpi": {
+    "min": null,
+    "recommended": 150,
+    "note": "at finished size"
+   },
+   "confidence": "official",
+   "notes": "8 per car.",
+   "sources": [
+    {
+     "url": "https://www.caltrain.com/media/1592/download",
+     "title": "Outfront, Caltrain media specifications (rev. 06/01/2026)",
+     "checked": "2026-10-30"
+    }
+   ]
+  },
+  {
+   "id": "print.ooh.sf.caltrain_bulkhead",
+   "platform": "print",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Rail",
+   "owner": "Outfront (Caltrain)",
+   "placement": "Caltrain bulkhead",
+   "name": "Caltrain bulkhead",
+   "trim": {
+    "w": 78,
+    "h": 36,
+    "units": "in"
+   },
+   "bleed_in": 0,
+   "safe_in": 0,
+   "dpi": {
+    "min": null,
+    "recommended": 150,
+    "note": "at finished size"
+   },
+   "confidence": "official",
+   "notes": "2 per car, at the staircases.",
+   "sources": [
+    {
+     "url": "https://www.caltrain.com/media/1592/download",
+     "title": "Outfront, Caltrain media specifications (rev. 06/01/2026)",
+     "checked": "2026-10-30"
+    }
+   ]
+  },
+  {
+   "id": "print.ooh.sf.caltrain_card",
+   "platform": "print",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Rail",
+   "owner": "Outfront (Caltrain)",
+   "placement": "Caltrain interior card",
+   "name": "Caltrain interior card",
+   "trim": {
+    "w": 32,
+    "h": 32,
+    "units": "in"
+   },
+   "bleed_in": 0,
+   "safe_in": 0,
+   "dpi": {
+    "min": null,
+    "recommended": 150,
+    "note": "at finished size"
+   },
+   "confidence": "official",
+   "notes": "2 per car.",
+   "sources": [
+    {
+     "url": "https://www.caltrain.com/media/1592/download",
+     "title": "Outfront, Caltrain media specifications (rev. 06/01/2026)",
+     "checked": "2026-10-30"
+    }
+   ]
+  },
+  {
+   "id": "print.ooh.sf.muni_shelter",
+   "platform": "print",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Street furniture",
+   "owner": "Clear Channel Outdoor (SFMTA)",
+   "placement": "Muni bus shelter",
+   "name": "Muni bus shelter",
+   "trim": {
+    "w": 48,
+    "h": 69,
+    "units": "in"
+   },
+   "bleed_in": 0,
+   "safe_in": 2,
+   "dpi": {
+    "min": 80,
+    "recommended": 150,
+    "note": "at finished size"
+   },
+   "confidence": "official",
+   "notes": "Clear Channel's national shelter spec: 48 x 69 overall, 46 x 67 visible, 44 x 65 safety. Not an SF-specific sheet.",
+   "sources": [
+    {
+     "url": "https://web.archive.org/web/20130816020650/http://clearchanneloutdoor.com/files/creative/art-specs-transit-shelters.pdf",
+     "title": "Clear Channel Outdoor, transit shelter art specs (2013)",
+     "checked": "2026-10-30"
+    },
+    {
+     "url": "https://oaaa.org/wp-content/uploads/2022/09/OOH-Print-Production-Specifications-Cheat-Sheet.pdf",
+     "title": "OAAA OOH Print Production Specifications Cheat Sheet",
+     "checked": "2026-10-30"
+    }
+   ],
+   "visible": {
+    "w": 46,
+    "h": 67,
+    "units": "in"
+   }
+  },
+  {
+   "id": "print.ooh.sf.newsrack",
+   "platform": "print",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Street furniture",
+   "owner": "Clear Channel Outdoor",
+   "placement": "Newsrack panel",
+   "name": "Newsrack panel",
+   "trim": {
+    "w": 59.5,
+    "h": 30.5,
+    "units": "in"
+   },
+   "bleed_in": 0,
+   "safe_in": 0,
+   "dpi": {
+    "min": 150,
+    "recommended": 150,
+    "note": "at finished size"
+   },
+   "confidence": "official",
+   "notes": "SF-specific sheet: 1/4 scale at 600 dpi (150 at full size), Duratrans or styrene.",
+   "sources": [
+    {
+     "url": "https://web.archive.org/web/20130815232425/http://clearchanneloutdoor.com/files/creative/art-specs-sf-newsracks.pdf",
+     "title": "Clear Channel Outdoor, San Francisco newsrack art specs (2013)",
+     "checked": "2026-10-30"
+    }
+   ],
+   "visible": {
+    "w": 57,
+    "h": 27,
+    "units": "in"
+   }
+  },
+  {
+   "id": "print.ooh.sf.metrolight",
+   "platform": "print",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Street furniture",
+   "owner": "Outfront",
+   "placement": "Metro light",
+   "name": "Metro light",
+   "trim": {
+    "w": 48,
+    "h": 69,
+    "units": "in"
+   },
+   "bleed_in": 0,
+   "safe_in": 2,
+   "dpi": {
+    "min": 100,
+    "recommended": 200,
+    "note": "at finished size"
+   },
+   "confidence": "official",
+   "notes": "800 dpi at 1/4 scale or 400 at 1/2 (200 at full size); 15 pt styrene.",
+   "sources": [
+    {
+     "url": "https://web.archive.org/web/20150824084925/http://www.outfrontmedia.com/Tools/OtherTools/DocumentLibrary/Production%20Specs/san-francisco-production-handbook.pdf",
+     "title": "Outfront San Francisco production handbook (Jan 2015)",
+     "checked": "2026-10-30"
+    }
+   ],
+   "visible": {
+    "w": 46,
+    "h": 67,
+    "units": "in"
+   }
+  },
+  {
+   "id": "print.ooh.sf.pole_banner",
+   "platform": "print",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Street furniture",
+   "owner": "Outfront",
+   "placement": "Light pole banner",
+   "name": "Light pole banner",
+   "trim": {
+    "w": 24,
+    "h": 72,
+    "units": "in"
+   },
+   "bleed_in": 0,
+   "safe_in": {
+    "left": 0.5,
+    "right": 0.5,
+    "top": 3,
+    "bottom": 3
+   },
+   "dpi": {
+    "min": 300,
+    "recommended": 300,
+    "note": "at finished size"
+   },
+   "confidence": "official",
+   "notes": "Two-sided block-out vinyl with 3 in pole pockets top and bottom; 300 dpi.",
+   "sources": [
+    {
+     "url": "https://web.archive.org/web/20150824084925/http://www.outfrontmedia.com/Tools/OtherTools/DocumentLibrary/Production%20Specs/san-francisco-production-handbook.pdf",
+     "title": "Outfront San Francisco production handbook (Jan 2015)",
+     "checked": "2026-10-30"
+    }
+   ]
+  },
+  {
+   "id": "print.ooh.sf.wild_posting",
+   "platform": "print",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Wild posting",
+   "owner": "Independent posting vendors",
+   "placement": "Wild posting",
+   "name": "Wild posting",
+   "trim": {
+    "w": 24,
+    "h": 36,
+    "units": "in"
+   },
+   "bleed_in": 0.125,
+   "safe_in": 0.25,
+   "dpi": {
+    "min": 150,
+    "recommended": 300,
+    "note": "at finished size"
+   },
+   "confidence": "secondary",
+   "notes": "Industry-standard wild posting size; bleed and safe area are general print conventions. Pasted in grids.",
+   "sources": [
+    {
+     "url": "https://wildposting.com/guide-to-wild-posting-poster-sizes/",
+     "title": "Wildposting.com, poster sizes",
+     "checked": "2026-10-30"
+    }
+   ]
+  },
+  {
+   "id": "print.ooh.sf.bulletin_outfront",
+   "platform": "print",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Billboards",
+   "owner": "Outfront",
+   "placement": "Bulletin 14 x 48 ft, Outfront",
+   "name": "Bulletin 14 x 48 ft, Outfront",
+   "trim": {
+    "w": 576,
+    "h": 168,
+    "units": "in"
+   },
+   "bleed_in": 8,
+   "safe_in": 9,
+   "dpi": {
+    "min": 12.5,
+    "recommended": 25,
+    "note": "at finished size"
+   },
+   "confidence": "official",
+   "notes": "Built at 1/2 in = 1 ft: viewable 24 x 7, bleed 24.75 x 7.75, safety 23.25 x 6.25 in at 300-600 dpi. Flex vinyl, 4 in pole pockets.",
+   "sources": [
+    {
+     "url": "https://web.archive.org/web/20150824084925/http://www.outfrontmedia.com/Tools/OtherTools/DocumentLibrary/Production%20Specs/san-francisco-production-handbook.pdf",
+     "title": "Outfront San Francisco production handbook (Jan 2015)",
+     "checked": "2026-10-30"
+    }
+   ],
+   "mechanical": {
+    "scale": 0.041666666666666664,
+    "label": "1/2 in = 1 ft"
+   }
+  },
+  {
+   "id": "print.ooh.sf.bulletin_cco",
+   "platform": "print",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Billboards",
+   "owner": "Clear Channel Outdoor",
+   "placement": "Bulletin 14 x 48 ft, Clear Channel",
+   "name": "Bulletin 14 x 48 ft, Clear Channel",
+   "trim": {
+    "w": 576,
+    "h": 168,
+    "units": "in"
+   },
+   "bleed_in": 6,
+   "safe_in": 0,
+   "dpi": {
+    "min": 12.5,
+    "recommended": 12.5,
+    "note": "at finished size"
+   },
+   "confidence": "official",
+   "notes": "6 in per edge = 2.5 in bleed + 3.5 in pocket; 1/4 in = 1 ft at 600 dpi.",
+   "sources": [
+    {
+     "url": "https://web.archive.org/web/20130810132846/http://clearchanneloutdoor.com/files/creative/art-specs-bulletins-14x48.pdf",
+     "title": "Clear Channel Outdoor, 14x48 bulletin art specs (2013)",
+     "checked": "2026-10-30"
+    }
+   ],
+   "mechanical": {
+    "scale": 0.020833333333333332,
+    "label": "1/4 in = 1 ft"
+   }
+  },
+  {
+   "id": "print.ooh.sf.bulletin_10x36",
+   "platform": "print",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Billboards",
+   "owner": "Clear Channel Outdoor",
+   "placement": "Bulletin 10.5 x 36 ft",
+   "name": "Bulletin 10.5 x 36 ft",
+   "trim": {
+    "w": 432,
+    "h": 126,
+    "units": "in"
+   },
+   "bleed_in": 6,
+   "safe_in": 0,
+   "dpi": {
+    "min": 12.5,
+    "recommended": 12.5,
+    "note": "at finished size"
+   },
+   "confidence": "official",
+   "notes": "2.5 in bleed + 3.5 in pocket per edge; 1/4 in = 1 ft at 600 dpi.",
+   "sources": [
+    {
+     "url": "https://web.archive.org/web/20130816001751/http://clearchanneloutdoor.com/files/creative/art-specs-bulletins-10-6x36.pdf",
+     "title": "Clear Channel Outdoor, 10'6\" x 36' bulletin art specs (2013)",
+     "checked": "2026-10-30"
+    }
+   ],
+   "mechanical": {
+    "scale": 0.020833333333333332,
+    "label": "1/4 in = 1 ft"
+   }
+  },
+  {
+   "id": "print.ooh.sf.bulletin_20x60",
+   "platform": "print",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Billboards",
+   "owner": "Outfront",
+   "placement": "Large bulletin 20 x 60 ft",
+   "name": "Large bulletin 20 x 60 ft",
+   "trim": {
+    "w": 720,
+    "h": 240,
+    "units": "in"
+   },
+   "bleed_in": 8,
+   "safe_in": 0,
+   "dpi": {
+    "min": 12.5,
+    "recommended": 25,
+    "note": "at finished size"
+   },
+   "confidence": "official",
+   "notes": "Finished 21'4\" x 61'4\" (4 in pockets + 4 in bleed per side), 300-600 dpi. The handbook gives no scale for this unit; built at 1/2 in = 1 ft like Outfront's bulletins.",
+   "sources": [
+    {
+     "url": "https://web.archive.org/web/20150824084925/http://www.outfrontmedia.com/Tools/OtherTools/DocumentLibrary/Production%20Specs/san-francisco-production-handbook.pdf",
+     "title": "Outfront San Francisco production handbook (Jan 2015)",
+     "checked": "2026-10-30"
+    }
+   ],
+   "mechanical": {
+    "scale": 0.041666666666666664,
+    "label": "1/2 in = 1 ft"
+   }
+  },
+  {
+   "id": "print.ooh.sf.skyway_wall",
+   "platform": "print",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Billboards",
+   "owner": "Outfront",
+   "placement": "Bay Bridge skyway wall",
+   "name": "Bay Bridge skyway wall",
+   "trim": {
+    "w": 720,
+    "h": 240,
+    "units": "in"
+   },
+   "bleed_in": 0,
+   "safe_in": 6,
+   "dpi": {
+    "min": 30,
+    "recommended": 30,
+    "note": "at finished size"
+   },
+   "confidence": "official",
+   "notes": "360 dpi at 1 in = 1 ft; no text within 6 in of the edge; 13 oz vinyl, grommets, no pockets.",
+   "sources": [
+    {
+     "url": "https://web.archive.org/web/20150824084925/http://www.outfrontmedia.com/Tools/OtherTools/DocumentLibrary/Production%20Specs/san-francisco-production-handbook.pdf",
+     "title": "Outfront San Francisco production handbook (Jan 2015)",
+     "checked": "2026-10-30"
+    }
+   ],
+   "mechanical": {
+    "scale": 0.08333333333333333,
+    "label": "1 in = 1 ft"
+   }
+  },
+  {
+   "id": "print.ooh.sf.wallscape_union_square",
+   "platform": "print",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Billboards",
+   "owner": "Outfront",
+   "placement": "Wallscape, Union Square",
+   "name": "Wallscape, Union Square",
+   "trim": {
+    "w": 240,
+    "h": 336,
+    "units": "in"
+   },
+   "bleed_in": 1,
+   "safe_in": 6,
+   "dpi": {
+    "min": 30,
+    "recommended": 30,
+    "note": "at finished size"
+   },
+   "confidence": "official",
+   "notes": "Adhesive vinyl in vertical strips; 360 dpi at 1 in = 1 ft; 6 in text margin. Other SF wallscapes vary unit by unit.",
+   "sources": [
+    {
+     "url": "https://web.archive.org/web/20150824084925/http://www.outfrontmedia.com/Tools/OtherTools/DocumentLibrary/Production%20Specs/san-francisco-production-handbook.pdf",
+     "title": "Outfront San Francisco production handbook (Jan 2015)",
+     "checked": "2026-10-30"
+    }
+   ],
+   "mechanical": {
+    "scale": 0.08333333333333333,
+    "label": "1 in = 1 ft"
+   }
+  },
+  {
+   "id": "print.ooh.sf.premiere_panel",
+   "platform": "print",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Billboards",
+   "owner": "Outfront",
+   "placement": "Premiere panel 12 x 24 ft",
+   "name": "Premiere panel 12 x 24 ft",
+   "trim": {
+    "w": 294,
+    "h": 147,
+    "units": "in"
+   },
+   "bleed_in": 8,
+   "safe_in": 0,
+   "dpi": {
+    "min": 12.5,
+    "recommended": 25,
+    "note": "at finished size"
+   },
+   "confidence": "official",
+   "notes": "Finished size includes 4 in pockets + 4 in bleed per side. The handbook gives no scale; built at 1/2 in = 1 ft like Outfront's bulletins.",
+   "sources": [
+    {
+     "url": "https://web.archive.org/web/20150824084925/http://www.outfrontmedia.com/Tools/OtherTools/DocumentLibrary/Production%20Specs/san-francisco-production-handbook.pdf",
+     "title": "Outfront San Francisco production handbook (Jan 2015)",
+     "checked": "2026-10-30"
+    }
+   ],
+   "mechanical": {
+    "scale": 0.041666666666666664,
+    "label": "1/2 in = 1 ft"
+   }
+  },
+  {
+   "id": "print.ooh.sf.poster_30_sheet",
+   "platform": "print",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Billboards",
+   "owner": "Outfront",
+   "placement": "30-sheet poster",
+   "name": "30-sheet poster",
+   "trim": {
+    "w": 272,
+    "h": 125,
+    "units": "in"
+   },
+   "bleed_in": 0,
+   "safe_in": {
+    "left": 6,
+    "right": 6,
+    "top": 5,
+    "bottom": 5
+   },
+   "dpi": {
+    "min": 25,
+    "recommended": 25,
+    "note": "at finished size"
+   },
+   "confidence": "official",
+   "notes": "Paper, pasted; 300 dpi at 1 in = 1 ft; all art bleeds.",
+   "sources": [
+    {
+     "url": "https://web.archive.org/web/20150824084925/http://www.outfrontmedia.com/Tools/OtherTools/DocumentLibrary/Production%20Specs/san-francisco-production-handbook.pdf",
+     "title": "Outfront San Francisco production handbook (Jan 2015)",
+     "checked": "2026-10-30"
+    }
+   ],
+   "mechanical": {
+    "scale": 0.08333333333333333,
+    "label": "1 in = 1 ft"
+   }
+  },
+  {
+   "id": "print.ooh.sf.junior_poster",
+   "platform": "print",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Billboards",
+   "owner": "Outfront",
+   "placement": "Junior poster 6 x 12 ft",
+   "name": "Junior poster 6 x 12 ft",
+   "trim": {
+    "w": 144,
+    "h": 72,
+    "units": "in"
+   },
+   "bleed_in": 5,
+   "safe_in": 0,
+   "dpi": {
+    "min": 50,
+    "recommended": 100,
+    "note": "at finished size"
+   },
+   "confidence": "official",
+   "notes": "Flex vinyl, 5 in seamed pockets per side.",
+   "sources": [
+    {
+     "url": "https://web.archive.org/web/20150824084925/http://www.outfrontmedia.com/Tools/OtherTools/DocumentLibrary/Production%20Specs/san-francisco-production-handbook.pdf",
+     "title": "Outfront San Francisco production handbook (Jan 2015)",
+     "checked": "2026-10-30"
+    }
+   ]
+  },
+  {
+   "id": "print.ooh.sf.eight_sheet",
+   "platform": "print",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Billboards",
+   "owner": "Outfront",
+   "placement": "8-sheet poster",
+   "name": "8-sheet poster",
+   "trim": {
+    "w": 132,
+    "h": 60,
+    "units": "in"
+   },
+   "bleed_in": 0,
+   "safe_in": 0,
+   "dpi": {
+    "min": 25,
+    "recommended": 25,
+    "note": "at finished size"
+   },
+   "confidence": "official",
+   "notes": "Paper; 300 dpi at 1 in = 1 ft.",
+   "sources": [
+    {
+     "url": "https://web.archive.org/web/20150824084925/http://www.outfrontmedia.com/Tools/OtherTools/DocumentLibrary/Production%20Specs/san-francisco-production-handbook.pdf",
+     "title": "Outfront San Francisco production handbook (Jan 2015)",
+     "checked": "2026-10-30"
+    }
+   ],
+   "mechanical": {
+    "scale": 0.08333333333333333,
+    "label": "1 in = 1 ft"
+   }
+  },
+  {
+   "id": "print.ooh.sf.double_decker_side",
+   "platform": "print",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Transit",
+   "owner": "Outfront",
+   "placement": "Double-decker tour bus side",
+   "name": "Double-decker tour bus side",
+   "trim": {
+    "w": 412,
+    "h": 116,
+    "units": "in"
+   },
+   "bleed_in": 6,
+   "safe_in": 6,
+   "dpi": {
+    "min": 30,
+    "recommended": 30,
+    "note": "at finished size"
+   },
+   "confidence": "official",
+   "notes": "360 dpi at 1 in = 1 ft; 6 in text margin. Rear panel is 108 x 126 live.",
+   "sources": [
+    {
+     "url": "https://web.archive.org/web/20150824084925/http://www.outfrontmedia.com/Tools/OtherTools/DocumentLibrary/Production%20Specs/san-francisco-production-handbook.pdf",
+     "title": "Outfront San Francisco production handbook (Jan 2015)",
+     "checked": "2026-10-30"
+    }
+   ],
+   "mechanical": {
+    "scale": 0.08333333333333333,
+    "label": "1 in = 1 ft"
+   }
+  },
+  {
+   "id": "print.ooh.sf.sfo_diorama",
+   "platform": "print",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Airport",
+   "owner": "Clear Channel Airports",
+   "placement": "SFO backlit diorama",
+   "name": "SFO backlit diorama",
+   "trim": {
+    "w": 62,
+    "h": 43,
+    "units": "in"
+   },
+   "bleed_in": 0,
+   "safe_in": 0,
+   "dpi": {
+    "min": 80,
+    "recommended": 100,
+    "note": "at finished size"
+   },
+   "confidence": "secondary",
+   "notes": "OAAA standard diorama; SFO unit sizes and the operator are unconfirmed.",
+   "sources": [
+    {
+     "url": "https://oaaa.org/wp-content/uploads/2022/09/OOH-Print-Production-Specifications-Cheat-Sheet.pdf",
+     "title": "OAAA OOH Print Production Specifications Cheat Sheet",
+     "checked": "2026-10-30"
+    }
+   ],
+   "visible": {
+    "w": 60,
+    "h": 41,
+    "units": "in"
+   }
+  },
+  {
+   "id": "digital.sf.central_subway",
+   "platform": "digital",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Digital OOH",
+   "owner": "Intersection (SFMTA)",
+   "placement": "Central Subway digital screens",
+   "name": "Central Subway digital screens",
+   "canvas": {
+    "w": 3840,
+    "h": 2160
+   },
+   "color": "RGB",
+   "file": {
+    "types": [
+     "jpg",
+     "png"
+    ]
+   },
+   "confidence": "official",
+   "notes": "Platform screens and video walls; 15 s spots in a 150 s loop. The kit prints 3840H x 2160W; landscape assumed, confirm orientation.",
+   "sources": [
+    {
+     "url": "https://ixn-p-81a77edd0ffa.s3.amazonaws.com/wp-content/uploads/2017/08/01122455/san-francisco-SFMTA-ooh-transit-advertising-media-kit-intersection-4.pdf",
+     "title": "Intersection, SFMTA San Francisco media kit",
+     "checked": "2026-10-30"
+    }
+   ]
+  },
+  {
+   "id": "digital.sf.bart_liveboard",
+   "platform": "digital",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Digital OOH",
+   "owner": "Outfront (BART)",
+   "placement": "BART liveboard",
+   "name": "BART liveboard",
+   "canvas": {
+    "w": 1080,
+    "h": 1920
+   },
+   "color": "RGB",
+   "file": {
+    "types": [
+     "jpg",
+     "png"
+    ]
+   },
+   "confidence": "secondary",
+   "notes": "From Outfront's NYC transit spec (same product); unconfirmed for BART.",
+   "sources": [
+    {
+     "url": "https://www.outfront.com/resources/specs",
+     "title": "Outfront digital transit specs (NYC)",
+     "checked": "2026-10-30"
+    }
+   ]
+  },
+  {
+   "id": "digital.sf.digital_shelter",
+   "platform": "digital",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Digital OOH",
+   "owner": "Clear Channel Outdoor",
+   "placement": "Digital transit shelter",
+   "name": "Digital transit shelter",
+   "canvas": {
+    "w": 1080,
+    "h": 1920
+   },
+   "color": "RGB",
+   "file": {
+    "types": [
+     "jpg",
+     "png"
+    ]
+   },
+   "confidence": "secondary",
+   "notes": "OAAA vertical-shelter standard; the SF screen spec isn't published.",
+   "sources": [
+    {
+     "url": "https://oaaa.org/wp-content/uploads/2022/09/OOH_Print-Productions-Document.pdf",
+     "title": "OAAA OOH Print Production document",
+     "checked": "2026-10-30"
+    }
+   ]
+  },
+  {
+   "id": "digital.sf.digital_bulletin",
+   "platform": "digital",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Digital OOH",
+   "owner": "Outfront / Clear Channel",
+   "placement": "Digital bulletin, 101 and 80",
+   "name": "Digital bulletin, 101 and 80",
+   "canvas": {
+    "w": 1400,
+    "h": 400
+   },
+   "color": "RGB",
+   "file": {
+    "types": [
+     "jpg",
+     "png"
+    ]
+   },
+   "confidence": "official",
+   "notes": "Uncompressed JPG, RGB. Individual LED faces vary; confirm per unit.",
+   "sources": [
+    {
+     "url": "https://web.archive.org/web/20130816055434/http://clearchanneloutdoor.com/files/creative/art-specs-digital.pdf",
+     "title": "Clear Channel Outdoor, digital art specs (2013)",
+     "checked": "2026-10-30"
+    },
+    {
+     "url": "https://oaaa.org/wp-content/uploads/2022/09/OOH_Print-Productions-Document.pdf",
+     "title": "OAAA OOH Print Production document",
+     "checked": "2026-10-30"
+    }
+   ]
+  },
+  {
+   "id": "digital.sf.digital_bulletin_20x60",
+   "platform": "digital",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Digital OOH",
+   "owner": "Outfront / Clear Channel",
+   "placement": "Digital large bulletin 20 x 60 ft",
+   "name": "Digital large bulletin 20 x 60 ft",
+   "canvas": {
+    "w": 1800,
+    "h": 600
+   },
+   "color": "RGB",
+   "file": {
+    "types": [
+     "jpg",
+     "png"
+    ]
+   },
+   "confidence": "official",
+   "notes": "OAAA standard, 3:1.",
+   "sources": [
+    {
+     "url": "https://oaaa.org/wp-content/uploads/2022/09/OOH_Print-Productions-Document.pdf",
+     "title": "OAAA OOH Print Production document",
+     "checked": "2026-10-30"
+    }
+   ]
+  },
+  {
+   "id": "digital.sf.digital_poster",
+   "platform": "digital",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Digital OOH",
+   "owner": "Clear Channel Outdoor",
+   "placement": "Digital poster",
+   "name": "Digital poster",
+   "canvas": {
+    "w": 840,
+    "h": 400
+   },
+   "color": "RGB",
+   "file": {
+    "types": [
+     "jpg",
+     "png"
+    ]
+   },
+   "confidence": "official",
+   "notes": "Uncompressed JPG, RGB.",
+   "sources": [
+    {
+     "url": "https://web.archive.org/web/20130816055434/http://clearchanneloutdoor.com/files/creative/art-specs-digital.pdf",
+     "title": "Clear Channel Outdoor, digital art specs (2013)",
+     "checked": "2026-10-30"
+    }
+   ]
+  },
+  {
+   "id": "digital.sf.bay_bridge_led",
+   "platform": "digital",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Digital OOH",
+   "owner": "Outfront",
+   "placement": "Bay Bridge LED",
+   "name": "Bay Bridge LED",
+   "canvas": {
+    "w": 720,
+    "h": 240
+   },
+   "color": "RGB",
+   "file": {
+    "types": [
+     "jpg",
+     "png"
+    ]
+   },
+   "confidence": "official",
+   "notes": "Face 19'8\" x 59'; BMP/JPG RGB. 2015 spec; the hardware may have changed.",
+   "sources": [
+    {
+     "url": "https://web.archive.org/web/20150824084925/http://www.outfrontmedia.com/Tools/OtherTools/DocumentLibrary/Production%20Specs/san-francisco-production-handbook.pdf",
+     "title": "Outfront San Francisco production handbook (Jan 2015)",
+     "checked": "2026-10-30"
+    }
+   ]
+  },
+  {
+   "id": "digital.sf.fishermans_wharf_led",
+   "platform": "digital",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Digital OOH",
+   "owner": "Outfront",
+   "placement": "Fisherman's Wharf LED",
+   "name": "Fisherman's Wharf LED",
+   "canvas": {
+    "w": 696,
+    "h": 336
+   },
+   "color": "RGB",
+   "file": {
+    "types": [
+     "jpg",
+     "png"
+    ]
+   },
+   "confidence": "official",
+   "notes": "15 x 30 ft face; BMP/JPG RGB. 2015 spec.",
+   "sources": [
+    {
+     "url": "https://web.archive.org/web/20150824084925/http://www.outfrontmedia.com/Tools/OtherTools/DocumentLibrary/Production%20Specs/san-francisco-production-handbook.pdf",
+     "title": "Outfront San Francisco production handbook (Jan 2015)",
+     "checked": "2026-10-30"
+    }
+   ]
+  },
+  {
+   "id": "digital.sf.sfo_baggage_claim",
+   "platform": "digital",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Airport",
+   "owner": "Clear Channel Airports",
+   "placement": "SFO baggage claim screens",
+   "name": "SFO baggage claim screens",
+   "canvas": {
+    "w": 1920,
+    "h": 1080
+   },
+   "color": "RGB",
+   "file": {
+    "types": [
+     "jpg",
+     "png"
+    ]
+   },
+   "confidence": "unverified",
+   "notes": "Third-party listing: 70 in LCDs, 10 s spot, JPG only.",
+   "sources": [
+    {
+     "url": "https://www.alluvitmedia.com/inventory/94128/68791.php",
+     "title": "Alluvit Media, SFO baggage claim listing (third party)",
+     "checked": "2026-10-30"
+    }
+   ]
+  },
+  {
+   "id": "digital.sf.sfo_vertical",
+   "platform": "digital",
+   "surface": "ad",
+   "market": "San Francisco",
+   "family": "Airport",
+   "owner": "Clear Channel Airports",
+   "placement": "SFO digital vertical screen",
+   "name": "SFO digital vertical screen",
+   "canvas": {
+    "w": 1080,
+    "h": 1920
+   },
+   "color": "RGB",
+   "file": {
+    "types": [
+     "jpg",
+     "png"
+    ]
+   },
+   "confidence": "secondary",
+   "notes": "OAAA digital airport vertical standard; SFO hardware unconfirmed.",
+   "sources": [
+    {
+     "url": "https://www-archive.oaaa.org/Portals/0/Public%20PDFs/Standard%20OOH%20Media%20Formats.pdf",
+     "title": "OAAA Standard OOH Media Formats",
+     "checked": "2026-10-30"
+    }
+   ]
+  }
+ ]
+}

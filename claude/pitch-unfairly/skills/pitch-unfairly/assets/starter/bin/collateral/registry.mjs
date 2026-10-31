@@ -3,7 +3,9 @@
 // through the social registry, so one collateral set can hold a poster and an Instagram post.
 //
 // specs/print-merch.json  researched formats (schema in specs/SCHEMA.md)
-import { readFileSync } from 'node:fs';
+// specs/<market>.json      more of them: a city's out-of-home placements, a house's own sizes.
+//                          Every .json in specs/ is read; a digital screen there has platform "digital".
+import { readdirSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadRegistry as loadSocial, safeRect } from '../social/registry.mjs';
@@ -13,7 +15,9 @@ export const SPECS_DIR = join(dirname(fileURLToPath(import.meta.url)), 'specs');
 export const PX_IN = 48;
 
 export function printFormats(dir = SPECS_DIR) {
-  return JSON.parse(readFileSync(join(dir, 'print-merch.json'), 'utf8')).formats;
+  const files = readdirSync(dir).filter((f) => f.endsWith('.json')).sort((a, b) => (a === 'print-merch.json' ? -1 : b === 'print-merch.json' ? 1 : a.localeCompare(b)));
+  const seen = new Set();
+  return files.flatMap((f) => JSON.parse(readFileSync(join(dir, f), 'utf8')).formats ?? []).filter((x) => (seen.has(x.id) ? false : seen.add(x.id)));
 }
 
 const sides = (v) => (v && typeof v === 'object' ? { l: v.left ?? 0, r: v.right ?? 0, t: v.top ?? 0, b: v.bottom ?? 0 } : { l: v ?? 0, r: v ?? 0, t: v ?? 0, b: v ?? 0 });
@@ -32,6 +36,11 @@ const sides = (v) => (v && typeof v === 'object' ? { l: v.left ?? 0, r: v.right 
  */
 export function resolveFormat(id, { print = printFormats(), social = null } = {}) {
   const f = print.find((x) => x.id === id);
+  // A digital out-of-home screen (a kiosk, a digital bulletin): a still image at the screen's pixels.
+  if (f?.platform === 'digital') {
+    const sp = sides(f.safe_px);
+    return { id, kind: 'screen', spec: f, layout: { w: f.canvas.w, h: f.canvas.h }, out: { w: f.canvas.w, h: f.canvas.h }, safe_px: sp };
+  }
   if (f) {
     const kind = f.platform === 'merch' ? 'merch' : 'print';
     const bleed = f.bleed_in ?? 0;

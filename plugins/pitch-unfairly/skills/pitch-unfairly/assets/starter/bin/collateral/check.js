@@ -47,6 +47,8 @@ export async function check({ W, H, inset, PX_IN }) {
     for (const img of document.querySelectorAll('.canvas img')) {
       const r = img.getBoundingClientRect();
       if (!r.width || r.right <= 0 || r.left >= W) continue;
+      // Vector art (an SVG logo) has no resolution to run out of.
+      if (/\.svg(\?|#|$)/i.test(img.currentSrc || img.src)) continue;
       const dpi = effectiveDpi({ naturalW: img.naturalWidth, naturalH: img.naturalHeight, boxW: r.width, boxH: r.height, cover: getComputedStyle(img).objectFit === 'cover', pxIn: PX_IN });
       if (piece.dpi_min && dpi < piece.dpi_min && !img.hasAttribute('data-texture')) warnings.push(`${img.getAttribute('src')} prints at ${dpi} ppi; ${piece.format} needs ${piece.dpi_min}`);
     }
