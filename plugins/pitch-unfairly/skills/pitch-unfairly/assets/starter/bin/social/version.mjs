@@ -1,6 +1,6 @@
 // The social engine's version. A campaign pins it in social/campaign.json ("engine": "social@1.0")
 // so it keeps rendering the same way while the engine moves on. Same major, at least the pinned minor.
-export const SOCIAL_ENGINE = '1.0.0';
+export const SOCIAL_ENGINE = '1.1.0';
 
 /** Why this engine can't render a campaign pinned to `pin`, or null when it can. */
 export function socialEngineProblem(pin, engine = SOCIAL_ENGINE) {

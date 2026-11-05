@@ -7,6 +7,7 @@
 // fonts embedded) or print/<id>.png (merch: transparent, at the format's resolution),
 // report.json and REPORT.md. Fails when any piece has a problem.
 import puppeteer from 'puppeteer';
+import { fundamentalsProblems, splitByPin } from './site/fundamentals.mjs';
 import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -96,6 +97,13 @@ async function main() {
       await open(f.kind === 'screen' ? 1 : Math.min(4, 2400 / Math.max(W, H)));
       const checks = await page.evaluate(() => window.__collateralCheck?.() ?? { problems: ['the piece never imported ../.engine/canvas.js'], warnings: [] });
       checks.problems.push(...errors.map((e) => `page error: ${e}`));
+      // Text contrast as a reader sees it, and runts (site/fundamentals.mjs). Came with collateral 1.3:
+      // blocks a set unpinned or pinned 1.3+, warns on an older pin.
+      if (!merch) {
+        const f = splitByPin(await fundamentalsProblems(page, { scope: 'fixed' }), set.engine, 3);
+        checks.problems.push(...f.problems);
+        checks.warnings = [...(checks.warnings ?? []), ...f.warnings];
+      }
       const proof = join(OUT, 'proof', `${p.id}.png`);
       await page.screenshot({ path: proof, clip: { x: 0, y: 0, width: W, height: H }, omitBackground: merch });
       const row = { id: p.id, format: p.format ?? 'mockup', kind: f.kind, variant: p.variant ?? null, layout: f.layout, proof, ...checks };

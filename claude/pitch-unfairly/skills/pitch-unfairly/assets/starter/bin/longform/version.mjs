@@ -1,6 +1,6 @@
 // The long-form engine's version. A document pins it in longform/longform.json
 // ("engine": "longform@1.0") so it keeps building the same way while the engine moves on.
-export const LONGFORM_ENGINE = '1.0.1';
+export const LONGFORM_ENGINE = '1.1.0';
 
 /** Why this engine can't build a document pinned to `pin`, or null when it can. */
 export function longformEngineProblem(pin, engine = LONGFORM_ENGINE) {

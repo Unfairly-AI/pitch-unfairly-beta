@@ -20,6 +20,7 @@ import { settleForShots, stableLaunch } from './stable-shots.mjs';
 import { exerciseControls, printStateProblems, selectPdfState } from './site/interact.mjs';
 import { GATE, GATE_WIDTHS, distDigest, gateReport, runGate } from './site/gate.mjs';
 import { bannedEntries } from './site/banned.mjs';
+import { FUNDAMENTALS_SINCE, fundamentalsProblems } from './site/fundamentals.mjs';
 import { EXTRA_WIDTHS, PHONE_MAX, boxedTextProblems, brandDiff, layoutProblems, motionProblems, previewProblems, qualifierProblems, sampleBandProblems, sampleNames, visualSlop } from './site/page-lint.mjs';
 
 const STAMP = 'artifacts/site-audit-pass.json';
@@ -277,6 +278,9 @@ if (process.argv[1]?.endsWith('site-audit.mjs')) {
         gate('controls', await exerciseControls(page));
         gate('boxed text', await boxedTextProblems(page), 11);
       }
+      // Contrast, measure, the phone body floor, hierarchy, proximity and runts, as a reader sees them
+      // (site/fundamentals.mjs). Came with 1.21: blocks unpinned or pinned 1.21+, warns on an older pin.
+      if (mode.name === 'laptop' || mode.mobile) gate(`${mode.name} fundamentals`, await fundamentalsProblems(page, { phone: !!mode.mobile }), FUNDAMENTALS_SINCE);
       if (mode.mobile) gate(mode.name, await layoutProblems(page, { width: mode.width, height: mode.height }));
       if (mode.mobile && loaded.site.sample) gate(mode.name, await sampleBandProblems(page, names), 11);
       // A proposed promise and a partial total keep their qualifier in view at every width.

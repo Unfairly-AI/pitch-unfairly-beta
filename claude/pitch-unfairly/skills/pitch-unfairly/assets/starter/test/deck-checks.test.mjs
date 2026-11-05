@@ -3,7 +3,7 @@
 // screen shows, and every story headline in order in index.txt and the PDF.
 import { after, before, test } from 'node:test';
 import assert from 'node:assert/strict';
-import { READ_CONTRAST, headlineOrderProblem, listOrderProblem, missingInPdf, readability, storyHeadlines, visibleWords } from '../bin/deck-checks.mjs';
+import { READ_CONTRAST, dimmedByAnimation, headlineOrderProblem, keyframeBlocks, keyframeCollisions, listOrderProblem, missingInPdf, readability, storyHeadlines, visibleWords } from '../bin/deck-checks.mjs';
 
 let browser = null;
 let launchError = null;
@@ -138,4 +138,94 @@ test('a list read out of order comes back in the order it was read; one read in 
   assert.equal(listOrderProblem(items, 'Rate requests\nCarrier calls Spot quotes'), null);
   assert.deepEqual(listOrderProblem(items, 'Rate requests\nSpot quotes\nCarrier calls'), ['rate requests', 'spot quotes', 'carrier calls']);
   assert.equal(listOrderProblem(items, 'Rate requests only'), null);
+});
+
+const astro = (css) => `---\nconst up = '@keyframes up { nope }';\n---\n<section class="slide"></section>\n<style>${css}</style>\n`;
+const SCROLL = '@keyframes up { from { transform: translateY(0) } to { transform: translateY(-50%) } }';
+const FADE = '@keyframes up { from { opacity: 0 } to { opacity: 1 } }';
+
+test('ACCEPTANCE: two slides giving one keyframe name different bodies fail', () => {
+  assert.deepEqual(keyframeCollisions([
+    { path: 'src/slides/01-cover.astro', text: astro(SCROLL) },
+    { path: 'src/slides/04-proof.astro', text: astro(FADE) },
+  ]), [{ name: 'up', paths: ['src/slides/01-cover.astro', 'src/slides/04-proof.astro'] }]);
+});
+
+test('ACCEPTANCE: a clean deck passes', () => {
+  assert.deepEqual(keyframeCollisions([
+    { path: 'src/slides/01-cover.astro', text: astro(SCROLL.replace('up', 'columns')) },
+    { path: 'src/slides/04-proof.astro', text: astro(FADE.replace('up', 'fade')) },
+    { path: 'src/styles/deck.css', text: '@keyframes rise { to { opacity: 1 } }' },
+  ]), []);
+});
+
+test('collisions cross components and stylesheets', () => {
+  assert.deepEqual(keyframeCollisions([
+    { path: 'src/components/motion/Ticker.astro', text: astro(SCROLL) },
+    { path: 'src/styles/deck.css', text: FADE },
+  ]).map((c) => c.paths), [['src/components/motion/Ticker.astro', 'src/styles/deck.css']]);
+});
+
+test('a file may override its own keyframes under @media', () => {
+  const css = `@keyframes deal { to { transform: translateX(10px) } }
+    @media (max-width: 700px) { @keyframes deal { to { transform: translateY(10px) } } }`;
+  assert.deepEqual(keyframeCollisions([{ path: 'src/slides/05-deal.astro', text: astro(css) }]), []);
+});
+
+test('files agreeing on a name are one motion, whatever the spacing', () => {
+  assert.deepEqual(keyframeCollisions([
+    { path: 'a.astro', text: astro('@keyframes up { from { opacity: 0; } to { opacity: 1; } }') },
+    { path: 'b.astro', text: astro('@keyframes up{0%{opacity:0}\n100%{opacity:1}}') },
+  ]), []);
+});
+
+test('a phone override in one file still differs from a file without it', () => {
+  const base = '@keyframes up { to { opacity: 1 } }';
+  assert.equal(keyframeCollisions([
+    { path: 'a.astro', text: astro(`${base} @media (max-width: 700px) { @keyframes up { to { opacity: .5 } } }`) },
+    { path: 'b.astro', text: astro(base) },
+  ]).length, 1);
+});
+
+test('one file defining a name twice outside @media fails', () => {
+  assert.deepEqual(keyframeCollisions([{ path: 'a.astro', text: astro(`${SCROLL} ${FADE}`) }]), [{ name: 'up', paths: ['a.astro'] }]);
+});
+
+test('keyframes are read from styles, not comments or frontmatter', () => {
+  assert.deepEqual(keyframeCollisions([
+    { path: 'a.astro', text: astro(FADE) },
+    { path: 'b.astro', text: `---\nconst css = \`${SCROLL}\`;\n---\n<style>/* ${SCROLL} */</style>` },
+  ]), []);
+  assert.deepEqual(keyframeBlocks('@media print { a { color: red } } @-webkit-keyframes "x" { to { top: 0 } } b { content: "}" } @keyframes y { to { top: 1px } }').map((b) => b.name), ['x', 'y']);
+});
+
+/** What dimmedByAnimation reports for slides with these styles. */
+async function dimmed(css, html) {
+  const page = await browser.newPage();
+  try {
+    await page.setContent(`<!doctype html><style>${css}</style><section class="slide" id="slide-one">${html}</section>`);
+    return await page.evaluate(dimmedByAnimation);
+  } finally {
+    await page.close();
+  }
+}
+
+const FADE_IN = '@keyframes up { from { opacity: 0 } to { opacity: 1 } }';
+
+browserTest('ACCEPTANCE: a slow loop that picked up a fade-in shows as dim on the live page', async () => {
+  const found = await dimmed(`${FADE_IN} .col { animation: up 60s linear infinite }`, '<div class="col">Acme</div>');
+  assert.equal(found.length, 1);
+  assert.match(found[0], /slide-one: <div> "Acme" stays under 0.25 opacity for 15s of each 60s loop \(@keyframes up\)/);
+});
+
+browserTest('ACCEPTANCE: a reveal that plays once and fades out passes', async () => {
+  assert.deepEqual(await dimmed('@keyframes out { to { opacity: 0 } } p { animation: out .35s ease-in 2.3s forwards }', '<p>Logo reveal</p>'), []);
+});
+
+browserTest('entrances, quick pulses and marked fades pass', async () => {
+  assert.deepEqual(await dimmed(`${FADE_IN}
+    @keyframes pulse { 50% { opacity: 0 } }
+    .in { animation: up 1s both } .pulse { animation: pulse 2s infinite } .slow { animation: up 60s infinite }
+    .quiet { opacity: .1; animation: up 60s infinite }`,
+  '<p class="in">In</p><p class="pulse">Pulse</p><p class="slow" data-fade-ok>Slow</p><p class="quiet">Rests dim</p><div class="slow"></div>'), []);
 });

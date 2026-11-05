@@ -173,7 +173,7 @@ async function writePage({ root, email, kit, html, text, renders }) {
   const phone = renders.find((r) => r.id === 'phone-light');
   const kb = (s) => `${Math.max(1, Math.round(Buffer.byteLength(s) / 1024))} KB`;
   const body = previewPage({ email, kit, renders, heights: { wide: wide.height, phone: phone.height }, sizes: { html: kb(html), txt: kb(text) }, html });
-  const css = [fontCss, brandCss(kit, fontFaceCss(kit, 'brand/'), 'brand/'), await readFile(join(here, 'site/base.css'), 'utf8'), PAGE_CSS].join('\n');
+  const css = [fontCss, brandCss(kit, fontFaceCss(kit, 'brand/'), 'brand/', { fundamentals: false }), await readFile(join(here, 'site/base.css'), 'utf8'), PAGE_CSS].join('\n');
   await writeFile(join(out, 'index.html'), pageShell({ site: { title: email.subject, description: email.preheader }, body, css, model: {} }));
   await writeFile(join(out, 'index.txt'), `# ${email.subject}\n\n${email.preheader}\n\n${text}`);
   await copyFile(join(here, 'site/app.js'), join(out, 'js', 'app.js'));

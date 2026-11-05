@@ -2,13 +2,13 @@
 // PDF's text layer and index.txt say what the slides say. In-page functions
 // run in the deck (after settle() from render-pdf.mjs); the rest are pure.
 import { execFileSync } from 'node:child_process';
-import { mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { mkdtemp, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { blend, contrastRatio, luminance, parseColor } from './contrast.mjs';
+import { contrastScript } from './contrast.mjs';
 
 /** Injected before readability(): the contrast helpers, as window.__readContrast. */
-export const READ_CONTRAST = `(() => { ${parseColor}\n${blend}\n${luminance}\n${contrastRatio}\nwindow.__readContrast = { parseColor, blend, contrastRatio }; })();`;
+export const READ_CONTRAST = contrastScript('__readContrast');
 
 /**
  * In the page, at ?pdf=1: per slide, what keeps its text from reading right.
@@ -161,6 +161,136 @@ const norm = (s) => String(s).toLowerCase()
   .replace(/[*_`]/g, '')
   .replace(/[^\p{L}\p{N}'%$€£+]+/gu, ' ')
   .trim();
+
+/**
+ * In the page, on the live deck: elements a running animation keeps dim. The
+ * ?pdf=1 render shows no running animation, so the wrong keyframes never reach
+ * it. A loop dims an element if it spends over 3s of each cycle under 0.25
+ * opacity while the element rests at 0.5 or more. An animation that plays once
+ * and ends faded out is an exit, like a logo reveal clearing the slide, so it
+ * passes. A deliberate slow fade (a crossfade of two images) opts out with
+ * data-fade-ok.
+ */
+export function dimmedByAnimation() {
+  const DIM = 0.25;
+  const SAMPLES = 24;
+  const seen = [];
+  for (const a of document.getAnimations()) {
+    const el = a.effect?.target;
+    if (!el || a.effect.pseudoElement || !el.closest('.slide') || el.closest('[data-fade-ok]') || !el.getClientRects().length) continue;
+    if (!el.textContent.trim() && !el.matches('img, svg, video, canvas') && !el.querySelector('img, svg, video, canvas')) continue;
+    const opacity = () => Number(getComputedStyle(el).opacity);
+    const { delay, duration, iterations } = a.effect.getComputedTiming();
+    if (iterations !== Infinity || !(duration > 0)) continue;
+    a.pause();
+    let dim = 0;
+    for (let i = 0; i < SAMPLES; i++) {
+      a.currentTime = delay + ((i + 0.5) / SAMPLES) * duration;
+      if (opacity() < DIM) dim++;
+    }
+    const seconds = (dim / SAMPLES) * duration / 1000;
+    const held = seconds > 3 ? `under ${DIM} opacity for ${Math.round(seconds)}s of each ${Math.round(duration / 1000)}s loop` : null;
+    if (held) seen.push({ a, el, name: a.animationName ?? '(animation)', held });
+  }
+  // What each element would be with nothing animating it.
+  for (const a of document.getAnimations()) a.cancel();
+  return seen.filter(({ el }) => Number(getComputedStyle(el).opacity) >= 0.5).map(({ el, name, held }) => {
+    const text = (el.textContent || '').trim().replace(/\s+/g, ' ').slice(0, 40);
+    return `${el.closest('.slide').id || '(slide)'}: <${el.tagName.toLowerCase()}>${text ? ` "${text}"` : ''} stays ${held} (@keyframes ${name}); check that animation is the one you meant, or mark a deliberate fade data-fade-ok`;
+  });
+}
+
+/** Each @keyframes in a stylesheet: its name, its body with spacing normalized, and whether a condition like @media holds it. */
+export function keyframeBlocks(css) {
+  const text = css.replace(/\/\*[\s\S]*?\*\//g, ' ');
+  const out = [];
+  const stack = [];
+  let prelude = '';
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (c === '"' || c === "'") {
+      let end = i + 1;
+      while (end < text.length && text[end] !== c) end += text[end] === '\\' ? 2 : 1;
+      prelude += text.slice(i, end + 1);
+      i = end;
+    } else if (c === '{') {
+      const head = prelude.trim();
+      prelude = '';
+      const m = /^@(?:-webkit-)?keyframes\s+["']?([^\s"'{]+)/i.exec(head);
+      if (!m) {
+        stack.push(head);
+        continue;
+      }
+      let depth = 1;
+      let end = i + 1;
+      for (; end < text.length && depth; end++) depth += text[end] === '{' ? 1 : text[end] === '}' ? -1 : 0;
+      out.push({
+        name: m[1],
+        body: text.slice(i + 1, end - 1).trim()
+          .replace(/\s+/g, ' ')
+          .replace(/\s*([{}:;,])\s*/g, '$1')
+          .replace(/;}/g, '}')
+          .replace(/(^|})from\{/g, '$10%{')
+          .replace(/(^|})to\{/g, '$1100%{'),
+        conditional: stack.some((h) => /^@(media|supports|container)\b/i.test(h)),
+      });
+      i = end - 1;
+    } else if (c === '}') {
+      stack.pop();
+      prelude = '';
+    } else if (c === ';') prelude = '';
+    else prelude += c;
+  }
+  return out;
+}
+
+/** The CSS of a source file: all of a .css file, the <style> blocks of an .astro one. */
+export function fileCss(path, text) {
+  if (!path.endsWith('.astro')) return text;
+  return [...text.replace(/<!--[\s\S]*?-->/g, '').matchAll(/<style\b[^>]*>([\s\S]*?)<\/style>/gi)].map((m) => m[1]).join('\n');
+}
+
+/**
+ * @keyframes names defined two ways. Astro scopes a component's selectors but
+ * not its keyframe names, so every deck's names share one global space and the
+ * last definition loaded replaces the others for every slide. Takes
+ * [{ path, text }]; a file may override its own name under @media (a phone
+ * version of the same motion), and files agreeing on a name are the same motion.
+ */
+export function keyframeCollisions(files) {
+  const byName = new Map();
+  for (const { path, text } of files) {
+    for (const block of keyframeBlocks(fileCss(path, text))) {
+      if (!byName.has(block.name)) byName.set(block.name, new Map());
+      const paths = byName.get(block.name);
+      if (!paths.has(path)) paths.set(path, []);
+      paths.get(path).push(block);
+    }
+  }
+  const out = [];
+  for (const [name, paths] of byName) {
+    const bodies = (blocks) => [...new Set(blocks.map((b) => b.body))].sort();
+    const signatures = new Set([...paths.values()].map((blocks) => JSON.stringify(bodies(blocks))));
+    const repeated = [...paths].filter(([, blocks]) => bodies(blocks.filter((b) => !b.conditional)).length > 1);
+    if (signatures.size > 1) out.push({ name, paths: [...paths.keys()].sort() });
+    else if (repeated.length) out.push({ name, paths: repeated.map(([path]) => path) });
+  }
+  return out.sort((a, b) => a.name.localeCompare(b.name));
+}
+
+/** Every .astro and .css file under `dirs`, read, for keyframeCollisions. Missing directories are skipped. */
+export async function styleSources(dirs) {
+  const out = [];
+  const walk = async (dir) => {
+    for (const e of await readdir(dir, { withFileTypes: true }).catch(() => [])) {
+      const path = join(dir, e.name);
+      if (e.isDirectory()) await walk(path);
+      else if (/\.(astro|css)$/.test(e.name)) out.push({ path, text: await readFile(path, 'utf8') });
+    }
+  };
+  for (const dir of dirs) await walk(dir);
+  return out;
+}
 
 /** Words a slide shows on screen that its PDF page doesn't, per slide. */
 export function missingInPdf(screen, pdf) {

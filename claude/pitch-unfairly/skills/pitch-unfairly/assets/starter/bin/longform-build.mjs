@@ -7,6 +7,7 @@
 // (report.json, REPORT.md, pages/ and contact-sheet.png when poppler's pdftoppm is installed)
 // and artifacts/gate/ (the gate stamp the upload needs). Fails when anything has a problem.
 import puppeteer from 'puppeteer';
+import { fundamentalsProblems, splitByPin } from './site/fundamentals.mjs';
 import { cp, mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
@@ -169,6 +170,11 @@ export async function buildLongform({ root = '.', web = false, gate = true, log 
     const checks = await page.evaluate(PRINT_CHECK, { palette: [...allowedColors(kit, loaded.doc.neutrals ?? [])], fonts, contentPx: Math.round(g.content.w * 96), ...{ ppiWarn: PPI.warn, ppiMin: PPI.min } });
     report.problems.push(...checks.problems, ...errors.map((e) => `page error: ${e}`));
     report.warnings.push(...checks.warnings);
+    // Text contrast and runts on the print pages (site/fundamentals.mjs). Came with long-form 1.1:
+    // blocks a document unpinned or pinned 1.1+, warns on an older pin.
+    const fund = splitByPin(await fundamentalsProblems(page, { scope: 'fixed' }), loaded.doc.engine, 1);
+    report.problems.push(...fund.problems);
+    report.warnings.push(...fund.warnings);
     // The contents must match what the reader finds: every chapter, in order, on its page.
     const toc = await page.evaluate(() => [...document.querySelectorAll('.lf-toc a')].map((a) => ({ id: a.getAttribute('href').slice(1), page: Number(a.querySelector('.lf-toc-p')?.textContent) })));
     const ids = loaded.chapters.map((c) => c.id);

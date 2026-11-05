@@ -3,17 +3,17 @@
 import puppeteer from 'puppeteer';
 import { readFile } from 'node:fs/promises';
 import { countPdfPages, renderPdf, settle } from './render-pdf.mjs';
-import { READ_CONTRAST, headlineOrderProblem, listOrderProblem, missingInPdf, pdfPagesText, readability, storyHeadlines, visibleWords } from './deck-checks.mjs';
+import { READ_CONTRAST, dimmedByAnimation, headlineOrderProblem, keyframeCollisions, listOrderProblem, missingInPdf, pdfPagesText, readability, storyHeadlines, styleSources, visibleWords } from './deck-checks.mjs';
 import { deckIndexText } from './deck-text.mjs';
 import { assertThisDeck } from './this-deck.mjs';
 import { clearStamp, stampPass } from './audit-stamp.mjs';
-import { blend, contrastFloor, contrastRatio, luminance, parseColor } from './contrast.mjs';
+import { contrastScript } from './contrast.mjs';
 import { refuseInCodexSandbox } from './browser-guard.mjs';
 
 refuseInCodexSandbox('The audit');
 
 // The contrast helpers run inside the page.
-const CONTRAST = `(() => { ${parseColor}\n${blend}\n${luminance}\n${contrastRatio}\n${contrastFloor}\nwindow.__contrast = { parseColor, blend, luminance, contrastRatio, contrastFloor }; })();`;
+const CONTRAST = contrastScript('__contrast');
 
 const base = (process.argv.slice(2).find((a) => !a.startsWith('--')) ?? 'http://localhost:4321').replace(/\/$/, '');
 await assertThisDeck(base).catch((error) => {
@@ -61,6 +61,12 @@ const headlines = storyHeadlines(story);
       if (hit && !line.includes('brand-ok')) report('brand', `${file}:${i + 1} uses a raw color (${hit[0]}); use a brand token or derived tint`);
     });
   }
+}
+
+// One motion per name: keyframe names are global across slides, whatever Astro
+// scopes. The static render can't show this, because nothing runs there.
+for (const { name, paths } of keyframeCollisions(await styleSources(['src/slides', 'src/components', 'src/layouts', 'src/styles']))) {
+  report('motion', `@keyframes ${name} is defined differently in ${paths.join(' and ')}; keyframe names are global, so one replaces the other on every slide. Give each its own name`);
 }
 
 // A real brand: no deck ships in the starter's own house brand unless it is
@@ -368,6 +374,22 @@ try {
     }));
     if (nav.hash !== '#2' || nav.active !== 1) report('present', `ArrowRight did not advance (hash ${nav.hash}, active ${nav.active})`);
     else console.log('✓ present: keyboard navigation works');
+    await page.close();
+  }
+
+  // The live deck with every slide's animations running: what ?pdf=1 never shows.
+  {
+    const page = await browser.newPage();
+    await page.setViewport({ width: 1920, height: 1080 });
+    await page.goto(`${base}/`, { waitUntil: 'load' });
+    await page.waitForFunction(() => window.__deckReady === true, { timeout: 15000 }).catch(() => {});
+    await page.evaluate(() => {
+      document.documentElement.classList.remove('is-armed');
+      for (const slide of document.querySelectorAll('.slide')) slide.classList.add('is-active');
+    });
+    const dimmed = await page.evaluate(dimmedByAnimation);
+    dimmed.forEach((issue) => report('motion', issue));
+    if (!dimmed.length) console.log('✓ motion: no running animation keeps an element dim');
     await page.close();
   }
 

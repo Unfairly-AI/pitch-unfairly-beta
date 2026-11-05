@@ -8,6 +8,7 @@
 // REPORT.md and one contact sheet per platform in artifacts/social/sheets/.
 // Video needs ffmpeg on the PATH; without it, video formats get their poster image and a note.
 import puppeteer from 'puppeteer';
+import { fundamentalsProblems, splitByPin } from './site/fundamentals.mjs';
 import { execFileSync } from 'node:child_process';
 import { copyFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
@@ -111,6 +112,10 @@ try {
       else for (let q = 92; q >= 40; q -= 8) { await shot(c.poster, still, 'jpeg', q); if (!lim || fileFacts(still).kb <= lim) break; }
     }
     files.push(still);
+    // Text contrast and runts on the poster frame (site/fundamentals.mjs). Came with social 1.1:
+    // blocks a campaign unpinned or pinned 1.1+, warns on an older pin.
+    await page.evaluate((x) => window.__seek(x), c.poster);
+    const fund = splitByPin(await fundamentalsProblems(page, { scope: 'fixed' }), built.campaign.engine, 1);
     if (c.card) (docs[spec.id] ??= {})[c.card] = still;
     const notes = [];
     const wantsVideo = (spec.media ?? []).includes('video') && c.dur && !stills;
@@ -136,6 +141,8 @@ try {
     const checks = files.flatMap((f) => checkFile(spec, relative(OUT, f), fileFacts(f), { page: isDoc }));
     for (const v of c.violations) checks.push({ ok: false, m: `layout: ${v.el} ${v.overflow ?? `outside the safe zone (box ${v.box}, safe ${v.safe.map(Math.round)})`}` });
     for (const n of notes) checks.push({ ok: true, m: n });
+    for (const m of fund.problems) checks.push({ ok: false, m });
+    for (const m of fund.warnings) checks.push({ ok: true, m: `warning: ${m}` });
     return {
       id, spec: spec.id, platform: spec.platform, name: spec.name, kind: spec.kind, canvas: spec.canvas,
       safe_zone_source: spec.safe_zone_source ?? null, confidence: spec.confidence ?? null,

@@ -2,6 +2,8 @@
 // generated files every slide reads from. Pure functions; brand-apply.mjs
 // does the file and npm work. See the deck guide's brand-kit topic.
 
+import { analyzeKit, fundamentalsCss } from './fundamentals.mjs';
+
 export const ROLES = [
   'paper', 'surface', 'ink', 'ink_muted', 'accent', 'accent_dark',
   'accent_secondary', 'on_accent', 'highlight', 'positive', 'border',
@@ -208,6 +210,23 @@ function richErrors(kit) {
  * knockout-word with no texture to fill it.
  */
 export function kitWarnings(kit) {
+  return [...kitWarningsBase(kit), ...fundamentalsWarnings(kit)];
+}
+
+/**
+ * The design fundamentals the kit breaks: text pairs that fail WCAG 2.2, caps
+ * without tracking, tracking written in px. Warnings, never errors: they're the
+ * brand's own values, and the generated tokens give a passing alternative.
+ */
+export function fundamentalsWarnings(kit) {
+  try {
+    return analyzeKit(kit).findings.filter((f) => f.severity !== 'info').map((f) => `fundamentals: ${f.where}: ${f.message}${f.fix ? ` ${f.fix}` : ''}`);
+  } catch {
+    return [];
+  }
+}
+
+function kitWarningsBase(kit) {
   const warnings = [];
   for (const [key, r] of Object.entries(kit?.typography?.roles ?? {})) {
     const t = kit?.typography?.[r?.font ?? 'body'];
@@ -352,7 +371,7 @@ export function resolvePalette(p) {
  * reaches brand/ (texture files): '../../brand/' from src/brand/brand.css, 'brand/'
  * for a page that inlines the CSS next to a copied brand/ folder.
  */
-export function brandCss(kit, fontFaces = '', relPrefix = '../../brand/') {
+export function brandCss(kit, fontFaces = '', relPrefix = '../../brand/', { fundamentals = true } = {}) {
   const p = resolvePalette(kit.palette);
   const t = kit.typography;
   const s = kit.style ?? {};
@@ -418,6 +437,12 @@ export function brandCss(kit, fontFaces = '', relPrefix = '../../brand/') {
   if (texture) {
     lines.push('', '.slide::before {', "  content: '';", '  position: absolute;', '  inset: 0;', '  pointer-events: none;', `  background: ${texture};`, `  opacity: ${s.texture === 'grain' ? 0.08 : 1};`, '}');
   }
+  // The design fundamentals derived from the kit (bin/fundamentals.mjs): contrast-safe
+  // text and button colors, tonal ramps, a fluid type scale with leading and tracking
+  // per step, spacing and measure. New token names only, so nothing the deck or toolbox
+  // already reads changes; pieces opt in with var(--accent-text), var(--step-xl), ...
+  // Email leaves them out: every byte counts against the inbox's clipping limit.
+  if (fundamentals) lines.push('', '/* Design fundamentals derived from the kit: use these where the kit says nothing. */', fundamentalsCss(analyzeKit(kit).system).trimEnd());
   lines.push(...richCss(kit, relPrefix));
   return `${lines.filter((l, i) => l !== '' || lines[i - 1] !== '').join('\n')}\n`;
 }

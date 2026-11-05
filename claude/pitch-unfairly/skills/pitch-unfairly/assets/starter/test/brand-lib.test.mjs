@@ -126,7 +126,9 @@ test('ACCEPTANCE: a kit without the rich sections generates byte-identical brand
 test('a full rich kit (fictional) passes validation, and every file it names exists', () => {
   const kit = rich();
   assert.deepEqual(validateKit(kit), []);
-  assert.deepEqual(kitWarnings(kit), []);
+  // Its accent is too light for small link text: the one warning is the fundamentals' and names the passing step.
+  assert.deepEqual(kitWarnings(kit).filter((w) => !w.startsWith('fundamentals:')), []);
+  assert.ok(kitWarnings(kit).every((w) => /^fundamentals: palette\.accent on palette\.paper/.test(w) || !w.startsWith('fundamentals:')));
   const files = kitFilePaths(kit).map((f) => f.path);
   for (const p of ['logos/stacked.svg', 'logos/horizontal-reversed.svg', 'textures/clay-grain.svg', 'textures/linen.svg', 'elements/stacked-word.svg']) assert.ok(files.includes(p), p);
   for (const p of files) assert.ok(existsSync(join(RICH_DIR.pathname, p)), `fixture file ${p}`);
@@ -255,4 +257,21 @@ test('brandGaps lists what a capture cannot know, with the site\'s own words as 
   for (const f of ['design.layout_move', 'identity.lockups.email', 'identity.lockups.email_dark', 'typography.body.fallback_stack']) assert.ok(fields.includes(f), f);
   assert.deepEqual(gaps.find((g) => g.field === 'positioning.statement').seeds, ['Scheduling that fills cancellations.']);
   assert.equal(validateKit({ ...kit, sources: { gaps } }).length, 0, 'gaps live in sources, so the kit stays brand-kit@1');
+});
+
+test('ACCEPTANCE: brand.css carries the design fundamentals as new tokens, and email leaves them out', () => {
+  const kit = base();
+  const css = brandCss(kit);
+  for (const t of ['--accent-text:', '--accent-fill:', '--ink-muted-text:', '--ramp-accent-500:', '--step-base:', '--step-5xl-lh:', '--space-m:', '--measure: 66ch;']) assert.ok(css.includes(t), t);
+  assert.doesNotMatch(brandCss(kit, '', 'brand/', { fundamentals: false }), /--ramp-|--step-|--accent-text/);
+});
+
+test('ACCEPTANCE: a kit whose label fails on its accent, or whose caps have no tracking, gets a fundamentals warning with the fix', () => {
+  const kit = base();
+  kit.palette = { ...kit.palette, paper: '#ffffff', ink: '#2b2e33', accent: '#e4572e', on_accent: '#ffffff' };
+  kit.typography.roles = { eyebrow: { font: 'body', case: 'uppercase', tracking: 0 } };
+  const w = kitWarnings(kit).join('\n');
+  assert.match(w, /fundamentals: palette\.on_accent on palette\.accent: #FFFFFF on #E4572E is 3\.68:1/);
+  assert.match(w, /fill small-text buttons with #/);
+  assert.match(w, /fundamentals: typography\.roles\.eyebrow\.tracking/);
 });
