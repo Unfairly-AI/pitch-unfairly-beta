@@ -13,7 +13,7 @@ import { existsSync } from 'node:fs';
 import { copyFile, mkdir, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import { dirname, extname, join, relative, resolve, sep } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { groundFor, planPages, titleOfHtml } from './collateral/pages.mjs';
+import { groundFor, pageFontFaces, pageFonts, planPages, titleOfHtml } from './collateral/pages.mjs';
 import { resolveFormat } from './collateral/registry.mjs';
 
 const args = process.argv.slice(2);
@@ -57,6 +57,11 @@ if (existsSync(seamsPath)) {
 const logoRel = kit.identity?.logos?.primary ?? kit.identity?.lockups?.find((l) => l.background === 'light')?.path;
 const logoSrc = logoRel ? resolve(dirname(BRAND), logoRel) : null;
 if (!logoSrc || !existsSync(logoSrc)) fail(`brand.json identity.logos.primary (${logoRel}) isn't a file next to ${BRAND}.`);
+// A kit whose type is font files ships those faces with each page, so the page reads in the brand's
+// own type rather than the fallback (a kit on Fontsource or system type names its family, as before).
+const fonts = pageFonts(kit).map((f) => ({ ...f, src: resolve(dirname(BRAND), f.path) }));
+for (const f of fonts) if (!existsSync(f.src)) fail(`brand.json names the font file ${f.path}, which isn't next to ${BRAND}.`);
+const fontFaces = pageFontFaces(fonts);
 const pal = kit.palette ?? {};
 const font = (r) => { const t = kit.typography?.[r] ?? {}; return `"${t.family ?? 'system-ui'}", ${t.fallback === 'serif' ? 'Georgia, serif' : 'Helvetica, Arial, sans-serif'}`; };
 const css = `:root{--accent:${pal.accent ?? '#000'};--ink:${pal.ink ?? '#000'};--muted:${pal.ink_muted ?? pal.ink ?? '#444'};--paper:${pal.paper ?? '#fff'};--on-accent:${pal.on_accent ?? '#000'};font-family:${font('body')}}
@@ -133,6 +138,8 @@ try {
     await mkdir(join(dir, 'files'), { recursive: true });
     const logo = `logo${extname(logoSrc)}`;
     await copyFile(logoSrc, join(dir, logo));
+    if (fonts.length) await mkdir(join(dir, 'fonts'), { recursive: true });
+    for (const f of fonts) await copyFile(f.src, join(dir, f.file));
     const figs = [];
     const dls = [];
     const placed = l.sizes > 1;
@@ -163,7 +170,7 @@ try {
         }
       }
     }
-    const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(l.title)} · ${esc(kit.identity?.name ?? '')}</title><style>${css}</style></head>
+    const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(l.title)} · ${esc(kit.identity?.name ?? '')}</title><style>${fontFaces ? `${fontFaces}\n` : ''}${css}</style></head>
 <body><header><img class="logo" src="${logo}" alt="${esc(kit.identity?.name ?? '')}"></header>
 <main><p class="eyebrow"><i></i>${esc(l.eyebrow)}</p><h1>${esc(l.title)}</h1><p class="spec">${esc(l.spec)}</p>
 ${placed ? `<div class="placements">${figs.join('')}</div>` : `<div class="proofs n${figs.length}">${figs.join('')}</div>`}

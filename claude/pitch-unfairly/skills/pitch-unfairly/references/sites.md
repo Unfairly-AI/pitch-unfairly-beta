@@ -148,6 +148,7 @@ site/footer.html        optional, after the sections
 site/toolbox.css        the toolbox's components, copied by site:new (loaded before styles.css)
 site/styles.css         the site's own design
 site/assets/            images and drawings, referenced as assets/...
+site/ai/                a brand guide page's AI-ready files (SKILL.md, DESIGN.md, tokens.json), served at <link>/ai/
 brand/brand.json        the brand kit, as for a deck
 story.md                the story: audience, the action, and one block per section
 ```
@@ -401,6 +402,7 @@ From engine 1.8, `site:audit` also:
 Only public files publish:
 - From `brand/`, that means images and fonts, never `brand.json`, notes, `brand/capture/` or `brand/references/`.
 - `site/assets/` takes only images, fonts, mp4, webm, mp3 and pdf.
+- `site/ai/` (engine 1.23+) takes only `.md` and `.json` files at its top level: a brand guide page's AI-ready files, published at `<link>/ai/` (the host serves `.md` as plain text). Never a font file or a zip: the brand's fonts publish only as the page's own `brand/` fonts.
 - A folder named research, story, facts, buyers, notes, seller-understanding, references or capture, anywhere in a path, never publishes, nor does a document or data file (md, json, txt, pdf, csv, html) with such a name. From engine 1.11 an image, video, audio or font file in `site/assets/` is page art whatever it's called (`assets/story-roastery.webp`, `assets/notes-product.png`); in `brand/` the name rule still holds for images. A dotfile, `..`, an absolute path or a backslash never publishes either.
 - `site:manifest` and the upload refuse a `dist-site` holding anything else.
 
@@ -467,3 +469,10 @@ Everything else is noted for the hand-over, not looped on.
 3. `npm run -s source:pack`.
 4. `npm run -s site:manifest > artifacts/site-start.json` (it carries the bound `deck` and the gate's `audit`). Pass it to `deck_upload_start` with the workspace, the source size, and a password if the content is confidential. Save the reply as `artifacts/uploads.json`.
 5. `node bin/upload.mjs artifacts/uploads.json dist-site`, then `deck_publish`. Upload refuses a build its review wasn't bound to. To put an unreviewed build on the page's private preview instead, pass `draft: true` to `deck_upload_start`; the client link doesn't move. Named links (`deck_link`) and the password (`deck_password`) work as for decks.
+
+## Into the customer's Webflow
+
+When the page should live in the customer's own Webflow site, served on their domain, read the
+`webflow` guide. After the audit is clean, `npm run -s site:webflow` puts the page in as native
+Webflow classes, tokens and interactions through the customer's Webflow MCP connector, publishes it
+to the site's webflow.io address only, and checks the published page against the build.

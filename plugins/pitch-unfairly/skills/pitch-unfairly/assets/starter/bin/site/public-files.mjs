@@ -8,6 +8,7 @@
 //   dist-site/fonts/**                          bundled font files
 //   dist-site/assets/**                         site/assets/: images, fonts, mp4/webm/mp3, pdf (anything else refused at build)
 //   dist-site/brand/**                          brand/ images and fonts only; never capture/ or references/
+//   dist-site/ai/*.md|*.json                    site/ai/: a brand guide page's AI-ready files (SKILL.md, DESIGN.md, tokens.json); never a font or a zip
 //
 // Nothing in the built page reads brand/brand.json or any other brand data file:
 // brand tokens are inlined into index.html, and the page loads only logos,
@@ -60,6 +61,17 @@ export function brandFileProblem(rel) {
   return null;
 }
 
+// site/ai/ publishes as is, at <link>/ai/: a brand guide page's text for agents, one level deep.
+export const AI_EXT = ['md', 'json'];
+
+/** Why a file under site/ai/ (path relative to it) can't publish, or null when it can. */
+export function aiFileProblem(rel) {
+  const unsafe = pathProblem(rel);
+  if (unsafe) return `site/ai/${unsafe}; everything in site/ai is published`;
+  if (rel.includes('/') || !/^[A-Za-z0-9._-]+$/.test(rel) || !AI_EXT.includes(ext(rel))) return `site/ai/${rel}: site/ai takes only .md and .json files at its top level (a guide's SKILL.md, DESIGN.md, tokens.json), never fonts, zips or folders, because everything there is published`;
+  return null;
+}
+
 /** Why a file under site/assets/ (path relative to it) can't publish, or null when it can. */
 export function siteAssetProblem(rel) {
   const unsafe = pathProblem(rel, { art: true });
@@ -80,6 +92,7 @@ export function distFileProblem(path) {
   if (top === 'fonts') return FONT_EXT.includes(ext(rest)) ? null : `${path}: only font files belong in fonts/`;
   if (top === 'assets') return siteAssetProblem(rest);
   if (top === 'brand') return brandFileProblem(rest);
+  if (top === 'ai') return aiFileProblem(rest);
   return `${path}: not a file a site publishes`;
 }
 

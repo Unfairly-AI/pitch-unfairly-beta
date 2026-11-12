@@ -11,9 +11,14 @@
 //   profile is the same every time (STABLE_ARGS).
 // - Time: a running animation, a playing video, a font or image still loading
 //   is caught at whatever moment the shot happens (settleForShots).
+// - Tabs: the QA gate checks several pages at once, each in its own tab. Chrome
+//   throttles a background tab and stops painting it, so on Linux a screenshot
+//   there waits for a frame that never comes (CI, Nov 5: Page.captureScreenshot
+//   timed out and the gate skipped every check after it). The background flags
+//   keep every tab painting.
 
-/** Chrome flags for byte-stable screenshots: software raster, sRGB. */
-export const STABLE_ARGS = ['--disable-gpu', '--disable-gpu-rasterization', '--disable-partial-raster', '--force-color-profile=srgb'];
+/** Chrome flags for byte-stable screenshots: software raster, sRGB, every tab painting. */
+export const STABLE_ARGS = ['--disable-gpu', '--disable-gpu-rasterization', '--disable-partial-raster', '--force-color-profile=srgb', '--disable-background-timer-throttling', '--disable-backgrounding-occluded-windows', '--disable-renderer-backgrounding'];
 
 /** puppeteer.launch options with STABLE_ARGS added to any given. */
 export const stableLaunch = (options = {}) => ({ headless: true, ...options, args: [...new Set([...(options.args ?? []), ...STABLE_ARGS])] });

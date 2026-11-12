@@ -147,7 +147,8 @@ proof to look at and its print file to download.
 - **`pages` in collateral.json** names the links: their slug, title, pieces and a one-line caption.
 - **`npm run collateral:pages`** builds one page per link. It takes the type from the format, the
   spec line from the registry, and the downloads from the build. It refuses a title or caption that
-  doesn't name its piece's headline.
+  doesn't name its piece's headline. When the kit's type is font files (`source: "files"`), each
+  page ships the upright faces it sets (body, headline and bold) and loads them (engine 1.3.1+).
 - **`npm run -s collateral:publish -- plan | start | record`** publishes within the host's limit of
   30 versions an hour.
 - **`npm run collateral:live -- <urls>`** checks the live links at desktop and phone width and clicks

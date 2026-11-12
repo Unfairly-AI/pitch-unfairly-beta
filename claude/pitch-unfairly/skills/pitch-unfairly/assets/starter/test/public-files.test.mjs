@@ -3,13 +3,14 @@
 // site-manifest and upload.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtemp, mkdir, readdir, rm, writeFile } from 'node:fs/promises';
+import { mkdtemp, mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { buildSite } from '../bin/site-build.mjs';
-import { brandFileProblem, distFileProblem, siteAssetProblem } from '../bin/site/public-files.mjs';
+import { aiFileProblem, brandFileProblem, distFileProblem, siteAssetProblem } from '../bin/site/public-files.mjs';
+import { fileURLToPath } from 'node:url';
 import { pack } from '../bin/source.mjs';
 
 const SITE = { title: 'A plan for Example Co', description: 'A plan.', model: {}, facts: {} };
@@ -218,4 +219,44 @@ test('ACCEPTANCE (engine 1.11): page art named for what it shows publishes; docu
   }
   for (const bad of ['capture/page1.jpg', 'capture/capture.json', 'references/x.jpg', 'seller-understanding/overview.png', 'seller-understanding.md']) assert.ok(brandFileProblem(bad), `brand/${bad}`);
   for (const bad of ['story.md', 'research.md', 'facts.json', 'buyers.json']) assert.ok(distFileProblem(bad), bad);
+});
+
+// ACCEPTANCE: a brand guide page publishes its AI-ready files (site/ai/*.md|json) at <link>/ai/,
+// and never a font or a zip from there.
+test('ACCEPTANCE: a brand guide page publishes site/ai/ text files at ai/, and nothing else from there', async () => {
+  const root = await leadProject();
+  try {
+    await rm(join(root, 'site/assets/research.md'));
+    await write(root, {
+      'site/ai/SKILL.md': '# Example Co brand\n',
+      'site/ai/DESIGN.md': '# Design\n',
+      'site/ai/tokens.json': '{"accent":"#aa3300"}',
+    });
+    await buildSite({ root });
+    for (const f of ['SKILL.md', 'DESIGN.md', 'tokens.json']) {
+      assert.equal(await readFile(join(root, 'dist-site/ai', f), 'utf8'), await readFile(join(root, 'site/ai', f), 'utf8'), f);
+      assert.equal(distFileProblem(`ai/${f}`), null, f);
+    }
+    for await (const f of walk(join(root, 'dist-site'))) assert.equal(distFileProblem(f), null, f);
+
+    // A font file or a zip in site/ai stops the build: never published there, even beside the guide.
+    const fixture = await readFile(join(dirname(fileURLToPath(import.meta.url)), 'fixtures/fonts/test-mono.woff2'));
+    await writeFile(join(root, 'site/ai/brand-sans.woff2'), fixture);
+    await assert.rejects(buildSite({ root }), (e) => /site\/ai\/brand-sans\.woff2/.test(e.message) && /published/.test(e.message));
+    await rm(join(root, 'site/ai/brand-sans.woff2'));
+    await writeFile(join(root, 'site/ai/fonts.zip'), 'zip');
+    await assert.rejects(buildSite({ root }), /site\/ai\/fonts\.zip/);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test('ai/ in a published site holds only top-level .md and .json files', () => {
+  for (const ok of ['SKILL.md', 'DESIGN.md', 'tokens.json']) {
+    assert.equal(aiFileProblem(ok), null, ok);
+    assert.equal(distFileProblem(`ai/${ok}`), null, ok);
+  }
+  for (const no of ['brand.woff2', 'brand.ttf', 'brand.otf', 'brand.woff', 'fonts.zip', 'page.html', 'run.js', 'notes.txt', 'fonts/a.md', 'research.md', 'story.json', '.env.md', 'a b.md']) {
+    assert.ok(aiFileProblem(no), no);
+    assert.ok(distFileProblem(`ai/${no}`), `ai/${no}`);
+  }
+  assert.ok(distFileProblem('ai'), 'a bare ai is not a file');
 });

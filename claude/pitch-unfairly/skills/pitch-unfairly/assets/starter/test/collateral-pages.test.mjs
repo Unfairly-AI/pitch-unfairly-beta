@@ -1,6 +1,11 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { batches, budget, eyebrow, groundFor, headlineOf, pending, planPages, specLine, titleOfHtml } from '../bin/collateral/pages.mjs';
+import { execFileSync } from 'node:child_process';
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { dirname, join } from 'node:path';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+import { batches, budget, eyebrow, groundFor, headlineOf, pageFontFaces, pageFonts, pending, planPages, specLine, titleOfHtml } from '../bin/collateral/pages.mjs';
 import { resolveFormat } from '../bin/collateral/registry.mjs';
 
 const set = {
@@ -169,4 +174,81 @@ test('ACCEPTANCE: one design in many placements is one print link: each file nam
   ]);
   assert.deepEqual(l.items.map((i) => i.label), ['Print PDF', 'Print PDF · 1/2 in = 1 ft mechanical', 'Screen image JPG · 1080 × 1920', 'Screen image JPG · 696 × 336']);
   assert.deepEqual(l.items.map((i) => i.size), ['144 × 30 in', '576 × 168 in, 8 in bleed', '1080 × 1920 px', '696 × 336 px']);
+});
+
+const fileKit = () => ({
+  identity: { name: 'Fixture Co', logos: { primary: 'logos/primary.svg' } },
+  palette: { paper: '#ffffff', ink: '#111111', ink_muted: '#555555', accent: '#123456', on_accent: '#ffffff' },
+  typography: {
+    display: { family: 'Test Mono', source: 'files', license: 'user-supplied', weight: 500, files: [
+      { path: 'fonts/test-mono.woff2', weight: 500, style: 'normal' },
+      { path: 'fonts/test-mono-700.woff2', weight: 700, style: 'normal' },
+      { path: 'fonts/test-mono-500i.woff2', weight: 500, style: 'italic' },
+      { path: 'fonts/test-mono-300.woff2', weight: 300, style: 'normal' },
+    ] },
+    body: { family: 'Test Mono', source: 'files', license: 'user-supplied', weight: 400, files: [
+      { path: 'fonts/test-mono-400.woff2', weight: 400, style: 'normal' },
+      { path: 'fonts/test-mono.woff2', weight: 500, style: 'normal' },
+      { path: 'fonts/test-mono-700.woff2', weight: 700, style: 'normal' },
+    ] },
+  },
+});
+
+test('a kit with font files gives its hosted pages the upright faces at the weights they set; other kits give none', () => {
+  const fonts = pageFonts(fileKit());
+  assert.deepEqual(fonts.map((f) => [f.path, f.weight]), [['fonts/test-mono.woff2', 500], ['fonts/test-mono-700.woff2', 700], ['fonts/test-mono-400.woff2', 400]]);
+  assert.deepEqual(fonts.map((f) => f.file), ['fonts/test-mono.woff2', 'fonts/test-mono-700.woff2', 'fonts/test-mono-400.woff2']);
+  const css = pageFontFaces(fonts);
+  assert.match(css, /@font-face\{font-family:"Test Mono";src:url\("fonts\/test-mono\.woff2"\) format\("woff2"\);font-weight:500;font-style:normal;font-display:swap\}/);
+  assert.equal(css.match(/@font-face/g).length, 3);
+  // The same file name from two folders stays two files.
+  const k = fileKit();
+  k.typography.body.files = [{ path: 'other/test-mono.woff2', weight: 400 }];
+  assert.deepEqual(pageFonts(k).map((f) => f.file).slice(-1), ['fonts/2-test-mono.woff2']);
+  assert.match(pageFontFaces([{ family: 'X', file: 'fonts/x.ttf', weight: 400 }]), /format\("truetype"\)/);
+  assert.deepEqual(pageFonts({ typography: { display: { family: 'Sora', source: 'fontsource', package: '@fontsource-variable/sora' }, body: { family: 'Arial', source: 'system' } } }), []);
+  assert.deepEqual(pageFonts({}), []);
+});
+
+// ACCEPTANCE: a hosted proof page for a kit whose type is font files loads the brand's own face
+// (it used to name the family and fall back to Helvetica).
+test('ACCEPTANCE: collateral:pages ships a file-font kit\'s faces with the page and the page loads them', { timeout: 120000 }, async () => {
+  const starter = join(dirname(fileURLToPath(import.meta.url)), '..');
+  const root = mkdtempSync(join(tmpdir(), 'collateral-pages-'));
+  try {
+    const font = join(starter, 'test/fixtures/fonts/test-mono.woff2');
+    mkdirSync(join(root, 'brand/fonts'), { recursive: true });
+    mkdirSync(join(root, 'brand/logos'), { recursive: true });
+    for (const n of ['test-mono', 'test-mono-700', 'test-mono-400', 'test-mono-500i', 'test-mono-300']) cpSync(font, join(root, `brand/fonts/${n}.woff2`));
+    writeFileSync(join(root, 'brand/logos/primary.svg'), '<svg xmlns="http://www.w3.org/2000/svg" width="120" height="30"><rect width="120" height="30" fill="#123456"/></svg>');
+    writeFileSync(join(root, 'brand/brand.json'), JSON.stringify(fileKit()));
+    mkdirSync(join(root, 'collateral/pieces'), { recursive: true });
+    writeFileSync(join(root, 'collateral/pieces/poster.html'), '<html><head><title>Poster: Clear type</title></head><body></body></html>');
+    writeFileSync(join(root, 'collateral/collateral.json'), JSON.stringify({ pieces: [{ id: 'poster', format: 'print.poster.24x36', file: 'pieces/poster.html' }], pages: { suffix: 'Fixture Co', links: [{ slug: 'fixture-poster', title: 'Poster: Clear type', pieces: ['poster'] }] } }));
+    mkdirSync(join(root, 'artifacts/collateral/proof'), { recursive: true });
+    mkdirSync(join(root, 'artifacts/collateral/print'), { recursive: true });
+    const { default: sharp } = await import('sharp');
+    await sharp({ create: { width: 200, height: 300, channels: 3, background: '#dddddd' } }).png().toFile(join(root, 'artifacts/collateral/proof/poster.png'));
+    writeFileSync(join(root, 'artifacts/collateral/print/poster.pdf'), '%PDF-1.4\n%%EOF\n');
+    execFileSync(process.execPath, [join(starter, 'bin/collateral-pages.mjs')], { cwd: root, stdio: 'pipe' });
+    const dir = join(root, 'artifacts/collateral/pages/fixture-poster');
+    const html = readFileSync(join(dir, 'index.html'), 'utf8');
+    for (const f of ['test-mono.woff2', 'test-mono-700.woff2', 'test-mono-400.woff2']) assert.ok(existsSync(join(dir, 'fonts', f)), f);
+    for (const f of ['test-mono-500i.woff2', 'test-mono-300.woff2']) assert.ok(!existsSync(join(dir, 'fonts', f)), `${f} isn't a face the page sets`);
+    const pages = JSON.parse(readFileSync(join(root, 'artifacts/collateral/pages/pages.json'), 'utf8'));
+    assert.ok(pages[0].files.some((f) => f.path === 'fonts/test-mono.woff2'), 'the font is in the upload list');
+    assert.match(html, /url\("fonts\/test-mono\.woff2"\)/);
+    const { default: puppeteer } = await import('puppeteer');
+    const browser = await puppeteer.launch({ headless: true });
+    try {
+      const page = await browser.newPage();
+      await page.goto(pathToFileURL(join(dir, 'index.html')).href, { waitUntil: 'load' });
+      const loaded = await page.evaluate(async () => { await document.fonts.ready; return [...document.fonts].filter((f) => f.status === 'loaded').map((f) => `${f.family} ${f.weight}`); });
+      assert.ok(loaded.includes('"Test Mono" 500') || loaded.includes('Test Mono 500'), `the headline face loads: ${loaded.join(', ')}`);
+    } finally {
+      await browser.close();
+    }
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
 });

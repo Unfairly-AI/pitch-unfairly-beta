@@ -12,7 +12,7 @@ A deal room is one link the seller sends a buyer for one deal. It holds that dea
 ## Building one
 
 1. Publish the deal's links first, each as its own type.
-2. Build the room page: `deal_room` gives each link's title, type and URL for the cards. Put the URLs in `site.json` facts and show them by token, so a rebuild picks up a change.
+2. Build the room page: `deal_room` gives each link's title, type and URL for the cards. Put the URLs in `site.json` facts and show them by token, so a rebuild picks up a change. Set `"type": "deal_room"` at the top of `site.json` (sites engine 1.22.2+): it lets the cards link to the room's own hosted links (`https://pitchunfairly.com/<workspace>/<slug>`). Every other Unfairly link on a sample still fails the check.
 3. Publish it with `type: "deal_room"`, then `deal_room` with `add` to fill it, in the order the buyer should read.
 4. Turn on email verification for the room and add the buyer's people with `deck_people`. Send the room's link, never each link.
 5. When the links change, update them with `deal_room` and rebuild the page from its list.

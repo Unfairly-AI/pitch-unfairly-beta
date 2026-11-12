@@ -22,7 +22,7 @@ import { readFileSync } from 'node:fs';
 import { engineProblem } from './site/version.mjs';
 import { isLocked, variantCss } from './site/variants.mjs';
 import { siteText } from './site/text.mjs';
-import { brandFileProblem, siteAssetProblem } from './site/public-files.mjs';
+import { aiFileProblem, brandFileProblem, siteAssetProblem } from './site/public-files.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 
@@ -83,6 +83,10 @@ export async function buildSite({ root = '.', out = 'dist-site' } = {}) {
   const assetProblems = (await filesUnder(at('site/assets'))).map(siteAssetProblem).filter(Boolean);
   if (assetProblems.length) throw new Error(`Not building: site/assets/ is published as is, and it holds private files:\n${assetProblems.map((p) => `  ${p}`).join('\n')}`);
 
+  const aiFiles = existsSync(at('site/ai')) ? await filesUnder(at('site/ai')) : [];
+  const aiProblems = aiFiles.map(aiFileProblem).filter(Boolean);
+  if (aiProblems.length) throw new Error(`Not building: site/ai/ is published as is:\n${aiProblems.map((p) => `  ${p}`).join('\n')}`);
+
   const outDir = at(out);
   await rm(outDir, { recursive: true, force: true });
   await mkdir(join(outDir, 'js'), { recursive: true });
@@ -102,6 +106,8 @@ export async function buildSite({ root = '.', out = 'dist-site' } = {}) {
     if (!brandFileProblem(rel)) await cp(join(at('brand'), rel), join(outDir, 'brand', rel));
   }
   for (const rel of await filesUnder(at('site/assets'))) await cp(join(at('site/assets'), rel), join(outDir, 'assets', rel));
+  // A brand guide page's AI-ready files (site/ai/: SKILL.md, DESIGN.md, tokens.json), served at <link>/ai/.
+  for (const rel of aiFiles) await cp(join(at('site/ai'), rel), join(outDir, 'ai', rel));
 
   // A site in production reads its locked variants (site/variants); one still being built, the live toolbox.
   const toolbox = isLocked(at('site/variants')) ? variantCss(at('site/variants')) : await part('site/toolbox.css');

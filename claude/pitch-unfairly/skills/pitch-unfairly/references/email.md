@@ -47,7 +47,9 @@ never CSS variables.
   `mailchimp`, `hubspot` or `klaviyo`. `merge` overrides any of them, or adds one for another
   platform.
 - **`fonts`**: a web font's stylesheet, for the mail apps that load one (Apple Mail, iOS Mail). Every
-  other app falls back to the stack, so the email must read well in it too.
+  other app falls back to the stack, so the email must read well in it too. A kit's own font files
+  (typography `source: "files"`) load on the preview page only (engine 1.0.2+ ships them with it);
+  the email never loads them.
 - **`facts`**: values the blocks read as `{{facts.name}}`, such as the page the button opens.
 
 ## Blocks

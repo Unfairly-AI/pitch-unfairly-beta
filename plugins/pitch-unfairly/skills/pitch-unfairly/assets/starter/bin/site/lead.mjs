@@ -192,6 +192,17 @@ const MONEY = /^money(?:_k|_exact)?$/;
 const DATED_PROOF = /rank|award|rating|report|survey/i;
 const ISO_DAY = /^\d{4}-\d{2}-\d{2}$/;
 
+/** Whether site.json marks this site a deal room ("type": "deal_room"), whose cards link to the deal's hosted links. */
+export const isDealRoom = (site) => site?.type === 'deal_room';
+/** A hosted link on pitchunfairly.com (/<workspace>/<slug>), never a home page, a flow or another Unfairly host. */
+export function isHostedLink(href) {
+  const m = /^https:\/\/(?:www\.)?pitchunfairly\.com(\/[^?#]*)/i.exec(href);
+  if (!m) return false;
+  const path = m[1];
+  if (FLOW_PATH.test(path)) return false;
+  return /^\/[a-z0-9][a-z0-9-]*\/[a-z0-9][a-z0-9-]*\/?$/i.test(path);
+}
+
 /** Whether site.json marks this site a lead sample. */
 export const isLead = (site) => !!(site?.sample && typeof site.sample === 'object' && site.sample.lead === true);
 
@@ -206,6 +217,7 @@ export function leadFindings({ site, files, blocks, sampleBlocks = blocks, bandB
   const errors = [];
   const warnings = [];
   const lead = isLead(site);
+  const room = isDealRoom(site);
   const must = (m) => (blocks ? errors : warnings).push(m);
   const filled = (html) => fillTokens(html, site).html;
   const sample = lead ? site.sample : {};
@@ -468,6 +480,8 @@ export function leadFindings({ site, files, blocks, sampleBlocks = blocks, bandB
       if (!lead) {
         for (const [, href] of offBand.matchAll(/\shref="([^"]*)"/g)) {
           const host = linkHost(decode(href));
+          // Engine 1.22.2: a deal room's cards open the room's own hosted links.
+          if (room && isHostedLink(decode(href))) continue;
           if (host && OUR_HOST.test(host)) ad(`${where}: links to ${decode(href)}, which is Unfairly's. Outside the sample band every link is the seller's.`);
         }
       }

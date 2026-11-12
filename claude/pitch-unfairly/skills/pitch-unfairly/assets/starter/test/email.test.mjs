@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { cpSync, existsSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -112,6 +112,36 @@ test('ACCEPTANCE: email:build writes the email, its renders and the preview page
     assert.match(banned.problems.join(), /synergy/);
   } finally {
     process.chdir(cwd);
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+// ACCEPTANCE: a kit whose type is font files (source "files") publishes a preview page that loads
+// every face it names, and the email itself still never loads a licensed file.
+test('ACCEPTANCE: email:build ships a kit\'s font files with the preview page and keeps them out of the email', async () => {
+  const root = project();
+  try {
+    symlinkSync(join(starter, 'node_modules'), join(root, 'node_modules'));
+    mkdirSync(join(root, 'brand/fonts'), { recursive: true });
+    cpSync(join(starter, 'test/fixtures/fonts/test-mono.woff2'), join(root, 'brand/fonts/test-mono.woff2'));
+    const k = JSON.parse(readFileSync(join(root, 'brand/brand.json'), 'utf8'));
+    k.typography.display = { family: 'Test Mono', source: 'files', license: 'user-supplied', weight: 500, files: [{ path: 'fonts/test-mono.woff2', weight: 500, style: 'normal' }] };
+    writeFileSync(join(root, 'brand/brand.json'), JSON.stringify(k, null, 2));
+    const b = resolveBrand(root);
+    const loaded = loadEmail(root);
+    const html = (await mjml2html(mjmlDocument(loaded, b).mjml, { validationLevel: 'soft' })).html;
+    const { kitFontFiles, writePage } = await import('../bin/email-build.mjs');
+    assert.deepEqual(kitFontFiles(b.kit), ['fonts/test-mono.woff2']);
+    const renders = [{ id: 'desktop-light', label: 'Desktop', width: 680, height: 900 }, { id: 'phone-light', label: 'Phone', width: 375, mobile: true, height: 1200 }];
+    await writePage({ root, email: loaded.email, kit: b.kit, html, text: 'Plain text.', renders });
+    const page = readFileSync(join(root, 'dist-email/index.html'), 'utf8');
+    const urls = [...page.matchAll(/url\("([^"]+)"\)\s*format/g)].map((m) => m[1]);
+    assert.ok(urls.includes('brand/fonts/test-mono.woff2'), 'the page names the kit\'s face');
+    for (const u of urls) assert.ok(existsSync(join(root, 'dist-email', u)), `${u} ships with the page`);
+    assert.deepEqual(readFileSync(join(root, 'dist-email/brand/fonts/test-mono.woff2')), readFileSync(join(root, 'brand/fonts/test-mono.woff2')));
+    assert.match(html, /Test Mono/, 'the email names the family in its stack');
+    assert.doesNotMatch(html, /test-mono\.woff2|brand\/fonts|@font-face/, 'the email never loads the kit\'s files');
+  } finally {
     rmSync(root, { recursive: true, force: true });
   }
 });

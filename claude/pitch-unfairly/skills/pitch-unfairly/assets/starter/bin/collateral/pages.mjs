@@ -227,3 +227,38 @@ export function batches(todo, free, limit = VERSIONS_PER_HOUR) {
   }
   return out;
 }
+
+const FONT_FORMAT = { woff2: 'woff2', woff: 'woff', ttf: 'truetype', otf: 'opentype' };
+
+/**
+ * The kit's own font files a hosted page loads, when its type comes from files (source "files"):
+ * for display and body, the upright faces at the weights the page sets (the body's weight, the
+ * headline's weight, and bold for the buttons and labels). Each is { family, path (under brand/),
+ * file (in the page folder), weight }. [] when the kit's type isn't from files, so the page keeps
+ * the family name over its fallback as before.
+ */
+export function pageFonts(kit) {
+  const out = [];
+  const names = new Set();
+  for (const [role, fallback] of [['display', 700], ['body', 400]]) {
+    const t = kit?.typography?.[role];
+    if (t?.source !== 'files' || !t.family) continue;
+    const want = new Set([t.weight ?? fallback, 700]);
+    for (const f of t.files ?? []) {
+      const weight = f.weight ?? 400;
+      if ((f.style ?? 'normal') !== 'normal' || !want.has(weight)) continue;
+      if (out.some((o) => o.family === t.family && o.path === f.path)) continue;
+      const base = String(f.path).split('/').pop();
+      let file = `fonts/${base}`;
+      for (let i = 2; names.has(file); i++) file = `fonts/${i}-${base}`;
+      names.add(file);
+      out.push({ family: t.family, path: f.path, file, weight });
+    }
+  }
+  return out;
+}
+
+/** The @font-face rules for pageFonts, with URLs relative to the page. */
+export function pageFontFaces(fonts) {
+  return fonts.map((f) => `@font-face{font-family:"${f.family}";src:url("${f.file}") format("${FONT_FORMAT[f.file.split('.').pop().toLowerCase()] ?? 'woff2'}");font-weight:${f.weight};font-style:normal;font-display:swap}`).join('\n');
+}

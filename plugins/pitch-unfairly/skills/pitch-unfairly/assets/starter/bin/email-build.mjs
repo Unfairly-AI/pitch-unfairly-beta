@@ -154,8 +154,13 @@ main { max-width: 1180px; margin: 0 auto; padding: clamp(32px, 6vw, 72px) clamp(
 @media (max-width: ${WIDTH + 80}px) { .ep-frame { height: var(--h-phone); } }
 `;
 
+/** The kit's own font files (typography source "files"), as paths under brand/. */
+export function kitFontFiles(kit) {
+  return [...new Set(['display', 'body', 'mono'].map((r) => kit.typography?.[r]).filter((t) => t?.source === 'files').flatMap((t) => (t.files ?? []).map((f) => f.path)))];
+}
+
 /** Writes the preview page and its files into dist-email. */
-async function writePage({ root, email, kit, html, text, renders }) {
+export async function writePage({ root, email, kit, html, text, renders }) {
   const out = join(root, OUT);
   for (const d of ['download', 'js']) await mkdir(join(out, d), { recursive: true });
   // The live frame and the download are separate copies: a download link to the file a frame shows navigates instead.
@@ -168,6 +173,12 @@ async function writePage({ root, email, kit, html, text, renders }) {
     fontCss += f.css;
     await mkdir(join(out, 'fonts', f.name), { recursive: true });
     for (const file of f.files) await copyFile(join(f.dir, 'files', file), join(out, 'fonts', f.name, file));
+  }
+  // Font files in the kit (source "files"): the page's @font-face (fontFaceCss) loads them from brand/<path>,
+  // so they ship with the page. The email itself never loads them (licensed files stay out of the inbox).
+  for (const path of kitFontFiles(kit)) {
+    await mkdir(dirname(join(out, 'brand', path)), { recursive: true });
+    await copyFile(join(root, 'brand', path), join(out, 'brand', path)).catch(() => { throw new Error(`brand.json names the font file brand/${path}, which isn't there.`); });
   }
   const wide = renders.find((r) => r.id === 'desktop-light');
   const phone = renders.find((r) => r.id === 'phone-light');

@@ -108,3 +108,20 @@ test('the fixture does move: without settling, two runs differ', { skip: !puppet
   for (let i = 0; i < 3 && seen.size < 2; i++) seen.add(await shot(url, false));
   assert.ok(seen.size > 1, 'the unsettled fixture screenshotted the same every time, so it proves nothing');
 });
+
+test('ACCEPTANCE: a tab behind another still screenshots (the gate checks pages in parallel tabs)', { skip: !puppeteer && NO_BROWSER }, async () => {
+  const url = await fixture();
+  const browser = await puppeteer.launch(stableLaunch({ protocolTimeout: 30000 }));
+  try {
+    const back = await browser.newPage();
+    await back.setViewport({ width: 1280, height: 800 });
+    await back.goto(url, { waitUntil: 'load' });
+    const front = await browser.newPage();
+    await front.goto(url, { waitUntil: 'load' });
+    await front.bringToFront();
+    const png = await back.screenshot({ type: 'png' });
+    assert.ok(png.length > 1000, 'the background tab painted a screenshot');
+  } finally {
+    await browser.close();
+  }
+});

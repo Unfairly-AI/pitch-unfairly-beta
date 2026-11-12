@@ -359,3 +359,18 @@ test('a plain site (no lead) gets commitment kinds as warnings and none of the l
   assert.ok(!has([...r.errors, ...r.warnings], /types a date|Example: a proposal|number typed into the copy/));
   assert.ok(has(r.warnings, /no sample band/), 'a regular sample keeps its sample-band advice');
 });
+
+test('ACCEPTANCE: a deal room links to its own hosted links; every other Unfairly link still fails', () => {
+  const sampleOnly = { ...SITE, sample: { seller: 'Acme Payroll', buyer: 'Hollis Foods' } };
+  const card = '<p><a href="https://pitchunfairly.com/sell-unfairly/acme-for-hollis-foods-sample-c29f3eb895">Read the proposal</a></p>';
+  const ours = /which is Unfairly's/;
+  const plain = page({ site: sampleOnly, next: addTo(NEXT, card) });
+  assert.ok(has(plain.errors, ours), 'a sample page that is not a room still may not link to us');
+  const room = { ...sampleOnly, type: 'deal_room' };
+  const ok = page({ site: room, next: addTo(NEXT, card) });
+  assert.ok(!has(ok.errors, ours), ok.errors.join('\n'));
+  for (const href of ['https://pitchunfairly.com/', 'https://pitchunfairly.com/book/bob', 'https://app.unfairly.ai/x', 'https://pitchunfairly.com/a/b/c']) {
+    const bad = page({ site: room, next: addTo(NEXT, `<p><a href="${href}">More</a></p>`) });
+    assert.ok(has(bad.errors, ours), `${href} should still fail in a room`);
+  }
+});

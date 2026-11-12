@@ -1,6 +1,6 @@
 // The email engine's version. An email pins it in email/email.json ("engine": "email@1.0")
 // so it keeps building the same way while the engine moves on.
-export const EMAIL_ENGINE = '1.0.1';
+export const EMAIL_ENGINE = '1.0.2';
 
 /** Why this engine can't build an email pinned to `pin`, or null when it can. */
 export function emailEngineProblem(pin, engine = EMAIL_ENGINE) {

@@ -458,6 +458,18 @@ export async function runGate(browser, base, { pages: only = null, screens = GAT
   if (out) await mkdir(join(out, 'shots'), { recursive: true });
   const { pages: crawled, broken } = await crawl(browser, base);
   const pages = only ?? crawled;
+  // Pages are checked in parallel tabs, but Chrome only reliably paints the tab in front: a
+  // screenshot in a background tab can wait for a frame that never comes (Linux CI). So shots are
+  // taken one at a time, each with its tab brought to the front first.
+  let shotQueue = Promise.resolve();
+  const shoot = (page, options) => {
+    const run = shotQueue.then(async () => {
+      await page.bringToFront();
+      await page.screenshot(options);
+    });
+    shotQueue = run.catch(() => {});
+    return run;
+  };
   const found = new Map();
   const add = (page, check, message, width, state) => {
     const k = `${page}\0${check}\0${message.replace(/\d+(\.\d+)?px/g, 'Npx').replace(/\(\d+ to \d+ in \d+px\)/, '')}`;
@@ -508,7 +520,7 @@ export async function runGate(browser, base, { pages: only = null, screens = GAT
       if (primary && primary.bottom > primary.screen) add(path, 'primary-below-fold', `the primary action ${primary.label} ends ${primary.bottom}px down, below the first screen`, width, 'load');
       if (out) {
         const file = join(out, 'shots', `${path.replace(/^\//, '').replace(/\/$/, '/index').replace(/\.html$/, '').replace(/[^\w-]+/g, '_') || 'index'}-${width}.jpg`);
-        await page.screenshot({ path: file, type: 'jpeg', quality: 70 });
+        await shoot(page, { path: file, type: 'jpeg', quality: 70 });
         shots.push({ page: path, width, file });
       }
       await exerciseStates(page, async (state) => {
