@@ -32,7 +32,7 @@ Awareness sets the length and the opening. Most-aware visitors need the offer an
 
 No order is proven by a controlled test; this one follows the evidence that exists. Cut a section the brief can't fill. Never pad one.
 
-1. **Header.** Logo only. No site navigation, no outbound links. Company, privacy and terms go in the footer. Removing navigation breaks no Google policy; Google only penalizes pages that are hard to navigate.
+1. **Header.** The logo, linked to the company's home page, and nothing else: no site navigation, no other outbound links. Company, privacy and terms go in the footer. Removing navigation breaks no Google policy; Google only penalizes pages that are hard to navigate.
 2. **Hero.** The H1 restates the ad's promise in the searcher's words. One line under it says what the service is and who it's for. One CTA. A credibility line close by (logos, or one sourced client result). For a call, the face and title of the person they'll meet. The hero must carry the match and the ask: the top screen still gets well over half of viewing time.
 3. **Status quo.** Their current options in their words, and what each costs them.
 4. **How it works, including the call.** Three or four steps: the call (length, who, what they leave with), the plan and price, the start.
@@ -119,7 +119,7 @@ A page with a few hundred clicks a week can't A/B test booked calls: at 200 clic
 
 - [ ] The brief is complete, and every claim on the page traces to it.
 - [ ] Every ad's headline and offer reappear in its page's hero (open each ad's final URL with its `utm_content`).
-- [ ] One action; the first CTA on the first screen; no site navigation.
+- [ ] One action; the first CTA on the first screen; no site navigation; the logo goes to the home page.
 - [ ] Every number is sourced; no invented clients, results or turnaround times; samples are captioned as samples.
 - [ ] The price position from the brief is on the page or deliberately absent.
 - [ ] The phone layout passes at 320, 390 and 430; Core Web Vitals pass on a phone.
