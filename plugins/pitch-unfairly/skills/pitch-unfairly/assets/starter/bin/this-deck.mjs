@@ -25,7 +25,10 @@ export function deckMatches(ours, theirs) {
   if (!ours.size) return true;
   if (!theirs.size) return false;
   const shared = [...theirs].filter((id) => ours.has(id)).length;
-  return shared >= Math.ceil(theirs.size / 2);
+  // Half of the smaller set. A deck can show more slides than src/slides
+  // defines (components that render slides from data, such as bonus slides a
+  // rep swaps in through a JSON file), and those ids appear in no slide file.
+  return shared >= Math.ceil(Math.min(ours.size, theirs.size) / 2);
 }
 
 export async function assertThisDeck(base) {
