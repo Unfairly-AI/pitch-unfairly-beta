@@ -45,9 +45,14 @@ async function capture(name, viewport, query) {
   await page.addStyleTag({ content: HIDE_CHROME });
   await settleForShots(page);
   const ids = await page.$$eval('.slide', (slides) => slides.map((s) => s.id));
+  // Which slides wear a sub-brand (brand="<id>" on Slide), by screenshot name, so the
+  // design review judges each against its own kit (artifacts/slide-brands.json).
+  const brands = await page.$$eval('.slide', (slides) => slides.map((s) => s.closest('[data-brand]')?.getAttribute('data-brand') ?? null));
   const files = [];
+  const slideBrands = {};
   for (const [i, id] of ids.entries()) {
     const file = join(dir, `${String(i + 1).padStart(2, '0')}-${id.replace(/^slide-/, '')}.png`);
+    if (brands[i]) slideBrands[file.split('/').pop()] = brands[i];
     if (name === 'mobile') {
       // Scroll the slide into place. With reduced motion, CSS entrances finish
       // at once; a scripted one that ignores it (a counter, typed text) gets
@@ -69,6 +74,7 @@ async function capture(name, viewport, query) {
     files.push(file);
   }
   await page.close();
+  if (name === 'stage' && Object.keys(slideBrands).length) await writeFile(join(out, 'slide-brands.json'), JSON.stringify(slideBrands, null, 2));
   console.log(`${name}: ${files.length} screenshots in ${dir}`);
   return files;
 }

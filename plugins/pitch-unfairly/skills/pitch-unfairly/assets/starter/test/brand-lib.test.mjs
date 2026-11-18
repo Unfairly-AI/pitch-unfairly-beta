@@ -141,7 +141,7 @@ test('validation of the rich sections: color refs, texture names, limits, enums,
   assert.match(errs((k) => { k.elements[0].color = 'sky'; }), /elements\[0\]\.color/);
   assert.match(errs((k) => { k.textures[1].tint = '#12'; }), /textures\[1\]\.tint/);
   assert.match(errs((k) => { k.elements[4].texture = 'marble'; }), /elements\[4\]\.texture: "marble" is not one of the kit's textures/);
-  assert.match(errs((k) => { k.palette.extras = Array.from({ length: 25 }, (_, i) => ({ name: `c${i}`, hex: '#000000' })); }), /palette\.extras has 25 entries; the limit is 24/);
+  assert.match(errs((k) => { k.palette.extras = Array.from({ length: 49 }, (_, i) => ({ name: `c${i}`, hex: "#000000" })); }), /palette\.extras has 49 entries; the limit is 48/);
   assert.match(errs((k) => { k.rules = Array.from({ length: 41 }, () => 'A rule.'); }), /rules has 41 entries; the limit is 40/);
   assert.match(errs((k) => { k.palette.gradients[0].stops = [{ color: 'ink' }]; }), /stops needs 2 to 6 stops/);
   assert.match(errs((k) => { k.identity.lockups[0].use = 'x'.repeat(301); }), /lockups\[0\]\.use is 301 characters; the limit is 300/);

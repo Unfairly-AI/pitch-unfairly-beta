@@ -4,15 +4,22 @@
  * Kit logos: primary (on paper), on_ink (on ink slides), on_accent (on accent
  * slides). Falls back to primary, then to the wordmark in the display face.
  */
-import { logos, wordmark } from '../brand/assets';
+import { logos as mainLogos, wordmark as mainWordmark } from '../brand/assets';
+import { subBrands } from '../brand/sub-brands';
 
 interface Props {
   on?: 'paper' | 'ink' | 'accent';
   /** Height in stage pixels. */
   height?: number;
   class?: string;
+  /** A sub-brand's id: its logo instead of the main brand's (on a slide with the same brand). */
+  brand?: string;
 }
-const { on = 'paper', height = 56, class: className } = Astro.props;
+const { on = 'paper', height = 56, class: className, brand } = Astro.props;
+const sub = brand ? subBrands[brand] : undefined;
+if (brand && !sub) throw new Error(`BrandMark: "${brand}" isn't a sub-brand (brand/sub-brands/${brand}.json).`);
+const logos: Record<string, string> = sub ? sub.logos : mainLogos;
+const wordmark = sub ? sub.wordmark : mainWordmark;
 const src = (on === 'ink' && logos.on_ink) || (on === 'accent' && logos.on_accent) || logos.primary;
 ---
 

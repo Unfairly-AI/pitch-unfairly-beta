@@ -36,10 +36,12 @@ const GRADIENT_KINDS = ['linear', 'radial'];
 const TYPE_FONTS = ['display', 'body', 'mono'];
 const TYPE_STYLES = ['normal', 'italic'];
 const TYPE_CASES = ['none', 'uppercase', 'lowercase'];
+/** A text case as the CSS term: "upper" and "lower" (brand-kit@2's and hand-written spellings) read as uppercase and lowercase. */
+export const cssCase = (v) => (v === 'upper' ? 'uppercase' : v === 'lower' ? 'lowercase' : v);
 const TEXTURE_KINDS = ['background', 'accent'];
 const BLENDS = ['normal', 'multiply', 'screen', 'overlay', 'soft-light'];
 export const ELEMENT_KINDS = ['frame', 'bracket', 'bar-under', 'rule', 'stacked-word', 'sliced-word', 'knockout-word', 'other'];
-const LIMITS = { extras: 24, rules: 40, lockups: 12, gradients: 12, applications: 12, roles: 12, textures: 24, elements: 20 };
+const LIMITS = { extras: 48, rules: 40, lockups: 12, gradients: 12, applications: 12, roles: 12, textures: 24, elements: 20 };
 
 /** The CSS token a palette role is written to (accent_secondary → --accent-2, border → --border-color). */
 const roleToken = (role) => `--${role.replaceAll('_', '-').replace('accent-secondary', 'accent-2').replace(/^border$/, 'border-color')}`;
@@ -94,7 +96,7 @@ function richErrors(kit) {
     }
   };
 
-  // palette.extras gain group and use; up to 24 of them.
+  // palette.extras gain group and use; up to 48 of them (a full brand book's ramps).
   const extras = list(palette.extras, LIMITS.extras, 'palette.extras');
   for (const [i, e] of extras.entries()) {
     if (e?.group != null && !KEBAB.test(e.group)) errors.push(`palette.extras[${i}].group must be kebab-case`);
@@ -153,7 +155,7 @@ function richErrors(kit) {
         oneOf(r.style, TYPE_STYLES, `${at}.style`);
         range(r.tracking, -0.2, 0.5, `${at}.tracking`);
         range(r.line_height, 0.6, 3, `${at}.line_height`);
-        oneOf(r.case, TYPE_CASES, `${at}.case`);
+        oneOf(cssCase(r.case), TYPE_CASES, `${at}.case`);
         range(r.scale, 0.3, 4, `${at}.scale`);
         text(r.use, 200, `${at}.use`);
       }
@@ -288,6 +290,7 @@ export function brandGaps(kit, { seeds = [], unreviewed = [] } = {}) {
 export function kitFilePaths(kit) {
   const out = [];
   for (const role of ['display', 'body', 'mono']) for (const f of kit?.typography?.[role]?.files ?? []) out.push({ what: 'font file', path: f.path });
+  for (const face of Array.isArray(kit?.typography?.faces) ? kit.typography.faces : []) for (const f of face?.files ?? []) out.push({ what: `font file (${face.role})`, path: f.path });
   for (const [key, path] of Object.entries(kit?.identity?.logos ?? {})) if (path) out.push({ what: `logo ${key}`, path });
   for (const img of kit?.imagery ?? []) out.push({ what: 'image', path: img.path });
   for (const l of kit?.identity?.lockups ?? []) out.push({ what: `lockup ${l.name}`, path: l.path });
@@ -309,12 +312,23 @@ export function validateKit(kit) {
     if (!/^[a-z][a-z0-9-]*$/.test(extra?.name ?? '') || !HEX.test(extra?.hex ?? '')) errors.push(`palette.extras[${i}] needs a kebab-case name and a hex`);
   }
   errors.push(...richErrors(kit));
-  for (const role of ['display', 'body', 'mono']) {
-    const t = kit?.typography?.[role];
+  const faces = kit?.typography?.faces;
+  if (faces != null && !Array.isArray(faces)) errors.push('typography.faces must be a list');
+  const faceList = Array.isArray(faces) ? faces : [];
+  if (faceList.length > 6) errors.push(`typography.faces has ${faceList.length} entries; the limit is 6`);
+  const faceRoles = new Set();
+  for (const [i, f] of faceList.entries()) {
+    if (!KEBAB.test(f?.role ?? '') || TYPE_FONTS.includes(f.role)) errors.push(`typography.faces[${i}].role must be a kebab-case name other than display, body or mono`);
+    else if (faceRoles.has(f.role)) errors.push(`typography.faces: the role "${f.role}" is used twice`);
+    faceRoles.add(f?.role);
+  }
+  const fonts = [...['display', 'body', 'mono'].map((role) => [role, kit?.typography?.[role]]), ...faceList.map((f, i) => [`faces[${i}]`, f])];
+  for (const [role, t] of fonts) {
     if (!t) { if (role !== 'mono') errors.push(`typography.${role} is required`); continue; }
     if (!t.family) errors.push(`typography.${role}.family is required`);
     if (!['fontsource', 'files', 'system'].includes(t.source)) errors.push(`typography.${role}.source must be fontsource, files, or system`);
     if (t.source === 'fontsource' && !/^@fontsource(-variable)?\/[a-z0-9-]+$/.test(t.package ?? '')) errors.push(`typography.${role}.package must be an @fontsource package`);
+    if (t.case != null && !TYPE_CASES.includes(cssCase(t.case))) errors.push(`typography.${role}.case must be ${TYPE_CASES.join(', ')}`);
     if (t.source === 'files') {
       if (!Array.isArray(t.files) || !t.files.length) errors.push(`typography.${role}.files is required for source "files"`);
       for (const f of t.files ?? []) {
@@ -399,10 +413,13 @@ export function brandCss(kit, fontFaces = '', relPrefix = '../../brand/', { fund
     `  --font-display: ${fontStack(t.display, 'sans')};`,
     `  --font-body: ${fontStack(t.body, 'sans')};`,
     `  --font-mono: ${fontStack(t.mono, 'mono')};`,
+    // Each extra face as --font-<role> (Onsite Extended as --font-extended), set with .font-<role> or var(--font-<role>).
+    ...(Array.isArray(t.faces) ? t.faces : []).map((f) => `  --font-${f.role}: ${fontStack(f, f.fallback ?? 'sans')};`),
     `  --display-weight: ${t.display.weight ?? 700};`,
     `  --display-tracking: ${t.display.tracking ?? -0.03}em;`,
     `  --display-line: ${t.display.line_height ?? 1};`,
-    `  --display-case: ${t.display.case ?? 'none'};`,
+    `  --display-case: ${cssCase(t.display.case) ?? 'none'};`,
+    `  --body-case: ${cssCase(t.body.case) ?? 'none'};`,
     `  --display-scale: ${t.display.scale ?? 1};`,
     `  --body-weight: ${t.body.weight ?? 400};`,
     `  --body-tracking: ${t.body.tracking ?? -0.01}em;`,
@@ -434,6 +451,9 @@ export function brandCss(kit, fontFaces = '', relPrefix = '../../brand/', { fund
     dots: 'radial-gradient(color-mix(in oklab, currentColor 22%, transparent) 1.5px, transparent 1.6px) 0 0 / 28px 28px',
     lines: 'repeating-linear-gradient(0deg, color-mix(in oklab, currentColor 10%, transparent) 0 1px, transparent 1px 32px)',
   }[s.texture];
+  for (const f of Array.isArray(t.faces) ? t.faces : []) {
+    lines.push('', `.font-${f.role} {`, `  font-family: var(--font-${f.role});`, ...(f.weight != null ? [`  font-weight: ${f.weight};`] : []), ...(f.case ? [`  text-transform: ${cssCase(f.case)};`] : []), '}');
+  }
   if (texture) {
     lines.push('', '.slide::before {', "  content: '';", '  position: absolute;', '  inset: 0;', '  pointer-events: none;', `  background: ${texture};`, `  opacity: ${s.texture === 'grain' ? 0.08 : 1};`, '}');
   }
@@ -481,7 +501,7 @@ function richCss(kit, relPrefix) {
     set('style', r.style, 'font-style');
     set('tracking', r.tracking != null ? `${r.tracking}em` : null, 'letter-spacing');
     set('line', r.line_height, 'line-height');
-    set('case', r.case, 'text-transform');
+    set('case', cssCase(r.case), 'text-transform');
     set('scale', r.scale, 'font-size', `calc(1em * var(${v}-scale))`);
     rules.push('', `.type-${role} {`, ...props, '}');
   }
@@ -520,13 +540,22 @@ function richCss(kit, relPrefix) {
   return [...(vars.length ? ['', ':root {', ...vars, '}'] : []), ...rules];
 }
 
-/** @font-face rules for fonts shipped as files in brand/fonts/. */
+/** Every face the kit names: display, body, mono, then typography.faces (Onsite Extended for big display, an eyebrow mono). */
+export function kitFaces(kit) {
+  const t = kit?.typography ?? {};
+  return [...['display', 'body', 'mono'].map((role) => t[role]), ...(Array.isArray(t.faces) ? t.faces : [])].filter(Boolean);
+}
+
+/** @font-face rules for fonts shipped as files in brand/fonts/, for every face the kit names, each file once. */
 export function fontFaceCss(kit, relPrefix) {
   const out = [];
-  for (const role of ['display', 'body', 'mono']) {
-    const t = kit.typography[role];
+  const seen = new Set();
+  for (const t of kitFaces(kit)) {
     if (t?.source !== 'files') continue;
-    for (const f of t.files) {
+    for (const f of t.files ?? []) {
+      const key = `${t.family}\0${f.path}\0${f.weight ?? 400}\0${f.style ?? 'normal'}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
       const format = { woff2: 'woff2', woff: 'woff', ttf: 'truetype', otf: 'opentype' }[f.path.split('.').pop().toLowerCase()];
       out.push(`@font-face {\n  font-family: "${t.family}";\n  src: url("${relPrefix}${f.path}") format("${format}");\n  font-weight: ${f.weight ?? 400};\n  font-style: ${f.style ?? 'normal'};\n  font-display: swap;\n}`);
     }
@@ -536,8 +565,7 @@ export function fontFaceCss(kit, relPrefix) {
 
 /** fonts.ts: imports for Fontsource packages. */
 export function fontImports(kit) {
-  const pkgs = [...new Set(['display', 'body', 'mono']
-    .map((r) => kit.typography[r])
+  const pkgs = [...new Set(kitFaces(kit)
     .filter((t) => t?.source === 'fontsource')
     .map((t) => t.package))];
   return `// Generated by \`npm run brand:apply\`. Edit brand/brand.json instead.\n${pkgs.map((p) => `import '${p}';`).join('\n')}\nexport {};\n`;
@@ -602,6 +630,62 @@ export function assetModule(kit, relPrefix) {
     `export const typeRoles: string[] = ${j(Object.keys(kit.typography?.roles ?? {}))};`,
     `export const gradients: string[] = ${j((kit.palette?.gradients ?? []).map((g) => g.name))};`,
     `export const messaging: { essence: string; taglines: string[]; key_messages: { area: string; headline: string; body: string }[]; attributes: string[] } = ${j(messaging)};`,
+    '',
+  ].join('\n');
+}
+
+// ── Sub-brands: a slide in another of the company's brands ─────────────
+//
+// A company with a sub-brand (fillmore inside Metaview) keeps each one's kit at
+// brand/sub-brands/<id>.json, a brand-kit@1 whose file paths are relative to
+// brand/ like the main kit's (brand_kit_get with sub_brand returns it). A slide
+// with brand="<id>" wears that kit: brand-apply writes its tokens, fonts and
+// type scoped to [data-brand="<id>"], so the rest of the deck keeps the main kit.
+
+export const SUB_BRAND_DIR = 'brand/sub-brands';
+export const SUB_BRAND_ID = /^[a-z][a-z0-9-]{0,30}$/;
+
+/**
+ * A kit's brand CSS (brandCss) moved under one sub-brand's selector: :root's tokens become
+ * [data-brand="<id>"]'s, and every rule applies only inside it. @font-face stays out; the
+ * caller declares fonts once for the whole deck.
+ */
+export function subBrandCss(id, kit, relPrefix) {
+  if (!SUB_BRAND_ID.test(id)) throw new Error(`sub-brand id "${id}" must be kebab-case`);
+  const sel = `[data-brand="${id}"]`;
+  const out = [`/* Sub-brand ${kit.identity?.name ?? id}: slides with brand="${id}". Generated from ${SUB_BRAND_DIR}/${id}.json. */`];
+  for (const line of brandCss(kit, '', relPrefix).split('\n')) {
+    const trimmed = line.trim();
+    if (trimmed.startsWith('/*')) continue;
+    if (trimmed === ':root {') { out.push(line.replace(':root', sel)); continue; }
+    const rule = /^(\s*)([^@\s][^{;]*)\{$/.exec(line);
+    if (rule) {
+      out.push(`${rule[1]}${rule[2].split(',').map((x) => `${sel} ${x.trim()}`).join(', ')} {`);
+      continue;
+    }
+    out.push(line);
+  }
+  return `${out.join('\n').trimEnd()}\n`;
+}
+
+/** src/brand/sub-brands.ts: each sub-brand's name, wordmark and logo URLs, for Slide's brand check and BrandMark. */
+export function subBrandModule(subs, relPrefix) {
+  const imports = [];
+  const entries = subs.map(({ id, kit }, n) => {
+    const logos = Object.entries(kit.identity?.logos ?? {}).filter(([, path]) => path).map(([key, path]) => {
+      const name = `sb${n}_${key.replace(/[^a-z0-9]/gi, '_')}`;
+      imports.push(`import ${name} from '${relPrefix}${path}?url';`);
+      return `${JSON.stringify(key)}: ${name}`;
+    });
+    return `  ${JSON.stringify(id)}: { name: ${JSON.stringify(kit.identity?.name ?? id)}, wordmark: ${JSON.stringify(kit.identity?.wordmark ?? kit.identity?.name ?? id)}, logos: { ${logos.join(', ')} } },`;
+  });
+  return [
+    '// Generated by `npm run brand:apply` from brand/sub-brands/*.json. Edit those kits instead.',
+    ...imports,
+    '',
+    'export const subBrands: Record<string, { name: string; wordmark: string; logos: Record<string, string> }> = {',
+    ...entries,
+    '};',
     '',
   ].join('\n');
 }

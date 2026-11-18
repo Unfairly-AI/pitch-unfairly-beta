@@ -2,12 +2,13 @@
 //   src/brand/brand.css  tokens (colors, type, physical style, motion)
 //   src/brand/fonts.ts   Fontsource imports
 //   src/brand/assets.ts  logo, imagery, lockup, texture, and element URLs
+//   src/brand/sub-brands.ts  each sub-brand kit in brand/sub-brands/<id>.json (a slide with brand="<id>")
 // Installs any Fontsource package the kit names. Run after every kit change.
 import { execFileSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { assetModule, brandCss, fontFaceCss, fontImports, kitFilePaths, kitWarnings, validateKit } from './brand-lib.mjs';
+import { assetModule, brandCss, fontFaceCss, fontImports, kitFaces, kitFilePaths, kitWarnings, SUB_BRAND_DIR, SUB_BRAND_ID, subBrandCss, subBrandModule, validateKit } from './brand-lib.mjs';
 
 const kitPath = process.argv[2] ?? 'brand/brand.json';
 const kit = JSON.parse(await readFile(kitPath, 'utf8'));
@@ -17,14 +18,27 @@ for (const { what, path } of kitFilePaths(kit)) {
   if (typeof path === 'string' && path && !existsSync(join('brand', path))) errors.push(`missing ${what}: brand/${path}`);
 }
 for (const w of kitWarnings(kit)) console.warn(`  ! ${w}`);
+// Sub-brands: brand/sub-brands/<id>.json, each a brand-kit@1 with paths relative to brand/.
+const subs = [];
+for (const name of (await readdir(SUB_BRAND_DIR).catch(() => [])).filter((n) => n.endsWith('.json')).sort()) {
+  const id = name.replace(/\.json$/, '');
+  const at = `${SUB_BRAND_DIR}/${name}`;
+  if (!SUB_BRAND_ID.test(id)) { errors.push(`${at}: the file name is the sub-brand's id and must be kebab-case`); continue; }
+  let sub;
+  try { sub = JSON.parse(await readFile(at, 'utf8')); } catch (e) { errors.push(`${at}: ${e.message}`); continue; }
+  errors.push(...validateKit(sub).map((e) => `${at}: ${e}`));
+  for (const { what, path } of kitFilePaths(sub)) {
+    if (typeof path === 'string' && path && !existsSync(join('brand', path))) errors.push(`${at}: missing ${what}: brand/${path}`);
+  }
+  subs.push({ id, kit: sub });
+}
 if (errors.length) {
   console.error(`brand/brand.json has ${errors.length} problem(s):`);
   errors.forEach((e) => console.error(`  ✗ ${e}`));
   process.exit(1);
 }
 
-const packages = [...new Set(['display', 'body', 'mono']
-  .map((r) => kit.typography[r])
+const packages = [...new Set([kit, ...subs.map((s) => s.kit)].flatMap(kitFaces)
   .filter((t) => t?.source === 'fontsource')
   .map((t) => t.package))];
 const missing = packages.filter((p) => !existsSync(join('node_modules', p, 'package.json')));
@@ -51,7 +65,12 @@ for (const pkg of missing) {
 }
 
 await mkdir('src/brand', { recursive: true });
-await writeFile('src/brand/brand.css', brandCss(kit, fontFaceCss(kit, '../../brand/'), '../../brand/'));
-await writeFile('src/brand/fonts.ts', fontImports(kit));
+// Every font file once, the main kit's and each sub-brand's: @font-face can't be scoped to a slide.
+const faces = [...new Set([kit, ...subs.map((s) => s.kit)].flatMap((k) => fontFaceCss(k, '../../brand/').split(/\n(?=@font-face)/)).filter(Boolean))].join('\n');
+const css = [brandCss(kit, faces, '../../brand/'), ...subs.map(({ id, kit: sub }) => subBrandCss(id, sub, '../../brand/'))].join('\n');
+await writeFile('src/brand/brand.css', css);
+const fontsourceKit = { typography: { faces: [kit, ...subs.map((s) => s.kit)].flatMap(kitFaces) } };
+await writeFile('src/brand/fonts.ts', fontImports(fontsourceKit));
 await writeFile('src/brand/assets.ts', assetModule(kit, '../../brand/'));
-console.log(`Applied ${kit.identity?.name ?? 'brand'}: src/brand/brand.css, fonts.ts, assets.ts`);
+await writeFile('src/brand/sub-brands.ts', subBrandModule(subs, '../../brand/'));
+console.log(`Applied ${kit.identity?.name ?? 'brand'}${subs.length ? ` with sub-brand${subs.length > 1 ? 's' : ''} ${subs.map((s) => s.id).join(', ')}` : ''}: src/brand/brand.css, fonts.ts, assets.ts, sub-brands.ts`);

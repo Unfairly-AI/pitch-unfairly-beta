@@ -10,7 +10,10 @@
   Rebrand by changing the tokens, not by sprinkling new colors through slides.
 */
 
-:root {
+/* A slide in a sub-brand (brand="<id>") gets its own roles from src/brand/brand.css,
+   so everything derived from them is worked out again there too. */
+:root,
+[data-brand] {
   /* Brand roles, fonts, physical style, and motion come from
      src/brand/brand.css (generated from brand/brand.json). Everything below
      derives from them: never write a raw color in a slide. */
@@ -60,7 +63,8 @@
 }
 
 @media (max-width: 799px) {
-  :root {
+  :root,
+  [data-brand] {
     --t-hero: calc(54px * var(--display-scale));
     --t-display: calc(42px * var(--display-scale));
     --t-title: calc(30px * var(--display-scale));
@@ -131,6 +135,8 @@ svg {
 
 .slide {
   counter-increment: slide;
+  /* A brand that sets everything in one case (fillmore: all lowercase) says so on body.case. */
+  text-transform: var(--body-case, none);
   position: relative;
   display: flex;
   flex-direction: column;

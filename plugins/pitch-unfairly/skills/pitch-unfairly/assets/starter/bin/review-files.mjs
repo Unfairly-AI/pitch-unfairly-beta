@@ -2,7 +2,8 @@
 // which also writes artifacts/review-binding.json, the deck and files deck_review binds to):
 // [{ path, size }] for artifacts/stage/*.png, each slide's phone screenshot
 // (artifacts/mobile/*.png, same names), and both contact sheets.
-import { copyFile, mkdir, readdir, rm, stat, writeFile } from 'node:fs/promises';
+import { copyFile, mkdir, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
+import { SUB_BRAND_DIR, SUB_BRAND_ID } from './brand-lib.mjs';
 import { join } from 'node:path';
 import { auditStamp, shotsProblem, siteReviewContext } from './design-review.mjs';
 
@@ -47,6 +48,11 @@ if (site) {
     ? `Pass deck "${binding.deck}" and the files in ${REVIEW_BINDING} on this review's first deck_review call; publish with the same deck slug.`
     : `Pass --deck <the page's slug> so the review can be bound to this build (${REVIEW_BINDING} has the files but no deck).`);
 }
+// A deck with sub-brand slides: which slide wears which kit, and each of those kits, so the
+// reviewer judges a fillmore slide against fillmore's kit and not the main one.
+const slideBrands = site ? {} : JSON.parse(await readFile('artifacts/slide-brands.json', 'utf8').catch(() => '{}'));
+const used = [...new Set(Object.values(slideBrands))].filter((id) => SUB_BRAND_ID.test(id)).sort();
+if (used.length) context = { ...context, slide_brands: slideBrands };
 // For a site: the fingerprint, story hash, engine, time and section list this review covers (design-review.mjs).
 await writeFile('artifacts/review-context.json', JSON.stringify(context));
 files.push({ path: 'review-context.json', size: (await stat('artifacts/review-context.json')).size });
@@ -68,6 +74,14 @@ for (const [candidate, name] of evidence) {
   if (!info?.isFile()) { await rm(join('artifacts', name), { force: true }); continue; }
   await copyFile(source, join('artifacts', name));
   files.push({ path: name, size: info.size });
+}
+for (const name of (await readdir('artifacts').catch(() => [])).filter((n) => /^brand-kit\.[a-z][a-z0-9-]*\.json$/.test(n))) await rm(join('artifacts', name), { force: true });
+for (const id of used) {
+  const source = `${SUB_BRAND_DIR}/${id}.json`;
+  const info = await stat(source).catch(() => null);
+  if (!info?.isFile()) { console.error(`A slide has brand "${id}" but ${source} is missing. Add it and run npm run brand:apply.`); process.exit(1); }
+  await copyFile(source, join('artifacts', `brand-kit.${id}.json`));
+  files.push({ path: `brand-kit.${id}.json`, size: info.size });
 }
 for (const dir of ['stage', 'mobile']) {
   for (const name of (await readdir(join('artifacts', dir)).catch(() => [])).filter((n) => n.endsWith('.png')).sort()) {
