@@ -68,9 +68,15 @@ await mkdir('src/brand', { recursive: true });
 // Every font file once, the main kit's and each sub-brand's: @font-face can't be scoped to a slide.
 const faces = [...new Set([kit, ...subs.map((s) => s.kit)].flatMap((k) => fontFaceCss(k, '../../brand/').split(/\n(?=@font-face)/)).filter(Boolean))].join('\n');
 const css = [brandCss(kit, faces, '../../brand/'), ...subs.map(({ id, kit: sub }) => subBrandCss(id, sub, '../../brand/'))].join('\n');
-await writeFile('src/brand/brand.css', css);
+// Write a generated file only when it changed: a running dev server reloads the page on any
+// write to a module the slides import, and a build during an audit (the studio's publish)
+// would navigate the audited page away mid-check.
+const writeIfChanged = async (path, content) => {
+  if ((await readFile(path, 'utf8').catch(() => null)) !== content) await writeFile(path, content);
+};
+await writeIfChanged('src/brand/brand.css', css);
 const fontsourceKit = { typography: { faces: [kit, ...subs.map((s) => s.kit)].flatMap(kitFaces) } };
-await writeFile('src/brand/fonts.ts', fontImports(fontsourceKit));
-await writeFile('src/brand/assets.ts', assetModule(kit, '../../brand/'));
-await writeFile('src/brand/sub-brands.ts', subBrandModule(subs, '../../brand/'));
+await writeIfChanged('src/brand/fonts.ts', fontImports(fontsourceKit));
+await writeIfChanged('src/brand/assets.ts', assetModule(kit, '../../brand/'));
+await writeIfChanged('src/brand/sub-brands.ts', subBrandModule(subs, '../../brand/'));
 console.log(`Applied ${kit.identity?.name ?? 'brand'}${subs.length ? ` with sub-brand${subs.length > 1 ? 's' : ''} ${subs.map((s) => s.id).join(', ')}` : ''}: src/brand/brand.css, fonts.ts, assets.ts, sub-brands.ts`);

@@ -3,7 +3,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { cpSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, mkdtempSync, mkdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { brandCss, cssCase, fontFaceCss, fontImports, kitFilePaths, subBrandCss, subBrandModule, validateKit } from '../bin/brand-lib.mjs';
@@ -123,6 +123,13 @@ test('a mixed deck builds: brand-apply reads brand/sub-brands, the fillmore slid
     const index = join(dir, 'src/pages/index.astro');
     writeFileSync(index, readFileSync(index, 'utf8').replace("import Cover from '../slides/01-cover.astro';", "import Cover from '../slides/01-cover.astro';\nimport Fillmore from '../slides/02-fillmore.astro';").replace('<Cover />', '<Cover />\n  <Fillmore />'));
     execFileSync('node', ['bin/brand-apply.mjs'], { cwd: dir, stdio: 'pipe' });
+    // Applying the same kit again writes nothing: a dev server reloads the page on any write to
+    // a module the slides import, which navigated the studio's publish audit away mid-check.
+    const generated = ['brand.css', 'fonts.ts', 'assets.ts', 'sub-brands.ts'].map((f) => join(dir, 'src/brand', f));
+    const stamps = generated.map((f) => statSync(f).mtimeMs);
+    execFileSync('sleep', ['0.05']);
+    execFileSync('node', ['bin/brand-apply.mjs'], { cwd: dir, stdio: 'pipe' });
+    assert.deepEqual(generated.map((f) => statSync(f).mtimeMs), stamps);
     const css = readFileSync(join(dir, 'src/brand/brand.css'), 'utf8');
     assert.match(css, /font-family: "Onsite Extended"/);
     assert.match(css, /font-family: "Onsite Semi Mono"/);
