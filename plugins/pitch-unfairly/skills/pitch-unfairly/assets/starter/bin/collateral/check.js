@@ -1,7 +1,8 @@
 // Checks a laid-out piece against its format and its brand. Runs in the page; the build reads the result.
-//   problems  fail the build: copy outside the safe area, off-palette color, accent limit, wrong font, no logo
+//   problems  fail the build: copy outside the safe area, off-palette color, accent limit, wrong font, no logo,
+//             a logo cut off or outside the safe area
 //   warnings  printed in the report: photos below the format's resolution at finished size
-import { accentProblems, clip, effectiveDpi, hexOf, outside, paletteProblems } from './rules.mjs';
+import { accentProblems, clip, effectiveDpi, hexOf, logoProblem, outside, paletteProblems } from './rules.mjs';
 
 export async function check({ W, H, inset, PX_IN }) {
   const config = await (await fetch(new URL('./config.json', import.meta.url))).json();
@@ -41,7 +42,20 @@ export async function check({ W, H, inset, PX_IN }) {
     problems.push(...paletteProblems(used.filter(Boolean), new Set(config.palette)));
     problems.push(...accentProblems(used.filter(Boolean), config.accents, piece.variant));
   }
-  const logos = document.querySelectorAll('.canvas [data-logo]').length;
+  const logoEls = [...document.querySelectorAll('.canvas [data-logo]')];
+  const logos = logoEls.length;
+  // A logo must show whole inside the safe area: the canvas edge and any cropping box count as clips.
+  if (!piece.mockup) for (const el of logoEls) {
+    const cs = getComputedStyle(el);
+    if (cs.display === 'none' || cs.visibility === 'hidden' || +cs.opacity === 0) continue;
+    const clips = [{ left: 0, top: 0, right: W, bottom: H }];
+    for (let a = el.parentElement; a; a = a.parentElement) {
+      if (getComputedStyle(a).overflow !== 'visible') clips.push(a.getBoundingClientRect());
+      if (a.classList.contains('canvas')) break;
+    }
+    const why = logoProblem(el.getBoundingClientRect(), clips, box);
+    if (why) problems.push(`${why}: ${el.getAttribute('alt') || el.tagName.toLowerCase()}`);
+  }
   if (!logos && !piece.logo_exempt && !piece.mockup) problems.push('no logo: every stand-alone piece carries one (mark it data-logo), or give the piece a logo_exempt reason');
   if (piece.kind === 'print' || piece.kind === 'merch') {
     for (const img of document.querySelectorAll('.canvas img')) {

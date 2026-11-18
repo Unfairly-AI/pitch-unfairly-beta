@@ -94,7 +94,8 @@ A piece imports `../.engine/canvas.js` and calls `ready()` when it is drawn:
   - a color outside the brand palette
   - more accents than the variant allows
   - a font the brand doesn't use, or one that didn't load
-  - no logo
+  - no logo, or a logo cut off by the canvas edge or a cropping box, or sitting outside the safe area
+    (a story's top and bottom bands included)
 - **Warnings** go to the report: a photo below the format's resolution at finished size. Out-of-home needs
   80–150 pixels per inch at full size; a poster read up close needs 150–300. Web photos rarely pass.
   Ask for the originals before anything goes to print.

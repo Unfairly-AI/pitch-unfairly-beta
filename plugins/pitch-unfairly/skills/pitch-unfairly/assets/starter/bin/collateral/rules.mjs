@@ -50,6 +50,16 @@ export function outside(r, box, tol = 1) {
   return r.left < box.left - tol || r.top < box.top - tol || r.right > box.right + tol || r.bottom > box.bottom + tol;
 }
 
+/** Why a logo doesn't show whole inside the safe area, or null. A logo cut by a clipping box (the canvas
+ *  edge, a cropped card) is cut off; one that shows whole but sits past the safe area is outside it. */
+export function logoProblem(rect, clips, box, tol = 1) {
+  if (rect.right <= rect.left || rect.bottom <= rect.top) return null;
+  const shown = clip(rect, clips);
+  if (shown.left > rect.left + tol || shown.top > rect.top + tol || shown.right < rect.right - tol || shown.bottom < rect.bottom - tol) return 'logo is cut off';
+  if (outside(rect, box, tol)) return 'logo is outside the safe area';
+  return null;
+}
+
 /** Pixels per inch an image prints at: its natural size over the inches it covers (object-fit cover crops). */
 export function effectiveDpi({ naturalW, naturalH, boxW, boxH, cover = false, pxIn }) {
   if (!naturalW || !boxW) return null;

@@ -101,7 +101,7 @@ test('a sub-brand kit is scoped to its slides: its tokens and rules apply only u
   assert.match(subBrandModule([{ id: 'fillmore', kit: { identity: { name: 'fillmore', logos: { primary: 'logos/f.svg' } } } }], '../../brand/'), /"fillmore": \{ name: "fillmore", wordmark: "fillmore", logos: \{ "primary": sb0_primary \} \}/);
 });
 
-test('a mixed deck builds: brand-apply reads brand/sub-brands, the fillmore slide wears its kit, the rest keep the main one', { timeout: 240_000 }, () => {
+test('a mixed deck builds: brand-apply reads brand/sub-brands, the fillmore slide wears its kit, the rest keep the main one', { timeout: 240_000 }, async () => {
   const dir = mkdtempSync(join(tmpdir(), 'sub-brand-deck-'));
   try {
     for (const p of ['package.json', 'astro.config.mjs', 'bin', 'src', 'brand']) cpSync(join(starter, p), join(dir, p), { recursive: true });
@@ -119,7 +119,7 @@ test('a mixed deck builds: brand-apply reads brand/sub-brands, the fillmore slid
     mkdirSync(join(dir, 'brand/sub-brands'));
     writeFileSync(join(dir, 'brand/sub-brands/fillmore.json'), JSON.stringify(fillmore()));
     writeFileSync(join(dir, 'src/slides/01-cover.astro'), "---\nimport Slide from '../components/Slide.astro';\n---\n<Slide id=\"cover\" label=\"Cover\" bare><h1 class=\"display hero\">Metaview <span class=\"font-extended\">wide</span></h1></Slide>\n");
-    writeFileSync(join(dir, 'src/slides/02-fillmore.astro'), "---\nimport Slide from '../components/Slide.astro';\n---\n<Slide id=\"fillmore\" label=\"fillmore\" brand=\"fillmore\"><h2 class=\"display\">meet fillmore</h2></Slide>\n");
+    writeFileSync(join(dir, 'src/slides/02-fillmore.astro'), "---\nimport Slide from '../components/Slide.astro';\n---\n<Slide id=\"fillmore\" label=\"fillmore\" brand=\"fillmore\"><h2 class=\"display\">meet fillmore</h2><p class=\"lede\">Body Copy</p></Slide>\n");
     const index = join(dir, 'src/pages/index.astro');
     writeFileSync(index, readFileSync(index, 'utf8').replace("import Cover from '../slides/01-cover.astro';", "import Cover from '../slides/01-cover.astro';\nimport Fillmore from '../slides/02-fillmore.astro';").replace('<Cover />', '<Cover />\n  <Fillmore />'));
     execFileSync('node', ['bin/brand-apply.mjs'], { cwd: dir, stdio: 'pipe' });
@@ -133,6 +133,26 @@ test('a mixed deck builds: brand-apply reads brand/sub-brands, the fillmore slid
     assert.match(html, /<div[^>]*class="deck-frame tone-paper[^"]*"[^>]*data-brand="fillmore"/);
     // The cover has no brand attribute, so it keeps Metaview's kit.
     assert.equal(html.match(/ data-brand="/g).length, 1);
+    // In a browser: the fillmore slide's headline and body copy are in its face and case,
+    // the cover keeps the main kit's display face, and an extra face is set by its class.
+    const { serveDir } = await import(join(dir, 'bin/serve.mjs'));
+    const { default: puppeteer } = await import('puppeteer');
+    const server = await serveDir(join(dir, 'dist'));
+    const browser = await puppeteer.launch({ headless: true });
+    try {
+      const page = await browser.newPage();
+      await page.goto(`${server.url}/?pdf=1`, { waitUntil: 'load' });
+      const font = (sel) => page.$eval(sel, (el) => { const s = getComputedStyle(el); return `${s.fontFamily.split(',')[0].replace(/"/g, '')}|${s.textTransform}`; });
+      assert.equal(await font('#slide-fillmore h2'), 'Onsite Semi Mono|lowercase');
+      assert.equal(await font('#slide-fillmore .lede'), 'Onsite Semi Mono|lowercase');
+      assert.equal(await font('#slide-cover h1'), 'Euclid Circular B|none');
+      assert.equal(await font('#slide-cover .font-extended'), 'Onsite Extended|none');
+      assert.equal(await page.$eval('#slide-fillmore', (el) => getComputedStyle(el).getPropertyValue('--accent').trim().toUpperCase()), '#A1FA0A');
+      assert.notEqual(await page.$eval('#slide-cover', (el) => getComputedStyle(el).getPropertyValue('--accent').trim().toUpperCase()), '#A1FA0A');
+    } finally {
+      await browser.close();
+      await server.close();
+    }
     // An unknown sub-brand fails the build with a fix, never silently in the main kit.
     writeFileSync(join(dir, 'src/slides/02-fillmore.astro'), "---\nimport Slide from '../components/Slide.astro';\n---\n<Slide id=\"fillmore\" label=\"fillmore\" brand=\"filmore\"><h2>typo</h2></Slide>\n");
     assert.throws(() => execFileSync('npx', ['astro', 'build'], { cwd: dir, stdio: 'pipe' }), (e) => /brand "filmore" isn't a sub-brand/.test(String(e.stderr) + String(e.stdout)));

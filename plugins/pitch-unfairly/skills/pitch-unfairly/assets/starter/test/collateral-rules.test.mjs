@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { accentProblems, allowedColors, clip, effectiveDpi, hexOf, outside, paletteProblems } from '../bin/collateral/rules.mjs';
+import { accentProblems, allowedColors, clip, effectiveDpi, hexOf, logoProblem, outside, paletteProblems } from '../bin/collateral/rules.mjs';
 import { setProblems } from '../bin/collateral/set.mjs';
 import { collateralEngineProblem } from '../bin/collateral/version.mjs';
 
@@ -28,6 +28,19 @@ test('safe area: clipped type is checked only where it shows', () => {
   assert.ok(outside({ left: 5, top: 20, right: 50, bottom: 40 }, box));
   const sliced = clip({ left: 20, top: 0, right: 90, bottom: 40 }, [{ left: 0, top: 15, right: 200, bottom: 30 }]);
   assert.equal(outside(sliced, box), false);
+});
+
+test('ACCEPTANCE: a logo running off the canvas or out of the safe area fails', () => {
+  const canvas = { left: 0, top: 0, right: 1080, bottom: 1080 };
+  const box = { left: 40, top: 40, right: 1040, bottom: 1040 };
+  // A sign-off pushed below the frame by a longer headline: the canvas clips it.
+  assert.equal(logoProblem({ left: 80, top: 1050, right: 400, bottom: 1130 }, [canvas], box), 'logo is cut off');
+  // Cropped by a card with overflow hidden inside the frame.
+  assert.equal(logoProblem({ left: 80, top: 500, right: 400, bottom: 580 }, [canvas, { left: 0, top: 0, right: 300, bottom: 1080 }], box), 'logo is cut off');
+  // Whole, but in the margin a story's interface covers.
+  assert.equal(logoProblem({ left: 80, top: 10, right: 400, bottom: 60 }, [canvas], box), 'logo is outside the safe area');
+  assert.equal(logoProblem({ left: 80, top: 900, right: 400, bottom: 980 }, [canvas], box), null);
+  assert.equal(logoProblem({ left: 0, top: 0, right: 0, bottom: 0 }, [canvas], box), null);
 });
 
 test('photo resolution at finished size', () => {
