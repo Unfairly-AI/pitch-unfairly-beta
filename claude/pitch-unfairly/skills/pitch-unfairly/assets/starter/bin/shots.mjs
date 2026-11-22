@@ -10,6 +10,7 @@ import { renderPdf } from './render-pdf.mjs';
 import { assertThisDeck } from './this-deck.mjs';
 import { refuseInCodexSandbox } from './browser-guard.mjs';
 import { settleForShots, stableLaunch } from './stable-shots.mjs';
+import { checkLiveStates } from './live-check.mjs';
 
 refuseInCodexSandbox('Taking screenshots');
 
@@ -102,6 +103,15 @@ try {
     contactSheet(stage, join(out, 'contact-sheet.png'), 3, 480),
     contactSheet(mobile, join(out, 'contact-sheet-mobile.png'), 6, 197),
   ]);
+
+  // Interactive slides in their live state (the stage shots are the static
+  // render, which hides controls): artifacts/live/<NN-id>--start|settled|after.png.
+  const live = await checkLiveStates(browser, base, { out: join(out, 'live') });
+  if (live.files.length) {
+    console.log(`live: ${live.files.length} screenshots of ${live.slides.length} interactive slide${live.slides.length === 1 ? '' : 's'} in ${join(out, 'live')}; look at them`);
+    live.issues.forEach((issue) => console.error(`  ✗ live: ${issue}`));
+    if (live.issues.length) process.exitCode = 1;
+  }
 
   // --quick skips the PDF (the slowest part) for fast iteration; the full run and the build still make it.
   const bytes = process.argv.includes('--quick') ? null : await renderPdf(browser, base).catch((error) => {

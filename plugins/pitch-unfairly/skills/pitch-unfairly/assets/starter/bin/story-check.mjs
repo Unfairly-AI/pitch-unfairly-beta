@@ -95,6 +95,9 @@ function checkHeadline(where, headline, i, errors, warnings) {
   if (said > 2 || (said > 1 && i > 0)) warnings.push(`${where}: the headline is ${said} sentences. Keep one claim${i === 0 ? ' (a cover can carry two short parts)' : ''}.`);
 }
 
+/** Words that make a close slide a plan instead of one ask. */
+export const CLOSE_PLAN = /\b(?:mutual action plan|action plan|who does what|owners? (?:on|for) (?:both|each) sides?|owners and dates|dates and owners|next steps table|table of (?:next )?steps)\b/i;
+
 export function checkStory(story, library, options = {}) {
   if (story.format === 'site') return checkSiteStory(story, options);
   const errors = [];
@@ -131,6 +134,15 @@ export function checkStory(story, library, options = {}) {
       else jobs.set(key, String(i + 1).padStart(2, '0'));
     }
   });
+
+  // A deck closes on one ask. The mutual action plan (owners and dates on both
+  // sides, a who-does-what table) belongs in the proposal or deal room.
+  const last = story.slides.at(-1);
+  if (story.slides.length > 1 && last) {
+    const f = last.fields;
+    const said = [f.beat, f.job, f.headline, f.proof].filter(Boolean).join(' ');
+    if (CLOSE_PLAN.test(said)) errors.push(`Slide ${String(story.slides.length).padStart(2, '0')} (${last.title}): the close is a plan or table. End the deck on one ask (one line, optionally the contact); put the mutual action plan in the proposal or deal room.`);
+  }
 
   if (template) {
     const covered = new Set(story.slides.map((s) => (s.fields.beat ?? '').toLowerCase()).filter(Boolean));

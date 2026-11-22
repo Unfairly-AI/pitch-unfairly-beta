@@ -18,3 +18,7 @@ A deal room is one link the seller sends a buyer for one deal. It holds that dea
 5. When the links change, update them with `deal_room` and rebuild the page from its list.
 
 Never restate the proposal's argument, prices or terms on the room page. They live in the linked pages.
+
+## The mutual action plan lives here
+
+The dated plan with owners on both sides (who does what, by when, the first step already done) belongs in the room or the proposal, not the deck. A deck closes on one ask; the room carries the plan the ask starts. Put it on the room page as a short list under the hero, or in the proposal's next-steps section: each step with an owner on each side and a date, the first one ticked if it already happened, never "Thank you". Dates are the ones the buyer and seller agreed, never invented.

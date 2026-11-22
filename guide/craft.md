@@ -7,10 +7,10 @@ What separates a composed slide from a generated one. Apply these as defaults; t
 1. **One focal element per slide.** Only the focal element gets the strong treatment: color, a hard shadow, a border, scale. Supporting elements stay quiet: no box, no shadow, muted color.
 2. **The headline is the point.** A full sentence the audience could repeat. Most headlines carry no colored phrase at all; emphasis comes from the sentence itself. Use an accent phrase (`<span class="hl">`) only where the brand's own site colors words for emphasis, and then on a few headlines, never on every one.
 3. **The slide is the canvas.** No frame inside a frame and no decorative props around the content. If removing an element doesn't change what the slide says, remove it.
-4. **No body copy that repeats the visual.** A sentence that explains what the diagram, chart, or number already shows is over-copy: cut it. A line that carries a fact the visual doesn't (a number, a customer, a date, a source) is proof, and proof stays: a slide whose job needs evidence shows the brief's real facts on the slide, not only in the notes. No footers either: no website, no "illustrative" caption, no source line on the slide. The logo already says whose deck it is, and sources and nuance go in speaker notes.
+4. **No body copy that repeats the visual.** A sentence that explains what the diagram, chart, or number already shows is over-copy: cut it. A line that carries a fact the visual doesn't (a number, a customer, a date, a source) is proof, and proof stays: a slide whose job needs evidence shows the brief's real facts on the slide, not only in the notes. No footers either: no website, no "illustrative" caption, no disclaimer. The logo already says whose deck it is. **Provenance lives off the slide:** every figure is traced to a source in the speaker notes and `artifacts/source.json`. On the slide, at most a short source label beside the figure ("Metaview, 2026") at `--t-fine`. A sentence explaining where a screenshot or number came from ("The screenshot uses the vendor's demo data…") is a disclaimer, not proof: it goes in the notes.
 5. **Show, don't list.** Replace a bullet list with one concrete artifact: a real screenshot in window chrome, a number at poster size, a before-and-after, a receipt, a single chart. Bullets are a last resort, three at most.
 6. **Diagrams must actually connect.** Arrows end at their target. No "+3 more" placeholder tiles. If a connector is decorative, label the direction in text so the phone layout can drop the line.
-7. **Real beats invented.** Use real product screenshots and official logos when they exist. Label invented evidence as an example, right on it: a made-up number, quote, customer, or screenshot ("Example figure"). A concept diagram (a flow, a before-and-after, a stack) isn't evidence and gets no label.
+7. **Real beats invented.** Use real product screenshots and official logos when they exist. Label invented evidence as an example, right on it, in one or two words: a made-up number, quote, customer, or screenshot ("Example"). The label is a tag, never a sentence about where the example came from; that goes in the notes. A concept diagram (a flow, a before-and-after, a stack) isn't evidence and gets no label.
 8. **Don't decorate data.** No shadows, rotations, or gradients on chart marks. Use the deck palette for series colors.
 9. **Observation over accusation.** "The team can't see it yet" lands better than "The team failed".
 10. **Reveals play by themselves.** No slide should need several clicks to finish building.
@@ -18,14 +18,20 @@ What separates a composed slide from a generated one. Apply these as defaults; t
 12. **Art must read against its background.** A brand-colored illustration on a brand-colored slide disappears (a green mascot on a green cover). Put it on paper or a neutral card.
 13. **Speak the brand's visual language.** Tokens carry color and type; composition carries the rest. Match the brand's density, imagery, and attitude, not only its palette.
 
+## Whitespace is the design
+
+Empty space is intentional, not unfinished. A slide may be only a headline, only a quote, or only a number, set large with nothing else on it. The best decks in the template library (see Restrained references below) leave most of each slide empty and let type, one image, and the copy carry it. Don't add a stat row, a caption, a second visual, or a supporting line because the slide "looks empty". Add something only when the slide's job is unproven without it. A sparse slide is never a defect; a full one usually is.
+
 ## Hierarchy and weight
 
 A slide that adds copy until it feels complete ends up with four voices at similar volume and no hierarchy. Squint at the slide: you should see the headline, then the one focal thing, then nothing else until you look for it.
 
-- **Three levels, no more.** The headline, the focal element, and quiet support. Count the text blocks: a headline, a three-step flow, a sentence under it, and a caption is four levels, and the eye has nowhere to land. Cut until three remain.
+- **Three levels, no more.** The headline, the focal element, and quiet support. Count the text blocks: a headline, a three-step flow, a sentence under it, and a caption is four levels, and the eye has nowhere to land. Cut until three remain. An eyebrow, a headline, a quote in two sizes, an attribution, and a stat row is six levels; that slide holds two ideas and none of them lands.
 - **The focal element outweighs its neighbors.** Inside a visual, the item that carries the point is at least twice the size or weight of the items around it, and the others drop to muted ink at a smaller size. Three labels at the same size in a row is an equal-weight grid (rule 15), even with no boxes around them.
 - **The accent marks one idea.** The accent color goes on one thing per slide. If the headline's accent phrase and the visual's focal element are different ideas (the promise and the pain), only one of them gets it; the other gets weight or scale.
 - **One headline.** Nothing else on the slide is set near headline scale. A big second line under the headline ("A new connection.") is a second headline, and the eye can't tell which one is the point.
+- **A quote is one unit at one size.** Set the whole quote in one size and weight with a small attribution under it. Never split it into a big pull line and a smaller remainder, and never bolt an unrelated stat row under it.
+- **The headline doesn't restate its own quote or visual.** If the headline paraphrases the quote under it, or narrates the chart beside it, one of them goes. A quote slide can be the quote alone, with no headline at all.
 - **Say it once.** If chips, an eyebrow, a subhead, and a summary line all name the same things, the slide is saying it four times. Keep the one form that carries the point and cut the rest.
 - **Labels earn their place.** An uppercase label over a block that already says what it is ("THE WORKFLOW" over a list of steps, "YOUR CONTROL" over a sentence about control) is noise.
 - **Words beside a screenshot match the screenshot.** Use the product's own names for its steps. A list that renames the steps the screenshot already shows contradicts it; point at the one step that matters (a ring, an enlarged crop) instead of listing them all.
@@ -111,7 +117,7 @@ Starting points, not templates. Pick by the slide's job, then compose for its co
 | Show progression | You are here | One line with three points: past (faded), present (bold, with a "you are here" pin), next (in the accent). Labels sit on the line, not in boxes. |
 | Size a market | Venn or stack | Overlapping circles or stacked bars with one highlighted region and its figure; the math in quiet rows underneath. |
 | Introduce people | Team | Photos at equal size, names and one credential each. Personality comes from one playful element, not from more text. |
-| Close | Ask | Dark or accent slide, the request at hero size, one button-like element. One CTA, no filler line. |
+| Close | Ask | One ask in one line at hero size (the meeting, the decision, the signature), optionally the contact's name and email under it. No table, no who-does-what list, no dated plan, no "Thank you". The mutual action plan lives in the proposal or deal room (guide topic `deal-room`), not the deck. |
 
 ## Type
 
@@ -184,7 +190,7 @@ The phone layout is judged as hard as the stage. Each slide becomes a full scree
 - **Cut before you shrink.** Captions, step descriptions under a label, footnotes, and source lines go first (`mobile-hide`), never down to a size nobody can read. Sources move to speaker notes.
 - **The focal element stays the biggest thing.** The number, chart, or screenshot that carries the slide keeps its size on the phone; supporting lines give way to it.
 - **Keep the argument whole.** A before and after keeps both sides, stacked. A flow keeps its connectors attached to what they connect. Dropping half a comparison leaves the headline's claim unproven.
-- **No voids.** Content pinned to the top and the bottom with an empty middle reads unfinished: let it flow from the top with the token gap, or center the group.
+- **No split groups.** The one layout bug here: two groups pinned to opposite edges (top and bottom, or left and right) with a dead gap between them, so they read as unrelated. Keep a group together: let it flow from the top with the token gap, or center it. Generous space around one group is fine; that is whitespace, not a gap.
 - **Keep names whole.** A wordmark or logo is fully visible and unclipped on the smallest phone.
 - Look at `artifacts/mobile/` at real size before every review: each label should read without zooming.
 
@@ -193,6 +199,33 @@ The phone layout is judged as hard as the stage. Each slide becomes a full scree
 - One headline and one visual. A line of body copy only when the visual can't carry the point. Anything more needs a reason.
 - On phones, the secondary visual or column goes (`mobile-hide`) before the type shrinks below the token scale.
 - If a slide needs more than one idea, it is two slides.
+- A slide with only a headline, a quote, or a number is complete. Density is a ceiling, never a target.
+
+## What the design review blocks
+
+The hosted design review reads this guide as its rubric. These hold a slide (blocking), however polished it looks:
+
+- **More than three text levels** on one slide (count eyebrow, headline, subhead, body, quote sizes, captions, stat rows).
+- **A headline that restates its own quote or visual**, or a quote split across two type sizes.
+- **Filler copy:** a line that would fit on any company's slide, a caption explaining what the slide shows, a disclaimer about where the evidence came from, or a stat row unrelated to the headline.
+- **More than one idea** on a slide.
+- **A close that isn't one ask:** a table, a mutual action plan, a who-does-what list, or "Thank you".
+- **A broken interactive slide in its live state:** an overlay, pill, or label covering the focal content or stretched out of shape, a control off the slide, a control at rest that hides what it compares, or a control that does nothing when used.
+
+Not defects: whitespace, a slide that is only a headline, a quote, or a number, and a deck where several slides are type alone.
+
+## Restrained references
+
+The bar is the template rebuilds on pitchunfairly.com: each slide one idea, most of it empty. Open the example before composing a slide of the same job.
+
+- **Airbnb, the ask** (https://pitchunfairly.com/templates/airbnb/deck/#10): "$600K. 80,000 trips in 12 months." and one ring counting the milestone. No use-of-funds table, no stat row.
+- **Wonka, the ask** (https://pitchunfairly.com/templates/wonka/deck/#10): "Gates open February 1.", one short line, one button. The whole close is a date and a decision.
+- **Jurassic Park, the close** (https://pitchunfairly.com/templates/jurassic-park/deck/#12): "Next meeting: on the mainland." and one chip. No thank-you, no action items.
+- **The Devil Wears Prada, the close** (https://pitchunfairly.com/templates/prada/deck/#11): one sentence and a signature. The report's detail stays in the slides before it.
+- **Netflix, a culture point** (https://pitchunfairly.com/templates/netflix/deck/#5): a headline and one line on an accent field, most of the slide empty.
+- **iPhone, the cover** (https://pitchunfairly.com/templates/iphone/deck/#1): one sentence on a dark stage with a spotlight. The date is the only other text.
+
+What they leave out is the lesson: no captions explaining the visual, no source sentences (sources are in the notes), no second stat row, no plan on the close.
 
 ## Charts on a phone
 

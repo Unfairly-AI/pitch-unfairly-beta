@@ -9,6 +9,7 @@ import { assertThisDeck } from './this-deck.mjs';
 import { clearStamp, stampPass } from './audit-stamp.mjs';
 import { contrastScript } from './contrast.mjs';
 import { refuseInCodexSandbox } from './browser-guard.mjs';
+import { checkLiveStates } from './live-check.mjs';
 
 refuseInCodexSandbox('The audit');
 
@@ -391,6 +392,15 @@ try {
     dimmed.forEach((issue) => report('motion', issue));
     if (!dimmed.length) console.log('✓ motion: no running animation keeps an element dim');
     await page.close();
+  }
+
+  // Interactive slides as a viewer meets them: entered, settled, and after a
+  // drag or click. The static render hides their controls (live-check.mjs).
+  {
+    const live = await checkLiveStates(browser, base);
+    live.issues.forEach((issue) => report('live', issue));
+    if (!live.slides.length) console.log('✓ live: no interactive slides');
+    else if (!live.issues.length) console.log(`✓ live: ${live.slides.length} interactive slide${live.slides.length === 1 ? '' : 's'} work entered, settled and after a drag or click`);
   }
 
   // On screen, every slide shows what its PDF page shows: nothing only the

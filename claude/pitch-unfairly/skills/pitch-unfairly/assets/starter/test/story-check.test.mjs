@@ -80,3 +80,11 @@ test('ACCEPTANCE: a headline that stacks clauses or sentences is a warning (simp
   const cover = checkStory(parseStory(story([{ ...good[0], Headline: 'Book rooms with locals. Skip the hotel.' }, good[1]])), library);
   assert.ok(!cover.warnings.some((w) => w.startsWith('Slide 01') && w.includes('sentences')), 'a cover keeps its two-part headline');
 });
+
+test('a close that is a mutual action plan is an error; one ask is fine', () => {
+  const plan = { Beat: 'The ask', Job: 'agree the next steps', Headline: 'Here is how we get live by March.', Proof: 'a mutual action plan table with owners on both sides' };
+  const { errors } = checkStory(parseStory(story([...good, plan])), library);
+  assert.ok(errors.some((e) => e.includes('the close is a plan or table')));
+  const ask = { Beat: 'The ask', Job: 'get the meeting', Headline: 'Book the pilot review for March 3.', Proof: 'the contact, Lena Ortiz' };
+  assert.deepEqual(checkStory(parseStory(story([...good, ask])), library).errors, []);
+});

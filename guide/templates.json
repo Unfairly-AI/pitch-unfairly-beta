@@ -42,7 +42,7 @@
         "On discovery calls, slides cost follow-ups: Gong found reps who used them were 17% less likely to book the next meeting. Ask, then show.",
         "Winners spend less time on the deck (9.1 vs 11.4 minutes in intro calls) and 39% less on features (Gong).",
         "Use proof from customers like the buyer; generic logos and ROI claims hurt (Gong).",
-        "End on a mutual action plan with dates and owners on both sides, never \"Thank you\"."
+        "End on one ask: the next step and its date, in one line, never \"Thank you\". The mutual action plan with owners on both sides goes in the proposal or deal room, not the deck."
       ],
       "failures": [
         "Starting with the company history",
@@ -74,7 +74,7 @@
         "Score last period's priorities red, yellow, or green before anything new.",
         "Every metric against plan and against trend, never alone.",
         "Lowlights before highlights; the board finds them anyway.",
-        "Close on the decisions you need from the board, then next period's priorities with one owner each. Detail goes in the appendix."
+        "Close on the one decision you need from the board. Next period's priorities and owners go in the appendix."
       ],
       "failures": [
         "A product demo instead of a review",
@@ -148,7 +148,7 @@
         "Check off every requirement in the brief, visibly.",
         "Put the decision on the first slide: what you are asking them to approve.",
         "Show the options you considered and why this one wins.",
-        "Cost, phasing, and terms in one place; risks each with an owner; next steps with a date."
+        "Cost, phasing, and terms in one place; risks each with an owner; close on one ask with its date."
       ],
       "failures": [
         "A credentials deck instead of an answer",
@@ -596,7 +596,7 @@
         "Run the napkin yourself: Four beats, clickable or on autoplay: ask for a signature, hear \"I don't have a pen\", hand it over, watch the signature draw on.",
         "Watch the room react: Toggle the same five people between \"describe the pen\" and \"create the need\" and watch the interest meter and their faces change.",
         "Questions before the pen: Five discovery questions on an order ticket, each with what it finds, so the pen stays in your pocket for eighteen minutes.",
-        "It ends on a calendar invite: A mutual action plan with owners on both sides and an accepted follow-up. The pen stays with the buyer."
+        "It ends on a calendar invite: One accepted follow-up, nothing else on the slide. The pen stays with the buyer."
       ],
       "beats": [
         {
@@ -645,7 +645,7 @@
         },
         {
           "beat": "Next step",
-          "job": "A dated follow-up with owners on both sides, booked before you hang up."
+          "job": "One ask: the dated follow-up, booked before you hang up. The plan behind it goes in the deal room."
         }
       ]
     },
@@ -969,7 +969,7 @@
         },
         {
           "beat": "The ask",
-          "job": "A term sheet: what, where, when, and the cover story."
+          "job": "One ask: what, where, and when, in a line, and the cover story."
         }
       ]
     },
@@ -1161,7 +1161,7 @@
         },
         {
           "beat": "Follow-ups",
-          "job": "Status, then dated follow-ups, so the review ends on what happens next."
+          "job": "The one follow-up that matters most, with its owner and date. The full list goes in the appendix."
         }
       ]
     },
@@ -1500,7 +1500,7 @@
         "Drag the before and after: One pair of cream pants, split down the seam: drag left for panty lines, right for smooth. The ladies' room, without the trip.",
         "The agenda has a ladies' room: A ten-minute tape measure ticks through the meeting while the restroom door flips from Vacant to Occupied to Smooth.",
         "Restock the beige wall: Eleven beige boxes and one red one. Shuffle the shelf as often as you like; you find the red one first every time.",
-        "It ends on a purchase order: Seven stores, $20 a pair, three weeks, with a dated action plan for both sides and an Approved stamp. Never \"Thank you\"."
+        "It ends on a purchase order: Seven stores, $20 a pair, three weeks, and an Approved stamp. Never \"Thank you\"."
       ],
       "beats": [
         {
@@ -1545,7 +1545,7 @@
         },
         {
           "beat": "The order",
-          "job": "The exact next step, with dates and owners on both sides."
+          "job": "One ask: the exact next step and its date. The plan with owners goes in the proposal."
         }
       ]
     },
@@ -1849,7 +1849,7 @@
         },
         {
           "beat": "Low-risk next step",
-          "job": "One small decision in their hands, with what happens either way and an owner on each side."
+          "job": "One small decision in their hands, and what happens either way."
         }
       ]
     },
@@ -1908,8 +1908,8 @@
           "job": "Before and after, in their units, so everyone signs the same thing."
         },
         {
-          "beat": "Next steps",
-          "job": "A mutual action plan: owners on both sides and a date for each step."
+          "beat": "Next step",
+          "job": "One ask: the agreement in a line and the next step with its date. The mutual action plan goes in the deal room."
         }
       ]
     },
@@ -2217,7 +2217,7 @@
         },
         {
           "beat": "The ask",
-          "job": "The amount, what it buys, the dated milestones, and how it gets repaid."
+          "job": "The amount, what it buys, and how it gets repaid, in one line."
         }
       ]
     },
@@ -2360,7 +2360,7 @@
         "Rename the Wheel: One toggle, Wheel or Carousel, rewrites the same three facts in the ad proof from specs into gifts. The machine never changes; the name does all the work.",
         "Turn the tray: Eight family slides in a tray you can step through, forward and back, or pick from the ring. A full turn ends at home.",
         "The room meter: Walk the pitch step by step and watch the needle move from Polite to Sold, ending where the episode does: Kodak cancels its other meetings.",
-        "A dated mutual action plan: It ends on six steps with owners on both sides and a date on every line, the first already ticked off. Click to tick the rest. Never \"Thank you\"."
+        "One ask: It ends on the next step and its date, alone on the slide. The six-step plan goes in the deal room. Never \"Thank you\"."
       ],
       "beats": [
         {
@@ -2400,8 +2400,8 @@
           "job": "The doubts they were about to raise, in their words, each with a short answer."
         },
         {
-          "beat": "Mutual action plan",
-          "job": "The next steps with an owner on each side and a date on every line. Never end on \"Thank you\"."
+          "beat": "The next step",
+          "job": "One ask with its date. The dated plan with owners goes in the deal room. Never end on \"Thank you\"."
         }
       ]
     },
@@ -2573,7 +2573,7 @@
         },
         {
           "beat": "Deadline and contact",
-          "job": "Dated steps with owners on both sides, the commitment deadline, the conditions to check, and who to call."
+          "job": "The commitment deadline and who to call, in one line. The dated steps and conditions go in the proposal."
         }
       ]
     },
@@ -2592,7 +2592,7 @@
         "The audience around the clock: A 24-hour dial sweeps from the night shift to prime time; click any daypart to see what is on, who is watching, and which format fits that slot.",
         "A wall of hidden-camera feeds: Six feeds from the car stereo to the painted sky. Pick one and the main monitor tells you what it can sell, and what it can't (he won't go near the water).",
         "Spot the placement: Four products hide in his kitchen. Each one you find gets the \"Paid placement\" label it never had, which is what disclosure looks like.",
-        "Prepared for you: Type your brand and it merges into the headline, the proposal and the on-screen label, with a dated plan for both sides."
+        "Prepared for you: Type your brand and it merges into the headline, the proposal and the on-screen label."
       ],
       "beats": [
         {
@@ -2641,7 +2641,7 @@
         },
         {
           "beat": "Prepared for",
-          "job": "\"Prepared by [rep] for [client]\": the package, the flight, and a dated next step on both sides."
+          "job": "\"Prepared by [rep] for [client]\": the package and one dated next step."
         }
       ]
     },
@@ -2701,7 +2701,7 @@
         },
         {
           "beat": "How to buy",
-          "job": "The next step with dates and owners on both sides, and when the deck gets refreshed."
+          "job": "One ask: the next step, its date, and who to call."
         }
       ]
     },
@@ -2765,7 +2765,7 @@
         },
         {
           "beat": "The decision",
-          "job": "What you need approved, by whom, on what terms, and what happens the day after yes."
+          "job": "The one approval you need and what happens the day after yes."
         }
       ]
     },
@@ -2832,8 +2832,8 @@
           "job": "Each risk with likelihood, impact, owner and mitigation; a blank mitigation is the warning."
         },
         {
-          "beat": "Decisions and next steps",
-          "job": "What the client must decide, by when, then who does what this week. Never \"Thank you\"."
+          "beat": "The decision",
+          "job": "What the client must decide, by when, in one line. Who does what goes in the proposal. Never \"Thank you\"."
         }
       ]
     },
@@ -2897,7 +2897,7 @@
         },
         {
           "beat": "The decision",
-          "job": "The one decision you need today, who makes it, and what each person does next. Never \"Questions?\"."
+          "job": "The one decision you need today and who makes it. Never \"Questions?\"."
         }
       ]
     },
@@ -2957,7 +2957,7 @@
         },
         {
           "beat": "Decisions needed",
-          "job": "The asks again as motions, each with a recommendation, and the date of the next review."
+          "job": "The one motion you need, with its recommendation, and the date of the next review."
         }
       ]
     },

@@ -146,7 +146,7 @@ Hooli tied the score, so Richard rewrote it overnight. Example: https://pitchunf
 - On discovery calls, slides cost follow-ups: Gong found reps who used them were 17% less likely to book the next meeting. Ask, then show.
 - Winners spend less time on the deck (9.1 vs 11.4 minutes in intro calls) and 39% less on features (Gong).
 - Use proof from customers like the buyer; generic logos and ROI claims hurt (Gong).
-- End on a mutual action plan with dates and owners on both sides, never "Thank you".
+- End on one ask: the next step and its date, in one line, never "Thank you". The mutual action plan with owners on both sides goes in the proposal or deal room, not the deck.
 
 **Common failures:** Starting with the company history; A feature tour; Logos from the wrong industry; No next step with a date.
 
@@ -165,7 +165,7 @@ Hand them a napkin before you hand them a pen. Example: https://pitchunfairly.co
 9. **Proof:** Side by side: the same buyer with and without it, or a customer like them who said yes.
 10. **Objections:** Answer each one with a question that sends them back to the need.
 11. **The method:** The structure on one page, so a champion can retell it.
-12. **Next step:** A dated follow-up with owners on both sides, booked before you hang up.
+12. **Next step:** One ask: the dated follow-up, booked before you hang up. The plan behind it goes in the deal room.
 
 ### The 2002 Oakland A's: The Moneyball business case (`moneyball`, ROI business case)
 
@@ -197,7 +197,7 @@ Ten minutes and one ladies' room. Example: https://pitchunfairly.com/templates/s
 8. **Hero proof:** One story from someone like the buyer's customer saying yes.
 9. **Objections:** The four questions they were about to ask, answered before they ask.
 10. **What happens next:** The path after yes, from the first order to the big outcome.
-11. **The order:** The exact next step, with dates and owners on both sides.
+11. **The order:** One ask: the exact next step and its date. The plan with owners goes in the proposal.
 
 ### Mr. Darcy: The second proposal (`darcy`, Win-back deck)
 
@@ -212,7 +212,7 @@ The worst pitch in English literature, and the comeback. Example: https://pitchu
 7. **Proof:** Evidence they have seen for themselves, ideally unscripted, plus one reference.
 8. **What it cost us:** The investment behind the change, in money and in pride. It proves the change is real.
 9. **The new offer:** Old pitch and new pitch side by side: same value, new terms.
-10. **Low-risk next step:** One small decision in their hands, with what happens either way and an owner on each side.
+10. **Low-risk next step:** One small decision in their hands, and what happens either way.
 
 ### Cher Horowitz: The report card negotiation (`clueless`, Negotiation deck)
 
@@ -227,7 +227,7 @@ Every grade is an opening offer. Example: https://pitchunfairly.com/templates/cl
 7. **Anchor and concessions:** Your opening ask and a ledger of planned concessions: what you give, and what you get for each.
 8. **Objections:** The pushback you expect, each with a rehearsed answer, and where negotiation will not work.
 9. **The agreement:** Before and after, in their units, so everyone signs the same thing.
-10. **Next steps:** A mutual action plan: owners on both sides and a date for each step.
+10. **Next step:** One ask: the agreement in a line and the next step with its date. The mutual action plan goes in the deal room.
 
 ### Leonardo da Vinci: The letter to the Duke of Milan (`da-vinci`, Capabilities deck)
 
@@ -255,7 +255,7 @@ Kodak brought a wheel. Don sold them a time machine. Example: https://pitchunfai
 7. **Proof in the room:** Evidence from a buyer like this one that the story lands: what they did, not what they said.
 8. **Proof on the record:** Dated, sourced facts that the promised land is real and lasting.
 9. **Objections:** The doubts they were about to raise, in their words, each with a short answer.
-10. **Mutual action plan:** The next steps with an owner on each side and a date on every line. Never end on "Thank you".
+10. **The next step:** One ask with its date. The dated plan with owners goes in the deal room. Never end on "Thank you".
 
 ### Fyre Festival: The sponsorship prospectus (`fyre-festival`, Sponsorship prospectus)
 
@@ -269,7 +269,7 @@ A private island, as promised. A cheese sandwich, as delivered. Example: https:/
 6. **Activations:** Where the sponsor's name lives on site, by place: stay, food, payments, stage.
 7. **The fine print:** Venue, talent, attendance, cancellation and paid-post disclosure, printed at reading size.
 8. **Past results:** Last event's numbers or the organizers' record, from sources the sponsor can look up.
-9. **Deadline and contact:** Dated steps with owners on both sides, the commitment deadline, the conditions to check, and who to call.
+9. **Deadline and contact:** The commitment deadline and who to call, in one line. The dated steps and conditions go in the proposal.
 
 ### The Truman Show: The network media kit (`truman-show`, Media kit)
 
@@ -286,7 +286,7 @@ A private island, as promised. A cheese sandwich, as delivered. Example: https:/
 9. **Case study:** Brief, placement, result and what you learned, told straight.
 10. **Why we label:** The principle that protects the audience, and so the advertiser.
 11. **Rate card:** Prices per unit, what is included, and the one term you don't negotiate.
-12. **Prepared for:** "Prepared by [rep] for [client]": the package, the flight, and a dated next step on both sides.
+12. **Prepared for:** "Prepared by [rep] for [client]": the package and one dated next step.
 
 ### Dunder Mifflin: The Scranton branch company overview (`dunder-mifflin`, Company overview deck)
 
@@ -301,7 +301,7 @@ Ten clients walked out with their salesman. Then they walked back in. Example: h
 7. **How we compare:** An honest comparison with the main alternative that concedes where they win.
 8. **Where we operate:** Your territory and footprint on a map, and how it has changed.
 9. **The team:** The names and roles the buyer will actually deal with.
-10. **How to buy:** The next step with dates and owners on both sides, and when the deck gets refreshed.
+10. **How to buy:** One ask: the next step, its date, and who to call.
 
 ## Board and investor updates (`board`)
 
@@ -316,7 +316,7 @@ Ten clients walked out with their salesman. Then they walked back in. Example: h
 - Score last period's priorities red, yellow, or green before anything new.
 - Every metric against plan and against trend, never alone.
 - Lowlights before highlights; the board finds them anyway.
-- Close on the decisions you need from the board, then next period's priorities with one owner each. Detail goes in the appendix.
+- Close on the one decision you need from the board. Next period's priorities and owners go in the appendix.
 
 **Common failures:** A product demo instead of a review; Numbers without plan or trend; Misses hidden at the end; No decision asked of the board.
 
@@ -366,7 +366,7 @@ Screams: below plan. Laughs: ten times better. Example: https://pitchunfairly.co
 7. **Customer insight:** What customers are telling you, in their words, and the one signal that changes the plan.
 8. **The strategic shift:** The evidence for the change in the simplest comparison you can show, and the new strategy in one sentence.
 9. **Next quarter's plan:** Three priorities, one owner each, with a target you can score at the next meeting.
-10. **Decisions needed:** The asks again as motions, each with a recommendation, and the date of the next review.
+10. **Decisions needed:** The one motion you need, with its recommendation, and the date of the next review.
 
 ## Everyday work (`work`)
 
@@ -430,7 +430,7 @@ Eleven specialists, one vault, one night. Every workstream has an owner. Example
 8. **Budget and funding:** Who pays, why they said yes, and an owner for every line of spend. No figures you can't source.
 9. **RAID:** Risks, assumptions, issues and dependencies on a heat map, each with an owner, a response and a status color with a fixed meaning.
 10. **How we talk and decide:** The status rhythm, the colors' meanings, who calls go or no-go, and the checklist that must be green first.
-11. **The decision:** The one decision you need today, who makes it, and what each person does next. Never "Questions?".
+11. **The decision:** The one decision you need today and who makes it. Never "Questions?".
 
 ## Launches and keynotes (`launch`)
 
@@ -509,7 +509,7 @@ Three products. One device. Zero buttons. Example: https://pitchunfairly.com/tem
 - Check off every requirement in the brief, visibly.
 - Put the decision on the first slide: what you are asking them to approve.
 - Show the options you considered and why this one wins.
-- Cost, phasing, and terms in one place; risks each with an owner; next steps with a date.
+- Cost, phasing, and terms in one place; risks each with an owner; close on one ask with its date.
 
 **Common failures:** A credentials deck instead of an answer; Missing a requirement from the brief; Price hidden or vague; No decision asked for.
 
@@ -543,7 +543,7 @@ One secret wedding ends the feud. Every risk is low. Example: https://pitchunfai
 7. **Plan:** Lay the milestones on a timeline the room can watch.
 8. **Risks:** Name every risk before they do, with a mitigation each.
 9. **Team:** One line per person, and give the advisor a seat.
-10. **The ask:** A term sheet: what, where, when, and the cover story.
+10. **The ask:** One ask: what, where, and when, in a line, and the cover story.
 
 ### NASA: The moonshot budget (`moonshot`, Budget request)
 
@@ -672,7 +672,7 @@ Houston, we've had a post-mortem. Example: https://pitchunfairly.com/templates/a
 8. **Root cause:** Five whys, from the symptom to the decision that made it possible.
 9. **Retro:** What went well, what went wrong, and where you got lucky, three items each.
 10. **Action items:** Every fix with one owner and a type: prevent, detect, mitigate, process, learn.
-11. **Follow-ups:** Status, then dated follow-ups, so the review ends on what happens next.
+11. **Follow-ups:** The one follow-up that matters most, with its owner and date. The full list goes in the appendix.
 
 ### The Eras Tour: The Eras Tour year in review (`eras-tour`, Year in review)
 
@@ -767,7 +767,7 @@ Two friends, a $5 course, and an old gas station. Example: https://pitchunfairly
 9. **Startup costs:** Sources and uses of funds, and how much the owners put in.
 10. **Break-even and year one:** The break-even point and first-year months, with every assumption labeled.
 11. **Risks:** A register with likelihood and a mitigation for each, biggest first.
-12. **The ask:** The amount, what it buys, the dated milestones, and how it gets repaid.
+12. **The ask:** The amount, what it buys, and how it gets repaid, in one line.
 
 ### Coca-Cola: The Pepsi Challenge and New Coke (`new-coke`, Competitive and market analysis)
 
@@ -798,7 +798,7 @@ Earn more than it costs, or Parks closes. Headliner: one tiny horse. Example: ht
 8. **Budget:** Where the money goes, and which lines are donated, earned or volunteered instead.
 9. **KPI scorecard:** Targets set in advance against results, with fixed green, amber and red meanings.
 10. **Risks with owners:** Every risk with an owner and a fix, updated when the landscape changes.
-11. **The decision:** What you need approved, by whom, on what terms, and what happens the day after yes.
+11. **The decision:** The one approval you need and what happens the day after yes.
 
 ### Initech: The Bobs' restructuring readout (`office-space`, Consulting readout)
 
@@ -815,7 +815,7 @@ Eight bosses, one glitch, and a promotion for the guy who stopped caring. Exampl
 9. **Recommendation:** A short list of moves, each a verb, an object, an owner, and the finding it answers.
 10. **Implementation roadmap:** Workstreams with owners and dates, firm for the near term, undated for later phases.
 11. **Risks:** Each risk with likelihood, impact, owner and mitigation; a blank mitigation is the warning.
-12. **Decisions and next steps:** What the client must decide, by when, then who does what this week. Never "Thank you".
+12. **The decision:** What the client must decide, by when, in one line. Who does what goes in the proposal. Never "Thank you".
 
 ## Just for fun (`fun`)
 
