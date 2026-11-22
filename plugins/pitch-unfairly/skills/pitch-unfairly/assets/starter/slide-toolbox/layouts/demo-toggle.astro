@@ -1,0 +1,256 @@
+---
+/**
+ * demo-toggle: one switch flips the whole view between two ways of working.
+ *
+ * The headline at the top left, a two-way switch under it, and a line at the
+ * foot that changes with the switch. The view fills the right of the stage:
+ * one screenshot per state, the old way muted to grey, the new way in full
+ * color with the brand's focal shadow. The buyer flips it themselves. In the
+ * PDF there is no switch to pretend with: both views print, the old one small
+ * and faded behind, the new one in front, each named on its corner.
+ */
+import Slide from '../../src/components/Slide.astro';
+import { fitType, splitHl, type SlideBase } from '../lib';
+
+interface State {
+  /** The switch's label for this state, two words or fewer: "Spreadsheet", "Northline". */
+  label: string;
+  /** The view in this state: a screenshot, wide, the same shape as the other state's. */
+  src: string;
+  /** What the screenshot shows, for assistive tech. */
+  alt: string;
+  /** One line under the switch in this state: what is true here. 80 characters or fewer. */
+  note?: string;
+}
+
+interface Props extends SlideBase {
+  /** What flipping the switch proves, as a whole sentence. 12 words or fewer. */
+  headline: string;
+  /** One phrase of the headline, word for word, in the accent. */
+  hl?: string;
+  /** Exactly two states: the old way first, the new way second. */
+  states: State[];
+  /** Mute the first state's view to grey, as the old way. Default true; false when the two are peers. */
+  mute?: boolean;
+}
+
+const { id, label = 'Demo', tone = 'paper', notes, brand, headline, hl, states, mute = true } = Astro.props;
+const where = `demo-toggle "${id}"`;
+if (states?.length !== 2) throw new Error(`${where}: exactly two states (got ${states?.length ?? 0}). Three or more is a set of slides, not a switch.`);
+states.forEach((s, i) => {
+  if (s.label.split(/\s+/).length > 2) throw new Error(`${where}: state ${i + 1}'s label "${s.label}" is over two words; a switch label is a name.`);
+  if (s.note && s.note.length > 80) throw new Error(`${where}: state ${i + 1}'s note is ${s.note.length} characters; one line of 80 or fewer.`);
+});
+const [before, phrase, after] = splitHl(headline, hl, where);
+// Display type sets narrower than the estimate's average, and balanced lines leave room: the width is the column's plus a tenth.
+const head = fitType(headline.length, { width: 720, lines: 3, min: 60, max: 120, em: 0.62 });
+const phone = fitType(headline.length, { width: 330, lines: 3, min: 26, max: 40 });
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <div class:list={['st-toggle', { 'is-muted': mute }]} style={`--head: ${head}px; --head-phone: ${phone}px`} data-state="0">
+    <div class="st-toggle-copy">
+      <h2 data-fit="3 3" class="display st-toggle-head rise">
+        <slot name="headline">{before}{phrase && <span class="hl">{phrase}</span>}{after}</slot>
+      </h2>
+      <div class="st-toggle-switch rise" role="group" aria-label={label} style="--d: 240ms">
+        {states.map((s, i) => (
+          <button type="button" class="st-toggle-opt" data-toggle={i} aria-pressed={i === 0 ? 'true' : 'false'}>{s.label}</button>
+        ))}
+        <span class="st-toggle-thumb" aria-hidden="true"></span>
+      </div>
+      <div class="st-toggle-notes rise" style="--d: 380ms" aria-live="polite">
+        {states.map((s, i) => s.note && <p class="st-toggle-note" data-for={i}>{s.note}</p>)}
+      </div>
+    </div>
+    <div class="st-toggle-view rise" style="--d: 120ms">
+      {states.map((s, i) => (
+        <figure class="st-toggle-pane" data-for={i}>
+          <img src={s.src} alt={s.alt} />
+          <figcaption class="st-toggle-tag">{s.label}</figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</Slide>
+
+<script>
+  for (const root of document.querySelectorAll<HTMLElement>('.st-toggle')) {
+    const buttons = [...root.querySelectorAll<HTMLButtonElement>('[data-toggle]')];
+    const set = (state: string) => {
+      root.dataset.state = state;
+      for (const b of buttons) b.setAttribute('aria-pressed', String(b.dataset.toggle === state));
+    };
+    for (const b of buttons) b.addEventListener('click', () => set(b.dataset.toggle!));
+    root.closest('.slide')?.addEventListener('deck:enter', () => set('0'));
+  }
+</script>
+
+<style>
+  .st-toggle {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 660px minmax(0, 1fr);
+    column-gap: calc(var(--gap) * 1.5);
+  }
+
+  .st-toggle-copy {
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    align-content: start;
+    row-gap: calc(var(--gap) * 0.9);
+  }
+
+  .st-toggle-head { font-size: calc(var(--head) * var(--display-scale)); }
+
+  /* The switch: two options on one track, the thumb sliding under the chosen one. */
+  .st-toggle-switch {
+    position: relative;
+    justify-self: start;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 6px;
+    border: var(--border-w) solid var(--border-color);
+    border-radius: 999px;
+    background: color-mix(in oklab, currentColor 5%, transparent);
+  }
+
+  .st-toggle-opt {
+    position: relative;
+    z-index: 1;
+    min-height: 60px;
+    min-width: 200px;
+    padding: 0 30px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: inherit;
+    font-family: var(--font-body);
+    font-size: var(--t-body);
+    font-weight: 600;
+    cursor: pointer;
+    transition: color var(--dur-hover) var(--ease-hover);
+  }
+
+  .st-toggle-opt:hover { color: var(--hl-color); }
+  .st-toggle-opt[aria-pressed='true'] { color: var(--on-accent); }
+  .st-toggle-opt:focus { outline: none; }
+  .st-toggle-opt:focus-visible { outline: 3px solid currentColor; outline-offset: 3px; }
+
+  .st-toggle-thumb {
+    position: absolute;
+    top: 6px;
+    bottom: 6px;
+    left: 6px;
+    width: calc(50% - 6px);
+    border-radius: 999px;
+    background: var(--accent);
+    transition: transform 280ms var(--ease);
+  }
+
+  .st-toggle[data-state='1'] .st-toggle-thumb { transform: translateX(100%); }
+
+  .st-toggle-notes {
+    align-self: end;
+    display: grid;
+  }
+
+  .st-toggle-note {
+    grid-area: 1 / 1;
+    max-width: 26ch;
+    font-size: var(--t-lede);
+    line-height: 1.3;
+    color: color-mix(in oklab, currentColor 76%, transparent);
+    text-wrap: pretty;
+    transition: opacity 240ms var(--ease);
+  }
+
+  .st-toggle[data-state='0'] .st-toggle-note[data-for='1'],
+  .st-toggle[data-state='1'] .st-toggle-note[data-for='0'] { opacity: 0; visibility: hidden; }
+
+  /* The focal element: the view, both states in one place, the chosen one showing. */
+  .st-toggle-view {
+    align-self: center;
+    display: grid;
+    min-width: 0;
+  }
+
+  .st-toggle-pane {
+    grid-area: 1 / 1;
+    position: relative;
+    border: var(--border-w) solid var(--border-color);
+    border-radius: calc(var(--radius) * 0.75);
+    background: var(--paper);
+    box-shadow: var(--shadow-focal);
+    transition: opacity 320ms var(--ease), filter 320ms var(--ease);
+  }
+
+  .st-toggle-pane img { width: 100%; height: auto; border-radius: inherit; }
+
+  .st-toggle.is-muted .st-toggle-pane[data-for='0'] {
+    box-shadow: var(--shadow-card);
+    filter: grayscale(1) contrast(0.9);
+  }
+
+  .st-toggle[data-state='0'] .st-toggle-pane[data-for='1'],
+  .st-toggle[data-state='1'] .st-toggle-pane[data-for='0'] { opacity: 0; }
+
+  /* A state's name shows on its pane only in print, where there is no switch. */
+  .st-toggle-tag {
+    position: absolute;
+    top: -22px;
+    left: 28px;
+    display: none;
+    padding: 8px 18px;
+    border-radius: 999px;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--font-mono);
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: var(--label-case, uppercase);
+  }
+
+  :global(.tone-accent) .st-toggle-thumb { background: var(--ink); }
+  :global(.tone-accent) .st-toggle-opt[aria-pressed='true'] { color: var(--paper); }
+
+  /* Phone: the headline, the view at full width, then the switch and its line. */
+  @media (max-width: 799px) {
+    .st-toggle {
+      grid-template-columns: minmax(0, 1fr);
+      align-content: start;
+      row-gap: calc(var(--gap) * 1.2);
+    }
+
+    .st-toggle-copy { display: contents; }
+    .st-toggle-head { order: 1; font-size: calc(var(--head-phone) * var(--display-scale)); }
+    .st-toggle-view { order: 2; }
+    .st-toggle-switch { order: 3; justify-self: stretch; padding: 4px; }
+    .st-toggle-opt { min-width: 0; min-height: 44px; padding: 0 14px; }
+    .st-toggle-thumb { top: 4px; bottom: 4px; left: 4px; width: calc(50% - 4px); }
+    .st-toggle-notes { order: 4; }
+    .st-toggle-note { max-width: none; font-size: var(--t-body); }
+    .st-toggle-tag { top: -12px; left: 12px; padding: 3px 9px; }
+  }
+
+  /* PDF and every static render: no switch. Both views print, stepping down
+     from the old way (muted, top left) to the new (in front, bottom right),
+     each named on its corner and neither covering the other; both lines
+     stand at the foot, the old way's quiet. */
+  :global(html.is-static) .st-toggle-switch { display: none; }
+  :global(html.is-static) .st-toggle-notes { row-gap: 18px; }
+  :global(html.is-static) .st-toggle[data-state] .st-toggle-note { grid-area: auto; opacity: 1; visibility: visible; }
+  :global(html.is-static) .st-toggle[data-state] .st-toggle-note[data-for='0'] { font-size: var(--t-body); color: color-mix(in oklab, currentColor 56%, transparent); }
+  :global(html.is-static) .st-toggle-tag { display: block; }
+  :global(html.is-static) .st-toggle-view { align-self: stretch; align-content: space-between; row-gap: 24px; }
+  :global(html.is-static) .st-toggle[data-state] .st-toggle-pane[data-for] { grid-area: auto; width: 64%; opacity: 1; }
+  :global(html.is-static) .st-toggle-pane[data-for='0'] { justify-self: start; }
+  :global(html.is-static) .st-toggle-pane[data-for='1'] { justify-self: end; }
+
+  :global(html.is-static) .st-toggle .rise {
+    opacity: 1;
+    transform: none;
+  }
+</style>

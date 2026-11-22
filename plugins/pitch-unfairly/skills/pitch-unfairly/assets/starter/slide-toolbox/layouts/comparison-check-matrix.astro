@@ -1,0 +1,239 @@
+---
+/**
+ * comparison-check-matrix: the criteria down the side, the options across the
+ * top, and one column that holds up.
+ *
+ * The headline sits in a narrow column on the left with, at most, one line
+ * under it. The matrix takes the rest: three to six criteria as rows, two to
+ * four options as columns, each cell a check, a dash, a half mark or a few
+ * words. Our column is the only one tinted, its name and marks in the accent;
+ * the other columns stay in muted ink. Weight comes from that one column, not
+ * from more rows.
+ */
+import Slide from '../../src/components/Slide.astro';
+import { fitType, splitHl, type SlideBase } from '../lib';
+
+type Cell = boolean | 'partial' | string;
+
+interface Props extends SlideBase {
+  /** The verdict, one whole sentence, 10 words or fewer. Set in the left column, three lines at most. */
+  headline: string;
+  /** One phrase of the headline, word for word, in the accent. */
+  hl?: string;
+  /** One line under the headline that the matrix can't say (90 characters or fewer). Most slides have none. */
+  line?: string;
+  /** The options as column heads, two to four, 16 characters or fewer each. */
+  options: string[];
+  /** Which option is ours, as written in options. Its column is tinted and its marks take the accent. */
+  ours: string;
+  /** Three to six criteria, each a label (36 characters or fewer) and one value per option: true, false, "partial", or a few words (16 or fewer). */
+  rows: { label: string; values: Cell[] }[];
+}
+
+const { id, label = 'Comparison', tone = 'paper', notes, brand, headline, hl, line, options = [], ours, rows = [] } = Astro.props;
+const where = `comparison-check-matrix "${id}"`;
+if (options.length < 2 || options.length > 4) throw new Error(`${where}: two to four options (got ${options.length}).`);
+for (const o of options) if (o.length > 16) throw new Error(`${where}: option "${o}" is ${o.length} characters; a column head is 16 or fewer.`);
+const mine = options.indexOf(ours);
+if (mine < 0) throw new Error(`${where}: ours "${ours}" isn't one of the options (${options.join(', ')}). Copy it exactly.`);
+if (rows.length < 3 || rows.length > 6) throw new Error(`${where}: three to six rows (got ${rows.length}); the rest go in the notes.`);
+for (const r of rows) {
+  if (r.label.length > 36) throw new Error(`${where}: row "${r.label}" is ${r.label.length} characters; 36 or fewer.`);
+  if (r.values.length !== options.length) throw new Error(`${where}: row "${r.label}" has ${r.values.length} values for ${options.length} options; one each.`);
+  for (const v of r.values) if (typeof v === 'string' && v !== 'partial' && v.length > 16) throw new Error(`${where}: row "${r.label}" value "${v}" is ${v.length} characters; a cell holds 16 or fewer, or a mark.`);
+}
+if (line && line.length > 90) throw new Error(`${where}: line is ${line.length} characters; 90 or fewer, or put it in the notes.`);
+const [pre, phrase, post] = splitHl(headline, hl, where);
+const head = fitType(headline.length, { width: 640, lines: 3, min: 72, max: 112, em: 0.5 });
+// Spoken names for the marks, for screen readers.
+const SAY = { yes: 'Yes', no: 'No', partial: 'Partly' };
+const kind = (v: Cell) => (v === true ? 'yes' : v === false ? 'no' : v === 'partial' ? 'partial' : 'text');
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <div class="st-mx" style={`--head: ${head}px; --cols: ${options.length}`}>
+    <div class="st-mx-side">
+      <h2 data-fit="3 4" class="display st-mx-head rise">
+        <slot name="headline">{pre}{phrase && <span class="hl">{phrase}</span>}{post}</slot>
+      </h2>
+      {line && <p class="st-mx-line rise" style="--d: 120ms">{line}</p>}
+    </div>
+    <table class="st-mx-table rise" style="--d: 180ms">
+      <thead>
+        <tr>
+          <td></td>
+          {options.map((o, i) => <th scope="col" class:list={{ 'is-ours': i === mine }}>{o}</th>)}
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((r, ri) => (
+          <tr>
+            <th scope="row">{r.label}</th>
+            {r.values.map((v, i) => {
+              const k = kind(v);
+              return (
+                <td class:list={[`is-${k}`, { 'is-ours': i === mine }]}>
+                  {k === 'yes' && <svg class:list={['st-mx-mark', { pop: i === mine }]} style={`--d: ${520 + ri * 90}ms`} viewBox="0 0 32 32" role="img" aria-label={SAY.yes}><path d="M6 16.5 L13 23.5 L26 9" /></svg>}
+                  {k === 'no' && <svg class="st-mx-mark" viewBox="0 0 32 32" role="img" aria-label={SAY.no}><path d="M10 16 H22" /></svg>}
+                  {k === 'partial' && <svg class:list={['st-mx-mark', { pop: i === mine }]} style={`--d: ${520 + ri * 90}ms`} viewBox="0 0 32 32" role="img" aria-label={SAY.partial}><circle cx="16" cy="16" r="9" /><path class="half" d="M16 7 A9 9 0 0 1 16 25 Z" /></svg>}
+                  {k === 'text' && <span>{v}</span>}
+                </td>
+              );
+            })}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</Slide>
+
+<style>
+  .st-mx {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 640px) minmax(0, 1fr);
+    column-gap: calc(var(--gap) * 1.6);
+    align-items: center;
+  }
+
+  .st-mx-head {
+    font-size: calc(var(--head) * var(--display-scale));
+  }
+
+  .st-mx-line {
+    margin-top: calc(var(--gap) * 0.6);
+    font-size: var(--t-lede);
+    line-height: 1.3;
+    color: color-mix(in oklab, currentColor 72%, transparent);
+  }
+
+  .st-mx-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: fixed;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .st-mx-table th,
+  .st-mx-table td {
+    padding: 0 20px;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  /* Column heads: quiet mono, ours in full ink. */
+  .st-mx-table thead th {
+    height: 96px;
+    vertical-align: bottom;
+    padding-bottom: 22px;
+    font-family: var(--font-mono);
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: var(--caps-tracking, 0.12em);
+    text-transform: var(--label-case, uppercase);
+    color: color-mix(in oklab, currentColor 70%, transparent);
+  }
+
+  .st-mx-table thead th.is-ours { color: inherit; font-weight: 800; }
+
+  .st-mx-table thead td { width: 38%; }
+
+  .st-mx-table tbody th {
+    text-align: left;
+    padding-left: 0;
+    font-size: var(--t-body);
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .st-mx-table tbody th,
+  .st-mx-table tbody td {
+    height: 96px;
+    border-top: 1px solid color-mix(in oklab, currentColor 20%, transparent);
+  }
+
+  .st-mx-table tbody tr:last-child th,
+  .st-mx-table tbody tr:last-child td { border-bottom: 1px solid color-mix(in oklab, currentColor 20%, transparent); }
+
+  .st-mx-table td span {
+    font-size: var(--t-label);
+    line-height: 1.25;
+    color: color-mix(in oklab, currentColor 72%, transparent);
+  }
+
+  /* Our column: the one tinted band, top to bottom. */
+  .st-mx-table .is-ours { background: color-mix(in oklab, var(--accent) 12%, transparent); }
+  .st-mx-table thead .is-ours { border-radius: var(--radius) var(--radius) 0 0; }
+  .st-mx-table tbody tr:last-child .is-ours { border-radius: 0 0 var(--radius) var(--radius); }
+  .st-mx-table td.is-ours span { color: inherit; font-weight: 700; }
+
+  .st-mx-mark {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    fill: none;
+    stroke: color-mix(in oklab, currentColor 60%, transparent);
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vertical-align: middle;
+  }
+
+  .st-mx-mark .half { fill: color-mix(in oklab, currentColor 60%, transparent); stroke: none; }
+
+  .is-ours .st-mx-mark {
+    width: 48px;
+    height: 48px;
+    stroke: var(--hl-color);
+    stroke-width: 3.5;
+  }
+
+  .is-ours .st-mx-mark .half { fill: var(--hl-color); }
+  :global(.tone-accent) .is-ours .st-mx-mark { stroke: var(--on-accent); }
+  :global(.tone-accent) .is-ours .st-mx-mark .half { fill: var(--on-accent); }
+  :global(.tone-accent) .st-mx-table .is-ours { background: color-mix(in oklab, var(--on-accent) 14%, transparent); }
+
+  /* Phone: the headline above the matrix; the matrix stays a matrix, its
+     criteria column narrowed and the marks at phone size. */
+  @media (max-width: 799px) {
+    .st-mx {
+      grid-template-columns: minmax(0, 1fr);
+      align-content: start;
+      row-gap: calc(var(--gap) * 1.3);
+    }
+
+    .st-mx-head { font-size: var(--t-display); }
+    .st-mx-line { margin-top: 10px; font-size: var(--t-body); }
+
+    .st-mx-table th,
+    .st-mx-table td { padding: 0 4px; }
+
+    .st-mx-table thead th {
+      height: auto;
+      padding-bottom: 10px;
+      padding-top: 10px;
+      font-family: var(--font-body);
+      letter-spacing: 0;
+      text-transform: none;
+      line-height: 1.2;
+    }
+
+    .st-mx-table thead td { width: 32%; }
+
+    .st-mx-table tbody th,
+    .st-mx-table tbody td { height: 52px; }
+
+    .st-mx-table tbody th { font-size: var(--t-label); }
+    .st-mx-mark { width: 22px; height: 22px; }
+    .is-ours .st-mx-mark { width: 26px; height: 26px; }
+  }
+
+  /* PDF and every static render: every mark printed, nothing waits. */
+  :global(html.is-static) .st-mx .rise,
+  :global(html.is-static) .st-mx .pop {
+    opacity: 1;
+    transform: none;
+  }
+</style>

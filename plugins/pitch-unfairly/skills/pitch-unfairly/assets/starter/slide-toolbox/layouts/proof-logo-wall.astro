@@ -1,0 +1,187 @@
+---
+/**
+ * proof-logo-wall: who already runs on it, led by the one customer that lands.
+ *
+ * The headline across the top. Below it the slide splits: on the left the
+ * hero customer, the one this buyer will recognize, with their logo (or name)
+ * large, their result at poster size in the accent and one line on what it
+ * measures. On the right, across a hairline, everyone else as a quiet ruled
+ * wall of logos or names, muted and equal. The wall is the weight of numbers;
+ * the hero is the point. On a phone the hero leads and the wall shows eight.
+ */
+import Slide from '../../src/components/Slide.astro';
+import { figureEm, fitType, splitHl, type SlideBase } from '../lib';
+
+interface Props extends SlideBase {
+  /** What the list proves, as a sentence. 14 words or fewer. */
+  headline: string;
+  /** One phrase of the headline, word for word, in the accent. The hero's metric then goes to full ink. */
+  hl?: string;
+  /** The customer this buyer will recognize: their logo URL (or name), the result as a figure, and what it measures. */
+  hero: { name: string; logo?: string; metric?: string; result: string };
+  /** The rest, 4 to 15: a logo URL each, or the name set in type. */
+  logos: { name: string; logo?: string }[];
+}
+
+const { id, label = 'Customers', tone = 'warm', notes, brand, headline, hl, hero, logos } = Astro.props;
+const where = `proof-logo-wall "${id}"`;
+if (logos.length < 4 || logos.length > 15) throw new Error(`${where}: 4 to 15 logos besides the hero (got ${logos.length}). Fewer is a case (proof-case-metric); more, keep the names this buyer knows.`);
+if (hero.metric && hero.metric.length > 8) throw new Error(`${where}: the hero's metric "${hero.metric}" is over 8 characters; write it as a figure ("−78%"), the rest goes in result.`);
+const [before, phrase, after] = splitHl(headline, hl, where);
+const head = fitType(headline.length, { width: 1500, lines: 2, min: 72, max: 112 });
+const fig = hero.metric ? Math.max(140, Math.min(260, Math.floor(620 / figureEm(hero.metric)))) : 0;
+const heroName = fitType(hero.name.length, { width: 620, lines: 1, min: 40, max: 64 });
+const cols = logos.length > 8 ? 3 : 2;
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <div class:list={['st-wall', { 'has-hl': !!phrase }]} style={`--head: ${head}px; --fig: ${fig}px; --hero-name: ${heroName}px; --cols: ${cols}`}>
+    <h2 data-fit="2 4" class="display st-wall-head rise">
+      <slot name="headline">{before}{phrase && <span class="hl">{phrase}</span>}{after}</slot>
+    </h2>
+    <div class="st-wall-body">
+      <figure class="st-wall-hero">
+        {hero.logo ? <img class="st-wall-hero-logo rise" style="--d: 120ms" src={hero.logo} alt={hero.name} /> : <p class="st-wall-hero-name display rise" style="--d: 120ms">{hero.name}</p>}
+        {hero.metric && <p class="st-wall-n display pop" style="--d: 300ms">{hero.metric}</p>}
+        <figcaption class="st-wall-result rise" style="--d: 420ms">{hero.result}</figcaption>
+      </figure>
+      <ul class="st-wall-grid">
+        {logos.map((l, i) => (
+          <li class="rise" style={`--d: ${380 + i * 40}ms`}>
+            {l.logo ? <img src={l.logo} alt={l.name} /> : <span>{l.name}</span>}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</Slide>
+
+<style>
+  .st-wall {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    row-gap: calc(var(--gap) * 1.1);
+  }
+
+  .st-wall-head {
+    max-width: 1500px;
+    font-size: calc(var(--head) * var(--display-scale));
+  }
+
+  .st-wall-body {
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 640px minmax(0, 1fr);
+    column-gap: calc(var(--gap) * 1.4);
+    align-items: center;
+  }
+
+  .st-wall-hero {
+    display: grid;
+    justify-items: start;
+    gap: calc(var(--gap) * 0.5);
+  }
+
+  .st-wall-hero-logo {
+    max-width: 420px;
+    max-height: 96px;
+    object-fit: contain;
+  }
+
+  .st-wall-hero-name {
+    font-size: calc(var(--hero-name) * var(--display-scale));
+    line-height: 1;
+  }
+
+  /* The focal element: the hero's result, at poster size in the accent. */
+  .st-wall-n {
+    font-size: calc(var(--fig) * var(--display-scale));
+    line-height: 0.82;
+    letter-spacing: -0.045em;
+    white-space: nowrap;
+    font-variant-numeric: lining-nums tabular-nums;
+    color: var(--hl-color);
+    margin-left: -0.03em;
+  }
+
+  .st-wall.has-hl .st-wall-n { color: currentColor; }
+  :global(.tone-accent) .st-wall-n { color: var(--on-accent); }
+
+  .st-wall-result {
+    max-width: 560px;
+    font-size: var(--t-body);
+    line-height: 1.3;
+    color: color-mix(in oklab, currentColor 76%, transparent);
+  }
+
+  /* The wall: quiet and equal, a ruled grid with no boxes, across a hairline from the hero. */
+  .st-wall-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    margin: 0;
+    padding: 0 0 0 calc(var(--gap) * 1.4);
+    border-left: 1px solid color-mix(in oklab, currentColor 22%, transparent);
+    list-style: none;
+  }
+
+  .st-wall-grid li {
+    display: flex;
+    align-items: center;
+    min-height: 104px;
+    padding: 0 20px 0 0;
+    border-bottom: 1px solid color-mix(in oklab, currentColor 14%, transparent);
+  }
+
+  .st-wall-grid img {
+    max-width: 220px;
+    max-height: 48px;
+    object-fit: contain;
+    filter: grayscale(1);
+    opacity: 0.62;
+  }
+
+  .st-wall-grid span {
+    font-family: var(--font-display);
+    font-weight: var(--display-weight);
+    font-size: var(--t-body);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: color-mix(in oklab, currentColor 66%, transparent);
+  }
+
+  /* Phone: the hero leads; the wall follows in two columns, eight at most. */
+  @media (max-width: 799px) {
+    .st-wall {
+      grid-template-rows: auto auto;
+      align-content: start;
+      row-gap: calc(var(--gap) * 1.3);
+    }
+
+    .st-wall-head { max-width: none; font-size: var(--t-display); }
+    .st-wall-body { grid-template-columns: minmax(0, 1fr); row-gap: calc(var(--gap) * 1.3); }
+    .st-wall-hero { gap: 8px; }
+    .st-wall-hero-logo { max-width: 200px; max-height: 48px; }
+    .st-wall-hero-name { font-size: calc(min(var(--hero-name), 40px) * var(--display-scale) * 0.7); }
+    .st-wall-n { font-size: calc(min(var(--fig), 120px) * var(--display-scale) * 0.8); }
+
+    .st-wall-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      padding: 0;
+      border-left: 0;
+      border-top: 1px solid color-mix(in oklab, currentColor 22%, transparent);
+    }
+
+    .st-wall-grid li { min-height: 44px; padding-right: 10px; }
+    .st-wall-grid li:nth-child(n + 9) { display: none; }
+    .st-wall-grid img { max-width: 120px; max-height: 26px; }
+  }
+
+  /* PDF and every static render: every name in place, nothing waits on an entrance. */
+  :global(html.is-static) .st-wall .rise,
+  :global(html.is-static) .st-wall .pop {
+    opacity: 1;
+    transform: none;
+  }
+</style>

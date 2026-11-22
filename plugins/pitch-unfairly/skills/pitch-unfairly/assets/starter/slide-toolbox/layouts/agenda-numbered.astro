@@ -1,0 +1,152 @@
+---
+/**
+ * agenda-numbered: the meeting's map as a numbered list beside its point.
+ *
+ * The headline holds the upper left: what the meeting is for, as a sentence.
+ * The parts run down the right half under hairlines, each with its index and,
+ * optionally, its time. The part about to begin is the hero: large, full
+ * strength, its index in the accent and its one-line detail shown. The rest
+ * are a quiet list. Shown again before each part with the next one lit.
+ */
+import Slide from '../../src/components/Slide.astro';
+import { fitType, type SlideBase } from '../lib';
+
+interface Props extends SlideBase {
+  /** What the meeting is for, as one sentence: 10 words or fewer. */
+  headline: string;
+  /** The parts, in order: two to five, each a name of five words or fewer, an optional one-line detail (shown for the current part) and an optional time ("10 min", "10:15"). */
+  items: { title: string; detail?: string; time?: string }[];
+  /** Which part is about to begin, counting from 1. Default 1. */
+  current?: number;
+}
+
+const { id, label = 'Agenda', tone = 'paper', notes, brand, headline, items, current = 1 } = Astro.props;
+const where = `agenda-numbered "${id}"`;
+if (items.length < 2 || items.length > 5) throw new Error(`${where}: two to five parts (got ${items.length}). A longer agenda is two meetings, or group it.`);
+for (const it of items) {
+  if (it.title.split(/\s+/).length > 5) throw new Error(`${where}: "${it.title}" is over five words; the detail goes in detail.`);
+  if (it.detail && it.detail.length > 80) throw new Error(`${where}: the detail for "${it.title}" is ${it.detail.length} characters; one line is 80 or fewer.`);
+}
+if (current < 1 || current > items.length) throw new Error(`${where}: current ${current} is outside 1 to ${items.length}.`);
+const head = fitType(headline.length, { width: 760, lines: 3, min: 64, max: 112, em: 0.52 });
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <div class="st-agn" style={`--head: ${head}px; --n: ${items.length}`}>
+    <h2 data-fit="3 4" class="display st-agn-head rise">
+      <slot name="headline">{headline}</slot>
+    </h2>
+    <ol class="st-agn-list">
+      {items.map((it, i) => (
+        <li class:list={['rise', { 'is-now': current === i + 1 }]} style={`--d: ${160 + i * 70}ms`} aria-current={current === i + 1 ? 'step' : undefined}>
+          <span class="st-agn-i">{pad(i + 1)}</span>
+          <span class="st-agn-body">
+            <span class="st-agn-title">{it.title}</span>
+            {current === i + 1 && it.detail && <span class="st-agn-detail">{it.detail}</span>}
+          </span>
+          {it.time && <span class="st-agn-time">{it.time}</span>}
+        </li>
+      ))}
+    </ol>
+  </div>
+</Slide>
+
+<style>
+  .st-agn {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 760px minmax(0, 1fr);
+    column-gap: 120px;
+  }
+
+  .st-agn-head {
+    align-self: start;
+    font-size: calc(var(--head) * var(--display-scale));
+  }
+
+  .st-agn-list {
+    align-self: end;
+    border-bottom: 1px solid color-mix(in oklab, currentColor 20%, transparent);
+  }
+
+  .st-agn-list li {
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr) auto;
+    align-items: baseline;
+    column-gap: 24px;
+    padding: 26px 0;
+    border-top: 1px solid color-mix(in oklab, currentColor 20%, transparent);
+    color: color-mix(in oklab, currentColor 62%, transparent);
+  }
+
+  .st-agn-i,
+  .st-agn-time {
+    font-family: var(--font-mono);
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .st-agn-body { display: grid; gap: 10px; }
+
+  .st-agn-title {
+    font-family: var(--font-display);
+    font-weight: var(--display-weight);
+    font-size: var(--t-lede);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  /* The hero row: the part about to begin, at title size and full strength. */
+  .st-agn-list .is-now {
+    padding: 40px 0 44px;
+    color: inherit;
+  }
+
+  .st-agn-list .is-now .st-agn-i { color: var(--hl-text, var(--hl-color)); }
+
+  .st-agn-list .is-now .st-agn-title {
+    font-size: var(--t-title);
+    line-height: 1;
+    letter-spacing: var(--display-tracking);
+    color: var(--headline-color);
+  }
+
+  .st-agn-detail {
+    font-size: var(--t-body);
+    line-height: 1.35;
+    color: color-mix(in oklab, currentColor 72%, transparent);
+  }
+
+  :global(.tone-accent) .st-agn-list .is-now .st-agn-i,
+  :global(.tone-accent) .st-agn-list .is-now .st-agn-title { color: var(--on-accent); }
+
+  /* Phone: the headline, then the list under it; the hero row stays the largest. */
+  @media (max-width: 799px) {
+    .st-agn {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto 1fr;
+      row-gap: calc(var(--gap) * 1.6);
+    }
+
+    .st-agn-head { font-size: var(--t-display); }
+
+    .st-agn-list li {
+      grid-template-columns: 30px minmax(0, 1fr) auto;
+      column-gap: 10px;
+      padding: 12px 0;
+    }
+
+    .st-agn-list .is-now { padding: 16px 0 18px; }
+    .st-agn-body { gap: 6px; }
+  }
+
+  /* PDF and every static render: the whole list in place, the current part lit. */
+  :global(html.is-static) .st-agn .rise {
+    opacity: 1;
+    transform: none;
+  }
+</style>

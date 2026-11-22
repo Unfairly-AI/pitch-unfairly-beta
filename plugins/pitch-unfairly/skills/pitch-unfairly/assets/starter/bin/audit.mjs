@@ -1,5 +1,9 @@
 // Layout audit for every mode the deck has to work in.
 // Usage: node bin/audit.mjs [base-url]   (exits 1 when anything needs fixing)
+// --gallery audits the slide toolbox gallery (npm run deck:gallery -- --audit
+// serves it and passes this): its slides are slide-toolbox/layouts/, not
+// src/slides/, it has no story.md and no brand of its own to judge, and a
+// clean gallery is not this deck's audit, so it never stamps or clears it.
 import puppeteer from 'puppeteer';
 import { readFile } from 'node:fs/promises';
 import { countPdfPages, renderPdf, settle } from './render-pdf.mjs';
@@ -17,7 +21,9 @@ refuseInCodexSandbox('The audit');
 const CONTRAST = contrastScript('__contrast');
 
 const base = (process.argv.slice(2).find((a) => !a.startsWith('--')) ?? 'http://localhost:4321').replace(/\/$/, '');
-await assertThisDeck(base).catch((error) => {
+const GALLERY = process.argv.includes('--gallery');
+const SLIDES = GALLERY ? 'slide-toolbox/layouts' : 'src/slides';
+if (!GALLERY) await assertThisDeck(base).catch((error) => {
   console.error(`✗ ${error.message}`);
   process.exit(1);
 });
@@ -44,7 +50,7 @@ const report = (mode, msg) => problems.push(`${mode}: ${msg}`);
 // Read by machines: the stage's words and lists, for the screen and PDF checks below.
 let stageWords = null;
 let stageLists = [];
-const story = await readFile('story.md', 'utf8').catch(() => '');
+const story = GALLERY ? '' : await readFile('story.md', 'utf8').catch(() => '');
 const headlines = storyHeadlines(story);
 
 // On brand: slides take every color from the brand kit's tokens. A raw color
@@ -54,7 +60,7 @@ const headlines = storyHeadlines(story);
   const { join } = await import('node:path');
   const walk = async (dir) => (await readdir(dir, { withFileTypes: true })).flatMap((e) =>
     e.isDirectory() ? [] : [join(dir, e.name)]);
-  const files = [...await walk('src/slides'), ...await walk('src/components').catch(() => []), ...await walk('src/layouts')];
+  const files = [...await walk(SLIDES), ...await walk('src/components').catch(() => []), ...await walk('src/layouts')];
   for (const file of files.filter((f) => f.endsWith('.astro'))) {
     const lines = (await readFile(file, 'utf8')).split('\n');
     lines.forEach((line, i) => {
@@ -66,13 +72,13 @@ const headlines = storyHeadlines(story);
 
 // One motion per name: keyframe names are global across slides, whatever Astro
 // scopes. The static render can't show this, because nothing runs there.
-for (const { name, paths } of keyframeCollisions(await styleSources(['src/slides', 'src/components', 'src/layouts', 'src/styles']))) {
+for (const { name, paths } of keyframeCollisions(await styleSources([SLIDES, 'src/components', 'src/layouts', 'src/styles']))) {
   report('motion', `@keyframes ${name} is defined differently in ${paths.join(' and ')}; keyframe names are global, so one replaces the other on every slide. Give each its own name`);
 }
 
 // A real brand: no deck ships in the starter's own house brand unless it is
 // about Pitch Unfairly. Get the brand from its site, or write an art direction.
-{
+if (!GALLERY) {
   const { readFile } = await import('node:fs/promises');
   const kit = JSON.parse(await readFile('brand/brand.json', 'utf8').catch(() => '{}'));
   // Renaming the kit isn't a brand: the house look is its type pairing with the house magenta.
@@ -466,7 +472,9 @@ if (problems.length) {
   console.error(`\n${problems.length} problem${problems.length === 1 ? '' : 's'} to fix before shipping:`);
   problems.forEach((p) => console.error(`  ✗ ${p}`));
   process.exitCode = 1;
-  await clearStamp();
+  if (!GALLERY) await clearStamp();
+} else if (GALLERY) {
+  console.log(`\nThe gallery is clean in every mode${process.argv.includes('--quick') ? ' (PDF skipped)' : ''}.`);
 } else if (process.argv.includes('--quick')) {
   // A quick audit skips the PDF, so it never counts as the audit that publishing needs.
   console.log('\nQuick audit clean (PDF skipped). Run the full npm run audit before publishing.');

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000" role="img" aria-label="Sample screenshot: a crew schedule board with routes laid out across the day">
+  <rect width="1600" height="1000" fill="#fbfbfa"/>
+  <rect width="1600" height="84" fill="#f0f0ee"/>
+  <rect x="40" y="30" width="150" height="24" rx="6" fill="#3a3f46"/>
+  <rect x="240" y="34" width="110" height="16" rx="8" fill="#b4b8be"/><rect x="380" y="34" width="110" height="16" rx="8" fill="#cfd2d6"/><rect x="520" y="34" width="110" height="16" rx="8" fill="#cfd2d6"/>
+  <rect x="1390" y="22" width="170" height="40" rx="20" fill="#3a3f46"/>
+  <rect x="0" y="84" width="300" height="916" fill="#f5f5f3"/>
+  <g fill="#c4c8cd"><rect x="40" y="150" width="180" height="16" rx="8"/><rect x="40" y="250" width="150" height="16" rx="8"/><rect x="40" y="350" width="200" height="16" rx="8"/><rect x="40" y="450" width="170" height="16" rx="8"/><rect x="40" y="550" width="160" height="16" rx="8"/><rect x="40" y="650" width="190" height="16" rx="8"/><rect x="40" y="750" width="140" height="16" rx="8"/><rect x="40" y="850" width="175" height="16" rx="8"/></g>
+  <g fill="#e1e3e6"><rect x="40" y="178" width="110" height="12" rx="6"/><rect x="40" y="278" width="90" height="12" rx="6"/><rect x="40" y="378" width="120" height="12" rx="6"/><rect x="40" y="478" width="100" height="12" rx="6"/><rect x="40" y="578" width="96" height="12" rx="6"/><rect x="40" y="678" width="118" height="12" rx="6"/><rect x="40" y="778" width="84" height="12" rx="6"/><rect x="40" y="878" width="104" height="12" rx="6"/></g>
+  <g stroke="#e6e7e9" stroke-width="2"><path d="M300 220H1600M300 320H1600M300 420H1600M300 520H1600M300 620H1600M300 720H1600M300 820H1600M300 920H1600"/><path d="M460 84V1000M620 84V1000M780 84V1000M940 84V1000M1100 84V1000M1260 84V1000M1420 84V1000"/></g>
+  <g fill="#b9bec4"><rect x="330" y="140" width="380" height="56" rx="12"/><rect x="740" y="140" width="250" height="56" rx="12"/><rect x="380" y="240" width="300" height="56" rx="12"/><rect x="700" y="240" width="420" height="56" rx="12"/><rect x="320" y="440" width="520" height="56" rx="12"/><rect x="870" y="440" width="200" height="56" rx="12"/><rect x="350" y="540" width="260" height="56" rx="12"/><rect x="640" y="540" width="330" height="56" rx="12"/><rect x="330" y="640" width="450" height="56" rx="12"/><rect x="400" y="740" width="360" height="56" rx="12"/><rect x="790" y="740" width="260" height="56" rx="12"/><rect x="340" y="840" width="300" height="56" rx="12"/><rect x="670" y="840" width="380" height="56" rx="12"/></g>
+  <rect x="340" y="340" width="640" height="56" rx="12" fill="#3a3f46"/>
+  <rect x="364" y="360" width="200" height="16" rx="8" fill="#e9eaec"/>
+  <rect x="1180" y="84" width="3" height="916" fill="#3a3f46"/><circle cx="1181" cy="96" r="9" fill="#3a3f46"/>
+</svg>

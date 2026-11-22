@@ -1,0 +1,196 @@
+---
+/**
+ * title-split-product: the cover as the promise beside the product itself.
+ *
+ * The mark, the promise and up to two facts hold the left column. The
+ * product's real screen sits in the right half at scale, framed once and
+ * cropped by the slide's right and bottom edges, so it reads as the product
+ * coming into the room rather than a picture of it. For a brand whose front
+ * door is its product.
+ */
+import Slide from '../../src/components/Slide.astro';
+import BrandMark from '../../src/components/BrandMark.astro';
+import { fitType, markOn, splitHl, type SlideBase } from '../lib';
+
+interface Props extends SlideBase {
+  /** The promise: one whole sentence, 12 words or fewer. */
+  headline: string;
+  /** One phrase of the headline, word for word, to set in the accent. Most covers have none. */
+  hl?: string;
+  /** The product screenshot's URL (import it, or a path under public/), wider than tall. The real product, or a labelled example. */
+  shot: string;
+  /** What the screenshot shows, for assistive tech. */
+  alt: string;
+  /** The address shown in a thin bar over the screenshot, when it is a web app: "app.northline.co". Without it, a plain frame. */
+  url?: string;
+  /** Up to two facts at the foot of the left column, each a short label and its value. */
+  meta?: { label: string; value: string }[];
+  /** Show the brand's mark at the top. Default true. */
+  mark?: boolean;
+}
+
+const { id, label = 'Cover', tone = 'paper', notes, brand, headline, hl, shot, alt, url, meta = [], mark = true } = Astro.props;
+const where = `title-split-product "${id}"`;
+if (!shot) throw new Error(`${where}: shot is required. Without a product screenshot, use title-statement.`);
+if (meta.length > 2) throw new Error(`${where}: two meta facts at most beside the product (got ${meta.length}); the rest go in the notes.`);
+if (headline.split(/\s+/).length > 14) throw new Error(`${where}: the promise is ${headline.split(/\s+/).length} words; beside a product it holds 12 or fewer. Cut it.`);
+const [before, phrase, after] = splitHl(headline, hl, where);
+// Three lines in the 680px left column on the stage, four across a 330px phone.
+const stage = fitType(headline.length, { width: 680, lines: 3, min: 64, max: 116, em: 0.52 });
+const phone = fitType(headline.length, { width: 330, lines: 4, min: 28, max: 46 });
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand} bare>
+  <div class="st-split" style={`--fit: ${stage}px; --fit-phone: ${phone}px`}>
+    {mark && <div class="st-split-mark rise"><BrandMark on={markOn(tone)} brand={brand} /></div>}
+    <h1 data-fit="3 4" class="display st-split-line rise" style="--d: 90ms">
+      <slot name="headline">{before}{phrase && <span class="hl">{phrase}</span>}{after}</slot>
+    </h1>
+    {meta.length > 0 && (
+      <dl class="st-split-meta rise" style="--d: 240ms">
+        {meta.map((m) => (
+          <div>
+            <dt>{m.label}</dt>
+            <dd>{m.value}</dd>
+          </div>
+        ))}
+      </dl>
+    )}
+    <div class="st-split-crop">
+      <figure class="st-split-shot rise" style="--d: 180ms" data-bleed>
+        {url && <figcaption class="st-split-bar">{url}</figcaption>}
+        <img src={shot} alt={alt} />
+      </figure>
+    </div>
+  </div>
+</Slide>
+
+<style>
+  .st-split {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 680px;
+    grid-template-rows: auto 1fr auto auto;
+  }
+
+  .st-split-mark { grid-row: 1; }
+
+  .st-split-line {
+    grid-row: 3;
+    font-size: calc(var(--fit) * var(--display-scale));
+    line-height: min(var(--display-line), 1);
+  }
+
+
+  .st-split-meta {
+    grid-row: 4;
+    margin: calc(var(--gap) * 1.2) 0 0;
+    padding-top: calc(var(--gap) * 0.5);
+    border-top: 1px solid color-mix(in oklab, currentColor 24%, transparent);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--gap);
+  }
+
+  .st-split-meta dt {
+    font-family: var(--font-mono);
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: var(--caps-tracking, 0.12em);
+    text-transform: var(--label-case, uppercase);
+    color: color-mix(in oklab, currentColor 64%, transparent);
+  }
+
+  .st-split-meta dd {
+    margin: 0.3em 0 0;
+    font-size: var(--t-body);
+    font-weight: 600;
+  }
+
+  /* The focal element: the product at scale, framed once, cropped by the
+     slide's right and bottom edges. */
+  /* The slide's edges crop the screenshot: this box is the slide, clipped. */
+  .st-split-crop {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .st-split-shot {
+    position: absolute;
+    left: 50%;
+    top: 30%;
+    width: 1300px;
+    margin: 0;
+    overflow: hidden;
+    border: var(--border-w) solid color-mix(in oklab, currentColor 16%, transparent);
+    border-radius: var(--radius);
+    background: var(--paper);
+    box-shadow: var(--shadow-focal);
+  }
+
+  .st-split-shot img {
+    display: block;
+    width: 100%;
+    max-width: none;
+  }
+
+  .st-split-bar {
+    padding: 16px 28px;
+    border-bottom: 1px solid color-mix(in oklab, var(--ink) 12%, transparent);
+    background: var(--tint-1);
+    color: color-mix(in oklab, var(--ink) 72%, transparent);
+    font-family: var(--font-mono);
+    font-size: var(--t-fine);
+    letter-spacing: 0.04em;
+  }
+
+  /* Phone: the promise first, then the product, still cropped by the right
+     and bottom edges, filling what the screen has left. */
+  @media (max-width: 799px) {
+    .st-split {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto auto auto 1fr;
+      row-gap: 0;
+    }
+
+    .st-split-line {
+      grid-row: 2;
+      margin-top: calc(var(--gap) * 1.4);
+      font-size: calc(var(--fit-phone) * var(--display-scale));
+    }
+
+    .st-split-meta {
+      grid-row: 3;
+      margin-top: var(--gap);
+      padding-top: 10px;
+      gap: 12px;
+    }
+
+    .st-split-crop {
+      position: relative;
+      inset: auto;
+      grid-row: 4;
+      margin: calc(var(--gap) * 1.4) calc(var(--pad-x) * -1) calc(var(--pad-y) * -1) 0;
+    }
+
+    .st-split-shot {
+      position: relative;
+      left: auto;
+      top: auto;
+      align-self: start;
+      width: 150%;
+      margin: 0;
+    }
+
+    .st-split-bar { padding: 7px 12px; }
+  }
+
+  /* PDF and every static render: the screenshot prints, nothing waits on an entrance. */
+  :global(html.is-static) .st-split .rise {
+    opacity: 1;
+    transform: none;
+  }
+</style>

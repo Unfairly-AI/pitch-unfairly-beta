@@ -1,0 +1,310 @@
+---
+/**
+ * demo-slider-calculator: move one input and watch the result change.
+ *
+ * The headline across the top. Below it, on the left, the one input the
+ * buyer knows (their crews, seats, sites) as a labelled value over a slider;
+ * on the right, the result at poster size in the accent, recomputed on every
+ * move, with a caption saying what it is and on what assumption. The result
+ * is input x rate + base: keep the math that simple, and say the rate in the
+ * caption or the notes. In the PDF the slider goes and the slide reads as a
+ * sentence: at this input, this result.
+ */
+import Slide from '../../src/components/Slide.astro';
+import { figureEm, fitType, splitHl, unitScale, type SlideBase } from '../lib';
+
+interface Input {
+  /** What the buyer sets, as a short label: "Crews on the road". */
+  label: string;
+  min: number;
+  max: number;
+  /** The slider's step. Default 1. */
+  step?: number;
+  /** Where it starts, and what the PDF prints: the buyer's real figure. */
+  value: number;
+  /** Set before the value: "$". */
+  prefix?: string;
+  /** Set after the value: "%", or a short word ("crews"). */
+  unit?: string;
+}
+
+interface Output {
+  /** What the result is and on what assumption, in one line: "Hours back a year, at 41 minutes a crew a day". */
+  label: string;
+  prefix?: string;
+  unit?: string;
+  /** Decimal places to show. Default 0. */
+  decimals?: number;
+}
+
+interface Props extends SlideBase {
+  /** The question the slider answers, as a whole sentence. 12 words or fewer. */
+  headline: string;
+  /** One phrase of the headline, word for word, in the accent. Then the result goes to ink. */
+  hl?: string;
+  /** The one input. */
+  input: Input;
+  /** The result's label, prefix, unit and decimals. */
+  output: Output;
+  /** The result per unit of input: result = input x rate + base. */
+  rate: number;
+  /** Added to every result. Default 0. */
+  base?: number;
+}
+
+const { id, label = 'Calculator', tone = 'paper', notes, brand, headline, hl, input, output, rate, base = 0 } = Astro.props;
+const where = `demo-slider-calculator "${id}"`;
+const { min, max, step = 1, value } = input;
+if (!(min < max)) throw new Error(`${where}: input min ${min} must be below max ${max}.`);
+if (!(value >= min && value <= max)) throw new Error(`${where}: input value ${value} is outside ${min} to ${max}; start the slider on the buyer's real figure.`);
+if (!Number.isFinite(rate)) throw new Error(`${where}: rate is required: the result per unit of input.`);
+if (output.label.length > 64) throw new Error(`${where}: the output label is ${output.label.length} characters; one line of 64 or fewer. The full assumption goes in the notes.`);
+const decimals = output.decimals ?? 0;
+const fmt = (n: number, d = 0) => n.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
+const result = (v: number) => v * rate + base;
+const [before, phrase, after] = splitHl(headline, hl, where);
+const head = fitType(headline.length, { width: 1500, lines: 2, min: 72, max: 112 });
+const phoneHead = fitType(headline.length, { width: 330, lines: 3, min: 26, max: 40 });
+// The result is sized for its widest value, so it never jumps as the slider moves.
+const widest = fmt(Math.max(Math.abs(result(min)), Math.abs(result(max))), decimals);
+const em = figureEm(widest, output.prefix, output.unit);
+const fig = Math.max(160, Math.min(380, Math.floor(980 / em)));
+const figPhone = Math.max(56, Math.min(120, Math.floor(330 / em)));
+const pct = ((value - min) / (max - min)) * 100;
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <div
+    class:list={['st-calc', { 'has-hl': !!phrase }]}
+    style={`--head: ${head}px; --head-phone: ${phoneHead}px; --fig: ${fig}px; --fig-phone: ${figPhone}px; --unit: ${unitScale(output.unit)}em; --pct: ${pct}%`}
+    data-rate={rate}
+    data-base={base}
+    data-decimals={decimals}
+    data-min={min}
+    data-max={max}>
+    <h2 data-fit="2 3" class="display st-calc-head rise">
+      <slot name="headline">{before}{phrase && <span class="hl">{phrase}</span>}{after}</slot>
+    </h2>
+    <div class="st-calc-input rise" style="--d: 200ms">
+      <label class="st-calc-label" for={`${id}-range`}>{input.label}</label>
+      <p class="st-calc-value display" aria-hidden="true">
+        {input.prefix}<span data-calc="in">{fmt(value)}</span>{input.unit && <span class="st-calc-in-unit">{input.unit}</span>}
+      </p>
+      <input class="st-calc-range" id={`${id}-range`} type="range" min={min} max={max} step={step} value={value} />
+      <div class="st-calc-ends" aria-hidden="true"><span>{input.prefix}{fmt(min)}</span><span>{input.prefix}{fmt(max)}</span></div>
+    </div>
+    <figure class="st-calc-out">
+      <p class="st-calc-n display" aria-live="polite">
+        {output.prefix && <span class="st-calc-pre">{output.prefix}</span>}
+        <span data-calc="out">{fmt(result(value), decimals)}</span>
+        {output.unit && <span class:list={['st-calc-unit', { 'is-word': [...output.unit].length > 1 }]}>{output.unit}</span>}
+      </p>
+      <figcaption class="st-calc-cap rise" style="--d: 360ms">{output.label}</figcaption>
+    </figure>
+  </div>
+</Slide>
+
+<script>
+  for (const root of document.querySelectorAll<HTMLElement>('.st-calc')) {
+    const range = root.querySelector<HTMLInputElement>('.st-calc-range');
+    const inEl = root.querySelector<HTMLElement>('[data-calc="in"]');
+    const outEl = root.querySelector<HTMLElement>('[data-calc="out"]');
+    if (!range || !inEl || !outEl) continue;
+    const { rate, base, decimals, min, max } = root.dataset;
+    const d = Number(decimals);
+    const fmt = (n: number, places = 0) => n.toLocaleString('en-US', { minimumFractionDigits: places, maximumFractionDigits: places });
+    const update = () => {
+      const v = Number(range.value);
+      inEl.textContent = fmt(v);
+      outEl.textContent = fmt(v * Number(rate) + Number(base), d);
+      root.style.setProperty('--pct', `${((v - Number(min)) / (Number(max) - Number(min))) * 100}%`);
+      range.setAttribute('aria-valuetext', `${inEl.textContent}, ${outEl.textContent}`);
+    };
+    range.addEventListener('input', update);
+  }
+</script>
+
+<style>
+  .st-calc {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 560px minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+    column-gap: calc(var(--gap) * 2);
+  }
+
+  .st-calc-head {
+    grid-column: 1 / -1;
+    max-width: 1500px;
+    font-size: calc(var(--head) * var(--display-scale));
+  }
+
+  /* The input: quiet support for the result, but a real control. */
+  .st-calc-input {
+    align-self: end;
+    padding: calc(var(--gap) * 0.5) 0 14px;
+    border-top: 1px solid color-mix(in oklab, currentColor 24%, transparent);
+  }
+
+  .st-calc-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: var(--caps-tracking, 0.12em);
+    text-transform: var(--label-case, uppercase);
+    color: color-mix(in oklab, currentColor 66%, transparent);
+  }
+
+  .st-calc-value {
+    margin: 10px 0 18px;
+    font-size: var(--t-title);
+    line-height: 1;
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+
+  .st-calc-in-unit {
+    margin-left: 0.22em;
+    font-size: 0.5em;
+    letter-spacing: 0;
+  }
+
+  .st-calc-range {
+    -webkit-appearance: none;
+    appearance: none;
+    display: block;
+    width: 100%;
+    height: 48px;
+    margin: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .st-calc-range::-webkit-slider-runnable-track {
+    height: 8px;
+    border-radius: 999px;
+    background: linear-gradient(to right, var(--accent) var(--pct), color-mix(in oklab, currentColor 18%, transparent) var(--pct));
+  }
+
+  .st-calc-range::-moz-range-track {
+    height: 8px;
+    border-radius: 999px;
+    background: color-mix(in oklab, currentColor 18%, transparent);
+  }
+
+  .st-calc-range::-moz-range-progress {
+    height: 8px;
+    border-radius: 999px;
+    background: var(--accent);
+  }
+
+  .st-calc-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 48px;
+    height: 48px;
+    margin-top: -20px;
+    border: 4px solid var(--accent);
+    border-radius: 50%;
+    background: var(--paper);
+    box-shadow: var(--shadow-card);
+    transition: transform var(--dur-hover) var(--ease-hover);
+  }
+
+  .st-calc-range::-moz-range-thumb {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--accent);
+    border-radius: 50%;
+    background: var(--paper);
+    box-shadow: var(--shadow-card);
+  }
+
+  .st-calc-range:hover::-webkit-slider-thumb { transform: scale(1.08); }
+  .st-calc-range:focus { outline: none; }
+  .st-calc-range:focus-visible::-webkit-slider-thumb { outline: 3px solid currentColor; outline-offset: 3px; }
+  .st-calc-range:focus-visible::-moz-range-thumb { outline: 3px solid currentColor; outline-offset: 3px; }
+
+  .st-calc-ends {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+    font-family: var(--font-mono);
+    font-size: var(--t-fine);
+    font-variant-numeric: tabular-nums;
+    color: color-mix(in oklab, currentColor 60%, transparent);
+  }
+
+  /* The focal element: the result at poster size, in the slide's one accent. */
+  .st-calc-out {
+    align-self: end;
+    min-width: 0;
+  }
+
+  .st-calc-n {
+    display: flex;
+    align-items: baseline;
+    font-size: calc(var(--fig) * var(--display-scale));
+    line-height: 0.8;
+    letter-spacing: -0.04em;
+    font-variant-numeric: lining-nums tabular-nums;
+    white-space: nowrap;
+    color: var(--hl-color);
+    margin-left: -0.02em;
+  }
+
+  .st-calc.has-hl .st-calc-n { color: var(--headline-color); }
+
+  .st-calc-pre {
+    align-self: flex-start;
+    font-size: 0.5em;
+    margin: 0.04em 0.04em 0 0;
+  }
+
+  .st-calc-unit { font-size: var(--unit); margin-left: 0.02em; }
+  .st-calc-unit.is-word { margin-left: 0.12em; letter-spacing: -0.02em; }
+
+  .st-calc-cap {
+    margin-top: calc(var(--gap) * 0.55);
+    font-family: var(--font-mono);
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: var(--caps-tracking, 0.12em);
+    text-transform: var(--label-case, uppercase);
+    color: color-mix(in oklab, currentColor 66%, transparent);
+  }
+
+  :global(.tone-accent) .st-calc-n { color: var(--on-accent); }
+  :global(.tone-accent) .st-calc-range::-webkit-slider-runnable-track { background: linear-gradient(to right, var(--on-accent) var(--pct), color-mix(in oklab, currentColor 24%, transparent) var(--pct)); }
+  :global(.tone-accent) .st-calc-range::-webkit-slider-thumb { border-color: var(--on-accent); background: var(--accent); }
+
+  /* Phone: the result first, at the phone's largest size, then the control
+     under the thumb's reach. */
+  @media (max-width: 799px) {
+    .st-calc {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto;
+      align-content: start;
+      row-gap: calc(var(--gap) * 1.6);
+    }
+
+    .st-calc-head { max-width: none; font-size: calc(var(--head-phone) * var(--display-scale)); }
+    .st-calc-out { order: 2; align-self: start; }
+    .st-calc-input { order: 3; align-self: start; padding: 0; }
+    .st-calc-n { font-size: calc(var(--fig-phone) * var(--display-scale)); }
+    .st-calc-cap { margin-top: 12px; }
+    .st-calc-value { margin: 6px 0 6px; }
+    .st-calc-range { height: 44px; }
+    .st-calc-range::-webkit-slider-thumb { width: 36px; height: 36px; margin-top: -14px; }
+  }
+
+  /* PDF and every static render: no control to pretend with. The input
+     prints as its value, and the result as the figure it gives. */
+  :global(html.is-static) .st-calc-range,
+  :global(html.is-static) .st-calc-ends { display: none; }
+
+  :global(html.is-static) .st-calc .rise {
+    opacity: 1;
+    transform: none;
+  }
+</style>

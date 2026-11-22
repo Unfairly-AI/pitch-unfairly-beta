@@ -1,0 +1,168 @@
+---
+/**
+ * proof-testimonial-photo: a real person's face beside their own words.
+ *
+ * A tall portrait bleeds off the top, left and bottom of the slide, with the
+ * company's logo tagged in its corner. The quote holds the column beside it,
+ * set in the display face at the largest size that fits, then a hairline and
+ * who said it. Without a photo the panel is a quiet field with the person's
+ * monogram at poster size, holding the photo's place and crop until one
+ * arrives. On a phone the portrait becomes a band across the top.
+ */
+import Slide from '../../src/components/Slide.astro';
+import { fitType, initials, splitHl, type SlideBase } from '../lib';
+
+interface Props extends SlideBase {
+  /** The quote, verbatim, without quotation marks. 120 characters or fewer; it is the slide's headline. */
+  quote: string;
+  /** One phrase of the quote, word for word, in the accent. */
+  hl?: string;
+  /** Who said it, as published. */
+  name: string;
+  /** Their title. */
+  role?: string;
+  /** Their company. */
+  company?: string;
+  /** A portrait URL, cropped tall. Without one, a field with their monogram. */
+  photo?: string;
+  /** Their company's logo URL, tagged on the photo's corner. */
+  logo?: string;
+}
+
+const { id, label = 'Testimonial', tone = 'paper', notes, brand, quote, hl, name, role, company, photo, logo } = Astro.props;
+const where = `proof-testimonial-photo "${id}"`;
+if (/^["“'‘]|["”'’]$/.test(quote.trim())) throw new Error(`${where}: leave the quotation marks off; the layout sets them.`);
+if (quote.length > 120) throw new Error(`${where}: the quote is ${quote.length} characters; it is the slide's headline, so cut it to the excerpt that carries the point (120 or fewer).`);
+const [before, phrase, after] = splitHl(quote, hl, where);
+const stage = fitType(quote.length + 2, { width: 1000, lines: 2.7, min: 48, max: 104 });
+const phone = fitType(quote.length + 2, { width: 330, lines: 3.6, min: 20, max: 40 });
+const who = [role, company].filter(Boolean).join(', ');
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <figure class:list={['st-tst', { 'has-photo': !!photo }]} style={`--fit: ${stage}px; --fit-phone: ${phone}px`}>
+    <div class="st-tst-panel rise">
+      {photo ? <img class="st-tst-photo" src={photo} alt={name} /> : <span class="st-tst-mono display" aria-hidden="true">{initials(name)}</span>}
+      {logo && <img class="st-tst-tag" src={logo} alt={company ?? ''} />}
+    </div>
+    <div class="st-tst-copy">
+      <blockquote class="st-tst-body">
+        <h2 data-fit="3 4" class="display st-tst-line rise" style="--d: 140ms">
+          <slot name="quote">“{before}{phrase && <span class="hl">{phrase}</span>}{after}”</slot>
+        </h2>
+      </blockquote>
+      <figcaption class="st-tst-who rise" style="--d: 360ms">
+        <b>{name}</b>
+        {who && <span>{who}</span>}
+      </figcaption>
+    </div>
+  </figure>
+</Slide>
+
+<style>
+  .st-tst {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 560px minmax(0, 1fr);
+    column-gap: calc(var(--gap) * 1.8);
+  }
+
+  /* The portrait bleeds off the top, left and bottom of the slide. */
+  .st-tst-panel {
+    position: relative;
+    margin: calc(var(--pad-y) * -1) 0 calc(var(--pad-y) * -1) calc(var(--pad-x) * -1);
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    background: color-mix(in oklab, currentColor 8%, transparent);
+  }
+
+  .st-tst-photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 25%;
+  }
+
+  .st-tst-mono {
+    font-size: calc(300px * var(--display-scale));
+    letter-spacing: -0.04em;
+    color: color-mix(in oklab, currentColor 22%, transparent);
+  }
+
+  .st-tst-tag {
+    position: absolute;
+    right: 36px;
+    top: 36px;
+    max-width: 180px;
+    max-height: 60px;
+    padding: 12px 16px;
+    background: var(--paper);
+    border-radius: min(var(--radius), 10px);
+    object-fit: contain;
+  }
+
+  .st-tst-copy {
+    align-self: center;
+    display: grid;
+    gap: calc(var(--gap) * 1.1);
+  }
+
+  .st-tst-body { margin: 0; }
+
+  /* The focal element: the quote, as large as its column allows. */
+  .st-tst-line {
+    font-size: calc(var(--fit) * var(--display-scale));
+    line-height: max(var(--display-line), 1.04);
+    text-indent: -0.4em;
+  }
+
+  .st-tst-line .hl { white-space: nowrap; }
+
+  .st-tst-who {
+    display: grid;
+    gap: 6px;
+    padding-top: calc(var(--gap) * 0.6);
+    border-top: 1px solid color-mix(in oklab, currentColor 24%, transparent);
+    max-width: 720px;
+  }
+
+  .st-tst-who b { font-size: var(--t-body); font-weight: 700; }
+
+  .st-tst-who span {
+    font-size: var(--t-label);
+    color: color-mix(in oklab, currentColor 70%, transparent);
+  }
+
+  :global(.tone-ink) .st-tst-line { letter-spacing: calc(var(--display-tracking) * 0.85); }
+
+  /* Phone: the portrait is a band across the top, the quote under it. */
+  @media (max-width: 799px) {
+    .st-tst {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto auto;
+      align-content: start;
+      row-gap: calc(var(--gap) * 1.3);
+    }
+
+    .st-tst-panel {
+      height: 230px;
+      margin: calc(var(--pad-y) * -1) calc(var(--pad-x) * -1) 0;
+    }
+
+    .st-tst-mono { font-size: calc(120px * var(--display-scale)); }
+    .st-tst-tag { right: 14px; top: 14px; max-height: 36px; padding: 6px 8px; }
+    .st-tst-copy { gap: calc(var(--gap) * 1.1); }
+    .st-tst-line { font-size: calc(var(--fit-phone) * var(--display-scale)); }
+    .st-tst-who { padding-top: 12px; max-width: none; }
+  }
+
+  /* PDF and every static render: the photo prints, nothing waits on an entrance. */
+  :global(html.is-static) .st-tst .rise {
+    opacity: 1;
+    transform: none;
+  }
+</style>

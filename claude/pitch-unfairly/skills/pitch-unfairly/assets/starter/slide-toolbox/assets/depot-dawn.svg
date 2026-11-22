@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1350" width="1200" height="1350" role="img" aria-label="Sample photo: a service depot before sunrise, vans parked with their lights on">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2b3340"/><stop offset="0.55" stop-color="#5d6672"/><stop offset="0.8" stop-color="#b9a88f"/></linearGradient>
+    <linearGradient id="yard" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a3f47"/><stop offset="1" stop-color="#1f2329"/></linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#f3dfb4" stop-opacity="0.9"/><stop offset="1" stop-color="#f3dfb4" stop-opacity="0"/></radialGradient>
+  </defs>
+  <rect width="1200" height="1350" fill="url(#sky)"/>
+  <rect x="0" y="560" width="1200" height="260" fill="#30363e"/>
+  <rect x="60" y="610" width="1080" height="210" fill="#3b424b"/>
+  <rect x="140" y="660" width="220" height="160" fill="#262b31"/><rect x="420" y="660" width="220" height="160" fill="#262b31"/>
+  <rect x="700" y="660" width="220" height="160" fill="#e9d4a6"/><rect x="980" y="680" width="120" height="70" fill="#d9c294"/>
+  <circle cx="810" cy="740" r="260" fill="url(#glow)" opacity="0.55"/>
+  <rect x="0" y="820" width="1200" height="530" fill="url(#yard)"/>
+  <g fill="#4b525c"><rect x="40" y="880" width="300" height="190" rx="22"/><rect x="380" y="900" width="300" height="190" rx="22"/><rect x="720" y="920" width="300" height="190" rx="22"/></g>
+  <g fill="#5b636e"><rect x="230" y="830" width="110" height="110" rx="18"/><rect x="570" y="850" width="110" height="110" rx="18"/><rect x="910" y="870" width="110" height="110" rx="18"/></g>
+  <g fill="#9aa3ad"><rect x="246" y="846" width="78" height="48" rx="8"/><rect x="586" y="866" width="78" height="48" rx="8"/><rect x="926" y="886" width="78" height="48" rx="8"/></g>
+  <g fill="#f4e3b8"><circle cx="322" cy="1020" r="16"/><circle cx="662" cy="1040" r="16"/><circle cx="1002" cy="1060" r="16"/></g>
+  <g fill="#f4e3b8" opacity="0.16"><path d="M322 1020 L640 1180 L640 1240 Z"/><path d="M662 1040 L980 1200 L980 1260 Z"/><path d="M1002 1060 L1200 1170 L1200 1240 Z"/></g>
+  <g fill="#16191d"><circle cx="110" cy="1072" r="36"/><circle cx="280" cy="1072" r="36"/><circle cx="450" cy="1092" r="36"/><circle cx="620" cy="1092" r="36"/><circle cx="790" cy="1112" r="36"/><circle cx="960" cy="1112" r="36"/></g>
+</svg>

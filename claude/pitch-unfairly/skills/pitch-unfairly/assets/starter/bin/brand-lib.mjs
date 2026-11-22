@@ -2,7 +2,11 @@
 // generated files every slide reads from. Pure functions; brand-apply.mjs
 // does the file and npm work. See the deck guide's brand-kit topic.
 
-import { analyzeKit, fundamentalsCss } from './fundamentals.mjs';
+import { analyzeKit, contrastRatio, fundamentalsCss } from './fundamentals.mjs';
+
+// Under 3:1 (WCAG's floor for large text and shapes) a color doesn't read on that ground.
+// A value the ratio can't measure (not a hex) is taken as the kit wrote it.
+const unreadable = (fg, bg) => contrastRatio(fg, bg) < 3;
 
 export const ROLES = [
   'paper', 'surface', 'ink', 'ink_muted', 'accent', 'accent_dark',
@@ -376,7 +380,8 @@ export function resolvePalette(p) {
     border: p.border ?? p.ink,
     night: p.night ?? p.ink,
     on_night: p.on_night ?? p.paper,
-    accent_on_night: p.accent_on_night ?? p.accent,
+    // A dark accent (Metaview's near-black) vanishes on the night ground: emphasis there goes to on_night.
+    accent_on_night: p.accent_on_night ?? (unreadable(p.accent, p.night ?? p.ink) ? p.on_night ?? p.paper : p.accent),
   };
 }
 
@@ -420,6 +425,8 @@ export function brandCss(kit, fontFaces = '', relPrefix = '../../brand/', { fund
     `  --display-line: ${t.display.line_height ?? 1};`,
     `  --display-case: ${cssCase(t.display.case) ?? 'none'};`,
     `  --body-case: ${cssCase(t.body.case) ?? 'none'};`,
+    // Small caps-style labels: uppercase, unless the brand sets its type in lowercase.
+    `  --label-case: ${cssCase(t.mono?.case ?? t.body.case) === 'lowercase' ? 'lowercase' : 'uppercase'};`,
     `  --display-scale: ${t.display.scale ?? 1};`,
     `  --body-weight: ${t.body.weight ?? 400};`,
     `  --body-tracking: ${t.body.tracking ?? -0.01}em;`,
@@ -436,7 +443,11 @@ export function brandCss(kit, fontFaces = '', relPrefix = '../../brand/', { fund
     // Emphasis: "color" = headline in ink, key phrase in accent. "contrast"
     // (monochrome brands) = headline muted, key phrase in full ink.
     `  --headline-color: ${s.emphasis === 'contrast' ? 'var(--ink-muted)' : 'currentColor'};`,
-    `  --hl-color: ${s.emphasis === 'contrast' ? 'var(--ink)' : 'var(--accent)'};`,
+    // A light accent (fillmore's lime) can't be text on paper: the emphasis takes the accent's readable step.
+    `  --hl-color: ${s.emphasis === 'contrast' ? 'var(--ink)' : unreadable(p.accent, p.paper) ? analyzeKit(kit).system.color.accent_text : 'var(--accent)'};`,
+    // Small accent text (a label, a step number, a date) needs 4.5:1, not the 3:1 large type gets:
+    // MMA's pink is a fine headline accent and too light for a 24px "02".
+    `  --hl-text: ${s.emphasis === 'contrast' ? 'var(--ink)' : analyzeKit(kit).system.color.accent_text};`,
     `  --headline-on-night: ${s.emphasis === 'contrast' ? 'color-mix(in oklab, var(--on-night) 58%, var(--night))' : 'var(--on-night)'};`,
     `  --hl-on-night: ${s.emphasis === 'contrast' ? 'var(--on-night)' : 'var(--accent-on-night)'};`,
     `  --density: ${DENSITY[s.density ?? 'balanced']};`,

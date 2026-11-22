@@ -1,0 +1,108 @@
+---
+/**
+ * section-color-field: the divider as a full field of color and one title.
+ *
+ * The slide is one color. The act's title sits at poster size on the left,
+ * a little below center, with an optional quiet line under it. The act's
+ * number, when there is one, is set enormous in a faint tint of the type
+ * color, cropped by the slide's right and bottom edges: present, but part of
+ * the field, so the title stays the only thing that reads first. A change of
+ * color is the pause between acts.
+ */
+import Slide from '../../src/components/Slide.astro';
+import { fitType, figureEm, type SlideBase } from '../lib';
+
+interface Props extends SlideBase {
+  /** The act's name: six words or fewer. */
+  title: string;
+  /** The act's number, set faint and enormous behind the field: "03". Three digits at most. */
+  number?: string;
+  /** One quiet line under the title: what this act answers. 90 characters or fewer. */
+  line?: string;
+}
+
+const { id, label = 'Section', tone = 'accent', notes, brand, title, number, line } = Astro.props;
+const where = `section-color-field "${id}"`;
+if (title.split(/\s+/).length > 6) throw new Error(`${where}: the title is ${title.split(/\s+/).length} words; a section name is six or fewer. The rest goes in line.`);
+if (number !== undefined && !/^\d{1,3}$/.test(number)) throw new Error(`${where}: number "${number}" should be one to three digits ("03").`);
+if (line && line.length > 90) throw new Error(`${where}: line is ${line.length} characters; keep it to 90 or fewer.`);
+const stage = fitType(title.length, { width: 1300, lines: 2, min: 120, max: 260 });
+const phone = fitType(title.length, { width: 330, lines: 3, min: 40, max: 72 });
+const ghost = number ? Math.min(1100, Math.floor(1300 / figureEm(number))) : 0;
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <div class="st-field" style={`--fit: ${stage}px; --fit-phone: ${phone}px; --ghost: ${ghost}px`}>
+    {number && <span class="st-field-crop" aria-hidden="true"><span class="display st-field-n">{number}</span></span>}
+    <div class="st-field-text">
+      <h2 data-fit="2 3" class="display st-field-title rise">{title}</h2>
+      {line && <p class="st-field-line rise" style="--d: 160ms">{line}</p>}
+    </div>
+  </div>
+</Slide>
+
+<style>
+  .st-field {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-rows: 1.15fr auto 1fr;
+  }
+
+  /* The number belongs to the field: enormous, faint, cropped by two edges. */
+  .st-field-crop {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .st-field-n {
+    position: absolute;
+    right: -0.06em;
+    bottom: -0.2em;
+    font-size: calc(var(--ghost) * var(--display-scale));
+    line-height: 1;
+    letter-spacing: -0.06em;
+    font-variant-numeric: lining-nums tabular-nums;
+    color: color-mix(in oklab, currentColor 11%, transparent);
+    pointer-events: none;
+  }
+
+  /* The focal element: the title, at poster size, in the field's type color. */
+  .st-field-text {
+    grid-row: 2;
+    position: relative;
+    max-width: 1300px;
+  }
+
+  .st-field-title {
+    font-size: calc(var(--fit) * var(--display-scale));
+    line-height: min(var(--display-line), 0.96);
+  }
+
+  .st-field-line {
+    margin-top: calc(var(--gap) * 0.9);
+    font-size: var(--t-lede);
+    line-height: 1.3;
+    max-width: 900px;
+    color: color-mix(in oklab, currentColor 80%, transparent);
+  }
+
+  :global(.tone-ink) .st-field-title { letter-spacing: calc(var(--display-tracking) * 0.85); }
+
+  /* Phone: the title at the largest size that fits three lines; the number
+     stays in the lower right, smaller, still cropped. */
+  @media (max-width: 799px) {
+    .st-field { grid-template-rows: 1fr auto 1.6fr; }
+    .st-field-n { font-size: calc(var(--ghost) * var(--display-scale) * 0.3); }
+    .st-field-title { font-size: calc(var(--fit-phone) * var(--display-scale)); }
+    .st-field-line { margin-top: 14px; }
+  }
+
+  /* PDF and every static render: nothing waits on an entrance. */
+  :global(html.is-static) .st-field .rise {
+    opacity: 1;
+    transform: none;
+  }
+</style>

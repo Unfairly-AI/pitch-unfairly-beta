@@ -1,0 +1,355 @@
+---
+/**
+ * chart-line-annotated: a trend with the one moment that matters marked on it.
+ *
+ * The headline across the top, the chart edge to edge beneath it. One to
+ * three lines drawn to scale from the props: the focal series thick and in
+ * the accent, the rest thin and quiet, each named at its end instead of in a
+ * legend. An optional dashed event line marks when something changed, and one
+ * callout pins the point the headline is about to the line itself. No
+ * gridlines; a hairline baseline and a few quiet x labels.
+ */
+import Slide from '../../src/components/Slide.astro';
+import { fitType, splitHl, type SlideBase } from '../lib';
+
+interface Props extends SlideBase {
+  /** What the trend proves, as a sentence. 14 words or fewer. */
+  headline: string;
+  /** One phrase of the headline, word for word, in the accent. */
+  hl?: string;
+  /** The x-axis labels, one per point, 3 to 24. An empty string leaves that point unlabelled; label 8 at most. */
+  x: string[];
+  /** One to three series, each a name and one value per x label. The focal one is marked focal (default the first). */
+  series: { name: string; values: number[]; focal?: boolean }[];
+  /** The callout: the index of the point on the focal series it pins, and its text (48 characters or fewer). */
+  callout?: { at: number; text: string };
+  /** A dashed event line: the index it stands at and a short label ("Northline live"). */
+  event?: { at: number; label: string };
+  /** What was measured, over what, when, in one line. */
+  caption: string;
+  /** The value the y scale starts from. Default zero, or the lowest value when one is below zero. */
+  yFrom?: number;
+}
+
+const { id, label = 'Line chart', tone = 'paper', notes, brand, headline, hl, x, series, callout, event, caption, yFrom } = Astro.props;
+const where = `chart-line-annotated "${id}"`;
+const n = x.length;
+if (n < 3 || n > 24) throw new Error(`${where}: 3 to 24 points on the x axis (got ${n}). Fewer is a bar chart (chart-bar-highlight).`);
+if (x.filter(Boolean).length > 8) throw new Error(`${where}: label 8 x points at most (got ${x.filter(Boolean).length}); leave the rest as "".`);
+if (series.length < 1 || series.length > 3) throw new Error(`${where}: one to three series (got ${series.length}); more lines than that is a tangle, so cut to the ones the headline is about.`);
+for (const s of series) if (s.values.length !== n) throw new Error(`${where}: series "${s.name}" has ${s.values.length} values for ${n} x labels; give one value per label.`);
+if (callout && callout.text.length > 48) throw new Error(`${where}: the callout is ${callout.text.length} characters; 48 or fewer, or it covers the chart.`);
+for (const [k, v] of [['callout', callout], ['event', event]] as const) if (v && !(v.at >= 0 && v.at < n)) throw new Error(`${where}: ${k}.at ${v.at} isn't a point; use an index from 0 to ${n - 1}.`);
+const focalAt = Math.max(0, series.findIndex((s) => s.focal));
+const all = series.flatMap((s) => s.values);
+const lo = yFrom ?? Math.min(0, ...all);
+const hi = Math.max(...all);
+const span = hi - lo || 1;
+// Positions as fractions of the plot: x left to right, y top to bottom.
+const px = (i: number) => (n === 1 ? 0 : i / (n - 1));
+const py = (v: number) => 1 - (v - lo) / span;
+const pct = (f: number) => `${(f * 100).toFixed(3)}%`;
+const lines = series.map((s, k) => ({
+  ...s,
+  focal: k === focalAt,
+  points: s.values.map((v, i) => `${(px(i) * 1000).toFixed(1)},${(py(v) * 1000).toFixed(1)}`).join(' '),
+  end: py(s.values[n - 1]!),
+}));
+// End labels sit beside each line's last point; nudge them apart when lines end close together.
+const ends = lines.map((l, k) => ({ k, y: l.end })).sort((a, b) => a.y - b.y);
+for (let i = 1; i < ends.length; i++) ends[i]!.y = Math.max(ends[i]!.y, ends[i - 1]!.y + 0.09);
+const endY = Object.fromEntries(ends.map((e) => [e.k, Math.min(e.y, 1.04)]));
+const focal = lines[focalAt]!;
+const pin = callout && { x: px(callout.at), y: py(focal.values[callout.at]!) };
+const pinPlace = pin ? `${pin.y > 0.34 ? 'is-above' : 'is-below'} ${pin.x > 0.6 ? 'is-left' : 'is-right'}` : '';
+const [before, phrase, after] = splitHl(headline, hl, where);
+const head = fitType(headline.length, { width: 1500, lines: 2, min: 72, max: 112 });
+const describe = `${caption}. ${series.map((s) => `${s.name}: ${s.values.join(', ')}`).join('; ')}.`;
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <div class:list={['st-line', { 'has-hl': !!phrase }]} style={`--head: ${head}px`}>
+    <h2 data-fit="2 4" class="display st-line-head rise">
+      <slot name="headline">{before}{phrase && <span class="hl">{phrase}</span>}{after}</slot>
+    </h2>
+    <figure class="st-line-chart">
+      <div class="st-line-plot" role="img" aria-label={describe}>
+        {event && (
+          <div class="st-line-event rise" style={`left: ${pct(px(event.at))}; --d: 300ms`}>
+            <span>{event.label}</span>
+          </div>
+        )}
+        <svg class="st-line-svg wipe" style="--d: 200ms" viewBox="0 0 1000 1000" preserveAspectRatio="none" aria-hidden="true">
+          {lines.filter((l) => !l.focal).map((l) => <polyline class="st-line-quiet" points={l.points} />)}
+          <polyline class="st-line-focal" points={focal.points} />
+        </svg>
+        {ends.map(({ k }) => (
+          <span class:list={['st-line-end', { 'is-focal': lines[k]!.focal }]} style={`top: ${pct(endY[k]!)}`}><span class="rise" style="--d: 820ms">{lines[k]!.name}</span></span>
+        ))}
+        {pin && callout && (
+          <div class:list={['st-line-pin', pinPlace]} style={`left: ${pct(pin.x)}; top: ${pct(pin.y)}`}>
+            <span class="st-line-dot pop" style="--d: 900ms"></span>
+            <span class="st-line-callout rise" style="--d: 1000ms">{callout.text}</span>
+          </div>
+        )}
+      </div>
+      <div class="st-line-x" aria-hidden="true">
+        {x.map((t, i) => t && <span class:list={{ 'is-first': i === 0, 'is-last': i === n - 1 }} style={`left: ${pct(px(i))}`}>{t}</span>)}
+      </div>
+      <ul class="st-line-key" aria-hidden="true">
+        {lines.map((l) => <li class:list={{ 'is-focal': l.focal }}>{l.name}</li>)}
+      </ul>
+      <figcaption class="st-line-cap rise" style="--d: 500ms">{caption}</figcaption>
+    </figure>
+  </div>
+</Slide>
+
+<style>
+  .st-line {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    row-gap: calc(var(--gap) * 1.1);
+  }
+
+  .st-line-head {
+    max-width: 1500px;
+    font-size: calc(var(--head) * var(--display-scale));
+  }
+
+  .st-line-chart {
+    min-height: 0;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto auto;
+    /* Room on the right for the names at the lines' ends. */
+    padding-right: 260px;
+  }
+
+  .st-line-plot {
+    position: relative;
+    margin-top: 40px;
+    border-bottom: 2px solid color-mix(in oklab, currentColor 30%, transparent);
+  }
+
+  .st-line-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .st-line-svg polyline {
+    fill: none;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .st-line-quiet {
+    stroke: color-mix(in oklab, currentColor 38%, transparent);
+    stroke-width: 4;
+  }
+
+  /* The focal element: the one line in the accent, drawn heavy. */
+  .st-line-focal {
+    stroke: var(--hl-color);
+    stroke-width: 9;
+  }
+
+  .st-line.has-hl .st-line-focal { stroke: currentColor; }
+  :global(.tone-accent) .st-line-focal { stroke: var(--on-accent); }
+
+  /* Each line is named at its end, not in a legend. */
+  .st-line-end {
+    position: absolute;
+    left: calc(100% + 24px);
+    transform: translateY(-50%);
+    width: max-content;
+    max-width: 240px;
+    font-size: var(--t-label);
+    font-weight: 600;
+    line-height: 1.15;
+    color: color-mix(in oklab, currentColor 66%, transparent);
+  }
+
+  .st-line-end > span { display: block; }
+
+  .st-line-end.is-focal {
+    font-family: var(--font-display);
+    font-weight: var(--display-weight);
+    font-size: var(--t-lede);
+    letter-spacing: -0.02em;
+    color: var(--hl-color);
+  }
+
+  .st-line.has-hl .st-line-end.is-focal { color: currentColor; }
+  :global(.tone-accent) .st-line-end.is-focal { color: var(--on-accent); }
+
+  .st-line-event {
+    position: absolute;
+    top: -40px;
+    bottom: 0;
+    border-left: 2px dashed color-mix(in oklab, currentColor 40%, transparent);
+  }
+
+  .st-line-event span {
+    position: absolute;
+    top: 0;
+    left: 14px;
+    white-space: nowrap;
+    font-family: var(--font-mono);
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: var(--caps-tracking, 0.12em);
+    text-transform: var(--label-case, uppercase);
+    color: color-mix(in oklab, currentColor 66%, transparent);
+  }
+
+  /* The callout: a ringed dot on the focal line, its words on a short leader. */
+  .st-line-pin {
+    position: absolute;
+    width: 0;
+    height: 0;
+  }
+
+  .st-line-dot {
+    position: absolute;
+    left: -15px;
+    top: -15px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 7px solid var(--hl-color);
+  }
+
+  :global(.tone-ink) .st-line-dot { background: var(--night); }
+  :global(.tone-warm) .st-line-dot { background: var(--surface); }
+  .st-line.has-hl .st-line-dot { border-color: currentColor; }
+
+  .st-line-callout {
+    position: absolute;
+    width: max-content;
+    max-width: 440px;
+    font-size: var(--t-body);
+    font-weight: 600;
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+
+  .st-line-callout::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    height: 56px;
+    border-left: 2px solid currentColor;
+  }
+
+  .is-above .st-line-callout { bottom: 40px; padding-bottom: 66px; }
+  .is-above .st-line-callout::before { bottom: 0; }
+  .is-below .st-line-callout { top: 40px; padding-top: 66px; }
+  .is-below .st-line-callout::before { top: 0; }
+  .is-right .st-line-callout { left: 0; }
+  .is-left .st-line-callout { right: 0; text-align: right; }
+  .is-left .st-line-callout::before { left: auto; right: 0; }
+
+  .st-line-x {
+    position: relative;
+    height: calc(var(--t-label) * 1.3 + 18px);
+    font-family: var(--font-mono);
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: var(--label-case, uppercase);
+    color: color-mix(in oklab, currentColor 62%, transparent);
+  }
+
+  .st-line-x span {
+    position: absolute;
+    top: 18px;
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+
+  .st-line-x .is-first { transform: none; }
+  .st-line-x .is-last { transform: translateX(-100%); }
+
+  /* The phone's key: on a narrow chart the names can't sit at the lines' ends. */
+  .st-line-key { display: none; }
+
+  .st-line-cap {
+    margin-top: calc(var(--gap) * 0.35);
+    font-size: var(--t-label);
+    color: color-mix(in oklab, currentColor 66%, transparent);
+  }
+
+  /* Phone: the same chart at a fixed height. The focal line keeps its name,
+     above its end; the quiet lines lose theirs, and only the first and last
+     x labels stay. */
+  @media (max-width: 799px) {
+    .st-line {
+      grid-template-rows: auto auto;
+      align-content: start;
+      row-gap: calc(var(--gap) * 1.4);
+    }
+
+    .st-line-head { max-width: none; font-size: var(--t-display); }
+    .st-line-chart { padding-right: 0; }
+    .st-line-plot { height: 300px; margin-top: 56px; }
+    .st-line-quiet { stroke-width: 2; }
+    .st-line-focal { stroke-width: 5; }
+    .st-line-end { display: none; }
+
+    .st-line-key {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 18px;
+      margin: 4px 0 0;
+      padding: 0;
+      list-style: none;
+      font-size: var(--t-label);
+      font-weight: 600;
+      color: color-mix(in oklab, currentColor 66%, transparent);
+    }
+
+    .st-line-key li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .st-line-key li::before {
+      content: '';
+      width: 18px;
+      border-top: 2px solid color-mix(in oklab, currentColor 50%, transparent);
+    }
+
+    .st-line-key .is-focal { color: var(--hl-color); }
+    .st-line-key .is-focal::before { border-top: 5px solid currentColor; }
+    .st-line.has-hl .st-line-key .is-focal { color: currentColor; }
+
+    .st-line-event { top: -36px; }
+    .st-line-event span { left: 8px; }
+    .st-line-dot { left: -9px; top: -9px; width: 18px; height: 18px; border-width: 4px; }
+    .st-line-callout { max-width: 200px; font-size: var(--t-body); }
+    .st-line-callout::before { height: 28px; }
+    .is-above .st-line-callout { bottom: 22px; padding-bottom: 34px; }
+    .is-below .st-line-callout { top: 22px; padding-top: 34px; }
+    .st-line-x { height: calc(var(--t-label) * 1.3 + 10px); }
+    .st-line-x span { top: 10px; }
+    .st-line-x span:not(.is-first):not(.is-last) { display: none; }
+    .st-line-cap { margin-top: 10px; }
+  }
+
+  /* PDF and every static render: the lines are drawn, the callout is placed. */
+  :global(html.is-static) .st-line .rise,
+  :global(html.is-static) .st-line .pop,
+  :global(html.is-static) .st-line .wipe {
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+    animation: none;
+  }
+</style>

@@ -36,6 +36,7 @@
   --display-line: 0.98;
   --display-case: none;
   --body-case: none;
+  --label-case: uppercase;
   --display-scale: 0.92;
   --body-weight: 450;
   --body-tracking: -0.01em;
@@ -51,6 +52,7 @@
   --tilt: 1;
   --headline-color: currentColor;
   --hl-color: var(--accent);
+  --hl-text: #C92A89;
   --headline-on-night: var(--on-night);
   --hl-on-night: var(--accent-on-night);
   --density: 1;

@@ -1,0 +1,218 @@
+---
+/**
+ * team-portrait-row: the people the client will work with, faces first.
+ *
+ * The headline says why this team, in a sentence. Below it the portraits stand
+ * in one row on a shared baseline: the lead first and largest, with what they
+ * own; the others smaller, with a name and a role. Without a photo a person
+ * gets a monogram tile; the lead's is the slide's one block of accent. For a
+ * brand that shows its people.
+ */
+import Slide from '../../src/components/Slide.astro';
+import { fitType, initials, splitHl, type SlideBase } from '../lib';
+
+interface Props extends SlideBase {
+  /** Why this team, as a whole sentence. 12 words or fewer. */
+  headline: string;
+  /** One phrase of the headline, word for word, in the accent. The lead's tile then goes quiet. */
+  hl?: string;
+  /** 2 to 4 people, each a name, a role of 32 characters or fewer, an optional line on what they own (48 or fewer, shown for the lead) and an optional headshot URL. */
+  people: { name: string; role: string; owns?: string; photo?: string }[];
+  /** Index of the person who leads: shown first and largest. Default 0. */
+  lead?: number;
+}
+
+const { id, label = 'Team', tone = 'paper', notes, brand, headline, hl, people, lead = 0 } = Astro.props;
+const where = `team-portrait-row "${id}"`;
+if (people.length < 2 || people.length > 4) throw new Error(`${where}: 2 to 4 people (got ${people.length}); a bigger team is team-lead-list.`);
+if (lead < 0 || lead >= people.length) throw new Error(`${where}: lead ${lead} isn't a person; use 0 to ${people.length - 1}.`);
+for (const p of people) {
+  if (p.role.length > 32) throw new Error(`${where}: ${p.name}'s role is ${p.role.length} characters; 32 or fewer.`);
+  if (p.owns && p.owns.length > 48) throw new Error(`${where}: ${p.name}'s owns line is ${p.owns.length} characters; 48 or fewer.`);
+}
+// The lead stands first.
+const row = [people[lead]!, ...people.filter((_, i) => i !== lead)];
+const [before, phrase, after] = splitHl(headline, hl, where);
+const head = fitType(headline.length, { width: 1500, lines: 2, min: 72, max: 112 });
+const phone = fitType(headline.length, { width: 330, lines: 4, min: 28, max: 44 });
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <div class:list={['st-team', { 'has-hl': !!phrase }]} style={`--count: ${row.length}; --head: ${head}px; --head-phone: ${phone}px`}>
+    <h2 data-fit="2 4" class="display st-team-head rise">
+      <slot name="headline">{before}{phrase && <span class="hl">{phrase}</span>}{after}</slot>
+    </h2>
+    <ul class="st-team-row">
+      {row.map((p, i) => (
+        <li class:list={['st-team-person', { 'is-lead': i === 0 }]}>
+          <div class="st-team-face rise" style={`--d: ${200 + i * 110}ms`}>
+            {p.photo ? <img src={p.photo} alt={p.name} /> : <span class="st-team-mono display" aria-hidden="true">{initials(p.name)}</span>}
+          </div>
+          <p class="st-team-who rise" style={`--d: ${300 + i * 110}ms`}>
+            <b>{p.name}</b>
+            <span class="st-team-role">{p.role}</span>
+            {i === 0 && p.owns && <span class="st-team-owns">{p.owns}</span>}
+          </p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Slide>
+
+<style>
+  .st-team {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    row-gap: var(--gap);
+  }
+
+  .st-team-head {
+    max-width: 1500px;
+    font-size: calc(var(--head) * var(--display-scale));
+  }
+
+  /* One row on a shared baseline: the lead large, the rest smaller. */
+  .st-team-row {
+    align-self: end;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: max-content;
+    grid-template-rows: auto auto;
+    column-gap: 48px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Two rows shared across the row: the faces stand on one baseline, the names hang from it. */
+  .st-team-person {
+    flex: none;
+    width: 292px;
+    display: grid;
+    grid-template-rows: subgrid;
+    grid-row: span 2;
+    row-gap: 22px;
+  }
+
+  .st-team-person.is-lead {
+    width: 404px;
+    margin-right: 40px;
+  }
+
+  .st-team-face {
+    align-self: end;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: calc(var(--radius) * 0.5);
+    background: color-mix(in oklab, currentColor 9%, transparent);
+  }
+
+  .st-team-face img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .st-team-mono {
+    display: grid;
+    place-items: center;
+    height: 100%;
+    font-size: 84px;
+    color: color-mix(in oklab, currentColor 62%, transparent);
+  }
+
+  /* The lead's tile is the slide's one block of accent. */
+  .st-team-person.is-lead .st-team-face { background: var(--accent); }
+  .st-team-person.is-lead .st-team-mono { font-size: 150px; color: var(--on-accent); }
+  .st-team.has-hl .st-team-person.is-lead .st-team-face { background: color-mix(in oklab, currentColor 14%, transparent); }
+  .st-team.has-hl .st-team-person.is-lead .st-team-mono { color: currentColor; }
+  :global(.tone-accent) .st-team-person.is-lead .st-team-face { background: color-mix(in oklab, currentColor 16%, transparent); }
+  :global(.tone-accent) .st-team-person.is-lead .st-team-mono { color: currentColor; }
+
+  .st-team-who {
+    display: grid;
+    gap: 6px;
+    align-content: start;
+    margin: 0;
+  }
+
+  .st-team-who b {
+    font-size: var(--t-body);
+    font-weight: 700;
+    line-height: 1.15;
+  }
+
+  .st-team-role {
+    font-size: var(--t-label);
+    line-height: 1.3;
+    color: color-mix(in oklab, currentColor 68%, transparent);
+  }
+
+  .st-team-person.is-lead .st-team-who b {
+    font-family: var(--font-display);
+    font-weight: var(--display-weight);
+    font-size: calc(52px * var(--display-scale));
+    letter-spacing: -0.02em;
+  }
+
+  .st-team-person.is-lead .st-team-role { font-size: var(--t-body); }
+
+  .st-team-owns {
+    margin-top: 10px;
+    padding-top: 14px;
+    border-top: 1px solid color-mix(in oklab, currentColor 24%, transparent);
+    font-size: var(--t-body);
+    line-height: 1.25;
+  }
+
+  /* Phone: the lead's portrait across the top, the others in a row of small
+     tiles under it, name and role beneath each. */
+  @media (max-width: 799px) {
+    .st-team {
+      grid-template-rows: auto;
+      align-content: start;
+      row-gap: calc(var(--gap) * 1.4);
+    }
+
+    .st-team-head {
+      max-width: none;
+      font-size: calc(var(--head-phone) * var(--display-scale));
+    }
+
+    .st-team-row {
+      align-self: start;
+      display: grid;
+      grid-auto-flow: row;
+      grid-template-columns: repeat(calc(var(--count) - 1), minmax(0, 1fr));
+      grid-template-rows: none;
+      align-items: start;
+      gap: 18px 12px;
+    }
+
+    .st-team-person,
+    .st-team-person.is-lead { width: auto; margin: 0; grid-row: auto; grid-template-rows: none; gap: 8px; }
+
+    .st-team-person.is-lead {
+      grid-column: 1 / -1;
+      grid-template-columns: 112px minmax(0, 1fr);
+      align-items: end;
+      gap: 14px;
+    }
+
+    .st-team-mono { font-size: 26px; }
+    .st-team-person.is-lead .st-team-mono { font-size: 44px; }
+    .st-team-who { gap: 2px; }
+    .st-team-who b { font-size: var(--t-body); }
+    .st-team-person.is-lead .st-team-who b { font-size: calc(24px * var(--display-scale)); }
+    .st-team-owns { margin-top: 6px; padding-top: 8px; }
+  }
+
+  /* PDF and every static render: the photos print, nothing waits on an entrance. */
+  :global(html.is-static) .st-team .rise {
+    opacity: 1;
+    transform: none;
+  }
+</style>

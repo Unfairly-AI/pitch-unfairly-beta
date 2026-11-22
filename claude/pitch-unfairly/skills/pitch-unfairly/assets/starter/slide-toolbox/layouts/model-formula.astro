@@ -1,0 +1,221 @@
+---
+/**
+ * model-formula: the math behind a number, drawn as an equation.
+ *
+ * The headline across the top, then the equation across the slide on one
+ * baseline: each term in the display face with what it is in a quiet label
+ * beneath, the operators drawn as strokes between them, and the result after
+ * the equals sign, half again as large, in the accent. The whole row is
+ * sized to fill the width. The terms enter in reading order and the result
+ * lands last. On a phone the equation runs down the screen, one term a line.
+ */
+import Slide from '../../src/components/Slide.astro';
+import { fitType, splitHl, type SlideBase } from '../lib';
+
+type Op = '×' | '+' | '−' | '÷';
+
+interface Props extends SlideBase {
+  /** What the result means, as a sentence. 14 words or fewer. */
+  headline: string;
+  /** One phrase of the headline, word for word, in the accent. The result then goes to full ink. */
+  hl?: string;
+  /** The inputs, 2 to 4: each as written ("62") and what it is ("Crews"). */
+  terms: { value: string; label: string }[];
+  /** The operators between the terms, each one of × + − ÷. Default all ×. */
+  ops?: Op[];
+  /** The answer as written ("10,600") and what it is. The focal element. */
+  result: { value: string; label: string };
+  /** Where the inputs come from, in one quiet line. */
+  caption?: string;
+}
+
+const { id, label = 'Formula', tone = 'paper', notes, brand, headline, hl, terms, ops, result, caption } = Astro.props;
+const where = `model-formula "${id}"`;
+if (terms.length < 2 || terms.length > 4) throw new Error(`${where}: 2 to 4 terms (got ${terms.length}). Group the rest, or put the working in the notes.`);
+const signs: Op[] = ops ?? terms.slice(1).map(() => '×');
+if (signs.length !== terms.length - 1) throw new Error(`${where}: ${terms.length} terms need ${terms.length - 1} operators (got ${signs.length}).`);
+for (const o of signs) if (!['×', '+', '−', '÷'].includes(o)) throw new Error(`${where}: operator "${o}" isn't one of × + − ÷ (use the true minus sign, −).`);
+for (const t of [...terms, result]) if (t.value.length > 9) throw new Error(`${where}: "${t.value}" is ${t.value.length} characters; write it shorter ("1.2M", "$54").`);
+const [before, phrase, after] = splitHl(headline, hl, where);
+const head = fitType(headline.length, { width: 1400, lines: 2, min: 72, max: 112 });
+// One size for the whole row: terms at S, operators at half, the result at 1.5S.
+const em = (s: string) => [...s].reduce((n, c) => n + (/[.,\s]/.test(c) ? 0.3 : 0.62), 0);
+const row = (terms.reduce((n, t) => n + em(t.value), 0) + terms.length * 0.45 + em(result.value) * 1.5) * 1.08;
+const gaps = terms.length * 2 * 40 + 40;
+const size = Math.max(72, Math.min(230, Math.floor((1648 - gaps) / row)));
+const longest = Math.max(...terms.map((t) => em(t.value)), em(result.value) * 1.3);
+const phone = Math.max(40, Math.min(84, Math.floor(280 / longest)));
+const paths: Record<Op | '=', string> = {
+  '×': 'M8 8L32 32M32 8L8 32',
+  '+': 'M20 4V36M4 20H36',
+  '−': 'M4 20H36',
+  '÷': 'M4 20H36M20 7v.1M20 33v.1',
+  '=': 'M4 13H36M4 27H36',
+};
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <div class:list={['st-eq', { 'has-hl': !!phrase }]} style={`--head: ${head}px; --s: ${size}px; --s-phone: ${phone}px`}>
+    <h2 data-fit="2 4" class="display st-eq-head rise">
+      <slot name="headline">{before}{phrase && <span class="hl">{phrase}</span>}{after}</slot>
+    </h2>
+    <div class="st-eq-row" role="group" aria-label={`${terms.map((t, i) => `${i ? `${signs[i - 1]} ` : ''}${t.value} ${t.label}`).join(' ')} = ${result.value} ${result.label}`}>
+      {terms.map((t, i) => (
+        <>
+          {i > 0 && (
+            <svg class="st-eq-op pop" style={`--d: ${200 + i * 160}ms`} viewBox="0 0 40 40" aria-hidden="true"><path d={paths[signs[i - 1]!]} /></svg>
+          )}
+          <div class="st-eq-term rise" style={`--d: ${120 + i * 160}ms`} aria-hidden="true">
+            <span class="st-eq-v display">{t.value}</span>
+            <span class="st-eq-l">{t.label}</span>
+          </div>
+        </>
+      ))}
+      <svg class="st-eq-op is-eq pop" style={`--d: ${200 + terms.length * 160}ms`} viewBox="0 0 40 40" aria-hidden="true"><path d={paths['=']} /></svg>
+      <div class="st-eq-term is-result" aria-hidden="true">
+        <span class="st-eq-v display pop" style={`--d: ${360 + terms.length * 160}ms`}>{result.value}</span>
+        <span class="st-eq-l rise" style={`--d: ${460 + terms.length * 160}ms`}>{result.label}</span>
+      </div>
+    </div>
+    {caption && <p class="st-eq-cap rise" style="--d: 700ms">{caption}</p>}
+  </div>
+</Slide>
+
+<style>
+  .st-eq {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+  }
+
+  .st-eq-head {
+    max-width: 1400px;
+    font-size: calc(var(--head) * var(--display-scale));
+  }
+
+  /* The equation: one baseline across the slide, sized to fill it. */
+  .st-eq-row {
+    align-self: center;
+    display: flex;
+    align-items: flex-start;
+    gap: 0 40px;
+  }
+
+  .st-eq-term {
+    display: grid;
+    justify-items: start;
+    gap: 22px;
+  }
+
+  .st-eq-v {
+    font-size: calc(var(--s) * var(--display-scale));
+    line-height: 0.82;
+    letter-spacing: -0.04em;
+    white-space: nowrap;
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+
+  /* A label never widens its term: it wraps to the value's width, with a floor. */
+  .st-eq-l {
+    width: 0;
+    min-width: max(100%, 200px);
+    padding-top: 18px;
+    border-top: 2px solid color-mix(in oklab, currentColor 22%, transparent);
+    font-family: var(--font-mono);
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: var(--label-case, uppercase);
+    line-height: 1.25;
+    color: color-mix(in oklab, currentColor 64%, transparent);
+  }
+
+  .st-eq-op {
+    flex: none;
+    width: calc(var(--s) * var(--display-scale) * 0.42);
+    margin-top: calc(var(--s) * var(--display-scale) * 0.2);
+    fill: none;
+    stroke: color-mix(in oklab, currentColor 42%, transparent);
+    stroke-width: 4.5;
+    stroke-linecap: round;
+  }
+
+  /* The focal element: the result, half again as large, in the accent. */
+  .is-result .st-eq-v {
+    font-size: calc(var(--s) * var(--display-scale) * 1.5);
+    margin-top: calc(var(--s) * var(--display-scale) * -0.5);
+    color: var(--hl-color);
+  }
+
+  .is-result .st-eq-l {
+    color: currentColor;
+    border-top-color: currentColor;
+  }
+
+  .st-eq.has-hl .is-result .st-eq-v { color: currentColor; }
+  :global(.tone-accent) .is-result .st-eq-v { color: var(--on-accent); }
+
+  .st-eq-cap {
+    font-size: var(--t-label);
+    color: color-mix(in oklab, currentColor 66%, transparent);
+  }
+
+  /* Phone: the equation runs down the screen, one term a line with its
+     operator before it, and the result under a rule at the foot. */
+  @media (max-width: 799px) {
+    .st-eq {
+      grid-template-rows: auto auto auto;
+      align-content: start;
+      row-gap: calc(var(--gap) * 1.4);
+    }
+
+    .st-eq-head { max-width: none; font-size: var(--t-display); }
+
+    .st-eq-row {
+      align-self: start;
+      display: grid;
+      grid-template-columns: 30px minmax(0, 1fr);
+      gap: 14px 14px;
+    }
+
+    .st-eq-term {
+      grid-column: 2;
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    .st-eq-op {
+      grid-column: 1;
+      width: 22px;
+      margin: 0;
+      align-self: center;
+      stroke-width: 5;
+    }
+
+    .st-eq-op + .st-eq-term { margin-top: 0; }
+    .st-eq-v { font-size: calc(var(--s-phone) * var(--display-scale)); }
+
+    .st-eq-l {
+      width: auto;
+      min-width: 0;
+      padding-top: 0;
+      border-top: 0;
+    }
+
+    .is-result .st-eq-v {
+      margin-top: 0;
+      font-size: calc(var(--s-phone) * var(--display-scale) * 1.3);
+    }
+
+    .is-result { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  }
+
+  /* PDF and every static render: the whole equation, nothing waits on an entrance. */
+  :global(html.is-static) .st-eq .rise,
+  :global(html.is-static) .st-eq .pop {
+    opacity: 1;
+    transform: none;
+  }
+</style>

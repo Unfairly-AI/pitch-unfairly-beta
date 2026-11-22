@@ -1,0 +1,204 @@
+---
+/**
+ * before-after-split: the old way and the new, side by side, the new one winning.
+ *
+ * The headline across the top says what changes. Below it the old way sits on
+ * the left as a quiet list, every line struck through in muted ink; an arrow
+ * draws across to the new way on the right, the slide's one card, raised with
+ * the focal shadow, each line checked and set larger. The old way is faded so
+ * the eye lands on the new one; both keep their words whole so the comparison
+ * still reads line by line.
+ */
+import Slide from '../../src/components/Slide.astro';
+import { fitType, splitHl, type SlideBase } from '../lib';
+
+interface Props extends SlideBase {
+  /** What changes, one whole sentence, 12 words or fewer. */
+  headline: string;
+  /** One phrase of the headline, word for word, in the accent. Then the card's label goes quiet. */
+  hl?: string;
+  /** The old way: a short label ("Today", 24 characters or fewer) and two to four lines of 48 characters or fewer. */
+  before: { label: string; items: string[] };
+  /** The new way: a short label and two to four lines of 48 characters or fewer, in the same order as the old. */
+  after: { label: string; items: string[] };
+}
+
+const { id, label = 'Before and after', tone = 'paper', notes, brand, headline, hl, before, after } = Astro.props;
+const where = `before-after-split "${id}"`;
+for (const [side, s] of [['before', before], ['after', after]] as const) {
+  if (!s?.label || !s.items?.length) throw new Error(`${where}: ${side} needs a label and its lines.`);
+  if (s.label.length > 24) throw new Error(`${where}: ${side}.label "${s.label}" is ${s.label.length} characters; a label is 24 or fewer ("Today", "With Northline").`);
+  if (s.items.length < 2 || s.items.length > 4) throw new Error(`${where}: ${side} has ${s.items.length} lines; two to four. Put the rest in the notes.`);
+  for (const line of s.items) if (line.length > 48) throw new Error(`${where}: ${side} line "${line}" is ${line.length} characters; 48 or fewer, so it holds one line. Cut it to the action.`);
+}
+const [pre, phrase, post] = splitHl(headline, hl, where);
+const head = fitType(headline.length, { width: 1500, lines: 2, min: 76, max: 116 });
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <div class:list={['st-ba', { 'has-hl': !!phrase }]} style={`--head: ${head}px`}>
+    <h2 data-fit="2 4" class="display st-ba-head rise">
+      <slot name="headline">{pre}{phrase && <span class="hl">{phrase}</span>}{post}</slot>
+    </h2>
+    <div class="st-ba-old rise" style="--d: 160ms">
+      <p class="st-ba-label">{before.label}</p>
+      <ul>
+        {before.items.map((line) => <li><s>{line}</s></li>)}
+      </ul>
+    </div>
+    <svg class="st-ba-arrow" viewBox="0 0 120 40" aria-hidden="true">
+      <path class="draw" style="--d: 360ms" pathLength="1" d="M4 20 H112 M96 6 L114 20 L96 34" />
+    </svg>
+    <div class="st-ba-new card pop" style="--d: 480ms; --r: -1deg">
+      <p class="st-ba-label">{after.label}</p>
+      <ul>
+        {after.items.map((line) => (
+          <li>
+            <svg class="st-ba-check" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5 L9.5 18 L20 6.5" /></svg>
+            <span>{line}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</Slide>
+
+<style>
+  .st-ba {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 0.82fr) 132px minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+    align-items: center;
+    column-gap: calc(var(--gap) * 0.5);
+  }
+
+  .st-ba-head {
+    grid-column: 1 / -1;
+    align-self: start;
+    max-width: 1500px;
+    font-size: calc(var(--head) * var(--display-scale));
+  }
+
+  .st-ba-head .hl { white-space: nowrap; }
+
+  .st-ba-label {
+    font-family: var(--font-mono);
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: var(--caps-tracking, 0.12em);
+    text-transform: var(--label-case, uppercase);
+  }
+
+  /* The old way: quiet, struck through, no box. */
+  .st-ba-old .st-ba-label { color: color-mix(in oklab, currentColor 66%, transparent); }
+
+  .st-ba-old ul {
+    display: grid;
+    gap: 22px;
+    margin-top: 30px;
+  }
+
+  .st-ba-old li {
+    font-size: var(--t-body);
+    line-height: 1.25;
+    color: color-mix(in oklab, currentColor 68%, transparent);
+  }
+
+  .st-ba-old s {
+    text-decoration-thickness: 2px;
+    text-decoration-color: color-mix(in oklab, currentColor 80%, transparent);
+  }
+
+  .st-ba-arrow {
+    width: 100%;
+    fill: none;
+    stroke: color-mix(in oklab, currentColor 55%, transparent);
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* The focal element: the new way, the slide's one card. */
+  .st-ba-new {
+    padding: calc(var(--gap) * 0.95) calc(var(--gap) * 1.05);
+    box-shadow: var(--shadow-focal, var(--shadow-card));
+    transform: rotate(calc(-1deg * var(--tilt)));
+  }
+
+  .st-ba-new .st-ba-label { color: var(--accent-text, var(--accent)); }
+  .st-ba.has-hl .st-ba-new .st-ba-label { color: color-mix(in oklab, currentColor 66%, transparent); }
+
+  .st-ba-new ul {
+    display: grid;
+    gap: 22px;
+    margin-top: 30px;
+  }
+
+  .st-ba-new li {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 18px;
+    align-items: start;
+    font-size: var(--t-lede);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  .st-ba-check {
+    width: 40px;
+    height: 40px;
+    fill: none;
+    stroke: var(--accent-text, var(--accent));
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .st-ba.has-hl .st-ba-check { stroke: currentColor; }
+
+  /* Phone: one column, old above new, the arrow turned to point down. */
+  @media (max-width: 799px) {
+    .st-ba {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto;
+      align-content: start;
+      row-gap: calc(var(--gap) * 1.1);
+    }
+
+    .st-ba-head {
+      max-width: none;
+      font-size: var(--t-display);
+    }
+
+    .st-ba-old ul,
+    .st-ba-new ul { gap: 10px; margin-top: 12px; }
+    .st-ba-old li { font-size: var(--t-body); }
+
+    .st-ba-arrow {
+      width: 44px;
+      margin: -6px 0;
+      transform: rotate(90deg);
+    }
+
+    .st-ba-new { padding: 20px 18px; }
+
+    .st-ba-new li {
+      grid-template-columns: 22px minmax(0, 1fr);
+      gap: 10px;
+      font-size: var(--t-lede);
+    }
+
+    .st-ba-check { width: 22px; height: 22px; }
+  }
+
+  /* PDF and every static render: the arrow is drawn, the card is in place. */
+  :global(html.is-static) .st-ba .rise {
+    opacity: 1;
+    transform: none;
+  }
+
+  :global(html.is-static) .st-ba .pop { opacity: 1; }
+</style>

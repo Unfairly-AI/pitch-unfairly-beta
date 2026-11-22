@@ -1,0 +1,227 @@
+---
+/**
+ * proof-case-metric: a named customer and the one result that proves it worked.
+ *
+ * The left column carries the customer's story as the headline, then the
+ * result at poster size in the accent with what it measures, and up to two
+ * quiet facts on hairlines under it. The right of the slide is the customer:
+ * a photo of their people or place bleeding off the top, right and bottom,
+ * with their logo tagged in its corner, or without a photo a quiet field with
+ * their logo or name set large. On a phone the panel becomes a band across
+ * the top and the result keeps the largest size the width allows.
+ */
+import Slide from '../../src/components/Slide.astro';
+import { figureEm, fitType, splitHl, type SlideBase } from '../lib';
+
+interface Props extends SlideBase {
+  /** What changed for the customer, as a sentence. 14 words or fewer. */
+  headline: string;
+  /** One phrase of the headline, word for word, in the accent. The metric then goes to full ink. */
+  hl?: string;
+  /** The customer's name, as they write it. */
+  customer: string;
+  /** Their logo URL. Without it, their name in the display face. */
+  logo?: string;
+  /** A photo URL for the panel: their crew, their site. Without it, a quiet field with the logo or name. */
+  photo?: string;
+  /** The result as written ("−78%") and what it measures. The focal element. */
+  metric: { value: string; label: string };
+  /** Up to two quiet facts under the metric: how long it took, how many. */
+  supports?: { value: string; label: string }[];
+}
+
+const { id, label = 'Customer result', tone = 'paper', notes, brand, headline, hl, customer, logo, photo, metric, supports = [] } = Astro.props;
+const where = `proof-case-metric "${id}"`;
+if (supports.length > 2) throw new Error(`${where}: two supports at most (got ${supports.length}); the rest go in the notes.`);
+if (metric.value.length > 8) throw new Error(`${where}: metric "${metric.value}" is ${metric.value.length} characters; a result reads at a glance at 8 or fewer ("−78%", "3.2x").`);
+const [before, phrase, after] = splitHl(headline, hl, where);
+const head = fitType(headline.length, { width: 900, lines: 3, min: 64, max: 96 });
+const em = figureEm(metric.value);
+const fig = Math.max(160, Math.min(330, Math.floor(880 / em)));
+const figPhone = Math.max(72, Math.min(150, Math.floor(330 / em)));
+const nameSize = fitType(customer.length, { width: 480, lines: 2, min: 48, max: 96 });
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <div class:list={['st-case', { 'has-hl': !!phrase, 'has-photo': !!photo }]} style={`--head: ${head}px; --fig: ${fig}px; --fig-phone: ${figPhone}px; --name: ${nameSize}px`}>
+    <div class="st-case-copy">
+      <h2 data-fit="3 4" class="display st-case-head rise">
+        <slot name="headline">{before}{phrase && <span class="hl">{phrase}</span>}{after}</slot>
+      </h2>
+      <figure class="st-case-metric">
+        <p class="st-case-n display pop" style="--d: 260ms">{metric.value}</p>
+        <figcaption class="st-case-what rise" style="--d: 420ms">{metric.label}</figcaption>
+      </figure>
+      {supports.length > 0 && (
+        <dl class="st-case-ledger">
+          {supports.map((s, i) => (
+            <div class="rise" style={`--d: ${520 + i * 80}ms`}>
+              <dt>{s.label}</dt>
+              <dd>{s.value}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
+    </div>
+    <div class="st-case-panel rise" style="--d: 80ms">
+      {photo && <img class="st-case-photo" src={photo} alt={customer} />}
+      {photo ? (
+        logo && <img class="st-case-tag" src={logo} alt="" />
+      ) : logo ? (
+        <img class="st-case-logo" src={logo} alt={customer} />
+      ) : (
+        <span class="st-case-name display">{customer}</span>
+      )}
+    </div>
+  </div>
+</Slide>
+
+<style>
+  .st-case {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 600px;
+    column-gap: calc(var(--gap) * 1.6);
+  }
+
+  .st-case-copy {
+    align-self: center;
+    display: grid;
+    gap: calc(var(--gap) * 0.9);
+  }
+
+  .st-case-head {
+    max-width: 900px;
+    font-size: calc(var(--head) * var(--display-scale));
+  }
+
+  /* The focal element: the result at poster size, in the slide's one accent. */
+  .st-case-n {
+    font-size: calc(var(--fig) * var(--display-scale));
+    line-height: 0.8;
+    letter-spacing: -0.045em;
+    white-space: nowrap;
+    font-variant-numeric: lining-nums tabular-nums;
+    color: var(--hl-color);
+    margin-left: -0.03em;
+  }
+
+  .st-case.has-hl .st-case-n { color: currentColor; }
+  :global(.tone-accent) .st-case-n { color: var(--on-accent); }
+
+  .st-case-what {
+    margin-top: calc(var(--gap) * 0.45);
+    font-family: var(--font-mono);
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: var(--caps-tracking, 0.12em);
+    text-transform: var(--label-case, uppercase);
+    color: color-mix(in oklab, currentColor 66%, transparent);
+  }
+
+  .st-case-ledger {
+    display: flex;
+    gap: calc(var(--gap) * 1.2);
+    margin: 0;
+    max-width: 900px;
+  }
+
+  .st-case-ledger div {
+    flex: 1;
+    padding-top: 18px;
+    border-top: 1px solid color-mix(in oklab, currentColor 22%, transparent);
+  }
+
+  .st-case-ledger dt {
+    font-size: var(--t-label);
+    color: color-mix(in oklab, currentColor 70%, transparent);
+  }
+
+  .st-case-ledger dd {
+    margin: 6px 0 0;
+    font-family: var(--font-display);
+    font-weight: var(--display-weight);
+    font-size: var(--t-lede);
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* The customer's panel bleeds off the top, right and bottom of the slide. */
+  .st-case-panel {
+    position: relative;
+    margin: calc(var(--pad-y) * -1) calc(var(--pad-x) * -1) calc(var(--pad-y) * -1) 0;
+    display: grid;
+    place-items: center;
+    padding: var(--pad-y) calc(var(--pad-x) * 0.6);
+    overflow: hidden;
+    background: color-mix(in oklab, currentColor 7%, transparent);
+  }
+
+  .st-case-photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .st-case-tag {
+    position: absolute;
+    left: 40px;
+    bottom: 40px;
+    max-width: 200px;
+    max-height: 64px;
+    padding: 14px 18px;
+    background: var(--paper);
+    border-radius: min(var(--radius), 10px);
+    object-fit: contain;
+  }
+
+  .st-case-logo {
+    max-width: 420px;
+    max-height: 200px;
+    object-fit: contain;
+  }
+
+  .st-case-name {
+    max-width: 480px;
+    font-size: calc(var(--name) * var(--display-scale));
+    line-height: 0.98;
+    text-align: center;
+    color: color-mix(in oklab, currentColor 82%, transparent);
+  }
+
+  /* Phone: the panel is a band across the top, then the story and the result. */
+  @media (max-width: 799px) {
+    .st-case {
+      grid-template-columns: minmax(0, 1fr);
+      align-content: start;
+      row-gap: calc(var(--gap) * 1.3);
+    }
+
+    .st-case-panel {
+      order: -1;
+      min-height: 150px;
+      margin: calc(var(--pad-y) * -1) calc(var(--pad-x) * -1) 0;
+      padding: 24px var(--pad-x);
+    }
+
+    .st-case-name { font-size: calc(min(var(--name), 64px) * var(--display-scale) * 0.6); }
+    .st-case-logo { max-width: 200px; max-height: 80px; }
+    .st-case-tag { left: 16px; bottom: 16px; max-height: 40px; padding: 8px 10px; }
+    .st-case-copy { align-self: start; gap: calc(var(--gap) * 1.1); }
+    .st-case-head { max-width: none; font-size: var(--t-display); }
+    .st-case-n { font-size: calc(var(--fig-phone) * var(--display-scale)); }
+    .st-case-what { margin-top: 10px; }
+    .st-case-ledger { gap: 16px; }
+    .st-case-ledger div { padding-top: 10px; }
+  }
+
+  /* PDF and every static render: the photo prints, nothing waits on an entrance. */
+  :global(html.is-static) .st-case .rise,
+  :global(html.is-static) .st-case .pop {
+    opacity: 1;
+    transform: none;
+  }
+</style>

@@ -1,0 +1,218 @@
+---
+/**
+ * roadmap-timeline: the plan as phases on a time axis, one of them the point.
+ *
+ * The headline says when the outcome lands. Below it the periods run left to
+ * right between hairlines, and each phase is a bar on its own row, so the plan
+ * steps down and to the right as a staircase. One phase (by default the last,
+ * the outcome) is the focal element: a heavy bar in the accent with its name
+ * in the display face. The others are thin muted bars with quiet names, and
+ * the period labels sit along the foot. Bars draw in left to right as the
+ * slide enters.
+ */
+import Slide from '../../src/components/Slide.astro';
+import { fitType, splitHl, type SlideBase } from '../lib';
+
+interface Props extends SlideBase {
+  /** The plan's point as a whole sentence: what lands, and when. 12 words or fewer. */
+  headline: string;
+  /** One phrase of the headline, word for word, in the accent. The focal phase then keeps its weight but goes to ink. */
+  hl?: string;
+  /** The axis, left to right: 2 to 6 short period labels ("Dec", "Week 2", "Q3"), 12 characters or fewer each. */
+  periods: string[];
+  /** 2 to 5 phases in order, each a name of 40 characters or fewer and its first and last period by label (to defaults to from). */
+  phases: { name: string; from: string; to?: string }[];
+  /** Index of the phase that carries the point, usually the outcome. Default: the last. */
+  focus?: number;
+}
+
+const { id, label = 'Roadmap', tone = 'paper', notes, brand, headline, hl, periods, phases, focus = phases.length - 1 } = Astro.props;
+const where = `roadmap-timeline "${id}"`;
+if (periods.length < 2 || periods.length > 6) throw new Error(`${where}: 2 to 6 periods (got ${periods.length}); group a longer plan into quarters or months.`);
+for (const p of periods) if (p.length > 12) throw new Error(`${where}: period "${p}" is over 12 characters; shorten it ("Dec", "Week 2", "Q3").`);
+if (phases.length < 2 || phases.length > 5) throw new Error(`${where}: 2 to 5 phases (got ${phases.length}); merge the small ones and put the detail in the notes.`);
+if (focus < 0 || focus >= phases.length) throw new Error(`${where}: focus ${focus} isn't a phase; use 0 to ${phases.length - 1}.`);
+const n = periods.length;
+const rows = phases.map((p, i) => {
+  if (p.name.length > 40) throw new Error(`${where}: phase "${p.name}" is ${p.name.length} characters; 40 or fewer.`);
+  const a = periods.indexOf(p.from);
+  const b = periods.indexOf(p.to ?? p.from);
+  if (a < 0) throw new Error(`${where}: phase "${p.name}" starts in "${p.from}", which isn't one of the periods (${periods.join(', ')}).`);
+  if (b < 0) throw new Error(`${where}: phase "${p.name}" ends in "${p.to}", which isn't one of the periods (${periods.join(', ')}).`);
+  if (b < a) throw new Error(`${where}: phase "${p.name}" ends before it starts; swap from and to.`);
+  // The name runs out toward the open side of its row: right from a bar in the first half, left to a bar's end in the second.
+  const right = a + 1 > n / 2 && b === n - 1;
+  return { ...p, bar: `${a + 1} / ${b + 2}`, label: right ? `1 / ${b + 2}` : `${a + 1} / -1`, right, focus: i === focus };
+});
+const [before, phrase, after] = splitHl(headline, hl, where);
+const head = fitType(headline.length, { width: 1500, lines: 2, min: 72, max: 112 });
+const phone = fitType(headline.length, { width: 330, lines: 4, min: 28, max: 44 });
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <div class:list={['st-road', { 'has-hl': !!phrase }]} style={`--n: ${n}; --rows: ${phases.length}; --head: ${head}px; --head-phone: ${phone}px`}>
+    <h2 data-fit="2 4" class="display st-road-head rise">
+      <slot name="headline">{before}{phrase && <span class="hl">{phrase}</span>}{after}</slot>
+    </h2>
+    <div class="st-road-chart">
+      {periods.map((_, i) => <span class:list={['st-road-col', { 'is-last': i === n - 1 }]} aria-hidden="true" style={`grid-column: ${i + 1}`}></span>)}
+      <ol class="st-road-phases">
+        {rows.map((r, i) => (
+          <li class:list={['st-road-phase', { 'is-focus': r.focus, 'is-right': r.right }]} style={`grid-row: ${i + 1}`}>
+            <span class="st-road-bar" style={`grid-column: ${r.bar}; --d: ${260 + i * 140}ms`}></span>
+            <span class="st-road-name rise" style={`grid-column: ${r.label}; --d: ${360 + i * 140}ms`}>{r.name}</span>
+          </li>
+        ))}
+      </ol>
+      {periods.map((p, i) => <span class="st-road-period rise" style={`grid-column: ${i + 1}; --d: 180ms`}>{p}</span>)}
+    </div>
+  </div>
+</Slide>
+
+<style>
+  .st-road {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    row-gap: calc(var(--gap) * 1.2);
+  }
+
+  .st-road-head {
+    max-width: 1500px;
+    font-size: calc(var(--head) * var(--display-scale));
+  }
+
+  /* The axis: equal periods between hairlines; the phases on their own rows, the labels along the foot. */
+  .st-road-chart {
+    min-height: 0;
+    display: grid;
+    grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+    grid-template-rows: 1fr auto;
+  }
+
+  .st-road-col {
+    grid-row: 1;
+    border-left: 1px solid color-mix(in oklab, currentColor 18%, transparent);
+  }
+
+  .st-road-col.is-last { border-right: 1px solid color-mix(in oklab, currentColor 18%, transparent); }
+
+  .st-road-phases {
+    grid-row: 1;
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-template-rows: repeat(var(--rows), minmax(0, 1fr));
+    margin: 0;
+    padding: 8px 0;
+    list-style: none;
+  }
+
+  .st-road-phase {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-template-rows: auto auto;
+    align-content: center;
+  }
+
+  /* Quiet phases: a thin muted bar and a plain name under it. */
+  .st-road-bar {
+    grid-row: 1;
+    height: 6px;
+    margin: 0 4px 0 1px;
+    border-radius: 3px;
+    background: color-mix(in oklab, currentColor 36%, transparent);
+    transform-origin: left center;
+  }
+
+  .st-road-name {
+    grid-row: 2;
+    justify-self: start;
+    max-width: 100%;
+    padding: 14px 0 0 18px;
+    font-size: var(--t-body);
+    line-height: 1.2;
+    color: color-mix(in oklab, currentColor 74%, transparent);
+  }
+
+  .st-road-phase.is-right .st-road-name {
+    justify-self: end;
+    padding: 14px 22px 0 0;
+    text-align: right;
+  }
+
+  /* The focal phase: a heavy bar in the accent, its name in the display face. */
+  .st-road-phase.is-focus .st-road-bar {
+    height: 22px;
+    border-radius: 11px;
+    background: var(--hl-color);
+  }
+
+  .st-road-phase.is-focus .st-road-name {
+    padding-top: 18px;
+    font-family: var(--font-display);
+    font-weight: var(--display-weight);
+    font-size: calc(54px * var(--display-scale));
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    color: var(--headline-color);
+  }
+
+  /* An accent phrase in the headline takes the accent; the focal bar keeps its weight in ink. */
+  .st-road.has-hl .st-road-phase.is-focus .st-road-bar { background: currentColor; }
+  :global(.tone-accent) .st-road-phase.is-focus .st-road-bar { background: var(--on-accent); }
+  :global(.tone-accent) .st-road-phase.is-focus .st-road-name { color: var(--on-accent); }
+
+  .st-road-period {
+    grid-row: 2;
+    padding: 20px 0 0 18px;
+    font-family: var(--font-mono);
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: var(--caps-tracking, 0.12em);
+    text-transform: var(--label-case, uppercase);
+    color: color-mix(in oklab, currentColor 66%, transparent);
+  }
+
+  /* The showpiece: each bar draws in from its start, in plan order. */
+  :global(.is-active) .st-road-bar { animation: st-road-draw 720ms var(--ease) var(--d, 0ms) both; }
+
+  @keyframes st-road-draw {
+    from { transform: scaleX(0); }
+    to { transform: none; }
+  }
+
+  /* Phone: the same staircase across the phone's width; the names wrap
+     inside their side of the row and the labels shrink to the type scale. */
+  @media (max-width: 799px) {
+    .st-road {
+      grid-template-rows: auto;
+      align-content: start;
+      row-gap: calc(var(--gap) * 1.6);
+    }
+
+    .st-road-head {
+      max-width: none;
+      font-size: calc(var(--head-phone) * var(--display-scale));
+    }
+
+    .st-road-chart { grid-template-rows: auto auto; }
+    .st-road-phases { grid-template-rows: auto; row-gap: 22px; padding: 6px 0; }
+    .st-road-bar { height: 4px; margin: 0 2px 0 1px; }
+    .st-road-name { padding: 8px 0 0 8px; font-size: var(--t-body); }
+    .st-road-phase.is-right .st-road-name { padding: 8px 8px 0 0; }
+    .st-road-phase.is-focus .st-road-bar { height: 12px; }
+    .st-road-phase.is-focus .st-road-name { padding-top: 10px; font-size: calc(24px * var(--display-scale)); }
+    .st-road-period { padding: 12px 0 0 8px; font-size: var(--t-label); letter-spacing: 0.06em; }
+  }
+
+  /* PDF and every static render: every bar drawn, nothing waits on an entrance. */
+  :global(html.is-static) .st-road .rise,
+  :global(html.is-static) .st-road .st-road-bar {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+</style>

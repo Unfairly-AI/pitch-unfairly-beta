@@ -86,7 +86,7 @@ browserTest('DOM order must match reading order: a later block above an earlier 
 browserTest('the words a slide shows are counted only when they are painted and visible', async () => {
   const page = await browser.newPage();
   try {
-    await page.setContent(`<section class="slide" id="slide-a"><h2>Shown</h2><p style="opacity:0">faded</p><p hidden>gone</p><span aria-hidden="true">decor</span></section>`);
+    await page.setContent(`<section class="slide" id="slide-a"><h2>Shown</h2><p style="opacity:0">faded</p><p hidden>gone</p><span aria-hidden="true">decor</span><button data-screen-only>Skip</button><span data-screen-only>0</span></section>`);
     assert.deepEqual(await page.evaluate(visibleWords), { 'slide-a': ['Shown'] });
   } finally {
     await page.close();

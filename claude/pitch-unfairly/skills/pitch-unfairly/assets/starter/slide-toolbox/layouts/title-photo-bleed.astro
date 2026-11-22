@@ -1,0 +1,184 @@
+---
+/**
+ * title-photo-bleed: the cover as a photograph, with the promise set on it.
+ *
+ * The brand's photograph fills the slide edge to edge. A scrim in the slide's
+ * own background rises from the lower left, just far enough for the promise to
+ * read; the rest of the photo stays as shot. The mark sits top left, the
+ * promise low in the left two thirds at the largest size that fits three
+ * lines, and up to three facts run along the foot. For a brand that leads with
+ * photography: people, places, the work being done.
+ */
+import Slide from '../../src/components/Slide.astro';
+import BrandMark from '../../src/components/BrandMark.astro';
+import { fitType, markOn, splitHl, type SlideBase } from '../lib';
+
+interface Props extends SlideBase {
+  /** The promise: one whole sentence, 12 words or fewer. */
+  headline: string;
+  /** One phrase of the headline, word for word, to set in the accent. Most covers have none. */
+  hl?: string;
+  /** The photograph's URL (import it, or a path under public/). The brand's own, or a labelled placeholder. */
+  photo: string;
+  /** What the photograph shows, for assistive tech. */
+  alt: string;
+  /** The point of the photo to keep in frame when it's cropped, as CSS object-position: "60% 40%". Default "50% 50%". */
+  focus?: string;
+  /** Up to three facts along the foot, each a short label and its value. */
+  meta?: { label: string; value: string }[];
+  /** Show the brand's mark at the top. Default true. */
+  mark?: boolean;
+}
+
+const { id, label = 'Cover', tone = 'ink', notes, brand, headline, hl, photo, alt, focus = '50% 50%', meta = [], mark = true } = Astro.props;
+const where = `title-photo-bleed "${id}"`;
+if (!['ink', 'paper', 'warm', 'accent'].includes(tone)) throw new Error(`${where}: tone "${tone}" has no scrim; use ink (light type on the photo), paper or warm (dark type), or accent.`);
+if (!photo) throw new Error(`${where}: photo is required. Without a photograph, use title-statement.`);
+if (meta.length > 3) throw new Error(`${where}: three meta facts at most (got ${meta.length}); the rest go in the notes.`);
+if (headline.split(/\s+/).length > 14) throw new Error(`${where}: the promise is ${headline.split(/\s+/).length} words; a cover on a photo holds 12 or fewer. Cut it.`);
+const [before, phrase, after] = splitHl(headline, hl, where);
+// Three lines across the left 1180px of the stage, four across a 330px phone.
+const stage = fitType(headline.length, { width: 1180, lines: 3, min: 96, max: 156 });
+const phone = fitType(headline.length, { width: 330, lines: 4, min: 30, max: 52 });
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand} bare>
+  <div class="st-photo" style={`--fit: ${stage}px; --fit-phone: ${phone}px`}>
+    <img class="st-photo-img" src={photo} alt={alt} style={`object-position: ${focus}`} />
+    {mark && <div class="st-photo-mark rise"><BrandMark on={markOn(tone)} brand={brand} /></div>}
+    <h1 data-fit="3 4" class="display st-photo-line rise" style="--d: 120ms">
+      <slot name="headline">{before}{phrase && <span class="hl">{phrase}</span>}{after}</slot>
+    </h1>
+    {meta.length > 0 && (
+      <dl class="st-photo-meta rise" style="--d: 280ms">
+        {meta.map((m) => (
+          <div>
+            <dt>{m.label}</dt>
+            <dd>{m.value}</dd>
+          </div>
+        ))}
+      </dl>
+    )}
+  </div>
+</Slide>
+
+<style>
+  .st-photo {
+    --scrim: var(--night);
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-rows: auto 1fr auto auto;
+  }
+
+  /* On a photograph the promise is full strength: a brand that mutes its headlines (emphasis: contrast) would fade into the picture. */
+  .st-photo-line { --headline-color: currentColor; }
+
+  :global(.tone-paper) .st-photo { --scrim: var(--paper); }
+  :global(.tone-warm) .st-photo { --scrim: var(--surface); }
+  :global(.tone-accent) .st-photo { --scrim: var(--accent); }
+
+  /* The photograph is the slide: edge to edge, behind everything. */
+  .st-photo-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+  }
+
+  /* The scrim: the slide's own background, strongest under the promise and
+     gone by the upper right, so the photo reads as a photo. Tried on real
+     photos (a bright lime office, a grey meeting room): the promise needs at
+     least half strength behind it, wherever its lines land. */
+  .st-photo::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      linear-gradient(to top, color-mix(in oklab, var(--scrim) 84%, transparent) 0%, color-mix(in oklab, var(--scrim) 50%, transparent) 52%, transparent 78%),
+      linear-gradient(to right, color-mix(in oklab, var(--scrim) 62%, transparent) 0%, color-mix(in oklab, var(--scrim) 30%, transparent) 46%, transparent 66%);
+  }
+
+  .st-photo > :not(img) {
+    position: relative;
+    z-index: 2;
+  }
+
+  .st-photo-mark { grid-row: 1; }
+
+  .st-photo-line {
+    grid-row: 3;
+    max-width: 1180px;
+    font-size: calc(var(--fit) * var(--display-scale));
+    line-height: min(var(--display-line), 0.98);
+  }
+
+
+  /* The foot: a hairline, then the facts, label over value. */
+  .st-photo-meta {
+    grid-row: 4;
+    margin: calc(var(--gap) * 1.2) 0 0;
+    padding-top: calc(var(--gap) * 0.5);
+    border-top: 1px solid color-mix(in oklab, currentColor 34%, transparent);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--gap);
+    max-width: 1180px;
+  }
+
+  .st-photo-meta dt {
+    font-family: var(--font-mono);
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: var(--caps-tracking, 0.12em);
+    text-transform: var(--label-case, uppercase);
+    color: color-mix(in oklab, currentColor 78%, transparent);
+  }
+
+  .st-photo-meta dd {
+    margin: 0.3em 0 0;
+    font-size: var(--t-body);
+    font-weight: 600;
+  }
+
+  /* Light type on a photo needs a touch more room (craft rule 21). */
+  :global(.tone-ink) .st-photo-line { letter-spacing: calc(var(--display-tracking) * 0.85); }
+
+  /* Phone: the photo still fills the screen; the scrim climbs higher so the
+     promise, at the largest size that fits four lines, reads at the foot. */
+  @media (max-width: 799px) {
+    .st-photo::before {
+      background: linear-gradient(to top, color-mix(in oklab, var(--scrim) 86%, transparent) 0%, color-mix(in oklab, var(--scrim) 58%, transparent) 46%, transparent 78%);
+    }
+
+    .st-photo-line {
+      max-width: none;
+      font-size: calc(var(--fit-phone) * var(--display-scale));
+    }
+
+    .st-photo-meta {
+      margin-top: calc(var(--gap) * 1.4);
+      grid-template-columns: minmax(0, 1fr);
+      gap: 8px;
+      padding-top: 12px;
+    }
+
+    .st-photo-meta div {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 16px;
+    }
+
+    .st-photo-meta dd { margin: 0; text-align: right; }
+  }
+
+  /* PDF and every static render: the photo prints, nothing waits on an entrance. */
+  :global(html.is-static) .st-photo .rise {
+    opacity: 1;
+    transform: none;
+  }
+</style>

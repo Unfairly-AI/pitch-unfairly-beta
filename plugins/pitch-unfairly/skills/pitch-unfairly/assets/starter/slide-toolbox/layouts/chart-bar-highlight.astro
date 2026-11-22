@@ -1,0 +1,222 @@
+---
+/**
+ * chart-bar-highlight: one bar is the point; the rest are the ordinary run.
+ *
+ * The headline holds the left column. The chart fills the right: a row of
+ * bars drawn to scale from the props, every one in a quiet tint except the
+ * hero, which takes the accent and carries its value above it at display
+ * size. A hairline baseline, one quiet label under each bar, and one caption
+ * saying what was measured. No axis, no gridlines: the shape is the argument.
+ * On a phone the chart keeps its bars and only the hero keeps its label.
+ */
+import Slide from '../../src/components/Slide.astro';
+import { fitType, formatNumber, splitHl, type SlideBase } from '../lib';
+
+interface Props extends SlideBase {
+  /** The point the hero bar proves, as a sentence. 14 words or fewer. */
+  headline: string;
+  /** One phrase of the headline, word for word, in the accent. The hero bar then goes to full ink. */
+  hl?: string;
+  /** One line under the headline: a fact the chart doesn't show. Optional; most charts need none. */
+  note?: string;
+  /** The bars, in order, 3 to 12. Values are drawn to scale from zero, so none may be negative. */
+  bars: { label: string; value: number }[];
+  /** The hero bar: its index or its label. Default the largest. */
+  highlight?: number | string;
+  /** The hero's value as written ("$150M+"). Default its value with prefix and unit. */
+  display?: string;
+  /** Set before a formatted value: "$". */
+  prefix?: string;
+  /** Set after a formatted value: "%", " min". */
+  unit?: string;
+  /** What was measured, over what, when, in one line: "Route changes a day, by hour". */
+  caption: string;
+}
+
+const { id, label = 'Bar chart', tone = 'paper', notes, brand, headline, hl, note, bars, highlight, display, prefix = '', unit = '', caption } = Astro.props;
+const where = `chart-bar-highlight "${id}"`;
+if (bars.length < 3 || bars.length > 12) throw new Error(`${where}: 3 to 12 bars (got ${bars.length}). Two bars are a comparison (comparison-two-column); more than 12 is a trend (chart-line-annotated).`);
+if (bars.some((b) => !(b.value >= 0))) throw new Error(`${where}: every bar needs a value of zero or more; a negative change is a waterfall (chart-waterfall).`);
+if (note && note.length > 110) throw new Error(`${where}: the note is ${note.length} characters; keep it to one line (110 or fewer), or move it to the notes.`);
+const max = Math.max(...bars.map((b) => b.value)) || 1;
+const hero = typeof highlight === 'number' ? highlight : typeof highlight === 'string' ? bars.findIndex((b) => b.label === highlight) : bars.findIndex((b) => b.value === max);
+if (hero < 0 || hero >= bars.length) throw new Error(`${where}: highlight ${JSON.stringify(highlight)} isn't one of the bars; give its index or its exact label.`);
+const [before, phrase, after] = splitHl(headline, hl, where);
+const heroValue = display ?? formatNumber(bars[hero]!.value, { prefix, unit });
+// The hero's value hangs over its bar; at the ends of the row it aligns to the bar's outer edge.
+const edge = hero === 0 ? 'is-first' : hero === bars.length - 1 ? 'is-last' : '';
+const head = fitType(headline.length, { width: 720, lines: 3, min: 60, max: 104, em: 0.6 });
+const heroSize = Math.max(64, Math.min(120, Math.floor(1000 / bars.length / Math.max(heroValue.length * 0.6, 1.6))));
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <div class:list={['st-bar', { 'has-hl': !!phrase }]} style={`--head: ${head}px; --hero: ${heroSize}px; --n: ${bars.length}`}>
+    <div class="st-bar-copy">
+      <h2 data-fit="3 4" class="display st-bar-head rise">
+        <slot name="headline">{before}{phrase && <span class="hl">{phrase}</span>}{after}</slot>
+      </h2>
+      {note && <p class="st-bar-note rise" style="--d: 140ms">{note}</p>}
+    </div>
+    <figure class="st-bar-chart">
+      <div class="st-bar-plot" role="img" aria-label={`${caption}. ${bars.map((b) => `${b.label}: ${formatNumber(b.value, { prefix, unit })}`).join('; ')}.`}>
+        {bars.map((b, i) => (
+          <div class:list={['st-bar-col', { 'is-hero': i === hero }]} style={`--v: ${Math.max(b.value / max, 0.006)}`}>
+            {i === hero && <span class:list={['st-bar-value', 'display', edge]}><span class="rise" style="--d: 620ms">{heroValue}</span></span>}
+            <span class="st-bar-bar" style={`--d: ${160 + i * 45}ms`}></span>
+          </div>
+        ))}
+      </div>
+      <div class="st-bar-labels" aria-hidden="true">
+        {bars.map((b, i) => <span class:list={{ 'is-hero': i === hero }}>{b.label}</span>)}
+      </div>
+      <figcaption class="st-bar-cap rise" style="--d: 500ms">{caption}</figcaption>
+    </figure>
+  </div>
+</Slide>
+
+<style>
+  .st-bar {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 720px minmax(0, 1fr);
+    column-gap: calc(var(--gap) * 1.6);
+  }
+
+  .st-bar-copy {
+    align-self: center;
+    display: grid;
+    gap: calc(var(--gap) * 0.6);
+  }
+
+  .st-bar-head { font-size: calc(var(--head) * var(--display-scale)); }
+
+  .st-bar-note {
+    font-size: var(--t-body);
+    line-height: 1.35;
+    color: color-mix(in oklab, currentColor 74%, transparent);
+    text-wrap: pretty;
+  }
+
+  .st-bar-chart {
+    min-height: 0;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto auto;
+  }
+
+  /* The plot: bars drawn to scale from a hairline baseline, headroom above for the hero's value. */
+  .st-bar-plot {
+    display: grid;
+    grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+    gap: clamp(10px, calc(160px / var(--n)), 28px);
+    padding-top: calc(var(--hero) * var(--display-scale) * 1.4);
+    border-bottom: 2px solid color-mix(in oklab, currentColor 30%, transparent);
+  }
+
+  .st-bar-col {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .st-bar-bar {
+    display: block;
+    width: 100%;
+    height: calc(var(--v) * 100%);
+    border-radius: min(var(--radius), 8px) min(var(--radius), 8px) 0 0;
+    background: color-mix(in oklab, currentColor 16%, transparent);
+    transform-origin: 50% 100%;
+  }
+
+  /* The focal element: the one bar in the accent, its value set large above it. */
+  .is-hero .st-bar-bar { background: var(--hl-color); }
+  .st-bar.has-hl .is-hero .st-bar-bar { background: currentColor; }
+  :global(.tone-accent) .is-hero .st-bar-bar { background: var(--on-accent); }
+
+  .st-bar-value {
+    position: absolute;
+    left: 50%;
+    bottom: calc(var(--v) * 100%);
+    transform: translateX(-50%);
+    padding-bottom: 0.14em;
+    font-size: calc(var(--hero) * var(--display-scale));
+    line-height: 1;
+    white-space: nowrap;
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+
+  .st-bar-value > span { display: block; white-space: nowrap; }
+  .st-bar-value.is-first { left: 0; transform: none; }
+  .st-bar-value.is-last { left: auto; right: 0; transform: none; }
+
+  .st-bar-labels {
+    display: grid;
+    grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+    gap: clamp(10px, calc(160px / var(--n)), 28px);
+    padding-top: 18px;
+    font-family: var(--font-mono);
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: var(--label-case, uppercase);
+    text-align: center;
+    line-height: 1.2;
+    color: color-mix(in oklab, currentColor 62%, transparent);
+  }
+
+  /* A label wraps between words, never inside one ("NOO / N"): a word wider than its bar spills evenly into the gaps. */
+  .st-bar-labels span { display: flex; justify-content: center; }
+  .st-bar-labels .is-hero { color: currentColor; }
+
+  .st-bar-cap {
+    margin-top: calc(var(--gap) * 0.6);
+    font-size: var(--t-label);
+    color: color-mix(in oklab, currentColor 66%, transparent);
+  }
+
+  /* Motion: the bars grow from the baseline in order, then the hero's value lands. */
+  :global(.is-active) .st-bar-bar { animation: st-bar-grow 640ms var(--ease) var(--d, 0ms) both; }
+
+  @keyframes st-bar-grow {
+    from { transform: scaleY(0); }
+    to { transform: none; }
+  }
+
+  /* Phone: headline over the chart. The bars keep their shape at a fixed
+     height; only the hero keeps its label, and its value stays display size. */
+  @media (max-width: 799px) {
+    .st-bar {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto auto;
+      align-content: start;
+      row-gap: calc(var(--gap) * 1.6);
+    }
+
+    .st-bar-head { font-size: var(--t-display); }
+    .st-bar-note { font-size: var(--t-body); }
+    .st-bar-plot {
+      height: 360px;
+      gap: clamp(4px, calc(60px / var(--n)), 12px);
+      padding-top: 64px;
+    }
+
+    .st-bar-value { font-size: calc(min(var(--hero), 64px) * var(--display-scale)); }
+    .st-bar-labels {
+      gap: clamp(4px, calc(60px / var(--n)), 12px);
+      padding-top: 10px;
+      letter-spacing: 0.02em;
+    }
+
+    .st-bar-labels span:not(.is-hero) { visibility: hidden; }
+    .st-bar-labels .is-hero { white-space: nowrap; }
+    .st-bar-cap { margin-top: 12px; }
+  }
+
+  /* PDF and every static render: the bars stand at full height, nothing waits on an entrance. */
+  :global(html.is-static) .st-bar .rise,
+  :global(html.is-static) .st-bar .st-bar-bar {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+</style>

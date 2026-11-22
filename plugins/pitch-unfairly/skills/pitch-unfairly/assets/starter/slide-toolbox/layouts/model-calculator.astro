@@ -1,0 +1,261 @@
+---
+/**
+ * model-calculator: the buyer moves the assumptions and watches the result.
+ *
+ * The headline and up to three sliders hold the left column, each slider
+ * with its name and its live value. The right column is the result: what it
+ * is in a quiet label, the figure at poster size in the accent, and a bar
+ * showing it against the most the sliders allow, both moving as a slider
+ * moves. The result is factor × every input. The PDF and every static render
+ * show the defaults, worked out at build time, so the slide reads without
+ * anyone touching it.
+ */
+import Slide from '../../src/components/Slide.astro';
+import { fitType, formatNumber, splitHl, type SlideBase } from '../lib';
+
+interface Props extends SlideBase {
+  /** What the default result means, as a sentence. 14 words or fewer. */
+  headline: string;
+  /** One phrase of the headline, word for word, in the accent. The result then goes to full ink. */
+  hl?: string;
+  /** One to three sliders. value is the default, and what the PDF shows. */
+  inputs: { label: string; min: number; max: number; value: number; step?: number; prefix?: string; unit?: string }[];
+  /** The constant the inputs multiply by: result = factor × every input. Default 1. */
+  factor?: number;
+  /** How to write the result: what it is, and its prefix, unit, decimals; compact writes 1,200,000 as 1.2M. */
+  result: { label: string; prefix?: string; unit?: string; decimals?: number; compact?: boolean };
+  /** The math in words, in one quiet line: "minutes × crews × 250 days ÷ 60 × $54 a crew hour". */
+  formula?: string;
+}
+
+const { id, label = 'Calculator', tone = 'warm', notes, brand, headline, hl, inputs, factor = 1, result, formula } = Astro.props;
+const where = `model-calculator "${id}"`;
+if (inputs.length < 1 || inputs.length > 3) throw new Error(`${where}: one to three sliders (got ${inputs.length}); fix the rest in factor and say so in formula.`);
+for (const i of inputs) {
+  if (!(i.min < i.max)) throw new Error(`${where}: "${i.label}" needs min below max (got ${i.min} to ${i.max}).`);
+  if (!(i.value >= i.min && i.value <= i.max)) throw new Error(`${where}: "${i.label}" default ${i.value} is outside ${i.min} to ${i.max}.`);
+}
+const [before, phrase, after] = splitHl(headline, hl, where);
+const head = fitType(headline.length, { width: 720, lines: 3, min: 64, max: 108, em: 0.62 });
+const compute = (vals: number[]) => vals.reduce((a, v) => a * v, factor);
+const fmtResult = (n: number) => formatNumber(n, result);
+const value = compute(inputs.map((i) => i.value));
+const most = compute(inputs.map((i) => i.max)) || 1;
+const fmtInput = (i: Props['inputs'][number], v: number) => formatNumber(v, { prefix: i.prefix, unit: i.unit, decimals: i.step && !Number.isInteger(i.step) ? String(i.step).split('.')[1]!.length : 0 });
+// The figure is sized for the widest it can get, so moving a slider never reflows the slide.
+const widest = Math.max(fmtResult(most).length, fmtResult(value).length);
+const fig = Math.max(140, Math.min(300, Math.floor(760 / (widest * 0.62))));
+const figPhone = Math.max(56, Math.min(104, Math.floor(330 / (widest * 0.62))));
+const fill = (i: Props['inputs'][number]) => ((i.value - i.min) / (i.max - i.min)) * 100;
+const config = JSON.stringify({ factor, most, result });
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <div class:list={['st-calc', { 'has-hl': !!phrase }]} style={`--head: ${head}px; --fig: ${fig}px; --fig-phone: ${figPhone}px`} data-calc={config}>
+    <div class="st-calc-copy">
+      <h2 data-fit="3 4" class="display st-calc-head rise">
+        <slot name="headline">{before}{phrase && <span class="hl">{phrase}</span>}{after}</slot>
+      </h2>
+      <div class="st-calc-inputs">
+        {inputs.map((i, k) => (
+          <label class="st-calc-input rise" style={`--d: ${160 + k * 90}ms`}>
+            <span class="st-calc-name">{i.label}</span>
+            <output class="st-calc-val">{fmtInput(i, i.value)}</output>
+            <input
+              type="range"
+              min={i.min}
+              max={i.max}
+              step={i.step ?? 1}
+              value={i.value}
+              style={`--p: ${fill(i).toFixed(2)}%`}
+              data-prefix={i.prefix ?? ''}
+              data-unit={i.unit ?? ''}
+            />
+          </label>
+        ))}
+      </div>
+      {formula && <p class="st-calc-formula rise" style="--d: 420ms">{formula}</p>}
+    </div>
+    <div class="st-calc-out" aria-live="polite">
+      <p class="st-calc-what rise" style="--d: 200ms">{result.label}</p>
+      <p class="st-calc-fig display rise" style="--d: 280ms">{fmtResult(value)}</p>
+      <div class="st-calc-track" aria-hidden="true">
+        <span class="st-calc-bar" style={`--r: ${Math.min(1, value / most).toFixed(4)}`}></span>
+      </div>
+    </div>
+  </div>
+</Slide>
+
+<script src="./model-calculator.client.ts"></script>
+
+<style>
+  .st-calc {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
+    column-gap: calc(var(--gap) * 2);
+  }
+
+  .st-calc-copy {
+    align-self: center;
+    display: grid;
+    gap: calc(var(--gap) * 0.9);
+  }
+
+  .st-calc-head { font-size: calc(var(--head) * var(--display-scale)); }
+
+  .st-calc-inputs {
+    display: grid;
+    gap: calc(var(--gap) * 0.55);
+  }
+
+  .st-calc-input {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: baseline;
+    gap: 6px 24px;
+  }
+
+  .st-calc-name {
+    font-size: var(--t-body);
+    color: color-mix(in oklab, currentColor 76%, transparent);
+  }
+
+  .st-calc-val {
+    font-family: var(--font-display);
+    font-weight: var(--display-weight);
+    font-size: var(--t-lede);
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* The slider: a 48px-tall hit area, a track filled to the value, a 44px thumb. */
+  .st-calc-input input {
+    grid-column: 1 / -1;
+    width: 100%;
+    height: 48px;
+    margin: 0;
+    background: transparent;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    --track: color-mix(in oklab, currentColor 18%, transparent);
+  }
+
+  .st-calc-input input::-webkit-slider-runnable-track {
+    height: 8px;
+    border-radius: 999px;
+    background: linear-gradient(to right, var(--hl-color) var(--p), var(--track) var(--p));
+  }
+
+  .st-calc-input input::-moz-range-track {
+    height: 8px;
+    border-radius: 999px;
+    background: linear-gradient(to right, var(--hl-color) var(--p), var(--track) var(--p));
+  }
+
+  .st-calc-input input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 44px;
+    height: 44px;
+    margin-top: -18px;
+    border-radius: 50%;
+    border: 4px solid var(--hl-color);
+    background: var(--paper);
+    transition: transform var(--dur-hover, 160ms) var(--ease-hover, ease);
+  }
+
+  .st-calc-input input::-moz-range-thumb {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 4px solid var(--hl-color);
+    background: var(--paper);
+  }
+
+  .st-calc-input input:hover::-webkit-slider-thumb { transform: scale(1.08); }
+  .st-calc-input input:focus { outline: none; }
+  .st-calc-input input:focus-visible { outline: 3px solid var(--hl-color); outline-offset: 6px; border-radius: 999px; }
+  .st-calc-input input:disabled { cursor: not-allowed; opacity: 0.45; }
+
+  .st-calc-formula {
+    font-family: var(--font-mono);
+    font-size: var(--t-label);
+    line-height: 1.4;
+    color: color-mix(in oklab, currentColor 66%, transparent);
+  }
+
+  /* The focal element: the result, at poster size in the accent, and its bar. */
+  .st-calc-out {
+    align-self: center;
+    display: grid;
+    gap: 24px;
+  }
+
+  .st-calc-what {
+    font-family: var(--font-mono);
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: var(--caps-tracking, 0.12em);
+    text-transform: var(--label-case, uppercase);
+    color: color-mix(in oklab, currentColor 66%, transparent);
+  }
+
+  .st-calc-fig {
+    font-size: calc(var(--fig) * var(--display-scale));
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    white-space: nowrap;
+    font-variant-numeric: lining-nums tabular-nums;
+    color: var(--hl-color);
+  }
+
+  .st-calc-track {
+    height: 28px;
+    border-radius: min(var(--radius), 8px);
+    background: color-mix(in oklab, currentColor 12%, transparent);
+    overflow: hidden;
+  }
+
+  .st-calc-bar {
+    display: block;
+    height: 100%;
+    width: calc(var(--r) * 100%);
+    background: var(--hl-color);
+    transition: width 220ms var(--ease);
+  }
+
+  .st-calc.has-hl .st-calc-fig { color: currentColor; }
+  .st-calc.has-hl .st-calc-bar { background: currentColor; }
+  :global(.tone-accent) .st-calc-fig { color: var(--on-accent); }
+  :global(.tone-accent) .st-calc-bar,
+  :global(.tone-accent) .st-calc-input input { --hl-color: var(--on-accent); }
+
+  /* Phone: one column. The result leads under the headline so a slider
+     moved below still shows its effect on the same screen. */
+  @media (max-width: 799px) {
+    .st-calc {
+      grid-template-columns: minmax(0, 1fr);
+      align-content: start;
+      row-gap: calc(var(--gap) * 1.2);
+    }
+
+    .st-calc-copy { display: contents; }
+    .st-calc-head { order: 1; font-size: var(--t-display); }
+    .st-calc-out { order: 2; gap: 10px; }
+    .st-calc-inputs { order: 3; gap: 8px; }
+    .st-calc-formula { order: 4; }
+    .st-calc-fig { font-size: calc(var(--fig-phone) * var(--display-scale)); }
+    .st-calc-track { height: 14px; }
+    .st-calc-input { gap: 0 12px; }
+  }
+
+  /* PDF and every static render: the defaults, worked out at build time. */
+  :global(html.is-static) .st-calc .rise {
+    opacity: 1;
+    transform: none;
+  }
+
+  :global(html.is-static) .st-calc-bar { transition: none; }
+</style>

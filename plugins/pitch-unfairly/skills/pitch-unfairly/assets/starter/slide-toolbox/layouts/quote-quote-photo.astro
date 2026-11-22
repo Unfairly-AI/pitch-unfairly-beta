@@ -1,0 +1,203 @@
+---
+/**
+ * quote-quote-photo: their words beside the person, or the place they work.
+ *
+ * A photograph bleeds off one edge, top to bottom, about two fifths of the
+ * slide: the speaker, their crew, their counter. The rest holds the quote:
+ * the brand's quotation mark, the words in the display face at the largest
+ * size that fits three lines of the column, and under a hairline who said it.
+ * The photo makes the voice a real person in a real place; the quote is the
+ * focal element and the only thing in the accent. For a quote too long to
+ * stand alone as a poster (quote-hero-quote), up to 120 characters.
+ */
+import Slide from '../../src/components/Slide.astro';
+import { fitType, splitHl, type SlideBase } from '../lib';
+
+interface Props extends SlideBase {
+  /** The quote, verbatim, without quotation marks. 120 characters or fewer. */
+  quote: string;
+  /** One phrase of the quote, word for word, in the accent. Then the mark goes quiet. */
+  hl?: string;
+  /** Who said it, as published. */
+  name: string;
+  /** Their title. */
+  role?: string;
+  /** Their company. */
+  company?: string;
+  /** The photo: the speaker, or where they work. A URL or a path under public/. */
+  photo: string;
+  /** What the photo shows. */
+  alt: string;
+  /** Which side the photo bleeds off. Default "right". */
+  side?: 'left' | 'right';
+  /** The photo's focal point, as CSS object-position. Default "50% 50%". */
+  focus?: string;
+}
+
+const { id, label = 'Quote', tone = 'warm', notes, brand, quote, hl, name, role, company, photo, alt, side = 'right', focus = '50% 50%' } = Astro.props;
+const where = `quote-quote-photo "${id}"`;
+if (/^["“'‘]|["”'’]$/.test(quote.trim())) throw new Error(`${where}: leave the quotation marks off; the layout sets them.`);
+if (quote.length > 120) throw new Error(`${where}: the quote is ${quote.length} characters; 120 or fewer beside a photo. Cut it to the sentence that carries the point.`);
+if (!photo || !alt) throw new Error(`${where}: photo and alt are required; without a photo, use quote-hero-quote.`);
+const [before, phrase, after] = splitHl(quote, hl, where);
+const stage = fitType(quote.length + 1, { width: 960, lines: 3, min: 50, max: 104 });
+const phone = fitType(quote.length + 1, { width: 340, lines: 4, min: 22, max: 36 });
+const who = [role, company].filter(Boolean).join(', ');
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <figure class:list={['st-qp', `is-${side}`, { 'has-hl': !!phrase }]} style={`--fit: ${stage}px; --fit-phone: ${phone}px; --focus: ${focus}`}>
+    <div class="st-qp-photo" data-bleed>
+      <img src={photo} alt={alt} />
+    </div>
+    <div class="st-qp-text">
+      <span class="st-qp-mark display pop" aria-hidden="true">“</span>
+      <blockquote class="st-qp-body">
+        <h2 data-fit="3 4" class="display st-qp-line rise" style="--d: 120ms">
+          <slot name="quote">{before}{phrase && <span class="hl">{phrase}</span>}{after}</slot>
+        </h2>
+      </blockquote>
+      <figcaption class="st-qp-who rise" style="--d: 360ms">
+        <b>{name}</b>
+        {who && <span>{who}</span>}
+      </figcaption>
+    </div>
+  </figure>
+</Slide>
+
+<style>
+  .st-qp {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 38%;
+  }
+
+  .st-qp.is-left { grid-template-columns: 38% minmax(0, 1fr); }
+
+  .st-qp-photo {
+    grid-row: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .st-qp.is-right .st-qp-photo { grid-column: 2; }
+  .st-qp.is-left .st-qp-photo { grid-column: 1; }
+
+  .st-qp-photo img {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+    object-position: var(--focus);
+  }
+
+  .st-qp-text {
+    grid-row: 1;
+    align-self: center;
+    padding: var(--pad-y) calc(var(--gap) * 1.6) var(--pad-y) var(--pad-x);
+  }
+
+  .st-qp.is-right .st-qp-text { grid-column: 1; }
+
+  .st-qp.is-left .st-qp-text {
+    grid-column: 2;
+    padding: var(--pad-y) var(--pad-x) var(--pad-y) calc(var(--gap) * 1.6);
+  }
+
+  .st-qp-mark {
+    display: block;
+    height: 0.5em;
+    margin-left: -0.05em;
+    font-size: calc(var(--fit) * var(--display-scale) * 2.4);
+    line-height: 0.9;
+    color: var(--hl-color);
+  }
+
+  .st-qp.has-hl .st-qp-mark { color: color-mix(in oklab, currentColor 28%, transparent); }
+
+  .st-qp-body { margin: calc(var(--gap) * 0.3) 0 0; }
+
+  .st-qp-line {
+    font-size: calc(var(--fit) * var(--display-scale));
+    line-height: max(var(--display-line), 1.04);
+  }
+
+  .st-qp-line .hl { white-space: nowrap; }
+
+  .st-qp-who {
+    display: grid;
+    gap: 6px;
+    margin-top: calc(var(--gap) * 1.1);
+    padding-top: calc(var(--gap) * 0.6);
+    border-top: 1px solid color-mix(in oklab, currentColor 24%, transparent);
+    max-width: 640px;
+  }
+
+  .st-qp-who b {
+    font-size: var(--t-body);
+    font-weight: 700;
+  }
+
+  .st-qp-who span {
+    font-size: var(--t-label);
+    color: color-mix(in oklab, currentColor 70%, transparent);
+  }
+
+  :global(.tone-ink) .st-qp-line { letter-spacing: calc(var(--display-tracking) * 0.85); }
+  :global(.tone-accent) .st-qp-mark { color: var(--on-accent); }
+
+  /* The page number would sit on the photo: give it a scrim. */
+  :global(.slide:has(> .st-qp.is-right) > .slide-num) {
+    z-index: 1;
+    padding: 6px 12px;
+    border-radius: 6px;
+    background: color-mix(in oklab, var(--night) 78%, transparent);
+    color: var(--on-night);
+    opacity: 1;
+  }
+
+  /* Phone: the photo across the top, then the quote and who said it. */
+  @media (max-width: 799px) {
+    .st-qp,
+    .st-qp.is-left {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: 40% minmax(0, 1fr);
+    }
+
+    .st-qp.is-left .st-qp-photo,
+    .st-qp.is-right .st-qp-photo { grid-column: 1; grid-row: 1; }
+
+    .st-qp.is-left .st-qp-text,
+    .st-qp.is-right .st-qp-text {
+      grid-column: 1;
+      grid-row: 2;
+      align-self: start;
+      padding: 20px var(--pad-x) 40px;
+    }
+
+    .st-qp-mark { font-size: calc(var(--fit-phone) * var(--display-scale) * 2.4); }
+    .st-qp-line { font-size: calc(var(--fit-phone) * var(--display-scale)); }
+
+    .st-qp-who {
+      gap: 2px;
+      margin-top: 18px;
+      padding-top: 12px;
+      max-width: none;
+    }
+
+    :global(.slide:has(> .st-qp.is-right) > .slide-num) {
+      padding: 0;
+      background: none;
+      color: inherit;
+      opacity: 0.45;
+    }
+  }
+
+  /* PDF and every static render: the photo prints, nothing waits on an entrance. */
+  :global(html.is-static) .st-qp .rise,
+  :global(html.is-static) .st-qp .pop {
+    opacity: 1;
+    transform: none;
+  }
+</style>

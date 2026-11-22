@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080" role="img" aria-label="Sample photo: a service van at the curb on a residential street at first light">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c9ced6"/><stop offset=".55" stop-color="#e4e2dd"/><stop offset="1" stop-color="#efe9df"/></linearGradient>
+    <linearGradient id="road" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8d939b"/><stop offset="1" stop-color="#5d636b"/></linearGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#sky)"/>
+  <circle cx="1500" cy="300" r="70" fill="#f6f2ea"/>
+  <path d="M0 610 L180 470 L360 610 Z" fill="#a7adb6"/><rect x="40" y="590" width="300" height="220" fill="#b7bcc4"/>
+  <path d="M380 640 L640 430 L900 640 Z" fill="#9aa1ab"/><rect x="430" y="610" width="420" height="220" fill="#adb3bb"/>
+  <rect x="610" y="700" width="70" height="130" fill="#7f8792"/><rect x="480" y="660" width="80" height="70" fill="#dcdfe3"/><rect x="740" y="660" width="80" height="70" fill="#dcdfe3"/>
+  <path d="M930 600 L1130 450 L1330 600 Z" fill="#b1b6be"/><rect x="960" y="580" width="340" height="250" fill="#c0c5cc"/>
+  <rect x="1020" y="650" width="70" height="70" fill="#e6e8eb"/><rect x="1170" y="650" width="70" height="70" fill="#e6e8eb"/>
+  <path d="M1360 640 L1600 480 L1920 620 L1920 830 L1360 830 Z" fill="#a3a9b2"/>
+  <rect x="1480" y="660" width="90" height="80" fill="#d9dce0"/><rect x="1700" y="660" width="90" height="80" fill="#d9dce0"/>
+  <rect y="830" width="1920" height="40" fill="#cfd2d6"/>
+  <rect y="870" width="1920" height="210" fill="url(#road)"/>
+  <rect x="200" y="960" width="160" height="10" fill="#b9bdc2"/><rect x="620" y="960" width="160" height="10" fill="#b9bdc2"/><rect x="1040" y="960" width="160" height="10" fill="#b9bdc2"/><rect x="1460" y="960" width="160" height="10" fill="#b9bdc2"/>
+  <rect x="1180" y="700" width="560" height="190" rx="26" fill="#ececea"/>
+  <path d="M1560 700 L1700 700 Q1740 700 1750 740 L1770 820 L1770 890 L1560 890 Z" fill="#e2e2df"/>
+  <path d="M1590 720 L1690 720 Q1715 720 1722 745 L1738 800 L1590 800 Z" fill="#7a828d"/>
+  <rect x="1240" y="760" width="250" height="18" rx="9" fill="#9aa1aa"/>
+  <circle cx="1310" cy="895" r="46" fill="#33383f"/><circle cx="1310" cy="895" r="18" fill="#8c929a"/>
+  <circle cx="1650" cy="895" r="46" fill="#33383f"/><circle cx="1650" cy="895" r="18" fill="#8c929a"/>
+  <rect x="1040" y="740" width="40" height="150" rx="16" fill="#4c525a"/><circle cx="1060" cy="715" r="26" fill="#4c525a"/>
+</svg>

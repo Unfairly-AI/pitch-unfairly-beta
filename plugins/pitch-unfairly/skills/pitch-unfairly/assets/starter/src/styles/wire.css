@@ -1,0 +1,85 @@
+/*
+  Wireframe mode: the deck in greys and the system font, with no brand.
+
+  On when <html> has .is-wire: build or run with DECK_WIRE=1
+  (DECK_WIRE=1 npm run build, DECK_WIRE=1 npm run dev, npm run deck:gallery -- --wire),
+  or add ?wire=1 to a page's URL. It replaces the brand kit's tokens, so the
+  same slides and slide toolbox layouts that wear the kit wear the wireframe:
+  nothing in a slide changes. Use it for the wireframe stage of a build, to
+  judge structure and hierarchy before color and type.
+
+  These are the only raw colors and fonts outside the brand kit. Every brand
+  role that src/brand/brand.css sets is replaced here; test/slide-toolbox.test.mjs
+  checks that none is left over.
+*/
+html.is-wire,
+html.is-wire [data-brand] {
+  --paper: #f7f7f7;
+  --surface: #e9e9e9;
+  --ink: #1e1e1e;
+  --ink-muted: #5a5a5a;
+  --accent: #5f5f5f;
+  --accent-dark: #3c3c3c;
+  --accent-2: #808080;
+  --on-accent: #ffffff;
+  --highlight: #d4d4d4;
+  --positive: #4d4d4d;
+  --border-color: #9e9e9e;
+  --night: #2a2a2a;
+  --on-night: #f2f2f2;
+  --accent-on-night: #bdbdbd;
+  --c-yellow: #dadada;
+  --c-yellow-soft: #ececec;
+  --c-cyan: #cfcfcf;
+  --c-cyan-soft: #e6e6e6;
+  --c-pink: #d6d6d6;
+  --c-pink-soft: #eaeaea;
+  --c-coral: #777777;
+  --c-cool: #8c8c8c;
+  --data-1: #4a4a4a;
+  --data-2: #7a7a7a;
+  --data-3: #a3a3a3;
+  --data-4: #c7c7c7;
+  --accent-text: #555555;
+  --accent-fill: #555555;
+  --on-accent-fill: #ffffff;
+  --ink-muted-text: #5a5a5a;
+
+  --font-display: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --display-weight: 700;
+  --display-tracking: -0.03em;
+  --display-line: 1;
+  --display-case: none;
+  --body-case: none;
+  --display-scale: 1;
+  --body-weight: 400;
+  --body-tracking: 0em;
+  --body-line: 1.45;
+
+  --radius-base: 6px;
+  --border-base: 2px;
+  --shadow-offset-base: 0px;
+  --tilt: 0;
+  --headline-color: currentColor;
+  --hl-color: var(--accent);
+  --hl-text: var(--accent-text);
+  --headline-on-night: var(--on-night);
+  --hl-on-night: var(--accent-on-night);
+  --density: 1;
+
+  /* The ramps the fundamentals derive, flattened to one grey ramp. */
+  --ramp-accent-50: #f7f7f7; --ramp-accent-100: #ededed; --ramp-accent-200: #dcdcdc; --ramp-accent-300: #c6c6c6; --ramp-accent-400: #aaaaaa; --ramp-accent-500: #8f8f8f; --ramp-accent-600: #767676; --ramp-accent-700: #5f5f5f; --ramp-accent-800: #4a4a4a; --ramp-accent-900: #363636; --ramp-accent-950: #1e1e1e;
+  --ramp-accent-secondary-50: #f7f7f7; --ramp-accent-secondary-100: #ededed; --ramp-accent-secondary-200: #dcdcdc; --ramp-accent-secondary-300: #c6c6c6; --ramp-accent-secondary-400: #aaaaaa; --ramp-accent-secondary-500: #8f8f8f; --ramp-accent-secondary-600: #767676; --ramp-accent-secondary-700: #5f5f5f; --ramp-accent-secondary-800: #4a4a4a; --ramp-accent-secondary-900: #363636; --ramp-accent-secondary-950: #1e1e1e;
+  --ramp-highlight-50: #f7f7f7; --ramp-highlight-100: #ededed; --ramp-highlight-200: #dcdcdc; --ramp-highlight-300: #c6c6c6; --ramp-highlight-400: #aaaaaa; --ramp-highlight-500: #8f8f8f; --ramp-highlight-600: #767676; --ramp-highlight-700: #5f5f5f; --ramp-highlight-800: #4a4a4a; --ramp-highlight-900: #363636; --ramp-highlight-950: #1e1e1e;
+  --ramp-neutral-50: #f7f7f7; --ramp-neutral-100: #ededed; --ramp-neutral-200: #dcdcdc; --ramp-neutral-300: #c6c6c6; --ramp-neutral-400: #aaaaaa; --ramp-neutral-500: #8f8f8f; --ramp-neutral-600: #767676; --ramp-neutral-700: #5f5f5f; --ramp-neutral-800: #4a4a4a; --ramp-neutral-900: #363636; --ramp-neutral-950: #1e1e1e;
+}
+
+/* Imagery and logos lose their color too, so nothing branded shows through. */
+html.is-wire img,
+html.is-wire video,
+html.is-wire svg image {
+  filter: grayscale(1) contrast(0.85);
+}
+

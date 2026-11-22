@@ -275,3 +275,36 @@ test('ACCEPTANCE: a kit whose label fails on its accent, or whose caps have no t
   assert.match(w, /fill small-text buttons with #/);
   assert.match(w, /fundamentals: typography\.roles\.eyebrow\.tracking/);
 });
+
+test('ACCEPTANCE: emphasis stays readable when the accent is too light for paper or too dark for night', () => {
+  // A lime accent (fillmore) is a fill, not text on white: the emphasis takes the accent's readable step.
+  const lime = base();
+  lime.palette.accent = '#A1FA0A';
+  const limeHl = /--hl-color: ([^;]+);/.exec(brandCss(lime))[1];
+  assert.notEqual(limeHl, 'var(--accent)');
+  assert.match(limeHl, /^#[0-9a-f]{6}$/i);
+  // Small accent text takes the 4.5:1 step even when the accent passes for large type (MMA's pink, 3.7:1).
+  const pink = base();
+  pink.palette.accent = '#EE3D8B';
+  const pinkCss = brandCss(pink);
+  assert.match(pinkCss, /--hl-color: var\(--accent\);/, 'the pink still sets large emphasis');
+  const pinkText = /--hl-text: ([^;]+);/.exec(pinkCss)[1];
+  assert.match(pinkText, /^#[0-9a-f]{6}$/i);
+  assert.notEqual(pinkText.toLowerCase(), '#ee3d8b');
+  assert.equal(resolvePalette(lime.palette).accent_on_night, '#A1FA0A', 'lime still reads on the night ground');
+  // A near-black accent (Metaview) vanishes on a dark green night: emphasis there goes to on_night.
+  const dark = base();
+  Object.assign(dark.palette, { accent: '#000805', night: '#0A2119', on_night: '#FFFFFF' });
+  assert.equal(resolvePalette(dark.palette).accent_on_night, '#FFFFFF');
+  assert.match(brandCss(dark), /--hl-color: var\(--accent\);/, 'a dark accent reads on paper as it is');
+  // A kit that names its own accent_on_night keeps it.
+  dark.palette.accent_on_night = '#7AFAB2';
+  assert.equal(resolvePalette(dark.palette).accent_on_night, '#7AFAB2');
+});
+
+test('labels follow a lowercase brand instead of forcing capitals', () => {
+  assert.match(brandCss(base()), /--label-case: uppercase;/);
+  const lower = base();
+  lower.typography.body.case = 'lowercase';
+  assert.match(brandCss(lower), /--label-case: lowercase;/);
+});

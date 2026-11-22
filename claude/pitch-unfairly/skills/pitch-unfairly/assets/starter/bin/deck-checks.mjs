@@ -134,7 +134,13 @@ export function readability() {
   return out;
 }
 
-/** In the page: each slide's visible words, keyed by slide id. Run on screen and at ?pdf=1 to compare. */
+/**
+ * In the page: each slide's visible words, keyed by slide id. Run on screen and at ?pdf=1 to compare.
+ * Text under [data-screen-only] is left out: the state of a live control (a
+ * running count, a button's label) that the static render replaces with its
+ * outcome. It stays real text for screen readers and copy; mark only controls
+ * and their state, never a claim the PDF should carry.
+ */
 export function visibleWords() {
   const out = {};
   for (const slide of document.querySelectorAll('.slide')) {
@@ -143,7 +149,7 @@ export function visibleWords() {
     for (let node = walker.nextNode(); node; node = walker.nextNode()) {
       const el = node.parentElement;
       const style = getComputedStyle(el);
-      if (!node.textContent.trim() || style.display === 'none' || style.visibility === 'hidden' || el.closest('[aria-hidden="true"]')) continue;
+      if (!node.textContent.trim() || style.display === 'none' || style.visibility === 'hidden' || el.closest('[aria-hidden="true"], [data-screen-only]')) continue;
       let opacity = 1;
       for (let e = el; e && e !== slide.parentElement; e = e.parentElement) opacity *= Number(getComputedStyle(e).opacity);
       const range = document.createRange();

@@ -1,0 +1,175 @@
+---
+/**
+ * how-it-works-three-steps: three steps that climb to the outcome.
+ *
+ * The headline at the top left. The three steps stand in three columns at
+ * rising heights, left to right, each on a hairline post down to a shared
+ * floor, so the slide reads as a climb without a single arrow. Each step is a
+ * number, its name and one line on it. The step that carries the point
+ * (the last, unless you say otherwise) takes the accent and the weight; the
+ * other two stay quiet. On a phone the steps stack in order.
+ */
+import Slide from '../../src/components/Slide.astro';
+import { fitType, splitHl, type SlideBase } from '../lib';
+
+interface Props extends SlideBase {
+  /** What the three steps add up to, as a whole sentence. 12 words or fewer. */
+  headline: string;
+  /** One phrase of the headline, word for word, in the accent. Then the steps' numbers stay quiet. */
+  hl?: string;
+  /** Exactly three steps, in order: a name of four words or fewer and one line on it (80 characters or fewer). */
+  steps: { name: string; detail?: string }[];
+  /** The step that carries the point, 1 to 3. Default 3: the outcome. */
+  focus?: number;
+}
+
+const { id, label = 'How it works', tone = 'paper', notes, brand, headline, hl, steps, focus = 3 } = Astro.props;
+const where = `how-it-works-three-steps "${id}"`;
+if (steps?.length !== 3) throw new Error(`${where}: exactly three steps (got ${steps?.length ?? 0}). Two is a before-and-after; four or more is how-it-works-focal-step.`);
+if (![1, 2, 3].includes(focus)) throw new Error(`${where}: focus ${focus} isn't a step; use 1, 2 or 3.`);
+steps.forEach((s, i) => {
+  if (s.name.split(/\s+/).length > 4) throw new Error(`${where}: step ${i + 1}'s name "${s.name}" is over four words; the line under it carries the rest.`);
+  if (s.detail && s.detail.length > 80) throw new Error(`${where}: step ${i + 1}'s detail is ${s.detail.length} characters; one line of 80 or fewer.`);
+});
+const [before, phrase, after] = splitHl(headline, hl, where);
+const head = fitType(headline.length, { width: 1060, lines: 2, min: 72, max: 112 });
+const phone = fitType(headline.length, { width: 330, lines: 3, min: 26, max: 40 });
+// How far down its column each step stands: the first lowest, the last at the top.
+const lift = [0.6, 0.34, 0.04];
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <div class:list={['st-steps', { 'has-hl': !!phrase }]} style={`--head: ${head}px; --head-phone: ${phone}px`}>
+    <h2 data-fit="2 3" class="display st-steps-head rise">
+      <slot name="headline">{before}{phrase && <span class="hl">{phrase}</span>}{after}</slot>
+    </h2>
+    <ol class="st-steps-list">
+      {steps.map((s, i) => (
+        <li class:list={['st-step', { 'is-focus': i + 1 === focus }]} style={`--lift: ${lift[i]}; --d: ${260 + i * 160}ms`}>
+          <div class="st-step-body rise">
+            <span class="st-step-n display">{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="st-step-name">{s.name}</h3>
+            {s.detail && <p class="st-step-detail">{s.detail}</p>}
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</Slide>
+
+<style>
+  .st-steps {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .st-steps-head {
+    position: relative;
+    z-index: 1;
+    max-width: 1060px;
+    font-size: calc(var(--head) * var(--display-scale));
+  }
+
+  /* Three columns over the whole content box, on one floor. */
+  .st-steps-list {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-bottom: 1px solid color-mix(in oklab, currentColor 24%, transparent);
+  }
+
+  .st-step { position: relative; }
+
+  /* Each step stands on a hairline post running down to the floor. */
+  .st-step-body {
+    position: absolute;
+    top: calc(var(--lift) * 100%);
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0 calc(var(--gap) * 0.9) 0 calc(var(--gap) * 0.6);
+    border-left: 1px solid color-mix(in oklab, currentColor 24%, transparent);
+  }
+
+  .st-step-n {
+    display: block;
+    margin-bottom: 20px;
+    font-size: calc(96px * var(--display-scale));
+    line-height: 0.9;
+    font-variant-numeric: lining-nums tabular-nums;
+    color: color-mix(in oklab, currentColor 40%, transparent);
+  }
+
+  .st-step-name {
+    font-size: var(--t-lede);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  .st-step-detail {
+    max-width: 22ch;
+    margin-top: 12px;
+    font-size: var(--t-body);
+    line-height: 1.3;
+    color: color-mix(in oklab, currentColor 70%, transparent);
+    text-wrap: pretty;
+  }
+
+  /* The step that carries the point: the accent on its number and its post, the display face on its name. */
+  .st-step.is-focus .st-step-body { border-left: 3px solid var(--hl-color); }
+  .st-step.is-focus .st-step-n { color: var(--hl-color); font-size: calc(148px * var(--display-scale)); }
+
+  .st-step.is-focus .st-step-name {
+    font-family: var(--font-display);
+    font-size: var(--t-title);
+    font-weight: var(--display-weight);
+    line-height: 1;
+    letter-spacing: var(--display-tracking);
+    color: var(--headline-color);
+  }
+
+  .st-step.is-focus .st-step-detail { color: color-mix(in oklab, currentColor 84%, transparent); }
+
+  /* With a phrase of the headline in the accent, the focal step keeps its weight and gives up the color. */
+  .st-steps.has-hl .st-step.is-focus .st-step-n { color: currentColor; }
+  .st-steps.has-hl .st-step.is-focus .st-step-body { border-left-color: currentColor; }
+  :global(.tone-accent) .st-step.is-focus .st-step-n { color: var(--on-accent); }
+  :global(.tone-accent) .st-step.is-focus .st-step-body { border-left-color: var(--on-accent); }
+
+  /* Phone: the steps stack in order, each beside its number. */
+  @media (max-width: 799px) {
+    .st-steps { display: grid; align-content: start; row-gap: calc(var(--gap) * 1.4); }
+    .st-steps-head { max-width: none; font-size: calc(var(--head-phone) * var(--display-scale)); }
+
+    .st-steps-list {
+      position: static;
+      grid-template-columns: minmax(0, 1fr);
+      border-bottom: 0;
+    }
+
+    .st-step-body {
+      position: static;
+      display: grid;
+      grid-template-columns: 56px minmax(0, 1fr);
+      column-gap: 12px;
+      padding: 16px 0;
+      border-left: 0;
+      border-top: 1px solid color-mix(in oklab, currentColor 24%, transparent);
+    }
+
+    .st-step.is-focus .st-step-body { border-left: 0; border-top: 2px solid var(--hl-color); }
+    .st-step-n,
+    .st-step.is-focus .st-step-n { grid-row: span 2; margin: 0; font-size: calc(40px * var(--display-scale)); }
+    .st-step.is-focus .st-step-name { font-size: var(--t-title); }
+    .st-step-detail { max-width: none; margin-top: 4px; }
+  }
+
+  /* PDF and every static render: all three steps stand where they land. */
+  :global(html.is-static) .st-steps .rise {
+    opacity: 1;
+    transform: none;
+  }
+</style>

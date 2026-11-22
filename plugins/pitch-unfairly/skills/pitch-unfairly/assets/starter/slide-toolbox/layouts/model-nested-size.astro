@@ -1,0 +1,248 @@
+---
+/**
+ * model-nested-size: a market drawn to scale as squares inside squares.
+ *
+ * The headline holds the left column. On the right, each level of the market
+ * is a square whose area is its value, all anchored at one corner, so the
+ * whole and its parts read at their true proportions: the outermost a dashed
+ * outline, the middle levels quiet tints, the focal level (the innermost by
+ * default) solid in the accent. Each level's value and name sit in a column
+ * beside the squares, on a leader from its square's top edge, so even a
+ * sliver of a square is named. On a phone the names move under the drawing.
+ */
+import Slide from '../../src/components/Slide.astro';
+import { fitType, splitHl, type SlideBase } from '../lib';
+
+interface Props extends SlideBase {
+  /** What the sizing means, as a sentence. 14 words or fewer. */
+  headline: string;
+  /** One phrase of the headline, word for word, in the accent. The focal square then goes to full ink. */
+  hl?: string;
+  /** The levels, 2 to 4, outermost first, each inside the last. value sets the square's area; display writes it ("$1.2B"). */
+  levels: { label: string; value: number; display: string }[];
+  /** The index of the focal level. Default the innermost. */
+  focus?: number;
+  /** How the market was sized, in one quiet line. */
+  caption?: string;
+}
+
+const { id, label = 'Market size', tone = 'paper', notes, brand, headline, hl, levels, focus, caption } = Astro.props;
+const where = `model-nested-size "${id}"`;
+if (levels.length < 2 || levels.length > 4) throw new Error(`${where}: 2 to 4 levels (got ${levels.length}).`);
+for (let i = 1; i < levels.length; i++) if (!(levels[i]!.value <= levels[i - 1]!.value && levels[i]!.value > 0)) throw new Error(`${where}: "${levels[i]!.label}" (${levels[i]!.value}) must be above zero and no bigger than "${levels[i - 1]!.label}" (${levels[i - 1]!.value}); each level sits inside the last.`);
+const focal = focus ?? levels.length - 1;
+if (!(focal >= 0 && focal < levels.length)) throw new Error(`${where}: focus ${focus} isn't a level; use 0 to ${levels.length - 1}.`);
+const [before, phrase, after] = splitHl(headline, hl, where);
+const head = fitType(headline.length, { width: 640, lines: 3, min: 60, max: 100, em: 0.6 });
+// The drawing in stage pixels: an S-wide square, a gutter for the leaders, the names' column.
+const S = 620;
+const GUTTER = 64;
+const sides = levels.map((l) => Math.max(8, S * Math.sqrt(l.value / levels[0]!.value)));
+// Each name sits level with its square's top edge, pushed apart when two edges are close.
+const heights = levels.map((_, i) => (i === focal ? 132 : 112));
+const ys = sides.map((s) => S - s);
+for (let i = 1; i < ys.length; i++) ys[i] = Math.max(ys[i]!, ys[i - 1]! + heights[i - 1]! + 12);
+const last = ys.length - 1;
+if (ys[last]! + heights[last]! > S) ys[last] = S - heights[last]!;
+for (let i = last - 1; i >= 0; i--) ys[i] = Math.min(ys[i]!, ys[i + 1]! - heights[i]! - 12);
+const pct = (px: number) => `${((px / S) * 100).toFixed(3)}%`;
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <div class:list={['st-size', { 'has-hl': !!phrase }]} style={`--head: ${head}px; --S: ${S}px; --gutter: ${GUTTER}px`}>
+    <div class="st-size-copy">
+      <h2 data-fit="3 4" class="display st-size-head rise">
+        <slot name="headline">{before}{phrase && <span class="hl">{phrase}</span>}{after}</slot>
+      </h2>
+      {caption && <p class="st-size-cap mobile-hide rise" style="--d: 160ms">{caption}</p>}
+    </div>
+    <figure class="st-size-fig" role="img" aria-label={levels.map((l) => `${l.label}: ${l.display}`).join('; ')}>
+      <div class="st-size-squares">
+        {levels.map((l, i) => (
+          <span
+            class:list={['st-size-sq', i === 0 ? 'is-outer' : `is-${Math.min(i, 2)}`, { 'is-focal': i === focal }]}
+            style={`width: ${pct(sides[i]!)}; --d: ${180 + i * 180}ms`}
+          ></span>
+        ))}
+      </div>
+      <svg class="st-size-leaders" viewBox={`0 0 ${S + GUTTER} ${S}`} aria-hidden="true">
+        {levels.map((_, i) => (
+          <polyline class="rise" style={`--d: ${420 + i * 180}ms`} points={`${sides[i]!},${S - sides[i]!} ${S + 12},${S - sides[i]!} ${S + GUTTER - 8},${ys[i]! + 30}`} />
+        ))}
+      </svg>
+      <ol class="st-size-names" aria-hidden="true">
+        {levels.map((l, i) => (
+          <li class:list={['rise', { 'is-focal': i === focal }]} style={`top: ${ys[i]}px; --d: ${460 + i * 180}ms`}>
+            <b class="display">{l.display}</b>
+            <span>{l.label}</span>
+          </li>
+        ))}
+      </ol>
+    </figure>
+  </div>
+</Slide>
+
+<style>
+  .st-size {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 640px minmax(0, 1fr);
+    column-gap: calc(var(--gap) * 1.5);
+  }
+
+  .st-size-copy {
+    align-self: center;
+    display: grid;
+    gap: calc(var(--gap) * 0.7);
+  }
+
+  .st-size-head { font-size: calc(var(--head) * var(--display-scale)); }
+
+  /* The method, as body copy; the phone cuts it before shrinking it. */
+  .st-size-cap {
+    font-size: var(--t-body);
+    line-height: 1.35;
+    color: color-mix(in oklab, currentColor 66%, transparent);
+  }
+
+  .st-size-fig {
+    position: relative;
+    align-self: end;
+    width: 100%;
+    height: var(--S);
+  }
+
+  .st-size-squares {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: var(--S);
+    aspect-ratio: 1;
+  }
+
+  /* Every square shares the bottom-left corner; its area is its value. */
+  .st-size-sq {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    aspect-ratio: 1;
+    transform-origin: 0 100%;
+  }
+
+  .st-size-sq.is-outer { border: 2px dashed color-mix(in oklab, currentColor 46%, transparent); }
+  .st-size-sq.is-1 { background: color-mix(in oklab, currentColor 9%, transparent); }
+  .st-size-sq.is-2 { background: color-mix(in oklab, currentColor 16%, transparent); }
+
+  /* The focal element: the level the slide is about, solid in the accent. */
+  .st-size-sq.is-focal { background: var(--hl-color); border: 0; }
+  .st-size.has-hl .st-size-sq.is-focal { background: currentColor; }
+  :global(.tone-accent) .st-size-sq.is-focal { background: var(--on-accent); }
+
+  .st-size-leaders {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: calc(var(--S) + var(--gutter));
+    height: var(--S);
+    overflow: visible;
+    fill: none;
+    stroke: color-mix(in oklab, currentColor 40%, transparent);
+    stroke-width: 2;
+  }
+
+  .st-size-names {
+    position: absolute;
+    left: calc(var(--S) + var(--gutter));
+    right: 0;
+    top: 0;
+    height: var(--S);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .st-size-names li {
+    position: absolute;
+    left: 0;
+    right: 0;
+    display: grid;
+    gap: 8px;
+  }
+
+  .st-size-names b {
+    font-size: calc(56px * var(--display-scale));
+    line-height: 1;
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+
+  .st-size-names .is-focal b {
+    font-size: calc(76px * var(--display-scale));
+    color: var(--hl-color);
+  }
+
+  .st-size.has-hl .st-size-names .is-focal b { color: currentColor; }
+  :global(.tone-accent) .st-size-names .is-focal b { color: var(--on-accent); }
+
+  .st-size-names span {
+    font-size: var(--t-label);
+    line-height: 1.25;
+    color: color-mix(in oklab, currentColor 70%, transparent);
+  }
+
+  /* Motion: the squares grow out of their shared corner, outermost first. */
+  :global(.is-active) .st-size-sq { animation: st-size-grow 700ms var(--ease) var(--d, 0ms) both; }
+
+  @keyframes st-size-grow {
+    from { opacity: 0; transform: scale(0.2); }
+    to { opacity: 1; transform: none; }
+  }
+
+  /* Phone: the drawing at the phone's width, the names listed under it in
+     order with their values, the focal one in the accent. */
+  @media (max-width: 799px) {
+    .st-size {
+      grid-template-columns: minmax(0, 1fr);
+      align-content: start;
+      row-gap: calc(var(--gap) * 1.4);
+    }
+
+    .st-size-head { font-size: var(--t-display); }
+    .st-size-copy { gap: 10px; }
+    .st-size-fig { height: auto; display: grid; gap: 14px; }
+
+    .st-size-squares {
+      position: relative;
+      width: min(100%, 250px);
+    }
+
+    .st-size-leaders { display: none; }
+
+    .st-size-names {
+      position: static;
+      height: auto;
+      display: grid;
+      gap: 6px;
+    }
+
+    .st-size-names li {
+      position: static;
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      padding-top: 6px;
+      border-top: 1px solid color-mix(in oklab, currentColor 20%, transparent);
+    }
+
+    .st-size-names b { font-size: calc(30px * var(--display-scale)); flex: none; }
+    .st-size-names .is-focal b { font-size: calc(40px * var(--display-scale)); }
+  }
+
+  /* PDF and every static render: every square at its size, every name placed. */
+  :global(html.is-static) .st-size .rise,
+  :global(html.is-static) .st-size .st-size-sq {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+</style>

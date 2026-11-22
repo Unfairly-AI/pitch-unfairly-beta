@@ -1,0 +1,201 @@
+---
+/**
+ * team-lead-list: one person the client deals with, and the team behind them.
+ *
+ * Left, the headline, and under it the lead: a round portrait or monogram, the
+ * name in the display face, the role, and one line on what they do for the
+ * client. Right, the rest of the team as a quiet ruled list, a name and a role
+ * on each row. For a proposal or an account team where one name answers the
+ * phone, or a team too big for a row of portraits.
+ */
+import Slide from '../../src/components/Slide.astro';
+import { fitType, initials, splitHl, type SlideBase } from '../lib';
+
+interface Props extends SlideBase {
+  /** Who the client deals with, as a whole sentence. 12 words or fewer. */
+  headline: string;
+  /** One phrase of the headline, word for word, in the accent. The lead's monogram then goes quiet. */
+  hl?: string;
+  /** The person who leads: a name, a role of 32 characters or fewer, one line on what they do for the client (64 or fewer) and an optional headshot URL. */
+  lead: { name: string; role: string; line?: string; photo?: string };
+  /** 2 to 6 more people, each a name and a role or one-line contribution of 48 characters or fewer. */
+  people: { name: string; role: string }[];
+}
+
+const { id, label = 'Team', tone = 'warm', notes, brand, headline, hl, lead, people } = Astro.props;
+const where = `team-lead-list "${id}"`;
+if (people.length < 2 || people.length > 6) throw new Error(`${where}: 2 to 6 more people (got ${people.length}); the rest go in the notes, or name the group ("Six dispatch trainers").`);
+if (lead.role.length > 32) throw new Error(`${where}: the lead's role is ${lead.role.length} characters; 32 or fewer.`);
+if (lead.line && lead.line.length > 64) throw new Error(`${where}: the lead's line is ${lead.line.length} characters; 64 or fewer.`);
+for (const p of people) if (p.role.length > 48) throw new Error(`${where}: ${p.name}'s role is ${p.role.length} characters; 48 or fewer.`);
+const [before, phrase, after] = splitHl(headline, hl, where);
+const head = fitType(headline.length, { width: 860, lines: 3, min: 72, max: 112 });
+const phone = fitType(headline.length, { width: 330, lines: 4, min: 28, max: 44 });
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <div class:list={['st-crew', { 'has-hl': !!phrase }]} style={`--head: ${head}px; --head-phone: ${phone}px`}>
+    <h2 data-fit="3 4" class="display st-crew-head rise">
+      <slot name="headline">{before}{phrase && <span class="hl">{phrase}</span>}{after}</slot>
+    </h2>
+    <figure class="st-crew-lead rise" style="--d: 200ms">
+      {lead.photo ? <img class="st-crew-face" src={lead.photo} alt={lead.name} /> : <span class="st-crew-face is-mono display" aria-hidden="true">{initials(lead.name)}</span>}
+      <figcaption>
+        <b class="display">{lead.name}</b>
+        <span class="st-crew-role">{lead.role}</span>
+        {lead.line && <span class="st-crew-line">{lead.line}</span>}
+      </figcaption>
+    </figure>
+    <ul class="st-crew-list">
+      {people.map((p, i) => (
+        <li class="rise" style={`--d: ${320 + i * 70}ms`}>
+          <b>{p.name}</b>
+          <span>{p.role}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Slide>
+
+<style>
+  .st-crew {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 640px;
+    grid-template-rows: auto 1fr;
+    column-gap: calc(var(--gap) * 2.2);
+  }
+
+  .st-crew-head {
+    grid-column: 1;
+    grid-row: 1;
+    max-width: 900px;
+    font-size: calc(var(--head) * var(--display-scale));
+  }
+
+  /* The lead: the focal element, low on the left. */
+  .st-crew-lead {
+    grid-column: 1;
+    grid-row: 2;
+    align-self: end;
+    display: flex;
+    align-items: center;
+    gap: 44px;
+    margin: 0;
+  }
+
+  .st-crew-face {
+    flex: none;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .st-crew-face.is-mono {
+    display: grid;
+    place-items: center;
+    background: var(--accent);
+    color: var(--on-accent);
+    font-size: 112px;
+  }
+
+  .st-crew.has-hl .st-crew-face.is-mono,
+  :global(.tone-accent) .st-crew-face.is-mono {
+    background: color-mix(in oklab, currentColor 14%, transparent);
+    color: currentColor;
+  }
+
+  .st-crew-lead figcaption {
+    display: grid;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .st-crew-lead b {
+    font-size: calc(72px * var(--display-scale));
+    letter-spacing: -0.025em;
+  }
+
+  .st-crew-role {
+    font-family: var(--font-mono);
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: var(--caps-tracking, 0.12em);
+    text-transform: var(--label-case, uppercase);
+    color: color-mix(in oklab, currentColor 66%, transparent);
+  }
+
+  .st-crew-line {
+    max-width: 560px;
+    margin-top: 14px;
+    font-size: var(--t-body);
+    line-height: 1.3;
+  }
+
+  /* The rest: a quiet ruled list, name over role, filling the right column. */
+  .st-crew-list {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    align-self: end;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-bottom: 1px solid color-mix(in oklab, currentColor 22%, transparent);
+  }
+
+  .st-crew-list li {
+    display: grid;
+    gap: 6px;
+    padding: 24px 0;
+    border-top: 1px solid color-mix(in oklab, currentColor 22%, transparent);
+  }
+
+  .st-crew-list b {
+    font-size: var(--t-body);
+    font-weight: 700;
+    line-height: 1.15;
+  }
+
+  .st-crew-list span {
+    font-size: var(--t-label);
+    line-height: 1.3;
+    color: color-mix(in oklab, currentColor 70%, transparent);
+  }
+
+  :global(.tone-ink) .st-crew-lead b { letter-spacing: -0.015em; }
+
+  /* Phone: headline, the lead, then the list, in one column. */
+  @media (max-width: 799px) {
+    .st-crew {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto;
+      align-content: start;
+      row-gap: calc(var(--gap) * 1.3);
+    }
+
+    .st-crew-head,
+    .st-crew-lead,
+    .st-crew-list { grid-column: 1; grid-row: auto; align-self: start; }
+
+    .st-crew-head {
+      max-width: none;
+      font-size: calc(var(--head-phone) * var(--display-scale));
+    }
+
+    .st-crew-lead { gap: 16px; align-items: center; }
+    .st-crew-face { width: 88px; height: 88px; }
+    .st-crew-face.is-mono { font-size: 32px; }
+    .st-crew-lead figcaption { gap: 4px; }
+    .st-crew-lead b { font-size: calc(24px * var(--display-scale)); }
+    .st-crew-line { margin-top: 4px; }
+    .st-crew-list li { padding: 10px 0; gap: 2px; }
+  }
+
+  /* PDF and every static render: the photo prints, nothing waits on an entrance. */
+  :global(html.is-static) .st-crew .rise {
+    opacity: 1;
+    transform: none;
+  }
+</style>

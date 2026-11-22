@@ -1,0 +1,161 @@
+---
+/**
+ * quote-hero-quote: one customer's words as the slide's headline.
+ *
+ * An oversized quotation mark, then the quote in the display face at the
+ * largest size that fits three lines, then a hairline and who said it: a photo
+ * or monogram, the name, and their role and company. Dark by default: proof in
+ * someone else's voice reads as a change of register. The quote is word for
+ * word; the shortest excerpt that carries the point.
+ */
+import Slide from '../../src/components/Slide.astro';
+import { fitType, initials, splitHl, type SlideBase } from '../lib';
+
+interface Props extends SlideBase {
+  /** The quote, verbatim, without quotation marks. 110 characters or fewer. */
+  quote: string;
+  /** One phrase of the quote, word for word, to set in the accent. Then the mark goes quiet. */
+  hl?: string;
+  /** Who said it, as published. */
+  name: string;
+  /** Their title. */
+  role?: string;
+  /** Their company. */
+  company?: string;
+  /** A headshot URL (import it, or a path under public/). Without one, a monogram of the name. */
+  photo?: string;
+}
+
+const { id, label = 'Quote', tone = 'ink', notes, brand, quote, hl, name, role, company, photo } = Astro.props;
+const where = `quote-hero-quote "${id}"`;
+if (/^["“'‘]|["”'’]$/.test(quote.trim())) throw new Error(`${where}: leave the quotation marks off; the layout sets them.`);
+if (quote.length > 140) throw new Error(`${where}: the quote is ${quote.length} characters; a hero quote is the shortest excerpt that carries the point (110 or fewer). Cut it, or use a layout for longer quotes.`);
+if (quote.length > 110) console.warn(`! ${where}: ${quote.length} characters; a hero quote reads best at 110 or fewer.`);
+const [before, phrase, after] = splitHl(quote, hl, where);
+const stage = fitType(quote.length + 1, { width: 1480, lines: 3, min: 76, max: 124 });
+const phone = fitType(quote.length + 1, { width: 330, lines: 4, min: 22, max: 40 });
+const who = [role, company].filter(Boolean).join(', ');
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <figure class:list={['st-quote', { 'has-hl': !!phrase }]} style={`--fit: ${stage}px; --fit-phone: ${phone}px`}>
+    <span class="st-quote-mark display pop" aria-hidden="true">“</span>
+    <blockquote class="st-quote-body">
+      <h2 data-fit="3 4" class="display st-quote-line rise" style="--d: 120ms">
+        <slot name="quote">{before}{phrase && <span class="hl">{phrase}</span>}{after}</slot>
+      </h2>
+    </blockquote>
+    <figcaption class="st-quote-who rise" style="--d: 360ms">
+      {photo ? <img class="st-quote-face" src={photo} alt={name} /> : <span class="st-quote-face is-mono" aria-hidden="true">{initials(name)}</span>}
+      <span class="st-quote-name">
+        <b>{name}</b>
+        {who && <span>{who}</span>}
+      </span>
+    </figcaption>
+  </figure>
+</Slide>
+
+<style>
+  .st-quote {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 1480px;
+  }
+
+  /* The mark is the one graphic: oversized, in the accent unless a phrase of the quote has it. */
+  .st-quote-mark {
+    display: block;
+    height: 0.52em;
+    margin-left: -0.06em;
+    font-size: calc(var(--fit) * var(--display-scale) * 2.6);
+    line-height: 0.9;
+    color: var(--hl-color);
+  }
+
+  .st-quote.has-hl .st-quote-mark { color: color-mix(in oklab, currentColor 28%, transparent); }
+
+  .st-quote-body { margin: calc(var(--gap) * 0.35) 0 0; }
+
+  .st-quote-line {
+    font-size: calc(var(--fit) * var(--display-scale));
+    line-height: max(var(--display-line), 1.02);
+  }
+
+  .st-quote-line .hl { white-space: nowrap; }
+
+  .st-quote-who {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-top: calc(var(--gap) * 1.2);
+    padding-top: calc(var(--gap) * 0.7);
+    border-top: 1px solid color-mix(in oklab, currentColor 24%, transparent);
+    max-width: 760px;
+  }
+
+  .st-quote-face {
+    flex: none;
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .st-quote-face.is-mono {
+    display: grid;
+    place-items: center;
+    background: color-mix(in oklab, currentColor 12%, transparent);
+    font-family: var(--font-display);
+    font-weight: var(--display-weight);
+    font-size: 36px;
+    letter-spacing: 0.02em;
+  }
+
+  .st-quote-name {
+    display: grid;
+    gap: 6px;
+  }
+
+  .st-quote-name b {
+    font-size: var(--t-body);
+    font-weight: 700;
+  }
+
+  .st-quote-name span {
+    font-size: var(--t-label);
+    color: color-mix(in oklab, currentColor 70%, transparent);
+  }
+
+  /* Light type on a dark slide needs a touch more room (craft rule 21). */
+  :global(.tone-ink) .st-quote-line { letter-spacing: calc(var(--display-tracking) * 0.85); }
+  :global(.tone-accent) .st-quote-mark { color: var(--on-accent); }
+
+  /* Phone: the quote keeps the largest size that fits four lines; the mark
+     and the attribution scale down around it. */
+  @media (max-width: 799px) {
+    .st-quote { max-width: none; }
+    .st-quote-mark { font-size: calc(var(--fit-phone) * var(--display-scale) * 2.6); }
+    .st-quote-line { font-size: calc(var(--fit-phone) * var(--display-scale)); }
+
+    .st-quote-who {
+      gap: 14px;
+      margin-top: calc(var(--gap) * 1.4);
+      padding-top: 16px;
+      max-width: none;
+    }
+
+    .st-quote-face { width: 52px; height: 52px; }
+    .st-quote-face.is-mono { font-size: 19px; }
+    .st-quote-name { gap: 2px; }
+  }
+
+  /* PDF and every static render: the photo prints, nothing waits on an entrance. */
+  :global(html.is-static) .st-quote .rise,
+  :global(html.is-static) .st-quote .pop {
+    opacity: 1;
+    transform: none;
+  }
+</style>

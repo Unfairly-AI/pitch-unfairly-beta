@@ -1,0 +1,280 @@
+---
+/**
+ * problem-cost-waterfall: where the value goes, one loss at a time.
+ *
+ * The headline across the top; under it a waterfall across the full width.
+ * With a `start` (the paid day, the budget), it opens on that bar, each loss
+ * steps down from it in a quiet tint, and the last bar is what's left, in the
+ * accent, with its value set large above it: "a 40-hour week yields 15
+ * minutes". Without a start, the losses cascade down and the last bar is
+ * their total, the whole height: "four leaks cost $1.2M". The last bar is
+ * the focal element; the rest stay quiet. On a phone the same bars run
+ * across as rows, each labelled, its value in a column at the right, with the
+ * result as the last row.
+ */
+import Slide from '../../src/components/Slide.astro';
+import { fitType, splitHl, type SlideBase } from '../lib';
+
+interface Props extends SlideBase {
+  /** The point, in a whole sentence: what's left or what's lost. 12 words or fewer. */
+  headline: string;
+  /** One phrase of the headline, word for word, in the accent. Usually the result. */
+  hl?: string;
+  /** The whole you start from: { label: "Paid day", value: 8 }. Leave it off to total the losses instead. */
+  start?: { label: string; value: number };
+  /** The losses, in order, 2 to 5: each a short label and a positive amount lost. */
+  steps: { label: string; value: number }[];
+  /** The last bar: its label ("Time on the job", "Lost a year"), and its value as written when the computed one reads badly ("$1.2M"). */
+  end: { label: string; display?: string };
+  /** Set before every value: "$". */
+  prefix?: string;
+  /** Set after every value: "h", "%", "k". */
+  unit?: string;
+  /** Decimal places for every value. Default 0. */
+  decimals?: number;
+}
+
+const { id, label = 'Problem', tone = 'paper', notes, brand, headline, hl, start, steps, end, prefix = '', unit = '', decimals = 0 } = Astro.props;
+const where = `problem-cost-waterfall "${id}"`;
+if (steps.length < 2 || steps.length > 5) throw new Error(`${where}: 2 to 5 steps (got ${steps.length}); fold the small losses into one "Other" step, or use big-number for one.`);
+for (const s of steps) if (!(s.value > 0)) throw new Error(`${where}: step "${s.label}" is ${s.value}; every step is a positive amount lost.`);
+const lost = steps.reduce((n, s) => n + s.value, 0);
+if (start && lost > start.value) throw new Error(`${where}: the steps lose ${lost}, more than the start's ${start.value}. Check the figures.`);
+for (const l of [start?.label, ...steps.map((s) => s.label), end.label]) if (l && l.length > 28) throw new Error(`${where}: label "${l}" is ${l.length} characters; a bar's label is 28 or fewer.`);
+const [before, phrase, after] = splitHl(headline, hl, where);
+
+const top = start ? start.value : lost;
+const result = start ? start.value - lost : lost;
+const fmt = (n: number) => `${prefix}${n.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}${unit}`;
+// Each bar as [lo, hi], fractions of the tallest.
+let level = top;
+const bars = [
+  ...(start ? [{ kind: 'start', label: start.label, value: fmt(start.value), lo: 0, hi: 1 }] : []),
+  ...steps.map((s) => {
+    const hi = level / top;
+    level -= s.value;
+    return { kind: 'step', label: s.label, value: `−${fmt(s.value)}`, lo: level / top, hi };
+  }),
+  { kind: 'end', label: end.label, value: end.display ?? fmt(result), lo: 0, hi: result / top },
+];
+const head = fitType(headline.length, { width: 1560, lines: 2, min: 72, max: 112 });
+const phone = fitType(headline.length, { width: 330, lines: 4, min: 26, max: 40 });
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <div class="st-fall" style={`--head: ${head}px; --head-phone: ${phone}px; --n: ${bars.length}`}>
+    <h2 data-fit="2 4" class="display st-fall-head rise">
+      <slot name="headline">{before}{phrase && <span class="hl">{phrase}</span>}{after}</slot>
+    </h2>
+    <ol class="st-fall-chart">
+      {bars.map((b, i) => (
+        <li class:list={['st-fall-col', `is-${b.kind}`]} style={`--lo: ${b.lo}; --hi: ${b.hi}; --d: ${260 + i * 140}ms`}>
+          <span class="st-fall-track">
+            <span class="st-fall-bar"></span>
+            <b class="st-fall-v">{b.value}</b>
+          </span>
+          <span class="st-fall-l">{b.label}</span>
+        </li>
+      ))}
+    </ol>
+  </div>
+</Slide>
+
+<style>
+  .st-fall {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    row-gap: calc(var(--gap) * 0.9);
+  }
+
+  .st-fall-head {
+    max-width: 1560px;
+    font-size: calc(var(--head) * var(--display-scale));
+    line-height: min(var(--display-line), 1);
+  }
+
+  .st-fall-head .hl { white-space: nowrap; }
+
+  /* The chart: one column per bar, on a shared baseline. */
+  .st-fall-chart {
+    display: grid;
+    grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+    column-gap: 28px;
+    min-height: 0;
+  }
+
+  .st-fall-col {
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    min-height: 0;
+  }
+
+  /* The plot area: room at the top for the result's large value. */
+  .st-fall-track {
+    position: relative;
+    margin-top: 150px;
+    border-bottom: 2px solid color-mix(in oklab, currentColor 40%, transparent);
+  }
+
+  .st-fall-bar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: calc(var(--lo) * 100%);
+    height: calc((var(--hi) - var(--lo)) * 100%);
+    min-height: 4px;
+    background: color-mix(in oklab, currentColor 20%, transparent);
+  }
+
+  .is-start .st-fall-bar { background: color-mix(in oklab, currentColor 58%, transparent); }
+
+  /* The focal element: the result, in the accent. */
+  .is-end .st-fall-bar { background: var(--accent); }
+  :global(.tone-accent) .is-end .st-fall-bar { background: var(--on-accent); }
+
+  .st-fall-v {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: calc(var(--hi) * 100% + 14px);
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: var(--t-label);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .is-end .st-fall-v {
+    font-family: var(--font-display);
+    font-size: calc(104px * var(--display-scale));
+    font-weight: var(--display-weight);
+    letter-spacing: -0.04em;
+    line-height: 0.9;
+    color: var(--hl-color);
+  }
+
+  :global(.tone-accent) .is-end .st-fall-v { color: var(--on-accent); }
+
+  .st-fall-l {
+    padding-top: 16px;
+    min-height: 2.6em;
+    text-align: center;
+    font-size: var(--t-label);
+    line-height: 1.25;
+    color: color-mix(in oklab, currentColor 74%, transparent);
+    text-wrap: balance;
+  }
+
+  .is-start .st-fall-l,
+  .is-end .st-fall-l {
+    font-weight: 700;
+    color: inherit;
+  }
+
+  /* Motion: each loss drops in from where the last one ended, the result rises from the baseline. */
+  :global(.is-active) .st-fall-bar { animation: st-fall-drop 620ms var(--ease) var(--d, 0ms) both; }
+  :global(.is-active) .is-start .st-fall-bar,
+  :global(.is-active) .is-end .st-fall-bar { animation-name: st-fall-rise; }
+  :global(.is-active) .st-fall-v { animation: rise var(--dur-enter) var(--ease) calc(var(--d, 0ms) + 260ms) both; }
+
+  @keyframes st-fall-drop {
+    from { clip-path: inset(0 0 100% 0); }
+    to { clip-path: inset(0 0 0 0); }
+  }
+
+  @keyframes st-fall-rise {
+    from { clip-path: inset(100% 0 0 0); }
+    to { clip-path: inset(0 0 0 0); }
+  }
+
+  /* Phone: the bars run across as rows, label over bar, value at the bar's end.
+     The result is the last row, its value at display size. */
+  @media (max-width: 799px) {
+    .st-fall {
+      grid-template-rows: auto auto;
+      align-content: start;
+      row-gap: calc(var(--gap) * 1.5);
+    }
+
+    .st-fall-head {
+      max-width: none;
+      font-size: calc(var(--head-phone) * var(--display-scale));
+    }
+
+    .st-fall-chart {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: 14px;
+    }
+
+    .st-fall-col {
+      grid-template-rows: auto auto;
+      row-gap: 6px;
+    }
+
+    .st-fall-l {
+      grid-row: 1;
+      padding: 0;
+      min-height: 0;
+      text-align: left;
+      font-size: 13px;
+    }
+
+    .st-fall-track {
+      grid-row: 2;
+      height: 22px;
+      margin: 0 104px 0 0;
+      border-bottom: 0;
+      border-left: 2px solid color-mix(in oklab, currentColor 40%, transparent);
+    }
+
+    .st-fall-bar {
+      top: 0;
+      bottom: 0;
+      left: calc(var(--lo) * 100%);
+      right: auto;
+      width: calc((var(--hi) - var(--lo)) * 100%);
+      min-width: 3px;
+      height: auto;
+      min-height: 0;
+    }
+
+    .st-fall-v {
+      top: 50%;
+      bottom: auto;
+      left: calc(100% + 12px);
+      right: auto;
+      transform: translateY(-50%);
+      text-align: left;
+      font-size: 13px;
+    }
+
+    .is-end .st-fall-track { height: 30px; }
+    .is-end .st-fall-v { font-size: calc(28px * var(--display-scale)); letter-spacing: -0.02em; }
+
+    :global(.is-active) .st-fall-v { animation: none; }
+    :global(.is-active) .st-fall-bar { animation-name: st-fall-across; }
+    :global(.is-active) .is-start .st-fall-bar,
+    :global(.is-active) .is-end .st-fall-bar { animation-name: st-fall-grow; }
+  }
+
+  @keyframes st-fall-across {
+    from { clip-path: inset(0 0 0 100%); }
+    to { clip-path: inset(0 0 0 0); }
+  }
+
+  @keyframes st-fall-grow {
+    from { clip-path: inset(0 100% 0 0); }
+    to { clip-path: inset(0 0 0 0); }
+  }
+
+  /* PDF and every static render: every bar drawn, every value in place. */
+  :global(html.is-static) .st-fall .rise,
+  :global(html.is-static) .st-fall-v {
+    opacity: 1;
+  }
+
+  :global(html.is-static) .st-fall-bar { clip-path: none; }
+</style>

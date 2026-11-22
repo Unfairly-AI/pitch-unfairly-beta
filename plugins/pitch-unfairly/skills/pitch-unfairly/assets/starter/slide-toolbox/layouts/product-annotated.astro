@@ -1,0 +1,291 @@
+---
+/**
+ * product-annotated: one screen, with numbered callouts on what matters.
+ *
+ * The headline across the top, then the screenshot centered in a quiet window
+ * frame. Each callout is a numbered dot on the exact spot of the screen, with
+ * a hairline running out to its label in the margin, the label set on the
+ * line. One callout can be the point: its dot takes the accent and its label
+ * the weight; the rest stay quiet. On a phone the lines go: the dots stay on
+ * the screen and their labels list under it by number.
+ */
+import Slide from '../../src/components/Slide.astro';
+import { fitType, splitHl, type SlideBase } from '../lib';
+
+interface Callout {
+  /** What this part of the screen does, in the product's own words. 40 characters or fewer. */
+  label: string;
+  /** Where the dot sits, across the screenshot: 0 is its left edge, 1 its right. */
+  x: number;
+  /** Where the dot sits, down the screenshot: 0 is its top, 1 its bottom. */
+  y: number;
+  /** Which margin the label goes in. Default: the nearer one. */
+  side?: 'left' | 'right';
+}
+
+interface Props extends SlideBase {
+  /** What the screen proves, as a whole sentence. 12 words or fewer. */
+  headline: string;
+  /** One phrase of the headline, word for word, in the accent. */
+  hl?: string;
+  /** The screenshot, wide, about 16:10. */
+  src: string;
+  /** What the screenshot shows, for assistive tech. */
+  alt: string;
+  /** One to four callouts, each a label and the spot it points at. */
+  callouts: Callout[];
+  /** The callout that carries the point, by position from 1. It takes the accent. Leave it off when none does. */
+  focus?: number;
+}
+
+const { id, label = 'Annotated product', tone = 'paper', notes, brand, headline, hl, src, alt, callouts, focus } = Astro.props;
+const where = `product-annotated "${id}"`;
+if (!callouts?.length || callouts.length > 4) throw new Error(`${where}: one to four callouts (got ${callouts?.length ?? 0}); a screen with more needs a second slide.`);
+if (focus !== undefined && (focus < 1 || focus > callouts.length)) throw new Error(`${where}: focus ${focus} isn't a callout; number them from 1 to ${callouts.length}.`);
+const calls = callouts.map((c, i) => {
+  if (c.label.length > 40) throw new Error(`${where}: callout ${i + 1} is ${c.label.length} characters; a label is 40 or fewer. Move the explanation to the notes.`);
+  for (const k of ['x', 'y'] as const) if (!(c[k] >= 0 && c[k] <= 1)) throw new Error(`${where}: callout ${i + 1} has ${k} ${c[k]}; give it as a fraction of the screenshot, 0 to 1.`);
+  return { ...c, n: i + 1, side: c.side ?? (c.x < 0.5 ? 'left' : 'right') };
+});
+for (const side of ['left', 'right']) {
+  const ys = calls.filter((c) => c.side === side).sort((a, b) => a.y - b.y);
+  ys.forEach((c, i) => {
+    if (i && c.y - ys[i - 1]!.y < 0.16) throw new Error(`${where}: callouts ${ys[i - 1]!.n} and ${c.n} sit too close in the ${side} margin (y ${ys[i - 1]!.y} and ${c.y}); their labels would collide. Move one to the other side, or 0.16 apart.`);
+  });
+}
+const [before, phrase, after] = splitHl(headline, hl, where);
+const head = fitType(headline.length, { width: 1400, lines: 2, min: 72, max: 104 });
+const phone = fitType(headline.length, { width: 330, lines: 3, min: 26, max: 40 });
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <div class="st-ann" style={`--head: ${head}px; --head-phone: ${phone}px`}>
+    <h2 data-fit="2 3" class="display st-ann-head rise">
+      <slot name="headline">{before}{phrase && <span class="hl">{phrase}</span>}{after}</slot>
+    </h2>
+    <figure class="st-ann-fig rise" style="--d: 140ms">
+      <div class="st-ann-window">
+        <div class="st-ann-bar" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="st-ann-screen">
+          <img src={src} alt={alt} />
+          <ol class="st-ann-calls">
+            {calls.map((c, i) => (
+              <li class:list={['st-ann-call', `is-${c.side}`, { 'is-focus': c.n === focus }]} style={`--x: ${c.x}; --y: ${c.y}; --d: ${420 + i * 110}ms`}>
+                <span class="st-ann-line wipe" aria-hidden="true"></span>
+                <span class="st-ann-label rise">{c.label}</span>
+                <span class="st-ann-dot pop" aria-hidden="true">{c.n}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
+    </figure>
+    <ol class="st-ann-key" aria-hidden="true">
+      {calls.map((c) => (
+        <li class:list={{ 'is-focus': c.n === focus }}><b>{c.n}</b>{c.label}</li>
+      ))}
+    </ol>
+  </div>
+</Slide>
+
+<style>
+  .st-ann {
+    --screen: 1000px;
+    --margin: calc((1648px - var(--screen)) / 2);
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    row-gap: calc(var(--gap) * 0.9);
+  }
+
+  .st-ann-head {
+    max-width: 1400px;
+    font-size: calc(var(--head) * var(--display-scale));
+  }
+
+  .st-ann-fig {
+    align-self: center;
+    justify-self: center;
+    width: var(--screen);
+  }
+
+  .st-ann-window {
+    border: var(--border-w) solid var(--border-color);
+    border-radius: calc(var(--radius) * 0.75);
+    background: var(--paper);
+    box-shadow: var(--shadow-card);
+  }
+
+  .st-ann-bar {
+    display: flex;
+    gap: 9px;
+    align-items: center;
+    height: 40px;
+    padding: 0 18px;
+    border-bottom: 1px solid color-mix(in oklab, var(--ink) 14%, transparent);
+    border-radius: calc(var(--radius) * 0.75) calc(var(--radius) * 0.75) 0 0;
+    background: color-mix(in oklab, var(--ink) 6%, var(--paper));
+  }
+
+  .st-ann-bar i {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: color-mix(in oklab, var(--ink) 22%, transparent);
+  }
+
+  .st-ann-screen { position: relative; }
+
+  .st-ann-screen img {
+    width: 100%;
+    height: auto;
+    border-radius: 0 0 calc(var(--radius) * 0.75) calc(var(--radius) * 0.75);
+  }
+
+  /* A callout spans from the margin to its spot on the screen: the label sits
+     on the hairline, the numbered dot on the spot. */
+  .st-ann-call {
+    position: absolute;
+    top: calc(var(--y) * 100%);
+    height: 0;
+  }
+
+  .st-ann-call.is-left {
+    left: calc(var(--margin) * -1);
+    width: calc(var(--margin) + var(--x) * 100%);
+  }
+
+  .st-ann-call.is-right {
+    left: calc(var(--x) * 100%);
+    width: calc(var(--margin) + (1 - var(--x)) * 100%);
+  }
+
+  .st-ann-line {
+    position: absolute;
+    inset: 0 0 auto;
+    border-top: 1px solid color-mix(in oklab, currentColor 55%, transparent);
+  }
+
+  .st-ann-label {
+    position: absolute;
+    bottom: 12px;
+    width: calc(var(--margin) - 40px);
+    font-size: var(--t-body);
+    line-height: 1.2;
+    color: color-mix(in oklab, currentColor 78%, transparent);
+    text-wrap: balance;
+  }
+
+  .is-left .st-ann-label { left: 0; }
+  .is-right .st-ann-label { right: 0; text-align: right; }
+
+  .st-ann-dot {
+    position: absolute;
+    top: -22px;
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--font-mono);
+    font-size: var(--t-fine);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    box-shadow: 0 0 0 4px var(--paper);
+  }
+
+  .is-left .st-ann-dot { right: -22px; }
+  .is-right .st-ann-dot { left: -22px; }
+
+  /* The one callout that carries the point: the accent on its dot, the weight on its label. */
+  .st-ann-call.is-focus .st-ann-dot {
+    background: var(--accent);
+    color: var(--on-accent);
+    width: 56px;
+    height: 56px;
+    top: -28px;
+    font-size: var(--t-label);
+  }
+
+  .is-left.is-focus .st-ann-dot { right: -28px; }
+  .is-right.is-focus .st-ann-dot { left: -28px; }
+  .st-ann-call.is-focus .st-ann-line { border-top: 2px solid var(--accent); }
+
+  .st-ann-call.is-focus .st-ann-label {
+    font-family: var(--font-display);
+    font-size: var(--t-lede);
+    font-weight: var(--display-weight);
+    letter-spacing: -0.01em;
+    color: currentColor;
+  }
+
+  .st-ann-key { display: none; }
+
+  :global(.tone-ink) .st-ann-dot { background: var(--on-night); color: var(--night); box-shadow: 0 0 0 4px var(--night); }
+  :global(.tone-ink) .st-ann-call.is-focus .st-ann-dot { background: var(--accent); color: var(--night); }
+
+  /* Phone: the screen at full width with its numbered dots; the labels list
+     under it by number, and the leader lines go. */
+  @media (max-width: 799px) {
+    .st-ann {
+      --margin: 0px;
+      grid-template-rows: auto auto auto;
+      align-content: start;
+      row-gap: calc(var(--gap) * 1.2);
+    }
+
+    .st-ann-head { max-width: none; font-size: calc(var(--head-phone) * var(--display-scale)); }
+    .st-ann-fig { width: 100%; align-self: start; }
+    .st-ann-bar { height: 18px; gap: 4px; padding: 0 8px; }
+    .st-ann-bar i { width: 6px; height: 6px; }
+    .st-ann-line,
+    .st-ann-label { display: none; }
+
+    .st-ann-dot,
+    .st-ann-call.is-focus .st-ann-dot {
+      top: -12px;
+      width: 24px;
+      height: 24px;
+      font-size: var(--t-label);
+      box-shadow: 0 0 0 2px var(--paper);
+    }
+
+    .is-left .st-ann-dot,
+    .is-left.is-focus .st-ann-dot { right: -12px; }
+    .is-right .st-ann-dot,
+    .is-right.is-focus .st-ann-dot { left: -12px; }
+
+    .st-ann-key {
+      display: grid;
+      gap: 10px;
+    }
+
+    .st-ann-key li {
+      display: flex;
+      gap: 12px;
+      align-items: baseline;
+      font-size: var(--t-body);
+      color: color-mix(in oklab, currentColor 78%, transparent);
+    }
+
+    .st-ann-key b {
+      flex: none;
+      width: 24px;
+      font-family: var(--font-mono);
+      font-size: var(--t-label);
+      text-align: center;
+    }
+
+    .st-ann-key li.is-focus { color: currentColor; font-weight: 700; }
+    .st-ann-key li.is-focus b { color: var(--hl-color); }
+  }
+
+  /* PDF and every static render: every callout drawn, nothing waits on an entrance. */
+  :global(html.is-static) .st-ann .rise {
+    opacity: 1;
+    transform: none;
+  }
+</style>

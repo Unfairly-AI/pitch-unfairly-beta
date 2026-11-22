@@ -1,0 +1,153 @@
+---
+/**
+ * objection-faq-stack: the questions every buyer asks, answered in a ruled
+ * stack, the hardest one first and largest.
+ *
+ * The headline across the top. Below it two to four rows between hairlines,
+ * each the question on the left and its short answer on the right. One row is
+ * the hero: its question set in the display face, a size up, its answer at
+ * lede size. The other rows stay quiet. Nothing to click: every answer shows,
+ * on the stage, the phone and the PDF.
+ */
+import Slide from '../../src/components/Slide.astro';
+import { fitType, splitHl, type SlideBase } from '../lib';
+
+interface Props extends SlideBase {
+  /** What the stack says, one whole sentence, 12 words or fewer. */
+  headline: string;
+  /** One phrase of the headline, word for word, in the accent. Then the hero question takes the ink. */
+  hl?: string;
+  /** Two to four questions, each as the buyer asks it (64 characters or fewer) with its answer (120 or fewer). */
+  items: { q: string; a: string }[];
+  /** Which question is the hero, counting from 0. Default 0, the first. */
+  focus?: number;
+}
+
+const { id, label = 'Questions', tone = 'warm', notes, brand, headline, hl, items = [], focus = 0 } = Astro.props;
+const where = `objection-faq-stack "${id}"`;
+if (items.length < 2 || items.length > 4) throw new Error(`${where}: two to four questions (got ${items.length}); one question is objection-question-answer.`);
+for (const it of items) {
+  if (it.q.length > 64) throw new Error(`${where}: question "${it.q}" is ${it.q.length} characters; 64 or fewer.`);
+  if (it.a.length > 120) throw new Error(`${where}: the answer to "${it.q}" is ${it.a.length} characters; 120 or fewer. The detail goes in the notes.`);
+}
+if (focus < 0 || focus >= items.length) throw new Error(`${where}: focus ${focus} is outside the questions (0 to ${items.length - 1}).`);
+const [pre, phrase, post] = splitHl(headline, hl, where);
+const head = fitType(headline.length, { width: 1500, lines: 2, min: 76, max: 112 });
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <div class:list={['st-faq', { 'has-hl': !!phrase }]} style={`--head: ${head}px`}>
+    <h2 data-fit="2 4" class="display st-faq-head rise">
+      <slot name="headline">{pre}{phrase && <span class="hl">{phrase}</span>}{post}</slot>
+    </h2>
+    <dl class="st-faq-list">
+      {items.map((it, i) => (
+        <div class:list={['st-faq-row rise', { 'is-focus': i === focus }]} style={`--d: ${200 + i * 90}ms`}>
+          <dt class:list={{ display: i === focus }}>{it.q}</dt>
+          <dd>{it.a}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</Slide>
+
+<style>
+  .st-faq {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    row-gap: calc(var(--gap) * 0.9);
+  }
+
+  .st-faq-head {
+    max-width: 1500px;
+    font-size: calc(var(--head) * var(--display-scale));
+  }
+
+  .st-faq-head .hl { white-space: nowrap; }
+
+  .st-faq-list {
+    align-self: end;
+    margin: 0;
+    border-bottom: 1px solid color-mix(in oklab, currentColor 22%, transparent);
+  }
+
+  .st-faq-row {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1fr);
+    column-gap: calc(var(--gap) * 1.4);
+    align-items: baseline;
+    padding: 26px 0;
+    border-top: 1px solid color-mix(in oklab, currentColor 22%, transparent);
+  }
+
+  /* Quiet rows: the question in body weight, the answer muted. */
+  .st-faq-row dt {
+    font-size: var(--t-lede);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  .st-faq-row dd {
+    margin: 0;
+    font-size: var(--t-body);
+    line-height: 1.35;
+    color: color-mix(in oklab, currentColor 72%, transparent);
+  }
+
+  /* The focal row: the hardest question, a size up, in the accent. */
+  .st-faq-row.is-focus { padding: 40px 0 44px; }
+
+  .st-faq-row.is-focus dt {
+    font-size: calc(64px * var(--display-scale));
+    font-weight: var(--display-weight);
+    line-height: min(var(--display-line), 1.02);
+    letter-spacing: var(--display-tracking);
+    color: var(--hl-color);
+  }
+
+  .st-faq.has-hl .st-faq-row.is-focus dt { color: var(--headline-color); }
+
+  .st-faq-row.is-focus dd {
+    font-size: var(--t-lede);
+    line-height: 1.3;
+    color: inherit;
+  }
+
+  :global(.tone-accent) .st-faq-row.is-focus dt { color: var(--on-accent); }
+
+  /* Phone: each row stacks, question over answer. */
+  @media (max-width: 799px) {
+    .st-faq {
+      grid-template-rows: auto;
+      align-content: start;
+      row-gap: calc(var(--gap) * 1.2);
+    }
+
+    .st-faq-head {
+      max-width: none;
+      font-size: var(--t-display);
+    }
+
+    .st-faq-list { align-self: start; }
+
+    .st-faq-row,
+    .st-faq-row.is-focus {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: 4px;
+      padding: 12px 0;
+    }
+
+    .st-faq-row dt { font-size: var(--t-body); }
+    .st-faq-row.is-focus dt { font-size: var(--t-title); }
+    .st-faq-row.is-focus dd { font-size: var(--t-body); }
+  }
+
+  /* PDF and every static render: every answer shows, nothing waits. */
+  :global(html.is-static) .st-faq .rise {
+    opacity: 1;
+    transform: none;
+  }
+</style>

@@ -1,0 +1,251 @@
+---
+/**
+ * big-number-number-context: one figure, drawn against the figure it beats.
+ *
+ * The headline and one line on the left. On the right, the figure fills a
+ * square of the accent; beside it, bottom-aligned, a second square drawn to
+ * true scale by area for the figure it's measured against (the rival, last
+ * year, the industry), with that figure and its label under it. The gap
+ * between the two squares is the point, so the figure needs no adjective. The
+ * big square is the focal element; the small one is outlined and quiet.
+ */
+import Slide from '../../src/components/Slide.astro';
+import CountUp from '../../src/components/motion/CountUp.astro';
+import { figureEm, fitType, splitHl, unitScale, type SlideBase } from '../lib';
+
+interface Props extends SlideBase {
+  /** The point, in a whole sentence that sets the two figures against each other. 14 words or fewer. */
+  headline: string;
+  /** One phrase of the headline, word for word, in the accent. */
+  hl?: string;
+  /** One line under the headline that adds a fact: the source's scope, the period. 20 words or fewer. */
+  caption?: string;
+  /** The figure as written, digits only: "41", "4.2", "1,186". The larger of the two. */
+  number: string;
+  /** Set before both figures, smaller: "$". */
+  prefix?: string;
+  /** Set after both figures: "%", "x", or a short word ("min"). */
+  unit?: string;
+  /** What the figure measures, inside its square at the foot. 32 characters or fewer. */
+  measures: string;
+  /** The figure it's measured against, in the same unit, and what that is: { number: "6", label: "Northline pilot crews" }. */
+  context: { number: string; label: string };
+  /** Count up to the figure as the slide enters. Default true when the figure is a plain number. */
+  count?: boolean;
+}
+
+const { id, label = 'Big number', tone = 'paper', notes, brand, headline, hl, caption, number, prefix = '', unit = '', measures, context, count } = Astro.props;
+const where = `big-number-number-context "${id}"`;
+const value = (s: string) => Number(s.replace(/,/g, ''));
+const a = value(number);
+const b = value(context?.number ?? '');
+if (!Number.isFinite(a) || a <= 0) throw new Error(`${where}: number "${number}" isn't a positive figure; write digits only, the unit goes in unit.`);
+if (!Number.isFinite(b) || b < 0) throw new Error(`${where}: context.number "${context?.number}" isn't a figure; digits only, in the same unit as number.`);
+if (b > a) throw new Error(`${where}: the context (${context.number}) is bigger than the figure (${number}); this layout draws the figure as the bigger square. Swap them, or use stats-hero-row.`);
+if (measures.length > 32) throw new Error(`${where}: measures is ${measures.length} characters; 32 or fewer fit the square's foot.`);
+if (context.label.length > 40) throw new Error(`${where}: context.label is ${context.label.length} characters; 40 or fewer.`);
+const [before, phrase, after] = splitHl(headline, hl, where);
+const plain = /^\d+(\.\d+)?$/.test(number);
+const counts = (count ?? true) && plain;
+const decimals = plain && number.includes('.') ? number.split('.')[1]!.length : 0;
+
+// The squares, by area: the context's side is the figure's times the square root of their ratio.
+const root = Math.sqrt(b / a);
+const exhibit = 900;
+const side = Math.round(Math.min(620, (exhibit - 48) / (1 + root)));
+const small = Math.max(4, Math.round(side * root));
+const sidePhone = Math.round(Math.min(220, (330 - 16) / (1 + root)));
+const smallPhone = Math.max(3, Math.round(sidePhone * root));
+const em = figureEm(number, prefix, unit);
+const fig = Math.round(Math.min(side * 0.5, (side - 88) / em));
+const figPhone = Math.round(Math.min(sidePhone * 0.5, (sidePhone - 36) / em));
+const head = fitType(headline.length, { width: 540, lines: 3, min: 60, max: 104 });
+const headPhone = fitType(headline.length, { width: 330, lines: 4, min: 26, max: 40 });
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <div
+    class="st-ctx"
+    style={`--head: ${head}px; --head-phone: ${headPhone}px; --side: ${side}px; --small: ${small}px; --side-phone: ${sidePhone}px; --small-phone: ${smallPhone}px; --fig: ${fig}px; --fig-phone: ${figPhone}px; --unit: ${unitScale(unit)}em`}>
+    <div class="st-ctx-text">
+      <h2 data-fit="3 4" class="display st-ctx-head rise">
+        <slot name="headline">{before}{phrase && <span class="hl">{phrase}</span>}{after}</slot>
+      </h2>
+      {caption && <p class="st-ctx-cap rise" style="--d: 120ms">{caption}</p>}
+    </div>
+    <figure class="st-ctx-fig">
+      <div class="st-ctx-big rise" style="--d: 180ms">
+        <p class="st-ctx-n display">
+          {prefix && <span class="st-ctx-pre">{prefix}</span>}
+          {counts ? <CountUp to={Number(number)} decimals={decimals} /> : <span>{number}</span>}
+          {unit && <span class:list={['st-ctx-unit', { 'is-word': [...unit].length > 1 }]}>{unit}</span>}
+        </p>
+        <p class="st-ctx-label">{measures}</p>
+      </div>
+      <span class="st-ctx-square rise" style="--d: 520ms" aria-hidden="true"></span>
+      <figcaption class="st-ctx-small rise" style="--d: 600ms">
+        <b>{prefix}{context.number}{unit && ([...unit].length > 1 ? ` ${unit}` : unit)}</b>
+        <span>{context.label}</span>
+      </figcaption>
+    </figure>
+  </div>
+</Slide>
+
+<style>
+  .st-ctx {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: calc(var(--gap) * 1.4);
+    align-items: center;
+  }
+
+  .st-ctx-head {
+    font-size: calc(var(--head) * var(--display-scale));
+    line-height: min(var(--display-line), 1);
+  }
+
+  .st-ctx-head .hl { white-space: nowrap; }
+
+  .st-ctx-cap {
+    margin-top: calc(var(--gap) * 0.7);
+    max-width: 600px;
+    font-size: var(--t-lede);
+    line-height: 1.3;
+    color: color-mix(in oklab, currentColor 74%, transparent);
+    text-wrap: pretty;
+  }
+
+  /* Two squares on one baseline, the other figure's caption under its square. */
+  .st-ctx-fig {
+    display: grid;
+    grid-template-columns: var(--side) max(var(--small), 220px);
+    grid-template-rows: auto auto;
+    column-gap: 48px;
+    row-gap: 22px;
+    align-items: end;
+  }
+
+  /* The focal element: the figure filling its square, in the accent. */
+  .st-ctx-big {
+    grid-column: 1;
+    grid-row: 1;
+    width: var(--side);
+    height: var(--side);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 40px 44px;
+    /* The kit's contrast-safe fill: small text on the accent itself can fall under 4.5:1 (MMA's pink). */
+    background: var(--accent-fill, var(--accent));
+    color: var(--on-accent-fill, var(--on-accent));
+    border-radius: min(var(--radius), 12px);
+    box-shadow: var(--shadow-card);
+  }
+
+  :global(.tone-accent) .st-ctx-big {
+    background: var(--night);
+    color: var(--on-night);
+  }
+
+  .st-ctx-n {
+    display: flex;
+    align-items: baseline;
+    font-size: calc(var(--fig) * var(--display-scale));
+    line-height: 0.82;
+    letter-spacing: -0.045em;
+    font-variant-numeric: lining-nums tabular-nums;
+    white-space: nowrap;
+    margin-left: -0.03em;
+  }
+
+  .st-ctx-pre {
+    align-self: flex-start;
+    font-size: 0.5em;
+    margin: 0.04em 0.04em 0 0;
+  }
+
+  .st-ctx-unit { font-size: var(--unit); margin-left: 0.02em; }
+  .st-ctx-unit.is-word { margin-left: 0.12em; letter-spacing: -0.02em; }
+
+  .st-ctx-label {
+    font-family: var(--font-mono);
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: var(--caps-tracking, 0.12em);
+    text-transform: var(--label-case, uppercase);
+    line-height: 1.3;
+  }
+
+  /* Quiet: the other figure's square at true scale, outlined, with its value and label under it. */
+  .st-ctx-square {
+    grid-column: 2;
+    grid-row: 1;
+    display: block;
+    width: var(--small);
+    height: var(--small);
+    background: color-mix(in oklab, currentColor 12%, transparent);
+    border: 2px solid color-mix(in oklab, currentColor 64%, transparent);
+    border-radius: min(var(--radius), 6px);
+  }
+
+  .st-ctx-small {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: start;
+    display: grid;
+    gap: 6px;
+  }
+
+  .st-ctx-small b {
+    font-family: var(--font-display);
+    font-size: var(--t-lede);
+    font-weight: var(--display-weight);
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .st-ctx-small span {
+    font-size: var(--t-label);
+    line-height: 1.3;
+    color: color-mix(in oklab, currentColor 72%, transparent);
+  }
+
+  :global(.tone-ink) .st-ctx-head { letter-spacing: calc(var(--display-tracking) * 0.85); }
+
+  /* Phone: headline, then the two squares at the phone's width, still to scale. */
+  @media (max-width: 799px) {
+    .st-ctx {
+      grid-template-columns: minmax(0, 1fr);
+      align-content: start;
+      row-gap: calc(var(--gap) * 1.5);
+    }
+
+    .st-ctx-head { font-size: calc(var(--head-phone) * var(--display-scale)); }
+    .st-ctx-cap { display: none; }
+    .st-ctx-fig {
+      grid-template-columns: var(--side-phone) minmax(0, 1fr);
+      column-gap: 16px;
+      row-gap: 10px;
+    }
+
+    .st-ctx-big {
+      width: var(--side-phone);
+      height: var(--side-phone);
+      padding: 16px 18px;
+    }
+
+    .st-ctx-n { font-size: calc(var(--fig-phone) * var(--display-scale)); }
+    .st-ctx-label { font-size: 13px; }
+    .st-ctx-square { width: var(--small-phone); height: var(--small-phone); border-width: 1.5px; }
+    .st-ctx-small { gap: 2px; }
+    .st-ctx-small span { font-size: 13px; }
+  }
+
+  /* PDF and every static render: CountUp prints the final figure; both squares in place. */
+  :global(html.is-static) .st-ctx .rise {
+    opacity: 1;
+    transform: none;
+  }
+</style>

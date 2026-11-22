@@ -168,6 +168,7 @@ svg {
   --accent: var(--accent-on-night);
   --headline-color: var(--headline-on-night);
   --hl-color: var(--hl-on-night);
+  --hl-text: var(--hl-on-night);
 }
 .tone-accent { background: var(--accent); color: var(--on-accent); }
 
@@ -175,8 +176,8 @@ svg {
    when it has them, and fall back to tints of its own roles when it doesn't,
    so any brand gets a coherent set. Text stays ink; the accent phrase adapts. */
 .tone-yellow { background: var(--c-yellow, var(--highlight)); }
-.tone-cyan { background: var(--c-cyan, color-mix(in oklab, var(--accent-2) 30%, var(--paper))); --hl-color: var(--accent-dark); }
-.tone-pink { background: var(--c-pink, color-mix(in oklab, var(--accent) 28%, var(--paper))); --hl-color: var(--accent-dark); }
+.tone-cyan { background: var(--c-cyan, color-mix(in oklab, var(--accent-2) 30%, var(--paper))); --hl-color: var(--accent-dark); --hl-text: var(--accent-dark); }
+.tone-pink { background: var(--c-pink, color-mix(in oklab, var(--accent) 28%, var(--paper))); --hl-color: var(--accent-dark); --hl-text: var(--accent-dark); }
 
 .slide-num {
   position: absolute;
@@ -199,7 +200,7 @@ svg {
   font-size: var(--t-label);
   font-weight: 600;
   letter-spacing: 0.14em;
-  text-transform: uppercase;
+  text-transform: var(--label-case, uppercase);
 }
 
 .display {
@@ -226,7 +227,7 @@ svg {
   font-family: var(--font-mono);
   font-size: var(--t-fine);
   letter-spacing: 0.08em;
-  text-transform: uppercase;
+  text-transform: var(--label-case, uppercase);
   opacity: 0.55;
 }
 
@@ -258,7 +259,7 @@ svg {
   font-size: var(--t-label);
   font-weight: 600;
   letter-spacing: 0.08em;
-  text-transform: uppercase;
+  text-transform: var(--label-case, uppercase);
 }
 
 /* Window chrome for screenshots and HTML mockups. */

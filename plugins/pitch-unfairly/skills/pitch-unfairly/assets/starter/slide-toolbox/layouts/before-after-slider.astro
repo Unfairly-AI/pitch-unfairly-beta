@@ -1,0 +1,418 @@
+---
+/**
+ * before-after-slider: one frame, two states, and a divider to drag between them.
+ *
+ * The headline across the top. Below it a wide frame holds the before and the
+ * after as two layers, cut by a vertical divider: the before shows left of it,
+ * the after right of it. Each side is a figure (the measure that changed, set
+ * at the largest size half the frame allows) or an image (two photographs or
+ * screenshots of the same thing, framed the same). The before is faded; the
+ * after carries the accent.
+ *
+ * Drag anywhere on the frame, or focus the handle under the divider and use
+ * the arrow keys (Home and End jump to either side). As the slide enters the
+ * divider sweeps in from the right, revealing the after. Resting, the PDF and
+ * every static render show the frame split at `start`, both sides readable;
+ * a figure's before sits at the left edge and its after at the right, so the
+ * split shows both whole. On a phone the two sides stack, with no divider.
+ */
+import Slide from '../../src/components/Slide.astro';
+import { figureEm, fitType, splitHl, type SlideBase } from '../lib';
+
+type Side = {
+  /** A short label for the side ("Today", "With Northline"), 24 characters or fewer. */
+  label: string;
+  /** The figure for this side as written: "5:40pm", "38", "$12k". Use figure or src on both sides. */
+  figure?: string;
+  /** What the figure measures, one line, 56 characters or fewer. Figures only. */
+  caption?: string;
+  /** An image of this side (import it, or a path under public/). Both images are framed the same. */
+  src?: string;
+  /** The image's alt text. Required with src. */
+  alt?: string;
+};
+
+interface Props extends SlideBase {
+  /** What changed, one whole sentence, 12 words or fewer. */
+  headline: string;
+  /** One phrase of the headline, word for word, in the accent. Then the after's figure takes the ink. */
+  hl?: string;
+  /** The old state: label, then a figure and caption, or an image. */
+  before: Side;
+  /** The new state, the same kind as before. */
+  after: Side;
+  /** Where the divider rests, as the percent of the frame showing the before. Default 50. */
+  start?: number;
+}
+
+const { id, label = 'Before and after', tone = 'paper', notes, brand, headline, hl, before, after, start = 50 } = Astro.props;
+const where = `before-after-slider "${id}"`;
+const sides = [['before', before], ['after', after]] as const;
+for (const [name, s] of sides) {
+  if (!s?.label) throw new Error(`${where}: ${name} needs a label.`);
+  if (s.label.length > 24) throw new Error(`${where}: ${name}.label "${s.label}" is ${s.label.length} characters; 24 or fewer.`);
+  if (!s.figure === !s.src) throw new Error(`${where}: ${name} takes a figure or an image (src), one of the two.`);
+  if (s.src && s.caption) throw new Error(`${where}: ${name}.caption goes with a figure; an image says it in its alt and the label.`);
+  if (s.src && !s.alt) throw new Error(`${where}: ${name}.src needs its alt text.`);
+  if (s.figure && s.figure.length > 8) throw new Error(`${where}: ${name}.figure "${s.figure}" is ${s.figure.length} characters; 8 or fewer, so it reads at poster size. Move the words to the caption.`);
+  if (s.caption && s.caption.length > 56) throw new Error(`${where}: ${name}.caption is ${s.caption.length} characters; 56 or fewer.`);
+}
+if (!before.src !== !after.src) throw new Error(`${where}: both sides are figures or both are images; a figure beside a photo doesn't compare.`);
+if (!(start >= 0 && start <= 100)) throw new Error(`${where}: start is a percent, 0 to 100 (got ${start}).`);
+const images = !!before.src;
+const [pre, phrase, post] = splitHl(headline, hl, where);
+const head = fitType(headline.length, { width: 1500, lines: 2, min: 76, max: 112 });
+// Each figure gets half the frame on the stage, the phone's width when stacked.
+const em = Math.max(figureEm(before.figure ?? '0'), figureEm(after.figure ?? '0'));
+const fig = Math.max(120, Math.min(260, Math.floor(700 / em)));
+const figPhone = Math.max(48, Math.min(96, Math.floor(300 / em)));
+const name = `${before.label} / ${after.label}`;
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <div class:list={['st-sl', images ? 'is-images' : 'is-figures', { 'has-hl': !!phrase }]} data-start={start} style={`--p: ${start}%; --head: ${head}px; --fig: ${fig}px; --fig-phone: ${figPhone}px`}>
+    <h2 data-fit="2 4" class="display st-sl-head rise">
+      <slot name="headline">{pre}{phrase && <span class="hl">{phrase}</span>}{post}</slot>
+    </h2>
+    <div class="st-sl-frame rise" style="--d: 160ms">
+      <div class="st-sl-labels">
+        {sides.map(([, s]) => <p class="st-sl-label">{s.label}</p>)}
+      </div>
+      {sides.map(([side, s]) => (
+        <div class={`st-sl-layer is-${side}`}>
+          {s.src && <img src={s.src} alt={s.alt} />}
+          <p class="st-sl-label is-own">{s.label}</p>
+          {s.figure && (
+            <div class="st-sl-fig">
+              <p class="st-sl-n display">{s.figure}</p>
+              {s.caption && <p class="st-sl-cap is-own">{s.caption}</p>}
+            </div>
+          )}
+        </div>
+      ))}
+      {!images && (
+        <div class="st-sl-caps">
+          {sides.map(([side, s]) => s.caption && <p class={`st-sl-cap is-${side}`}>{s.caption}</p>)}
+        </div>
+      )}
+      <span class="st-sl-line" aria-hidden="true"></span>
+      <span class="st-sl-knob" role="slider" tabindex="0" aria-label={name} aria-valuemin="0" aria-valuemax="100" aria-valuenow={start}>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6 L3 12 L9 18 M15 6 L21 12 L15 18" /></svg>
+      </span>
+    </div>
+  </div>
+</Slide>
+
+<script>{
+  const ease = (t: number) => 1 - Math.pow(1 - t, 4);
+  for (const root of document.querySelectorAll<HTMLElement>('.st-sl')) {
+    const frame = root.querySelector<HTMLElement>('.st-sl-frame')!;
+    const knob = root.querySelector<HTMLElement>('.st-sl-knob')!;
+    const start = Number(root.dataset.start);
+    let p = start;
+    let touched = false;
+    let frameId = 0;
+    const set = (v: number) => {
+      p = Math.max(0, Math.min(100, v));
+      root.style.setProperty('--p', `${p}%`);
+      knob.setAttribute('aria-valuenow', String(Math.round(p)));
+    };
+    const fromPointer = (e: PointerEvent) => {
+      const box = frame.getBoundingClientRect();
+      set(((e.clientX - box.left) / box.width) * 100);
+    };
+    let dragging = false;
+    frame.addEventListener('pointerdown', (e) => {
+      if (matchMedia('(max-width: 799px)').matches) return;
+      touched = true;
+      cancelAnimationFrame(frameId);
+      dragging = true;
+      frame.setPointerCapture(e.pointerId);
+      fromPointer(e);
+      knob.focus({ preventScroll: true });
+    });
+    frame.addEventListener('pointermove', (e) => dragging && fromPointer(e));
+    frame.addEventListener('pointerup', () => (dragging = false));
+    frame.addEventListener('pointercancel', () => (dragging = false));
+    // A drag across the frame is the slider's, not a swipe to the next slide.
+    for (const type of ['touchstart', 'touchend'] as const) frame.addEventListener(type, (e) => e.stopPropagation(), { passive: true });
+    knob.addEventListener('keydown', (e) => {
+      const step = { ArrowLeft: -5, ArrowDown: -5, ArrowRight: 5, ArrowUp: 5, PageDown: -25, PageUp: 25 }[e.key];
+      if (step !== undefined) set(p + step);
+      else if (e.key === 'Home') set(0);
+      else if (e.key === 'End') set(100);
+      else return;
+      touched = true;
+      cancelAnimationFrame(frameId);
+      e.preventDefault();
+      e.stopPropagation();
+    });
+    // The showpiece: the divider sweeps in from the right edge, revealing the after.
+    root.closest('.slide')?.addEventListener('deck:enter', () => {
+      if ((window as any).deckStill?.() || touched) return;
+      const from = 100;
+      const t0 = performance.now() + 350;
+      const tick = (now: number) => {
+        const t = Math.min(1, Math.max(0, (now - t0) / 1100));
+        set(from + (start - from) * ease(t));
+        if (t < 1) frameId = requestAnimationFrame(tick);
+      };
+      frameId = requestAnimationFrame(tick);
+    });
+  }
+}</script>
+
+<style>
+  .st-sl {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    row-gap: calc(var(--gap) * 0.9);
+  }
+
+  .st-sl-head {
+    max-width: 1500px;
+    font-size: calc(var(--head) * var(--display-scale));
+  }
+
+  .st-sl-head .hl { white-space: nowrap; }
+
+  .st-sl-frame {
+    position: relative;
+    min-height: 0;
+    overflow: hidden;
+    border-radius: var(--radius);
+    border: 1px solid color-mix(in oklab, currentColor 18%, transparent);
+    cursor: ew-resize;
+    touch-action: pan-y;
+    user-select: none;
+  }
+
+  /* Both layers fill the frame; the divider at --p cuts the before off on the
+     right and the after on the left. */
+  .st-sl-layer {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 110px 56px 186px;
+  }
+
+  .st-sl-layer.is-before {
+    clip-path: inset(0 calc(100% - var(--p)) 0 0);
+    background: color-mix(in oklab, currentColor 7%, var(--paper));
+    color: var(--ink);
+  }
+
+  .st-sl-layer.is-after {
+    clip-path: inset(0 0 0 var(--p));
+    align-items: flex-end;
+    text-align: right;
+    background: var(--paper);
+    color: var(--ink);
+  }
+
+  /* The labels: one row across the frame's top, above both layers, read
+     before either figure. On a phone each layer shows its own instead. */
+  .st-sl-labels {
+    position: absolute;
+    z-index: 1;
+    top: 44px;
+    left: 56px;
+    right: 56px;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+    color: var(--ink);
+  }
+
+  .is-images .st-sl-labels { top: 32px; left: 32px; right: 32px; }
+  .st-sl-label.is-own { display: none; }
+
+  .st-sl-label {
+    position: relative;
+    font-family: var(--font-mono);
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: var(--caps-tracking, 0.12em);
+    text-transform: var(--label-case, uppercase);
+    color: color-mix(in oklab, currentColor 68%, transparent);
+  }
+
+  .st-sl-fig {
+    margin-top: auto;
+  }
+
+  .st-sl-n {
+    font-size: calc(var(--fig) * var(--display-scale));
+    line-height: 0.86;
+    letter-spacing: -0.04em;
+    font-variant-numeric: lining-nums tabular-nums;
+    white-space: nowrap;
+  }
+
+  .is-before .st-sl-n { color: color-mix(in oklab, currentColor 50%, transparent); }
+
+  /* The focal element: the after's figure, in the slide's one accent. */
+  .is-after .st-sl-n { color: var(--accent-text, var(--accent)); }
+  .st-sl.has-hl .is-after .st-sl-n { color: var(--ink); }
+
+  .st-sl-cap {
+    margin-top: 22px;
+    font-size: var(--t-body);
+    color: color-mix(in oklab, currentColor 72%, transparent);
+  }
+
+  .st-sl-cap.is-after { color: var(--ink); font-weight: 600; }
+
+  /* The captions: one row under both figures, each cut by the divider like its
+     layer, so the page reads the figures before the captions. */
+  .st-sl-caps {
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    right: 0;
+    bottom: 120px;
+    height: 44px;
+    color: var(--ink);
+    pointer-events: none;
+  }
+
+  .st-sl-caps .st-sl-cap {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    padding: 0 56px;
+  }
+
+  .st-sl-caps .is-before { clip-path: inset(0 calc(100% - var(--p)) 0 0); }
+  .st-sl-caps .is-after { clip-path: inset(0 0 0 var(--p)); text-align: right; }
+  .st-sl-cap.is-own { display: none; }
+
+  /* Images fill their layer; the label sits on a chip so it reads on any photo. */
+  .st-sl-layer img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+  }
+
+  .is-images .st-sl-layer { padding: 32px; }
+  .is-images .st-sl-layer .st-sl-label { color: var(--ink); }
+
+  .is-images .st-sl-label {
+    padding: 10px 16px;
+    border-radius: var(--radius);
+    background: var(--paper);
+    color: var(--ink);
+  }
+
+  .is-images .is-before img { filter: grayscale(1); }
+
+  .st-sl-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--p);
+    width: 3px;
+    margin-left: -1.5px;
+    background: var(--ink);
+    pointer-events: none;
+    color: var(--ink);
+  }
+
+  /* The handle sits in the frame's foot, below every word, so it never covers one. */
+  .st-sl-knob {
+    position: absolute;
+    left: clamp(36px, var(--p), calc(100% - 36px));
+    bottom: 28px;
+    display: grid;
+    place-items: center;
+    width: 72px;
+    height: 72px;
+    margin-left: -36px;
+    border-radius: 50%;
+    background: var(--accent-fill, var(--accent));
+    color: var(--on-accent-fill, var(--on-accent));
+    cursor: ew-resize;
+    transition: transform var(--dur-hover) var(--ease-hover);
+  }
+
+  .st-sl-knob:hover { transform: scale(1.06); }
+
+  .st-sl-knob:focus-visible {
+    outline: 3px solid var(--ink);
+    outline-offset: 4px;
+  }
+
+  .st-sl-knob svg {
+    width: 32px;
+    height: 32px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* Phone: the two sides stack, each whole; no divider to drag. */
+  @media (max-width: 799px) {
+    .st-sl {
+      grid-template-rows: auto;
+      align-content: start;
+      row-gap: calc(var(--gap) * 1.2);
+    }
+
+    .st-sl-head {
+      max-width: none;
+      font-size: var(--t-display);
+    }
+
+    .st-sl-frame {
+      display: grid;
+      overflow: visible;
+      border: 0;
+      cursor: auto;
+      gap: 12px;
+    }
+
+    .st-sl-layer,
+    .st-sl-layer.is-before,
+    .st-sl-layer.is-after {
+      position: relative;
+      inset: auto;
+      clip-path: none;
+      align-items: flex-start;
+      text-align: left;
+      padding: 18px 18px 20px;
+      border-radius: var(--radius);
+      gap: 18px;
+    }
+
+    .st-sl-layer.is-after { border: 1px solid color-mix(in oklab, currentColor 22%, transparent); }
+    .is-images .st-sl-layer { aspect-ratio: 4 / 3; padding: 12px; }
+    .st-sl-n { font-size: calc(var(--fig-phone) * var(--display-scale)); }
+    .st-sl-cap { margin-top: 10px; font-size: var(--t-body); }
+
+    .st-sl-line,
+    .st-sl-knob,
+    .st-sl-labels { display: none; }
+
+    .st-sl-caps { display: none; }
+    .st-sl-label.is-own { display: block; align-self: flex-start; }
+    .st-sl-cap.is-own { display: block; }
+    .is-after .st-sl-cap.is-own { color: var(--ink); font-weight: 600; }
+  }
+
+  /* PDF and every static render: the frame rests split at start, both sides
+     whole; the handle is a control, so it doesn't print. */
+  :global(html.is-static) .st-sl .rise {
+    opacity: 1;
+    transform: none;
+  }
+
+  :global(html.is-static) .st-sl-knob { display: none; }
+</style>

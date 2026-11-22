@@ -38,6 +38,7 @@
     "site:variants": "node bin/site-variants.mjs",
     "site:gallery": "node bin/brand-apply.mjs && node bin/site-gallery.mjs",
     "site:webflow": "node bin/site-webflow.mjs",
+    "deck:gallery": "node bin/brand-apply.mjs && node bin/deck-gallery.mjs",
     "social:new": "node bin/social-new.mjs",
     "social:formats": "node bin/social-formats.mjs",
     "social:check": "node bin/social-check.mjs",

@@ -1,0 +1,232 @@
+---
+/**
+ * comparison-two-column: the options they're weighing, and the one that wins.
+ *
+ * The headline across the top. Below it, two columns of unequal weight: on
+ * the left the alternatives, quiet and small, each name struck through with
+ * the one reason it falls short; on the right the choice, the slide's one
+ * card, its name set large with one line saying why it wins, raised with the
+ * focal shadow and, if the brand plays, a stamp on its corner. The left
+ * column is evidence; the right is the point.
+ */
+import Slide from '../../src/components/Slide.astro';
+import { fitType, splitHl, type SlideBase } from '../lib';
+
+interface Props extends SlideBase {
+  /** The verdict, one whole sentence, 12 words or fewer. */
+  headline: string;
+  /** One phrase of the headline, word for word, in the accent. Then the choice's label goes quiet. */
+  hl?: string;
+  /** The alternatives, one to three: each a short name (32 characters or fewer), one line of what it is (64 or fewer, left off on a phone), and why it falls short (40 or fewer). */
+  options: { name: string; line?: string; reason: string }[];
+  /** The choice: a short label ("Option C", "Northline"), its name (40 characters or fewer, set large) and one line on why it wins (90 or fewer). */
+  choice: { label?: string; name: string; line: string };
+  /** A one- or two-word stamp on the choice's corner ("Recommended"), 16 characters or fewer. Skip it for a serious brand. */
+  stamp?: string;
+}
+
+const { id, label = 'Comparison', tone = 'paper', notes, brand, headline, hl, options = [], choice, stamp } = Astro.props;
+const where = `comparison-two-column "${id}"`;
+if (options.length < 1 || options.length > 3) throw new Error(`${where}: one to three options beside the choice (got ${options.length}); a longer field is comparison-one-of-many.`);
+for (const o of options) {
+  if (o.name.length > 32) throw new Error(`${where}: option "${o.name}" is ${o.name.length} characters; a name is 32 or fewer.`);
+  if ((o.line ?? '').length > 64) throw new Error(`${where}: option "${o.name}" line is ${o.line!.length} characters; 64 or fewer.`);
+  if (!o.reason || o.reason.length > 40) throw new Error(`${where}: option "${o.name}" needs its reason, 40 characters or fewer ("Out of budget").`);
+}
+if (!choice?.name || !choice.line) throw new Error(`${where}: choice needs a name and its line.`);
+if (choice.name.length > 40) throw new Error(`${where}: choice.name is ${choice.name.length} characters; 40 or fewer.`);
+if (choice.line.length > 90) throw new Error(`${where}: choice.line is ${choice.line.length} characters; 90 or fewer. The rest goes in the notes.`);
+if (stamp && stamp.length > 16) throw new Error(`${where}: stamp "${stamp}" is ${stamp.length} characters; 16 or fewer.`);
+const [pre, phrase, post] = splitHl(headline, hl, where);
+const head = fitType(headline.length, { width: 1500, lines: 2, min: 76, max: 116 });
+const pick = fitType(choice.name.length, { width: 740, lines: 2, min: 64, max: 96 });
+const pickPhone = fitType(choice.name.length, { width: 300, lines: 3, min: 26, max: 38 });
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <div class:list={['st-two', { 'has-hl': !!phrase }]} style={`--head: ${head}px; --pick: ${pick}px; --pick-phone: ${pickPhone}px`}>
+    <h2 data-fit="2 4" class="display st-two-head rise">
+      <slot name="headline">{pre}{phrase && <span class="hl">{phrase}</span>}{post}</slot>
+    </h2>
+    <ul class="st-two-options">
+      {options.map((o, i) => (
+        <li class="rise" style={`--d: ${160 + i * 90}ms`}>
+          <p class="st-two-name"><s>{o.name}</s></p>
+          {o.line && <p class="st-two-line mobile-hide">{o.line}</p>}
+          <p class="st-two-reason">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6 L18 18 M18 6 L6 18" /></svg>
+            <span>{o.reason}</span>
+          </p>
+        </li>
+      ))}
+    </ul>
+    <div class="st-two-choice card pop" style="--d: 420ms; --r: 1deg">
+      {stamp && <span class="st-two-stamp pop" style="--d: 760ms; --r: -6deg">{stamp}</span>}
+      {choice.label && <p class="st-two-label">{choice.label}</p>}
+      <h3 class="display st-two-pick">{choice.name}</h3>
+      <p class="st-two-why">{choice.line}</p>
+    </div>
+  </div>
+</Slide>
+
+<style>
+  .st-two {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+    column-gap: calc(var(--gap) * 1.6);
+    align-items: end;
+  }
+
+  .st-two-head {
+    grid-column: 1 / -1;
+    align-self: start;
+    max-width: 1500px;
+    font-size: calc(var(--head) * var(--display-scale));
+  }
+
+  .st-two-head .hl { white-space: nowrap; }
+
+  /* The alternatives: no boxes, a hairline at the left of each, quiet type. */
+  .st-two-options {
+    display: grid;
+    gap: 34px;
+    padding-bottom: 8px;
+  }
+
+  .st-two-options li {
+    padding-left: 28px;
+    border-left: 1px solid color-mix(in oklab, currentColor 28%, transparent);
+  }
+
+  .st-two-name {
+    font-size: var(--t-lede);
+    font-weight: 600;
+    line-height: 1.15;
+    color: color-mix(in oklab, currentColor 70%, transparent);
+  }
+
+  .st-two-name s {
+    text-decoration-thickness: 2px;
+    text-decoration-color: color-mix(in oklab, currentColor 85%, transparent);
+  }
+
+  .st-two-line {
+    margin-top: 8px;
+    font-size: var(--t-body);
+    line-height: 1.3;
+    color: color-mix(in oklab, currentColor 70%, transparent);
+  }
+
+  .st-two-reason {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 12px;
+    font-family: var(--font-mono);
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: var(--caps-tracking, 0.12em);
+    text-transform: var(--label-case, uppercase);
+    color: color-mix(in oklab, currentColor 72%, transparent);
+  }
+
+  .st-two-reason svg {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 3;
+    stroke-linecap: round;
+  }
+
+  /* The focal element: the choice, the slide's one card. */
+  .st-two-choice {
+    position: relative;
+    padding: calc(var(--gap) * 1) calc(var(--gap) * 1.1) calc(var(--gap) * 1.1);
+    box-shadow: var(--shadow-focal, var(--shadow-card));
+    transform: rotate(calc(1deg * var(--tilt)));
+  }
+
+  .st-two-label {
+    font-family: var(--font-mono);
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: var(--caps-tracking, 0.12em);
+    text-transform: var(--label-case, uppercase);
+    color: var(--accent-text, var(--accent));
+  }
+
+  .st-two.has-hl .st-two-label { color: color-mix(in oklab, currentColor 66%, transparent); }
+
+  .st-two-pick {
+    margin-top: 18px;
+    font-size: calc(var(--pick) * var(--display-scale));
+    line-height: min(var(--display-line), 1);
+    color: var(--ink);
+  }
+
+  .st-two-why {
+    margin-top: 24px;
+    max-width: 34ch;
+    font-size: var(--t-lede);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  .st-two-stamp {
+    position: absolute;
+    right: -18px;
+    top: -26px;
+    padding: 10px 18px;
+    border: 3px solid currentColor;
+    border-radius: calc(var(--radius) * 0.5);
+    background: var(--paper);
+    color: var(--accent-text, var(--accent));
+    font-family: var(--font-mono);
+    font-size: var(--t-label);
+    font-weight: 700;
+    letter-spacing: var(--caps-tracking, 0.12em);
+    text-transform: var(--label-case, uppercase);
+    transform: rotate(calc(-6deg * var(--tilt)));
+  }
+
+  /* Phone: one column, the alternatives above the choice. */
+  @media (max-width: 799px) {
+    .st-two {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto;
+      align-content: start;
+      row-gap: calc(var(--gap) * 1.3);
+    }
+
+    .st-two-head {
+      max-width: none;
+      font-size: var(--t-display);
+    }
+
+    .st-two-head .hl { white-space: normal; }
+
+    .st-two-options { gap: 14px; padding-bottom: 0; }
+    .st-two-options li { padding-left: 14px; }
+    .st-two-name { font-size: var(--t-lede); }
+    .st-two-line { margin-top: 2px; font-size: var(--t-body); }
+    .st-two-reason { margin-top: 4px; gap: 6px; }
+    .st-two-reason svg { width: 12px; height: 12px; }
+    .st-two-choice { padding: 20px 18px 22px; }
+    .st-two-pick { margin-top: 8px; font-size: calc(var(--pick-phone) * var(--display-scale)); }
+    .st-two-why { margin-top: 10px; font-size: var(--t-body); }
+    .st-two-stamp { right: 10px; top: -16px; padding: 4px 8px; border-width: 2px; }
+  }
+
+  /* PDF and every static render: everything in place, the stamp on its corner. */
+  :global(html.is-static) .st-two .rise {
+    opacity: 1;
+    transform: none;
+  }
+
+  :global(html.is-static) .st-two .pop { opacity: 1; }
+</style>

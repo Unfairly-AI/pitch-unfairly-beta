@@ -3,6 +3,8 @@
 import '../brand/fonts';
 import '../brand/brand.css';
 import '../styles/deck.css';
+// Wireframe mode (src/styles/wire.css): greys and the system font in place of the kit.
+import '../styles/wire.css';
 import { brandName } from '../brand/assets';
 
 interface Props {
@@ -15,10 +17,12 @@ interface Props {
 // The company (the brand kit's name) is the PDF's Author; the story's Kernel,
 // from the built index.txt, is its Subject.
 const { title, description = '', keywords = '' } = Astro.props;
+// DECK_WIRE=1 on build or dev renders the deck as a wireframe (no brand).
+const wire = /^(1|true|yes|on)$/i.test(String(import.meta.env.DECK_WIRE ?? ''));
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class:list={[{ 'is-wire': wire }]}>
   <head>
     <meta charset="utf-8" />
     <script is:inline>
@@ -27,6 +31,8 @@ const { title, description = '', keywords = '' } = Astro.props;
       // slide and asks the frame for fullscreen.
       if (/[?&]pdf=1(&|$)/.test(location.search)) document.documentElement.classList.add('is-pdf', 'is-static');
       if (window.parent !== window) document.documentElement.classList.add('is-framed');
+      // ?wire=1 shows any build as a wireframe, the same as DECK_WIRE=1.
+      if (/[?&]wire=1(&|$)/.test(location.search)) document.documentElement.classList.add('is-wire');
       // Hide slides that haven't played yet, so content doesn't show and then
       // re-enter. Static renders and reduced motion skip this.
       if (!/[?&]pdf=1(&|$)/.test(location.search) && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -54,6 +60,7 @@ const { title, description = '', keywords = '' } = Astro.props;
     <aside class="deck-notes" id="deck-notes" hidden></aside>
 
     <script>
+      import { fitTextWhenReady } from '../scripts/fit-text.js';
       /*
         The deck scrolls like a website: every slide fills one screen and the
         page snaps between them, so a mouse wheel, trackpad, or swipe moves a
@@ -210,13 +217,17 @@ const { title, description = '', keywords = '' } = Astro.props;
       addEventListener('beforeprint', () => html.classList.add('is-static'));
       addEventListener('afterprint', () => !pdf && html.classList.remove('is-static'));
 
-      // The PDF exporter waits for fonts and every image before printing.
+      // The PDF exporter waits for fonts and every image before printing, and
+      // for the fitted headlines (data-fit) measured in the real fonts.
+      // Images first: a slide's overflow depends on them.
       Promise.all([
         document.fonts.ready,
         ...[...document.images].map((img) => (img.complete ? null : img.decode().catch(() => null))),
-      ]).then(() => {
-        (window as any).__deckReady = true;
-      });
+      ])
+        .then(() => fitTextWhenReady().catch(() => null))
+        .then(() => {
+          (window as any).__deckReady = true;
+        });
     </script>
 
     <style is:global>

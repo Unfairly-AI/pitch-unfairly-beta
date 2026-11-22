@@ -1,0 +1,186 @@
+---
+/**
+ * comparison-one-of-many: a field of look-alikes, and the one that stands out.
+ *
+ * The headline across the top, with at most one line under it. Below it, the
+ * field across the slide's full width: every alternative as the same neutral
+ * tile, and one tile, ours, filled with the accent and lifted.
+ * The sameness is the point, so the neutral tiles are equal on purpose; the
+ * one filled tile carries the slide. It pops in last.
+ */
+import Slide from '../../src/components/Slide.astro';
+import BrandMark from '../../src/components/BrandMark.astro';
+import { fitType, splitHl, type SlideBase } from '../lib';
+
+interface Props extends SlideBase {
+  /** The point, one whole sentence, 10 words or fewer (four lines on a phone). */
+  headline: string;
+  /** One phrase of the headline, word for word, in the accent. */
+  hl?: string;
+  /** One line under the headline (90 characters or fewer). Most slides have none. */
+  line?: string;
+  /** The look-alikes: 5 to 17 names, 20 characters or fewer each, each set on a neutral tile. */
+  many: string[];
+  /** Our name, 20 characters or fewer, set on the one filled tile. */
+  ours: string;
+  /** Where our tile sits in the field, counting from 0. Default: two-thirds of the way in. */
+  at?: number;
+  /** Show the brand's mark on our tile, above the name. Default false. */
+  mark?: boolean;
+}
+
+const { id, label = 'Comparison', tone = 'paper', notes, brand, headline, hl, line, many = [], ours, at, mark = false } = Astro.props;
+const where = `comparison-one-of-many "${id}"`;
+if (many.length < 5 || many.length > 17) throw new Error(`${where}: 5 to 17 look-alikes (got ${many.length}); fewer is comparison-two-column, more stops reading as a field.`);
+for (const n of [...many, ours]) if (!n || n.length > 20) throw new Error(`${where}: tile name "${n}" is ${n?.length ?? 0} characters; 1 to 20.`);
+if (line && line.length > 90) throw new Error(`${where}: line is ${line.length} characters; 90 or fewer.`);
+const total = many.length + 1;
+const pos = at ?? Math.floor(total * 0.66);
+if (pos < 0 || pos >= total) throw new Error(`${where}: at ${pos} is outside the field (0 to ${total - 1}).`);
+const tiles = [...many.slice(0, pos).map((n) => ({ n, ours: false })), { n: ours, ours: true }, ...many.slice(pos).map((n) => ({ n, ours: false }))];
+const cols = total <= 8 ? Math.ceil(total / 2) : 6;
+// The phone keeps nine tiles: ours and the first eight others.
+let kept = 0;
+const onPhone = tiles.map((t) => t.ours || kept++ < 8);
+const [pre, phrase, post] = splitHl(headline, hl, where);
+const head = fitType(headline.length, { width: 1500, lines: 2, min: 76, max: 112 });
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <div class="st-one" style={`--head: ${head}px; --cols: ${cols}`}>
+    <div class="st-one-side">
+      <h2 data-fit="2 4" class="display st-one-head rise">
+        <slot name="headline">{pre}{phrase && <span class="hl">{phrase}</span>}{post}</slot>
+      </h2>
+      {line && <p class="st-one-line rise" style="--d: 120ms">{line}</p>}
+    </div>
+    <ul class="st-one-field">
+      {tiles.map((t, i) => (
+        <li
+          class:list={['st-one-tile', t.ours ? 'is-ours pop' : 'rise', { 'mobile-hide': !onPhone[i] }]}
+          style={`--d: ${t.ours ? 120 + total * 40 + 200 : 120 + i * 40}ms; --r: -2deg`}>
+          {t.ours && mark && <BrandMark on="accent" brand={brand} height={40} />}
+          <span>{t.n}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Slide>
+
+<style>
+  .st-one {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    row-gap: calc(var(--gap) * 0.9);
+  }
+
+  .st-one-head {
+    max-width: 1500px;
+    font-size: calc(var(--head) * var(--display-scale));
+  }
+
+  .st-one-head .hl { white-space: nowrap; }
+
+  .st-one-line {
+    margin-top: calc(var(--gap) * 0.6);
+    font-size: var(--t-lede);
+    line-height: 1.3;
+    color: color-mix(in oklab, currentColor 72%, transparent);
+  }
+
+  /* The field: equal tiles in rows, each row standing on a hairline. */
+  .st-one-field {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    column-gap: 18px;
+    row-gap: 28px;
+    align-self: end;
+  }
+
+  .st-one-tile {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 12px;
+    aspect-ratio: 4 / 3;
+    padding: 18px 20px 20px;
+    border-radius: var(--radius);
+    background: color-mix(in oklab, currentColor 8%, transparent);
+    border: 1px solid color-mix(in oklab, currentColor 14%, transparent);
+  }
+
+  .st-one-tile span {
+    font-size: var(--t-label);
+    font-weight: 600;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+    color: color-mix(in oklab, currentColor 74%, transparent);
+  }
+
+  /* The focal element: ours, the one filled tile, lifted. */
+  .st-one-tile.is-ours {
+    background: var(--accent-fill, var(--accent));
+    border-color: transparent;
+    color: var(--on-accent-fill, var(--on-accent));
+    /* The card shadow, not the focal one: a focal shadow in the accent would double the tile. */
+    box-shadow: var(--shadow-card);
+    translate: 0 -14px;
+    transform: rotate(calc(-2deg * var(--tilt)));
+  }
+
+  .st-one-tile.is-ours span {
+    font-family: var(--font-display);
+    font-weight: var(--display-weight);
+    font-size: var(--t-label);
+    letter-spacing: -0.01em;
+    color: inherit;
+  }
+
+  .st-one-tile.is-ours :global(.brand-mark) { max-width: 100%; margin-bottom: auto; }
+
+  :global(.tone-accent) .st-one-tile.is-ours {
+    background: var(--paper);
+    color: var(--ink);
+  }
+
+  /* Phone: the headline above a three-across field of nine. */
+  @media (max-width: 799px) {
+    .st-one {
+      grid-template-rows: auto;
+      align-content: start;
+      row-gap: calc(var(--gap) * 1.4);
+    }
+
+    .st-one-head { max-width: none; font-size: var(--t-display); }
+    .st-one-head .hl { white-space: normal; }
+    .st-one-field { align-self: start; }
+    .st-one-line { margin-top: 10px; font-size: var(--t-body); }
+
+    .st-one-field {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      column-gap: 10px;
+      row-gap: 18px;
+    }
+
+    .st-one-tile {
+      aspect-ratio: 4 / 3;
+      padding: 8px 9px 9px;
+      gap: 6px;
+    }
+
+    .st-one-tile span,
+    .st-one-tile.is-ours span { font-size: var(--t-fine); }
+    .st-one-tile.is-ours { translate: 0 -6px; }
+  }
+
+  /* PDF and every static render: the field is laid out and ours is lifted. */
+  :global(html.is-static) .st-one .rise {
+    opacity: 1;
+    transform: none;
+  }
+
+  :global(html.is-static) .st-one .pop { opacity: 1; }
+</style>

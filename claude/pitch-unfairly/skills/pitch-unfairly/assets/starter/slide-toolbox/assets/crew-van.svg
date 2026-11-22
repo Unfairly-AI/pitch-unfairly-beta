@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" width="1200" height="1500" role="img" aria-label="Sample photo: a service van at a job with its side door open and parts on its shelves">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfd5dc"/><stop offset="1" stop-color="#e8ebee"/></linearGradient>
+    <linearGradient id="body" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f2f3f4"/><stop offset="1" stop-color="#cfd3d8"/></linearGradient>
+  </defs>
+  <rect width="1200" height="1500" fill="url(#sky)"/>
+  <rect x="0" y="300" width="1200" height="520" fill="#b8bec6"/>
+  <g fill="#a6adb6"><rect x="40" y="360" width="160" height="200"/><rect x="980" y="340" width="180" height="230"/></g>
+  <rect x="0" y="1180" width="1200" height="320" fill="#8e959e"/>
+  <rect x="0" y="1180" width="1200" height="14" fill="#a9afb7"/>
+  <rect x="90" y="560" width="1110" height="620" rx="40" fill="url(#body)"/>
+  <rect x="90" y="530" width="1110" height="40" rx="12" fill="#7d858f"/>
+  <g stroke="#6c747e" stroke-width="12"><line x1="160" y1="520" x2="1150" y2="520"/><line x1="200" y1="500" x2="200" y2="540"/><line x1="400" y1="500" x2="400" y2="540"/><line x1="600" y1="500" x2="600" y2="540"/><line x1="800" y1="500" x2="800" y2="540"/><line x1="1000" y1="500" x2="1000" y2="540"/></g>
+  <rect x="330" y="620" width="520" height="540" rx="10" fill="#3f464f"/>
+  <g fill="#5a626c"><rect x="350" y="700" width="480" height="14"/><rect x="350" y="840" width="480" height="14"/><rect x="350" y="980" width="480" height="14"/></g>
+  <g fill="#c2b49a"><rect x="370" y="630" width="110" height="70" rx="6"/><rect x="500" y="650" width="80" height="50" rx="6"/><rect x="620" y="770" width="150" height="70" rx="6"/><rect x="390" y="900" width="130" height="80" rx="6"/><rect x="560" y="920" width="90" height="60" rx="6"/></g>
+  <g fill="#8fa3b8"><rect x="680" y="640" width="120" height="60" rx="6"/><rect x="380" y="780" width="160" height="60" rx="6"/><rect x="690" y="910" width="110" height="70" rx="6"/></g>
+  <rect x="880" y="620" width="40" height="540" fill="#e0e3e7"/>
+  <rect x="950" y="640" width="210" height="200" rx="20" fill="#9aa4ae"/>
+  <g fill="#2a2f35"><circle cx="270" cy="1180" r="92"/><circle cx="1010" cy="1180" r="92"/></g>
+  <g fill="#7b838c"><circle cx="270" cy="1180" r="40"/><circle cx="1010" cy="1180" r="40"/></g>
+</svg>

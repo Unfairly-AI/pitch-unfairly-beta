@@ -1,0 +1,442 @@
+---
+/**
+ * demo-click-queue: clear a real queue, one decision at a time.
+ *
+ * The headline at the top left and a counter at its foot. On the right, the
+ * queue as a stack: the top card carries one item and its two decisions, the
+ * next two peek out under it. Approve and the counter goes up; skip and it
+ * doesn't; either way the next card comes up. When the queue is empty the
+ * stack becomes the record: the closing line and every item with its mark.
+ * The PDF prints that record with every item approved, so the slide's resting
+ * state is its outcome, not a button nobody can press.
+ */
+import Slide from '../../src/components/Slide.astro';
+import { fitType, splitHl, type SlideBase } from '../lib';
+
+interface Props extends SlideBase {
+  /** What clearing the queue proves, as a whole sentence. 12 words or fewer. */
+  headline: string;
+  /** One phrase of the headline, word for word, in the accent. */
+  hl?: string;
+  /** Two to six items, in the order they come up: a title (60 characters or fewer) and one line of why (80 or fewer). */
+  items: { title: string; detail?: string }[];
+  /** The approve button's label, in the product's words: "Approve". */
+  approve: string;
+  /** The skip button's label: "Skip". */
+  skip: string;
+  /** What the counter counts: "changes approved". */
+  counter: string;
+  /** The line when the queue is empty: "Today's board is set." */
+  done: string;
+  /** The label of a button that refills the queue. Leave it off to refill only when the slide comes round again. */
+  again?: string;
+}
+
+const { id, label = 'Demo', tone = 'warm', notes, brand, headline, hl, items, approve, skip, counter, done, again } = Astro.props;
+const where = `demo-click-queue "${id}"`;
+if (!items || items.length < 2 || items.length > 6) throw new Error(`${where}: two to six items (got ${items?.length ?? 0}); a queue of one isn't a queue, and more than six is a wait.`);
+items.forEach((it, i) => {
+  if (it.title.length > 60) throw new Error(`${where}: item ${i + 1}'s title is ${it.title.length} characters; 60 or fewer.`);
+  if (it.detail && it.detail.length > 80) throw new Error(`${where}: item ${i + 1}'s detail is ${it.detail.length} characters; one line of 80 or fewer.`);
+});
+for (const [k, v] of Object.entries({ approve, skip, counter, done })) if (!v) throw new Error(`${where}: ${k} is required; the layout types no words of its own.`);
+const [before, phrase, after] = splitHl(headline, hl, where);
+// Display type sets narrower than the estimate's average, and balanced lines leave room: the width is the column's plus a tenth.
+const head = fitType(headline.length, { width: 860, lines: 3, min: 60, max: 120, em: 0.62 });
+const phone = fitType(headline.length, { width: 330, lines: 3, min: 26, max: 40 });
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <div class="st-queue" style={`--head: ${head}px; --head-phone: ${phone}px; --total: ${items.length}`} data-total={items.length}>
+    <div class="st-queue-copy">
+      <h2 data-fit="3 3" class="display st-queue-head rise">
+        <slot name="headline">{before}{phrase && <span class="hl">{phrase}</span>}{after}</slot>
+      </h2>
+      <p class="st-queue-count rise" style="--d: 300ms">
+        <span class="st-queue-figure display" aria-live="polite">
+          <span class="st-queue-n is-live" data-queue="count" data-screen-only>{0}</span><span class="st-queue-n is-final">{items.length}</span><span class="st-queue-of">{items.length}</span>
+        </span>
+        <span class="st-queue-count-label">{counter}</span>
+      </p>
+    </div>
+
+    <div class="st-queue-stage rise" style="--d: 160ms">
+      <ol class="st-queue-stack">
+        {items.map((it, i) => (
+          <li class="st-queue-card" data-queue="card" style={`--k: ${i}`}>
+            <h3 class="st-queue-title">{it.title}</h3>
+            {it.detail && <p class="st-queue-detail">{it.detail}</p>}
+            <div class="st-queue-actions">
+              <button type="button" class="st-queue-btn is-approve" data-queue="approve">{approve}</button>
+              <button type="button" class="st-queue-btn is-skip" data-queue="skip" data-screen-only>{skip}</button>
+            </div>
+          </li>
+        ))}
+      </ol>
+
+      <div class="st-queue-done" data-queue="done">
+        <p class="st-queue-done-line display">{done}</p>
+        <ol class="st-queue-log">
+          {items.map((it) => (
+            <li class="is-approved" data-queue="log">
+              <svg class="st-queue-mark" viewBox="0 0 24 24" aria-hidden="true">
+                <path class="is-tick" d="M5 12.5l4.2 4.2L19 7" />
+                <path class="is-dash" d="M7 12h10" />
+              </svg>
+              <span class="st-queue-log-text">
+                <span>{it.title}</span>
+                {it.detail && <small>{it.detail}</small>}
+              </span>
+              <span class="st-queue-verdict"><span class="is-yes">{approve}</span><span class="is-no">{skip}</span></span>
+            </li>
+          ))}
+        </ol>
+        {again && <button type="button" class="st-queue-btn is-again" data-queue="again">{again}</button>}
+      </div>
+    </div>
+  </div>
+</Slide>
+
+<script>
+  for (const root of document.querySelectorAll<HTMLElement>('.st-queue')) {
+    const slide = root.closest('.slide');
+    const cards = [...root.querySelectorAll<HTMLElement>('[data-queue="card"]')];
+    const logs = [...root.querySelectorAll<HTMLElement>('[data-queue="log"]')];
+    const count = root.querySelector<HTMLElement>('[data-queue="count"]');
+    const donePanel = root.querySelector<HTMLElement>('[data-queue="done"]');
+    let at = 0;
+    let approved = 0;
+
+    // Only the top card's buttons can be reached; the cards under it are scenery.
+    const layout = (focus = false) => {
+      cards.forEach((card, i) => {
+        const k = i - at;
+        card.style.setProperty('--k', String(Math.max(k, 0)));
+        card.classList.toggle('is-top', k === 0);
+        card.classList.toggle('is-gone', k < 0);
+        card.classList.toggle('is-hidden', k > 2);
+        card.classList.toggle('is-deep', k === 2);
+        card.toggleAttribute('inert', k !== 0);
+      });
+      const finished = at >= cards.length;
+      root.classList.toggle('is-finished', finished);
+      donePanel?.toggleAttribute('inert', !finished);
+      // The live count is real text in an aria-live region, so a screen reader hears it go up.
+      // It is data-screen-only: the PDF prints the total in its place.
+      if (count) count.textContent = String(approved);
+      if (!focus) return;
+      const next = finished ? donePanel?.querySelector<HTMLElement>('button') : cards[at]?.querySelector<HTMLElement>('[data-queue="approve"]');
+      next?.focus({ preventScroll: true });
+    };
+
+    const decide = (ok: boolean) => {
+      if (at >= cards.length) return;
+      cards[at]!.classList.add(ok ? 'is-approved' : 'is-skipped');
+      logs[at]?.classList.toggle('is-approved', ok);
+      logs[at]?.classList.toggle('is-skipped', !ok);
+      if (ok) approved++;
+      at++;
+      layout(true);
+    };
+
+    const reset = (focus = false) => {
+      at = 0;
+      approved = 0;
+      cards.forEach((c) => c.classList.remove('is-approved', 'is-skipped'));
+      layout(focus);
+    };
+
+    root.addEventListener('click', (event) => {
+      const button = (event.target as HTMLElement).closest<HTMLElement>('[data-queue]');
+      const what = button?.dataset.queue;
+      if (what === 'approve') decide(true);
+      else if (what === 'skip') decide(false);
+      else if (what === 'again') reset(true);
+    });
+    slide?.addEventListener('deck:enter', () => reset());
+    root.classList.add('is-live');
+    reset();
+  }
+</script>
+
+<style>
+  .st-queue {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 760px;
+    column-gap: calc(var(--gap) * 1.6);
+  }
+
+  .st-queue-copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .st-queue-head {
+    max-width: 820px;
+    font-size: calc(var(--head) * var(--display-scale));
+  }
+
+  /* The counter: quiet support, set as a figure over its label. */
+  .st-queue-count {
+    display: grid;
+    gap: 10px;
+    padding-top: calc(var(--gap) * 0.5);
+    border-top: 1px solid color-mix(in oklab, currentColor 24%, transparent);
+    max-width: 520px;
+  }
+
+  .st-queue-figure {
+    font-size: var(--t-display);
+    line-height: 1;
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+
+  .st-queue-of {
+    margin-left: 0.08em;
+    font-size: 0.5em;
+    color: color-mix(in oklab, currentColor 50%, transparent);
+  }
+
+  .st-queue-of::before { content: '/'; margin-right: 0.06em; }
+
+  .st-queue-count-label {
+    font-family: var(--font-mono);
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: var(--caps-tracking, 0.12em);
+    text-transform: var(--label-case, uppercase);
+    color: color-mix(in oklab, currentColor 66%, transparent);
+  }
+
+  .st-queue-n.is-live { display: none; }
+  .st-queue.is-live .st-queue-n.is-live { display: inline; }
+  .st-queue.is-live .st-queue-n.is-final { display: none; }
+
+  /* The focal element: the queue, top card forward, the next two peeking under it. */
+  .st-queue-stage {
+    position: relative;
+    align-self: center;
+    height: 560px;
+  }
+
+  .st-queue-stack {
+    position: absolute;
+    inset: 0;
+    display: none;
+  }
+
+  .st-queue.is-live:not(.is-finished) .st-queue-stack { display: block; }
+
+  .st-queue-card {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    min-height: 340px;
+    display: flex;
+    flex-direction: column;
+    padding: 44px 48px 40px;
+    border: var(--border-w) solid var(--border-color);
+    border-radius: var(--radius);
+    background: var(--paper);
+    color: var(--ink);
+    box-shadow: var(--shadow-card);
+    transform: translateY(calc(var(--k) * 34px)) scale(calc(1 - var(--k) * 0.045));
+    transform-origin: top center;
+    z-index: calc(10 - var(--k));
+    transition: transform 320ms var(--ease), opacity 320ms var(--ease);
+  }
+
+  .st-queue-card:not(.is-top):not(.is-gone) > * { visibility: hidden; }
+  .st-queue-card.is-top { box-shadow: var(--shadow-focal); }
+  .st-queue-card.is-hidden { opacity: 0; }
+
+  /* A decision sends the card off: approved to the right, skipped to the left. */
+  .st-queue-card.is-gone { opacity: 0; pointer-events: none; }
+  .st-queue-card.is-gone.is-approved { transform: translateX(46%) rotate(calc(5deg * var(--tilt))); }
+  .st-queue-card.is-gone.is-skipped { transform: translateX(-34%) rotate(calc(-4deg * var(--tilt))); }
+
+  .st-queue-title {
+    font-family: var(--font-display);
+    font-size: var(--t-lede);
+    font-weight: var(--display-weight);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  .st-queue-detail {
+    margin-top: 14px;
+    font-size: var(--t-body);
+    line-height: 1.35;
+    color: color-mix(in oklab, currentColor 70%, transparent);
+  }
+
+  .st-queue-actions {
+    display: flex;
+    gap: 16px;
+    margin-top: auto;
+    padding-top: 36px;
+  }
+
+  .st-queue-btn {
+    min-height: 64px;
+    padding: 0 34px;
+    border: var(--border-w) solid var(--border-color);
+    border-radius: 999px;
+    background: transparent;
+    color: inherit;
+    font-family: var(--font-body);
+    font-size: var(--t-body);
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform var(--dur-hover) var(--ease-hover), background-color var(--dur-hover) var(--ease-hover);
+  }
+
+  .st-queue-btn.is-approve {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+
+  .st-queue-btn:hover { transform: translateY(-2px); }
+  .st-queue-btn.is-skip:hover,
+  .st-queue-btn.is-again:hover { background: color-mix(in oklab, currentColor 8%, transparent); }
+  .st-queue-btn:focus { outline: none; }
+  .st-queue-btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; }
+
+  /* The record: the closing line and every item with its mark. */
+  /* Centered on the stack's middle, so a long record (wide type, six items) grows into the room above and below. */
+  .st-queue-done {
+    position: absolute;
+    inset: 50% 0 auto;
+    transform: translateY(-50%);
+    display: grid;
+    gap: 28px;
+    align-content: start;
+    padding: 44px 48px;
+    border: var(--border-w) solid var(--border-color);
+    border-radius: var(--radius);
+    background: var(--paper);
+    color: var(--ink);
+    box-shadow: var(--shadow-focal);
+  }
+
+  .st-queue.is-live:not(.is-finished) .st-queue-done { display: none; }
+
+  .st-queue-done-line {
+    font-size: var(--t-title);
+    line-height: 1;
+    color: var(--headline-color);
+  }
+
+  .st-queue-log {
+    display: grid;
+    border-top: 1px solid color-mix(in oklab, currentColor 18%, transparent);
+  }
+
+  .st-queue-log li {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 0;
+    border-bottom: 1px solid color-mix(in oklab, currentColor 18%, transparent);
+    font-size: var(--t-body);
+    line-height: 1.25;
+  }
+
+  .st-queue-log-text {
+    flex: 1;
+    display: grid;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  .st-queue-log-text small {
+    font-size: var(--t-label);
+    line-height: 1.3;
+    color: color-mix(in oklab, currentColor 62%, transparent);
+  }
+
+  /* The decision each item got, in the buttons' own words. */
+  .st-queue-verdict {
+    flex: none;
+    font-family: var(--font-mono);
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: var(--label-case, uppercase);
+    color: color-mix(in oklab, currentColor 62%, transparent);
+  }
+
+  .st-queue-verdict .is-no,
+  .st-queue-log li.is-skipped .st-queue-verdict .is-yes { display: none; }
+  .st-queue-log li.is-skipped .st-queue-verdict .is-no { display: inline; }
+
+  .st-queue-mark {
+    flex: none;
+    width: 30px;
+    height: 30px;
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .st-queue-log .is-tick { stroke: var(--hl-color); }
+  .st-queue-log .is-dash { stroke: color-mix(in oklab, currentColor 45%, transparent); display: none; }
+  .st-queue-log li.is-skipped { color: color-mix(in oklab, currentColor 55%, transparent); }
+  .st-queue-log li.is-skipped .is-tick { display: none; }
+  .st-queue-log li.is-skipped .is-dash { display: inline; }
+  .st-queue-btn.is-again { justify-self: start; min-height: 56px; }
+
+  :global(.tone-ink) .st-queue-count { border-top-color: var(--on-night-a18); }
+
+  /* Phone: the headline and the counter on one line of sight, then the queue
+     at full width with one card peeking under the top one. */
+  @media (max-width: 799px) {
+    .st-queue {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto minmax(0, 1fr);
+      row-gap: calc(var(--gap) * 1.2);
+    }
+
+    .st-queue-copy { gap: 14px; justify-content: start; }
+    .st-queue-head { max-width: none; font-size: calc(var(--head-phone) * var(--display-scale)); }
+    .st-queue-count { grid-template-columns: auto 1fr; align-items: baseline; gap: 12px; padding-top: 10px; max-width: none; }
+    .st-queue-figure { font-size: var(--t-title); }
+    .st-queue-stage { align-self: start; height: 100%; min-height: 320px; }
+    .st-queue-card { min-height: 0; padding: 20px 20px 18px; transform: translateY(calc(var(--k) * 14px)) scale(calc(1 - var(--k) * 0.04)); }
+    .st-queue-card.is-deep { opacity: 0; }
+    .st-queue-detail { margin-top: 8px; }
+    .st-queue-actions { gap: 10px; padding-top: 18px; }
+    .st-queue-btn { min-height: 46px; padding: 0 22px; }
+    .st-queue-done { inset: 0 0 auto; transform: none; gap: 14px; padding: 20px; }
+    .st-queue-log li { gap: 10px; padding: 8px 0; }
+    .st-queue-mark { width: 20px; height: 20px; }
+    .st-queue-log-text small,
+    .st-queue-verdict { display: none; }
+    .st-queue-btn.is-again { min-height: 44px; }
+  }
+
+  /* PDF and every static render: the queue is cleared and every item approved.
+     The counter prints the total and the record stands in for the stack. */
+  :global(html.is-static) .st-queue-stack { display: none !important; }
+  :global(html.is-static) .st-queue-done { display: grid !important; }
+  :global(html.is-static) .st-queue-n.is-live { display: none !important; }
+  :global(html.is-static) .st-queue-n.is-final { display: inline !important; }
+  :global(html.is-static) .st-queue-btn.is-again { display: none; }
+  :global(html.is-static) .st-queue-log li { color: inherit; }
+  :global(html.is-static) .st-queue-log .is-tick { display: inline; }
+  :global(html.is-static) .st-queue-log .is-dash { display: none; }
+  :global(html.is-static) .st-queue-log li .st-queue-verdict .is-yes { display: inline; }
+  :global(html.is-static) .st-queue-log li .st-queue-verdict .is-no { display: none; }
+
+  :global(html.is-static) .st-queue .rise {
+    opacity: 1;
+    transform: none;
+  }
+</style>

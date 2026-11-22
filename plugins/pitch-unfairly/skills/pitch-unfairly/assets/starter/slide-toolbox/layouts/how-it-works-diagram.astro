@@ -1,0 +1,226 @@
+---
+/**
+ * how-it-works-diagram: the mechanism as a picture, many paths and one node.
+ *
+ * The headline and one line of proof on the left. On the right, two to five
+ * labelled paths run into one ringed node (flow "in": many sources, one
+ * result), or out of it (flow "out": one source, many results). The path that
+ * carries the point is drawn in the accent; the others are quiet hairlines.
+ * The paths draw themselves on as the slide enters and end at the node, so
+ * the diagram actually connects.
+ */
+import Slide from '../../src/components/Slide.astro';
+import { fitType, splitHl, type SlideBase } from '../lib';
+
+interface Props extends SlideBase {
+  /** What the mechanism does, as a whole sentence. 12 words or fewer. */
+  headline: string;
+  /** One phrase of the headline, word for word, in the accent. */
+  hl?: string;
+  /** One line of proof the diagram doesn't show: a number, a customer, a date. 90 characters or fewer. */
+  caption?: string;
+  /** Two to five path labels, top to bottom, three words or fewer each: the sources (flow "in") or the results (flow "out"). */
+  paths: string[];
+  /** The node's label, three words or fewer: what the paths meet in, or come from. */
+  node: string;
+  /** "in": the paths run into the node. "out": they run out of it. Default "in". */
+  flow?: 'in' | 'out';
+  /** The path that carries the point, by position from 1. It takes the accent. */
+  focus?: number;
+}
+
+const { id, label = 'How it works', tone = 'ink', notes, brand, headline, hl, caption, paths, node, flow = 'in', focus } = Astro.props;
+const where = `how-it-works-diagram "${id}"`;
+if (!paths || paths.length < 2 || paths.length > 5) throw new Error(`${where}: two to five paths (got ${paths?.length ?? 0}). One path is a statement; more than five reads as noise, so group them.`);
+if (focus !== undefined && !(focus >= 1 && focus <= paths.length)) throw new Error(`${where}: focus ${focus} isn't a path; number them from 1 to ${paths.length}.`);
+for (const p of [...paths, node]) if (p.split(/\s+/).length > 3) throw new Error(`${where}: "${p}" is over three words; a diagram label is a name, not a sentence.`);
+if (caption && caption.length > 90) throw new Error(`${where}: the caption is ${caption.length} characters; one line of 90 or fewer.`);
+const [before, phrase, after] = splitHl(headline, hl, where);
+// Display type sets narrower than the estimate's average, and balanced lines leave room: the width is the column's plus a tenth.
+const head = fitType(headline.length, { width: 760, lines: 3, min: 60, max: 128 });
+const phone = fitType(headline.length, { width: 330, lines: 3, min: 26, max: 40 });
+
+// The diagram's own coordinates: a 960x720 box, the node on the middle line.
+const W = 960;
+const H = 720;
+const mid = H / 2;
+const nodeX = flow === 'in' ? 800 : 160;
+const top = paths.length === 2 ? 190 : 110;
+const step = (H - 2 * top) / (paths.length - 1);
+const ends = paths.map((_, i) => top + i * step);
+const edgeX = flow === 'in' ? 16 : W - 16;
+const route = (y: number) => {
+  // Each path runs level from its edge, then bends into the node's line.
+  const [a, b] = flow === 'in' ? [edgeX, nodeX - 34] : [nodeX + 34, edgeX];
+  // It runs level under its label first, so the label never sits on a bend.
+  const run = 280;
+  const bend = (b - a - run) * 0.5;
+  return flow === 'in'
+    ? `M ${a} ${y} H ${a + run} C ${a + run + bend} ${y}, ${b - bend} ${mid}, ${b} ${mid}`
+    : `M ${a} ${mid} C ${a + bend} ${mid}, ${b - run - bend} ${y}, ${b - run} ${y} H ${b}`;
+};
+const pct = (v: number, of: number) => `${((v / of) * 100).toFixed(3)}%`;
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <div class:list={['st-diagram', `is-${flow}`, { 'has-hl': !!phrase }]} style={`--head: ${head}px; --head-phone: ${phone}px`}>
+    <div class="st-diagram-copy">
+      <h2 data-fit="3 3" class="display st-diagram-head rise">
+        <slot name="headline">{before}{phrase && <span class="hl">{phrase}</span>}{after}</slot>
+      </h2>
+      {caption && <p class="st-diagram-cap rise" style="--d: 260ms">{caption}</p>}
+    </div>
+    <figure class="st-diagram-fig">
+      <svg viewBox={`0 0 ${W} ${H}`} aria-hidden="true">
+        {ends.map((y, i) => (
+          <path class:list={['st-diagram-path draw', { 'is-focus': i + 1 === focus }]} d={route(y)} pathLength="1" style={`--d: ${300 + i * 120}ms`} />
+        ))}
+        {ends.map((y, i) => (
+          <circle class:list={['st-diagram-end', { 'is-focus': i + 1 === focus }]} cx={edgeX} cy={y} r="8" />
+        ))}
+        <circle class="st-diagram-ring" cx={nodeX} cy={mid} r="62" />
+        <circle class="st-diagram-ring is-inner" cx={nodeX} cy={mid} r="40" />
+        <circle class="st-diagram-node pop" cx={nodeX} cy={mid} r="22" style={`--d: ${360 + paths.length * 120}ms`} />
+      </svg>
+      <ol class="st-diagram-labels">
+        {paths.map((p, i) => (
+          <li class:list={['rise', { 'is-focus': i + 1 === focus }]} style={`left: ${pct(edgeX, W)}; top: ${pct(ends[i]!, H)}; --d: ${300 + i * 120}ms`}>{p}</li>
+        ))}
+      </ol>
+      <p class="st-diagram-node-label display rise" style={`${flow === 'in' ? 'right: 0' : 'left: 0'}; top: ${pct(mid + 84, H)}; --d: ${460 + paths.length * 120}ms`}>{node}</p>
+    </figure>
+  </div>
+</Slide>
+
+<style>
+  .st-diagram {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 700px minmax(0, 1fr);
+    column-gap: calc(var(--gap) * 1.6);
+    align-items: center;
+  }
+
+  .st-diagram-copy {
+    display: grid;
+    gap: calc(var(--gap) * 0.8);
+  }
+
+  .st-diagram-head { font-size: calc(var(--head) * var(--display-scale)); }
+
+  .st-diagram-cap {
+    max-width: 28ch;
+    font-size: var(--t-lede);
+    line-height: 1.3;
+    color: color-mix(in oklab, currentColor 74%, transparent);
+    text-wrap: pretty;
+  }
+
+  /* The focal element: the paths meeting the node, at the stage's full height. */
+  .st-diagram-fig {
+    position: relative;
+    width: 100%;
+    max-width: 960px;
+    aspect-ratio: 960 / 720;
+    justify-self: end;
+  }
+
+  .st-diagram-fig svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .st-diagram-path {
+    fill: none;
+    stroke: color-mix(in oklab, currentColor 62%, transparent);
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .st-diagram-path.is-focus {
+    stroke: var(--hl-color);
+    stroke-width: 4;
+  }
+
+  .st-diagram-end { fill: currentColor; }
+  .st-diagram-end.is-focus { fill: var(--hl-color); }
+
+  .st-diagram-ring {
+    fill: none;
+    stroke: color-mix(in oklab, currentColor 30%, transparent);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .st-diagram-ring.is-inner { stroke: color-mix(in oklab, currentColor 50%, transparent); }
+
+  .st-diagram-node {
+    fill: var(--hl-color);
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  .st-diagram.has-hl .st-diagram-path.is-focus,
+  .st-diagram.has-hl .st-diagram-end.is-focus { stroke: currentColor; }
+  .st-diagram.has-hl .st-diagram-end.is-focus { fill: currentColor; }
+
+  /* Path labels sit just above where each path meets the edge. */
+  .st-diagram-labels li {
+    position: absolute;
+    transform: translateY(calc(-100% - 18px));
+    font-family: var(--font-mono);
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: var(--caps-tracking, 0.12em);
+    text-transform: var(--label-case, uppercase);
+    white-space: nowrap;
+    color: color-mix(in oklab, currentColor 74%, transparent);
+  }
+
+  .st-diagram-labels li.is-focus { color: currentColor; }
+  .is-out .st-diagram-labels li { translate: -100% 0; }
+
+  /* The node's label hangs under it, aligned to the diagram's outer edge. */
+  .st-diagram-node-label {
+    position: absolute;
+    font-size: var(--t-lede);
+    line-height: 1.1;
+    white-space: nowrap;
+    color: var(--headline-color);
+  }
+
+  .is-in .st-diagram-node-label { text-align: right; }
+
+  :global(.tone-accent) .st-diagram-node,
+  :global(.tone-accent) .st-diagram-end.is-focus { fill: var(--on-accent); }
+  :global(.tone-accent) .st-diagram-path.is-focus { stroke: var(--on-accent); }
+
+  /* Phone: the copy, then the diagram at full width. Its labels shrink to the
+     phone's label size; the paths keep their shape. */
+  @media (max-width: 799px) {
+    .st-diagram {
+      grid-template-columns: minmax(0, 1fr);
+      align-items: start;
+      align-content: start;
+      row-gap: calc(var(--gap) * 2.4);
+    }
+
+    .st-diagram-copy { gap: 10px; }
+    .st-diagram-head { font-size: calc(var(--head-phone) * var(--display-scale)); }
+    .st-diagram-cap { max-width: none; font-size: var(--t-body); }
+    .st-diagram-fig { justify-self: stretch; max-width: none; }
+    .st-diagram-labels li { transform: translateY(calc(-100% - 6px)); letter-spacing: 0.06em; }
+    .st-diagram-path.is-focus { stroke-width: 3; }
+    .st-diagram-node-label { font-size: var(--t-body); font-weight: 700; }
+  }
+
+  /* PDF and every static render: every path drawn to the node. */
+  :global(html.is-static) .st-diagram .rise,
+  :global(html.is-static) .st-diagram .pop {
+    opacity: 1;
+  }
+</style>

@@ -1,0 +1,1836 @@
+{
+  "schema": "slide-toolbox@1",
+  "about": "One entry per built layout in layouts/<type>-<variant>.astro. references are reference slides from the layout research: source \"arcade\" paths sit under unfairly-app apps/decks/public/art/arcade/, source \"pu-layouts\" paths under the pu-layouts research folder. planned lists the types and variants still to build, from the same research.",
+  "layouts": [
+    {
+      "name": "title-statement",
+      "type": "title",
+      "variant": "statement",
+      "job": "Open the deck on its promise, set as a poster.",
+      "use_when": "The brand leads with type, or there is no photograph or product shot worth opening on. The promise is one sentence of 12 words or fewer.",
+      "avoid_when": "The brand leads with photography (title-photo-bleed) or the product (title-split-product). The cover needs a tagline under the promise: cut the tagline.",
+      "default_tone": "paper",
+      "props": {
+        "headline": "string, required. The promise: one whole sentence, 12 words or fewer. Set at the largest size that fits three lines.",
+        "hl": "string. One phrase of the headline, word for word, in the accent. Most covers have none.",
+        "meta": "{label, value}[], up to 3. The facts along the foot: who it's for, who it's from, the date.",
+        "mark": "boolean, default true. The brand's mark at the top left."
+      },
+      "slots": {
+        "headline": "Markup in place of headline, for a line break or a second emphasis."
+      },
+      "references": [
+        {
+          "source": "arcade",
+          "path": "tesla-master-plan/01.webp",
+          "why": "Wordmark top left, a poster headline across 80% of the width, the meta in one quiet line."
+        },
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/series-a-pitch-deck/04.jpg",
+          "why": "A large sentence alone, with the company and date as labelled columns along the foot."
+        },
+        {
+          "source": "arcade",
+          "path": "linkedin/01.webp",
+          "why": "The logo, then a wide three-line promise with one phrase in the accent."
+        }
+      ]
+    },
+    {
+      "name": "title-photo-bleed",
+      "type": "title",
+      "variant": "photo-bleed",
+      "job": "Open the deck on its promise, set on the brand's own photograph.",
+      "use_when": "The brand leads with photography (people, places, the work being done) and has a photo with a quiet area for the promise. The promise is one sentence of 12 words or fewer.",
+      "avoid_when": "There is no real photograph, or only stock that could belong to anyone (title-statement). The brand's front door is its product (title-split-product). The photo is busy everywhere: crop it or pick another.",
+      "default_tone": "ink",
+      "props": {
+        "headline": "string, required. The promise: one whole sentence, 12 words or fewer. Set at the largest size that fits three lines in the left two thirds.",
+        "hl": "string. One phrase of the headline, word for word, in the accent. Most covers have none.",
+        "photo": "string, required. The photograph's URL: the brand's own, or a labelled placeholder in its crop.",
+        "alt": "string, required. What the photograph shows.",
+        "focus": "string, default \"50% 50%\". CSS object-position: the point of the photo to keep in frame.",
+        "meta": "{label, value}[], up to 3. The facts along the foot.",
+        "mark": "boolean, default true. The brand's mark at the top left."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/business-proposal/01.jpg",
+          "why": "A calm photograph carrying the cover, with the title and the two companies set in ruled rows under it."
+        },
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/quarterly-business-review/01.jpg",
+          "why": "The photograph at more than half the slide, the title low and large in the dark, the date small at the top."
+        },
+        {
+          "source": "arcade",
+          "path": "tesla-master-plan/01.webp",
+          "why": "The promise as a two-line poster headline low on a full field, a quiet meta line under it."
+        }
+      ]
+    },
+    {
+      "name": "title-split-product",
+      "type": "title",
+      "variant": "split-product",
+      "job": "Open the deck on its promise beside the real product.",
+      "use_when": "The brand's front door is its product and there is a real screenshot (or a labelled example) worth opening on. The promise is 12 words or fewer.",
+      "avoid_when": "The brand leads with photography (title-photo-bleed) or type (title-statement). The screenshot needs explaining to read: show it later on a product slide.",
+      "default_tone": "paper",
+      "props": {
+        "headline": "string, required. The promise: one whole sentence, 12 words or fewer. Set at the largest size that fits four lines in the left column.",
+        "hl": "string. One phrase of the headline, word for word, in the accent.",
+        "shot": "string, required. The product screenshot's URL, wider than tall.",
+        "alt": "string, required. What the screenshot shows.",
+        "url": "string. The address in a thin bar over the screenshot, for a web app. Without it, a plain frame.",
+        "meta": "{label, value}[], up to 2. Facts at the foot of the left column.",
+        "mark": "boolean, default true. The brand's mark at the top left."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/ai-software-sales-deck/02.jpg",
+          "why": "The title top left and the real product right of center, cropped by the bottom edge."
+        },
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/sales-deck/01.jpg",
+          "why": "The product as the cover's centerpiece, the two companies quiet at the foot."
+        },
+        {
+          "source": "arcade",
+          "path": "darcy/01.webp",
+          "why": "The sender's mark and a three-line promise on the left, one object at scale on the right."
+        }
+      ]
+    },
+    {
+      "name": "section-number-title",
+      "type": "section",
+      "variant": "number-title",
+      "job": "Divide the acts with the act's number at poster size and its name.",
+      "use_when": "The deck has three or more acts and the audience should feel where they are. The act's name is six words or fewer.",
+      "avoid_when": "The deck is short enough that a divider is a slide of nothing: cut it. The brand uses color fields between acts (section-color-field).",
+      "default_tone": "paper",
+      "props": {
+        "number": "string, required. The act's number as it should read: \"02\". One to three digits.",
+        "title": "string, required. The act's name, six words or fewer.",
+        "line": "string. One quiet line under the title: what the act answers. 90 characters or fewer.",
+        "total": "number, 2 to 9. How many acts: draws a row of bars along the top with this one filled."
+      },
+      "slots": {},
+      "references": [
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/quarterly-business-review/03.jpg",
+          "why": "One large section word at mid-height and the section number given its own mark."
+        },
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/sales-deck/06.jpg",
+          "why": "Nothing but the number and the section name, very large."
+        }
+      ]
+    },
+    {
+      "name": "section-color-field",
+      "type": "section",
+      "variant": "color-field",
+      "job": "Divide the acts with a change of color and the act's name at poster size.",
+      "use_when": "The brand works in bold fields of color, and a pause between acts helps the room reset. The act's name is six words or fewer.",
+      "avoid_when": "The brand is quiet and type-led (section-number-title). Every other slide is already a color field: the change of color no longer reads as a pause.",
+      "default_tone": "accent",
+      "props": {
+        "title": "string, required. The act's name, six words or fewer. Set at the largest size that fits two lines.",
+        "number": "string. The act's number, set faint and enormous, cropped by the right and bottom edges.",
+        "line": "string. One quiet line under the title. 90 characters or fewer."
+      },
+      "slots": {},
+      "references": [
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/sales-deck/06.jpg",
+          "why": "A single huge section name on an otherwise empty field."
+        },
+        {
+          "source": "arcade",
+          "path": "linkedin/01.webp",
+          "why": "A full brand-color field carrying one wide headline."
+        }
+      ]
+    },
+    {
+      "name": "agenda-running-text",
+      "type": "agenda",
+      "variant": "running-text",
+      "job": "Map the meeting as one run of very large type, with the next part lit.",
+      "use_when": "The meeting has two to six parts with short names, and the deck returns to the agenda before each part to say where the room is.",
+      "avoid_when": "The parts need a line of explanation or a time each (agenda-numbered). There are more than six: group them.",
+      "default_tone": "ink",
+      "props": {
+        "items": "{title, at?}[], 2 to 6, required. Each part's name (four words or fewer) and, optionally, where it starts: a slide number or a time.",
+        "current": "number. The part about to begin, from 1. It is underlined in the accent and the rest step back. Without it every part reads at full strength.",
+        "headline": "string, required. Where the room is, as a quiet sentence of eight words or fewer at the top. The parts are the focal element."
+      },
+      "slots": {},
+      "references": [
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/board-deck/03.jpg",
+          "why": "Every section and its page as one paragraph of very large type, the current one full strength and underlined, the rest dimmed."
+        }
+      ]
+    },
+    {
+      "name": "agenda-numbered",
+      "type": "agenda",
+      "variant": "numbered",
+      "job": "Map the meeting as a numbered list beside what the meeting is for.",
+      "use_when": "The meeting has two to five parts, and it helps to say what it is for, how long each part takes, or what the next part covers.",
+      "avoid_when": "The parts' names alone carry it (agenda-running-text). The list is really the meeting's decisions (next-steps).",
+      "default_tone": "paper",
+      "props": {
+        "headline": "string, required. What the meeting is for, as one sentence of 10 words or fewer.",
+        "items": "{title, detail?, time?}[], 2 to 5, required. Each part's name (five words or fewer), a one-line detail shown for the current part, and a time.",
+        "current": "number, default 1. The part about to begin: set large with its index in the accent; the rest are a quiet list."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/quarterly-business-review/02.jpg",
+          "why": "The title alone upper left, a numbered list with tiny indexes and generous rhythm in the right half."
+        },
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/marketing-plan/03.jpg",
+          "why": "Each part led by its numeral, the caption beneath it small."
+        }
+      ]
+    },
+    {
+      "name": "statement-centered",
+      "type": "statement",
+      "variant": "centered",
+      "job": "Stop the room on one sentence, centered and as large as it fits.",
+      "use_when": "One sentence is the point of this moment: a goal, a turn in the argument, the line to remember. 20 words or fewer, often with a number in it.",
+      "avoid_when": "The sentence needs a visual to be believed (big-number, chart). The deck already has a centered statement nearby: use statement-left-space for variety.",
+      "default_tone": "warm",
+      "props": {
+        "statement": "string, required. One whole sentence, 20 words or fewer. Set at the largest size that fits three lines.",
+        "hl": "string. One phrase of the statement, word for word, in the accent: often its number.",
+        "kicker": "string. A quiet label above, four words or fewer.",
+        "support": "string. One line under it that adds a fact. 100 characters or fewer."
+      },
+      "slots": {
+        "statement": "Markup in place of statement."
+      },
+      "references": [
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/marketing-plan/12.jpg",
+          "why": "A tiny label, then a three-line goal sentence centered with its number inside it; nothing else."
+        },
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/saas-investor-update/23.jpg",
+          "why": "A small eyebrow, the request centered in two bold lines, one supporting sentence under it."
+        }
+      ]
+    },
+    {
+      "name": "statement-left-space",
+      "type": "statement",
+      "variant": "left-space",
+      "job": "Set one sentence in the right of the slide and leave the left open.",
+      "use_when": "A line that should be said slowly: a concession, a reframe, the honest answer to a doubt. 24 words or fewer.",
+      "avoid_when": "The line is a rallying goal that wants the middle of the slide (statement-centered). It needs proof beside it (objection, proof).",
+      "default_tone": "ink",
+      "props": {
+        "statement": "string, required. One whole sentence, 24 words or fewer. Set at the largest size that fits four lines in the right three fifths.",
+        "hl": "string. One phrase of the statement, word for word, in the accent.",
+        "kicker": "string. A quiet label above the statement, four words or fewer.",
+        "aside": "{label, value}. One quiet fact at the foot of the open column: a source, a date, who said it."
+      },
+      "slots": {
+        "statement": "Markup in place of statement."
+      },
+      "references": [
+        {
+          "source": "pu-layouts",
+          "path": "external/beautiful-ai/sales-battlecard-presentation/13.jpg",
+          "why": "A plain dark slide, the three-line concession left-aligned in the right three fifths."
+        },
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/series-a-pitch-deck/04.jpg",
+          "why": "A large sentence with its number in the accent, generous space, quiet facts at the foot."
+        }
+      ]
+    },
+    {
+      "name": "problem-artifact",
+      "type": "problem",
+      "variant": "artifact",
+      "job": "Make the pain concrete as the real object it leaves behind: a receipt, an email, a ticket or a note.",
+      "use_when": "The problem shows up in a thing the audience has seen: the 6am re-route email, the overtime bill, the ticket reopened four times, the sticky note on the monitor. Its words can be quoted or fairly reconstructed.",
+      "avoid_when": "The pain is a number (big-number-number-label) or a moment people live through (problem-moment-photo). The object would need more than six lines to read. Don't invent a real person's email: label a reconstruction in the notes and on the caption.",
+      "default_tone": "paper",
+      "props": {
+        "headline": "string, required. The point in a whole sentence, 14 words or fewer. Fits three lines of the left column.",
+        "hl": "string. One phrase of the headline, word for word, in the accent. The stamp then goes ink.",
+        "context": "string. One line under the headline that adds a fact (how often, how many). 20 words or fewer. Hidden on a phone.",
+        "kind": "\"receipt\" | \"email\" | \"ticket\" | \"note\", required. Which object to draw.",
+        "title": "string. The object's heading: the receipt's issuer, the email's subject (required), the ticket's title (required), the note's signature. 60 characters or fewer.",
+        "fields": "{label, value}[]. Receipt line items (up to 6), email headers such as From, To, Sent (up to 4), ticket facts such as id, status, age (up to 4). None on a note.",
+        "body": "string. The email or ticket text (280 characters or fewer) or the note's words (required on a note, 120 or fewer). None on a receipt.",
+        "total": "{label, value}. The receipt's total, set large at its foot. Required on a receipt, refused on the others.",
+        "stamp": "string. The slanted stamp on the object's corner, in the accent: the part that hurts (\"4th this week\"). 18 characters or fewer.",
+        "caption": "string. One quiet line under the object with a fact it doesn't show."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "arcade",
+          "path": "hamilton/02.webp",
+          "why": "Headline and two lines left; the document itself right, its face value large, a slanted stamp over its corner giving the real value, one caption under it."
+        },
+        {
+          "source": "arcade",
+          "path": "monsters-inc/07.webp",
+          "why": "Real-looking report cards as the evidence, the key one marked off from the rest."
+        },
+        {
+          "source": "arcade",
+          "path": "blockbuster/02.webp",
+          "why": "The headline and a ruled spec list on the left, one physical object with a hard shadow on the right."
+        }
+      ]
+    },
+    {
+      "name": "problem-moment-photo",
+      "type": "problem",
+      "variant": "moment-photo",
+      "job": "Put the audience in the moment the problem happens, with a photograph of it.",
+      "use_when": "There's a real photo of the moment: the depot at 6am, the queue at the counter, the desk under paper. The headline names what's happening in it.",
+      "avoid_when": "There's no photo the customer owns or would recognize (problem-artifact, or a statement). The photo is of the product (product layouts) or of someone else's brand.",
+      "default_tone": "ink",
+      "props": {
+        "headline": "string, required. The point in a whole sentence, 14 words or fewer. Fits three lines of its half.",
+        "hl": "string. One phrase of the headline, word for word, in the accent.",
+        "caption": "string. One quiet line under the headline with the moment's cost. 20 words or fewer.",
+        "photo": "string, required. The photo's URL or a path under public/. Bleeds off one side, top to bottom.",
+        "alt": "string, required. What the photo shows.",
+        "moment": "string. When and where, set on the photo's corner like a camera stamp: \"6:04am, Eastside depot\". 32 characters or fewer.",
+        "side": "\"left\" | \"right\", default \"right\". Which side the photo bleeds off.",
+        "focus": "string, default \"50% 50%\". The photo's focal point as CSS object-position."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/series-b-pitch-deck/09.jpg",
+          "why": "Type on a dark field, a cropped photo of the moment bleeding off the right edge."
+        },
+        {
+          "source": "pu-layouts",
+          "path": "external/beautiful-ai/customer-success-qbr/05.jpg",
+          "why": "Half the slide a photo panel, the other half the type, split clean down the middle."
+        }
+      ]
+    },
+    {
+      "name": "problem-cost-waterfall",
+      "type": "problem",
+      "variant": "cost-waterfall",
+      "job": "Show where the value goes, one loss at a time, down to what's left or up to what's lost.",
+      "use_when": "Two to five named losses add up to the problem's cost, and the figures are real or labelled as an example. With a start, the last bar is what's left; without, it's the total lost.",
+      "avoid_when": "There's one loss (big-number-number-label). The losses overlap or don't add up. The audience needs the trend over time (a line chart).",
+      "default_tone": "paper",
+      "props": {
+        "headline": "string, required. What's left or what's lost, in a whole sentence, 12 words or fewer. Two lines across the top.",
+        "hl": "string. One phrase of the headline, word for word, in the accent. Usually the result.",
+        "start": "{label, value: number}. The whole you start from (\"Paid day\", 8). Leave it off to total the losses instead.",
+        "steps": "{label, value: number}[], 2 to 5, required. The losses in order, each a positive amount. Labels 28 characters or fewer.",
+        "end": "{label, display?}, required. The last bar's label, and its value as written when the computed one reads badly (\"$1.2M\").",
+        "prefix": "string. Before every value: \"$\".",
+        "unit": "string. After every value: \"h\", \"%\", \"k\".",
+        "decimals": "number, default 0. Decimal places for every value."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "arcade",
+          "path": "office-space/06.webp",
+          "why": "A tall start bar, accent losses stepping down, and a near-zero result called out at the end."
+        },
+        {
+          "source": "pu-layouts",
+          "path": "external/beautiful-ai/technology-sales-proposal/02.jpg",
+          "why": "Four loss bars stepping down in a pale tint, closing on one tall total bar in the full accent."
+        }
+      ]
+    },
+    {
+      "name": "quote-hero-quote",
+      "type": "quote",
+      "variant": "hero-quote",
+      "job": "Prove the point in a customer's own words, as the slide's headline.",
+      "use_when": "One real quote, 110 characters or fewer, says the point better than the seller could. The person and company can be named.",
+      "avoid_when": "The quote is long or needs context (quote-quote-photo, or cut it). Two voices disagree or compare (quote-two-voices). The quote is invented: say so in the notes and on the slide.",
+      "default_tone": "ink",
+      "props": {
+        "quote": "string, required. Verbatim, without quotation marks, 110 characters or fewer. Set at the largest size that fits three lines.",
+        "hl": "string. One phrase of the quote, word for word, in the accent. The quotation mark then goes quiet.",
+        "name": "string, required. Who said it, as published.",
+        "role": "string. Their title.",
+        "company": "string. Their company.",
+        "photo": "string. A headshot URL. Without one, a monogram of the name."
+      },
+      "slots": {
+        "quote": "Markup in place of quote."
+      },
+      "references": [
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/series-b-pitch-deck/09.jpg",
+          "why": "A short quote set large on a dark field, its key words in the accent, a small attribution."
+        },
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/consulting-proposal/08.jpg",
+          "why": "The quote spanning the slide, left-aligned, with a round headshot, name and title below."
+        },
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/async-sales-deck/25.jpg",
+          "why": "Nothing on the slide but the quote and one attribution line."
+        }
+      ]
+    },
+    {
+      "name": "quote-quote-photo",
+      "type": "quote",
+      "variant": "quote-photo",
+      "job": "Put a customer's words beside the person, or the place they work.",
+      "use_when": "The quote is real, 120 characters or fewer, and there's a photo of the speaker or their workplace that the customer would recognize.",
+      "avoid_when": "There's no photo (quote-hero-quote). The quote is short enough to be the whole slide (quote-hero-quote). The photo is stock standing in for the speaker.",
+      "default_tone": "warm",
+      "props": {
+        "quote": "string, required. Verbatim, without quotation marks, 120 characters or fewer. Fits three lines of its column.",
+        "hl": "string. One phrase of the quote, word for word, in the accent. The mark then goes quiet.",
+        "name": "string, required. Who said it, as published.",
+        "role": "string. Their title.",
+        "company": "string. Their company.",
+        "photo": "string, required. The speaker or their workplace. Bleeds off one side, 38% of the slide.",
+        "alt": "string, required. What the photo shows.",
+        "side": "\"left\" | \"right\", default \"right\".",
+        "focus": "string, default \"50% 50%\". The photo's focal point as CSS object-position."
+      },
+      "slots": {
+        "quote": "Markup in place of quote."
+      },
+      "references": [
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/series-b-pitch-deck/09.jpg",
+          "why": "The quote large on the left with its key words in the accent, a cropped photo bleeding off the right edge."
+        },
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/consulting-proposal/08.jpg",
+          "why": "A left-aligned quote across most of the slide with the speaker named under it."
+        }
+      ]
+    },
+    {
+      "name": "quote-two-voices",
+      "type": "quote",
+      "variant": "two-voices",
+      "job": "Set two voices against each other, with the field saying which one is the answer.",
+      "use_when": "Two real quotes argue the point together: before and after, the field and the office, the rep and the buyer. One of them is the answer.",
+      "avoid_when": "There's one voice (quote-hero-quote). The two quotes agree and say the same thing: keep the better one. Three or more voices (a quote wall).",
+      "default_tone": "paper",
+      "props": {
+        "voices": "{quote, hl?, name, role?, tag?}[], exactly 2, required. Each quote verbatim without quotation marks, 110 characters or fewer; role is title and company in one line; tag is a short label above the words (\"Before\"), 24 characters or fewer. Only the hero voice takes hl.",
+        "hero": "0 | 1, default 1. Which voice takes the accent field and the larger type."
+      },
+      "slots": {
+        "quote": "Markup in place of the hero voice's quote."
+      },
+      "references": [
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/series-a-pitch-deck/11.jpg",
+          "why": "The slide split in two, one half a solid accent field and one plain, a quote centered in each."
+        },
+        {
+          "source": "arcade",
+          "path": "sell-me-this-pen/06.webp",
+          "why": "The buyer's quote at display size given the slide's strongest field, the seller's side quiet beside it."
+        }
+      ]
+    },
+    {
+      "name": "big-number-number-label",
+      "type": "big-number",
+      "variant": "number-label",
+      "job": "Land one figure at poster size, with exactly what it measures.",
+      "use_when": "One number carries the slide's point and the audience should remember it. Up to three one-line supports back it.",
+      "avoid_when": "Two or more figures matter equally (stats-hero-row). The figure needs its context to mean anything (big-number-number-context). The figure is invented: label it an example in the caption.",
+      "default_tone": "paper",
+      "props": {
+        "headline": "string, required. Completes the figure's sentence without repeating the figure. 10 words or fewer.",
+        "number": "string, required. The figure as written: \"41\", \"4.2\", \"1,186\".",
+        "prefix": "string. Set before the figure, smaller and raised: \"$\".",
+        "unit": "string. After the figure: \"%\", \"x\", or a short word (\"min\").",
+        "caption": "string, required. What was measured, over what, when, in one line.",
+        "supports": "{label, value}[], up to 3. A quiet ledger beside the figure.",
+        "count": "boolean, default true for a plain number. Counts up to the figure as the slide enters."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "arcade",
+          "path": "trojan-horse/02.webp",
+          "why": "Headline over a three-row ledger, and one huge figure with a mono caption."
+        },
+        {
+          "source": "arcade",
+          "path": "wright/04.webp",
+          "why": "The figure with its unit set small beside it, a one-line caption, and a quiet ruled table."
+        },
+        {
+          "source": "arcade",
+          "path": "blockbuster/02.webp",
+          "why": "The figure as the one heavy thing on the slide, the supporting facts as a spec list."
+        }
+      ]
+    },
+    {
+      "name": "big-number-number-context",
+      "type": "big-number",
+      "variant": "number-context",
+      "job": "Land one figure by drawing it against the figure it beats, to scale.",
+      "use_when": "The figure only means something next to another one in the same unit: the rival's, last year's, the industry's. The figure is the larger of the two.",
+      "avoid_when": "The figure stands on its own (big-number-number-label). The two figures are in different units or the comparison isn't fair. The figure is the smaller one: swap the framing or use stats-hero-row.",
+      "default_tone": "paper",
+      "props": {
+        "headline": "string, required. A whole sentence setting the two figures against each other, 14 words or fewer.",
+        "hl": "string. One phrase of the headline, word for word, in the accent.",
+        "caption": "string. One line under the headline with the comparison's scope or period. 20 words or fewer. Hidden on a phone.",
+        "number": "string, required. The figure as written, digits only: \"41\", \"1,186\". Fills a square of the accent.",
+        "prefix": "string. Before both figures: \"$\".",
+        "unit": "string. After both figures: \"%\", \"x\", or a short word (\"min\").",
+        "measures": "string, required. What the figure measures, at the square's foot. 32 characters or fewer.",
+        "context": "{number, label}, required. The figure it's measured against, in the same unit, and what that is. Drawn as a square of true area beside the figure's.",
+        "count": "boolean, default true for a plain number. Counts up to the figure as the slide enters."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "arcade",
+          "path": "blockbuster/02.webp",
+          "why": "A large filled square holding the big number, the rival's figure as a tiny square drawn to true scale."
+        },
+        {
+          "source": "pu-layouts",
+          "path": "external/beautiful-ai/business-proposal/08.jpg",
+          "why": "The figure set against its remainder on the same line, so the share reads at a glance."
+        }
+      ]
+    },
+    {
+      "name": "stats-hero-row",
+      "type": "stats",
+      "variant": "hero-row",
+      "job": "Show two to four figures on one baseline, one of them the hero.",
+      "use_when": "Several results matter but one matters most. Each figure needs only a short label.",
+      "avoid_when": "The figures need sentences to explain them (stats-ruled-rows). One figure carries the point alone (big-number-number-label). The figures are equal in weight: cut to the one that matters.",
+      "default_tone": "paper",
+      "props": {
+        "headline": "string, required. The point the figures prove, in a whole sentence, 12 words or fewer. Two lines across the top.",
+        "hl": "string. One phrase of the headline, word for word, in the accent. Use sparingly: the hero figure is already in the accent.",
+        "stats": "{number, prefix?, unit?, label}[], 2 to 4, required. Each figure as written, digits only, its label 40 characters or fewer.",
+        "hero": "number, default 0. Which stat is the hero, 0-based: twice the column, three times the size, in the accent, counting up."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "pu-layouts",
+          "path": "external/beautiful-ai/investor-update/03.jpg",
+          "why": "One figure given the largest, darkest place at poster size, the rest small around it."
+        },
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/quarterly-business-review/05.jpg",
+          "why": "Figures in one row on a shared baseline, each with a label beneath."
+        },
+        {
+          "source": "arcade",
+          "path": "wright/04.webp",
+          "why": "The hero figure huge with its unit and caption, the supporting metrics quiet beside it."
+        }
+      ]
+    },
+    {
+      "name": "stats-ruled-rows",
+      "type": "stats",
+      "variant": "ruled-rows",
+      "job": "List two to four figures as ruled rows a reader can scan, one row the hero.",
+      "use_when": "Each figure needs a few plain words to mean anything (\"Jobs re-planned without a phone call\"). One of them is the result that matters most.",
+      "avoid_when": "The labels are one or two words (stats-hero-row). One figure carries the point alone (big-number-number-label).",
+      "default_tone": "paper",
+      "props": {
+        "headline": "string, required. The point the rows prove, in a whole sentence, 12 words or fewer.",
+        "hl": "string. One phrase of the headline, word for word, in the accent.",
+        "rows": "{number, prefix?, unit?, label}[], 2 to 4, required. Each figure as written, digits only, its meaning 48 characters or fewer.",
+        "hero": "number, default 0. Which row is the hero, 0-based: taller, its figure at poster size in the accent."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/business-proposal/07.jpg",
+          "why": "Full-width rows divided by hairlines, a large figure in the left quarter and plain words beside it."
+        },
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/ai-software-sales-deck/26.jpg",
+          "why": "The headline top left, three ruled rows of figure and two-line label below it."
+        }
+      ]
+    },
+    {
+      "name": "before-after-split",
+      "type": "before-after",
+      "variant": "split",
+      "job": "Show the old way beside the new, with the new one winning.",
+      "use_when": "The change is a handful of concrete actions that each have an old and a new form: two to four lines a side, in the same order, so the eye reads across.",
+      "avoid_when": "The change is one measure (before-after-slider with figures) or one picture of the same thing (before-after-slider with images). The lines are features, not actions: that's a product slide.",
+      "default_tone": "paper",
+      "props": {
+        "headline": "string, required. What changes, one sentence, 12 words or fewer.",
+        "hl": "string. One phrase of the headline, word for word, in the accent. The card's label and checks then go to ink.",
+        "before": "{label, items[]}, required. The old way: a label of 24 characters or fewer and two to four lines of 48 or fewer, struck through.",
+        "after": "{label, items[]}, required. The new way: the same shape, in the same order, on the slide's one card."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "arcade",
+          "path": "fetch/09.webp",
+          "why": "A struck-through list of the old tactics, an arrow, and one raised card of checked new ones."
+        },
+        {
+          "source": "arcade",
+          "path": "iphone/08.webp",
+          "why": "A quiet panel for today, an arrow, and one dark highlighted panel for the replacement."
+        },
+        {
+          "source": "arcade",
+          "path": "darcy/06.webp",
+          "why": "Each old line struck through beside the concrete action that replaced it."
+        }
+      ]
+    },
+    {
+      "name": "before-after-slider",
+      "type": "before-after",
+      "variant": "slider",
+      "job": "Let the audience drag between the same thing before and after.",
+      "use_when": "One measure changed (a finish time, a cost, a count), or there are two pictures of the same thing taken the same way. The change is worth a moment of play.",
+      "avoid_when": "The change is several actions (before-after-split). The two images aren't framed the same, so the divider compares nothing. The deck is mostly read as a PDF: it prints split at start, which is fine, but a split slide says the same with less.",
+      "default_tone": "paper",
+      "props": {
+        "headline": "string, required. What changed, one sentence, 12 words or fewer.",
+        "hl": "string. One phrase of the headline, word for word, in the accent. The after's figure then goes to ink.",
+        "before": "{label, figure?, caption?, src?, alt?}, required. A label of 24 characters or fewer, then a figure (8 or fewer) with an optional caption (56 or fewer), or an image with its alt.",
+        "after": "{label, figure?, caption?, src?, alt?}, required. The same kind as before.",
+        "start": "number, default 50. Where the divider rests, as the percent of the frame showing the before. The PDF prints this split."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "interactive": "Drag anywhere on the frame, or focus the handle and use the arrow keys, Page Up and Down, Home and End. The divider sweeps in from the right as the slide enters. The handle is 72px on the stage (48px in a 1280-wide window) and sits in the frame's foot, under the words. The PDF and static renders show the split at start without the handle; a phone stacks both sides whole.",
+      "references": [
+        {
+          "source": "arcade",
+          "path": "spanx/04.webp",
+          "why": "One object with a vertical draggable divider, the before on the left and the after on the right, labelled at the top corners."
+        },
+        {
+          "source": "arcade",
+          "path": "sell-me-this-pen/09.webp",
+          "why": "The headline with a two-state control, and a large readout that changes with it."
+        }
+      ]
+    },
+    {
+      "name": "comparison-two-column",
+      "type": "comparison",
+      "variant": "two-column",
+      "job": "Set the alternatives they're weighing beside the one that wins.",
+      "use_when": "The buyer is choosing among two to four named options (build it, hire, a rival, do nothing) and each loser has one plain reason it falls short.",
+      "avoid_when": "There are criteria to score (comparison-check-matrix). The field is large and alike (comparison-one-of-many). The reasons need a paragraph each: that's a slide per option.",
+      "default_tone": "paper",
+      "props": {
+        "headline": "string, required. The verdict, one sentence, 12 words or fewer.",
+        "hl": "string. One phrase of the headline, word for word, in the accent. The choice's label then goes quiet.",
+        "options": "{name, line?, reason}[], 1 to 3, required. The alternatives: a name (32 or fewer, struck through), what it is (64 or fewer, left off on a phone), and why it falls short (40 or fewer).",
+        "choice": "{label?, name, line}, required. The winner on the slide's one card: a short label, its name (40 or fewer, set large) and why it wins (90 or fewer).",
+        "stamp": "string. One or two words stamped on the card's corner (16 or fewer). Skip it for a serious brand."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "arcade",
+          "path": "moneyball/04.webp",
+          "why": "Two rejected options as small struck-through blocks with their reasons, one large card for the choice with a stamp."
+        },
+        {
+          "source": "arcade",
+          "path": "fetch/09.webp",
+          "why": "The quiet column on the left, the raised card on the right."
+        }
+      ]
+    },
+    {
+      "name": "comparison-check-matrix",
+      "type": "comparison",
+      "variant": "check-matrix",
+      "job": "Score the options against the criteria that matter, with one column holding up.",
+      "use_when": "Three to six criteria the buyer already uses, two to four options, and the answers are yes, no, partly or a few words. Ours wins on the criteria that matter, not on all of them.",
+      "avoid_when": "Ours wins every row with a check: nobody believes a clean sweep, so drop the rows that don't matter. The criteria need explaining (a slide each). There are more than four options (comparison-one-of-many).",
+      "default_tone": "paper",
+      "props": {
+        "headline": "string, required. The verdict, one sentence, 10 words or fewer, set in the left column in three lines at most.",
+        "hl": "string. One phrase of the headline, word for word, in the accent.",
+        "line": "string. One line under the headline the matrix can't say (90 or fewer). Most slides have none.",
+        "options": "string[], 2 to 4, required. The column heads, 16 characters or fewer.",
+        "ours": "string, required. Which option is ours, as written in options. Its column is tinted and its marks take the accent.",
+        "rows": "{label, values[]}[], 3 to 6, required. A criterion (36 or fewer) and one value per option: true, false, \"partial\", or a few words (16 or fewer)."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "arcade",
+          "path": "taylors-version/06.webp",
+          "why": "The headline and a one-line verdict in a narrow left column, a scorecard of criteria by option to the right, the winner marked."
+        },
+        {
+          "source": "arcade",
+          "path": "fyre-festival/05.webp",
+          "why": "Options as column heads above a feature-by-option check table."
+        }
+      ]
+    },
+    {
+      "name": "comparison-one-of-many",
+      "type": "comparison",
+      "variant": "one-of-many",
+      "job": "Show a field of look-alikes and the one that stands out.",
+      "use_when": "The market is crowded with options that look the same to the buyer, and the point is that ours is different at a glance. The names of the field are real.",
+      "avoid_when": "The buyer is weighing two to four specific options (comparison-two-column). The difference needs criteria (comparison-check-matrix). The field is invented: a made-up crowd proves nothing.",
+      "default_tone": "warm",
+      "props": {
+        "headline": "string, required. The point, one sentence, 10 words or fewer, across the top.",
+        "hl": "string. One phrase of the headline, word for word, in the accent.",
+        "line": "string. One line under the headline (90 or fewer). Most slides have none.",
+        "many": "string[], 5 to 17, required. The look-alikes' names, 20 characters or fewer, each on a neutral tile.",
+        "ours": "string, required. Our name, 20 or fewer, on the one filled tile.",
+        "at": "number. Where our tile sits, counting from 0. Default two-thirds of the way in.",
+        "mark": "boolean, default false. The brand's mark on our tile, above the name."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "arcade",
+          "path": "spanx/07.webp",
+          "why": "Two shelves of identical neutral boxes, exactly one in the accent with the brand's name, the headline beside them."
+        },
+        {
+          "source": "pu-layouts",
+          "path": "external/beautiful-ai/market-positioning/06.jpg",
+          "why": "Rivals as small quiet marks, ours the one large tinted one."
+        }
+      ]
+    },
+    {
+      "name": "product-browser",
+      "type": "product",
+      "variant": "browser",
+      "job": "Show the product working, as a screenshot in browser chrome.",
+      "use_when": "There is a real screenshot of a web app, wide (about 16:10), and one sentence says what it proves. The screen is the evidence.",
+      "avoid_when": "The point is one part of the screen (product-annotated). The product is a phone app (product-phone). There is no screenshot yet: use a labelled placeholder or wait; never build a fake UI out of boxes.",
+      "default_tone": "paper",
+      "props": {
+        "headline": "string, required. What the screen proves, a whole sentence of 12 words or fewer. Set at the largest size that fits its column.",
+        "hl": "string. One phrase of the headline, word for word, in the accent.",
+        "caption": "string. One line of proof the screen doesn't show (a number, a customer, a date), 90 characters or fewer.",
+        "src": "string, required. The screenshot, wide, about 16:10.",
+        "alt": "string, required. What it shows, for assistive tech.",
+        "url": "string. The address in the window bar, without https://.",
+        "tag": "string. A sticker on the window's corner, three words or fewer. Label an invented screen: \"Example screen\"."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "arcade",
+          "path": "pied-piper/04.webp",
+          "why": "A narrow column of headline and one line beside a large app window carrying the proof."
+        },
+        {
+          "source": "arcade",
+          "path": "tesla-master-plan/11.webp",
+          "why": "Headline left, a browser window right showing the real artifact the headline names."
+        }
+      ]
+    },
+    {
+      "name": "product-phone",
+      "type": "product",
+      "variant": "phone",
+      "job": "Show a phone app working, held up at nearly the stage's height.",
+      "use_when": "The product lives on a phone (crew app, consumer app) and one screen proves the point. There is a real portrait screenshot, about 9:19.5.",
+      "avoid_when": "The product is a web app (product-browser). Several screens tell a sequence: give each its slide. No real screenshot: don't draw a phone UI out of boxes.",
+      "default_tone": "paper",
+      "props": {
+        "headline": "string, required. What the screen proves, a whole sentence of 12 words or fewer. Set low in the left column at the largest size that fits three lines.",
+        "hl": "string. One phrase of the headline, word for word, in the accent.",
+        "caption": "string. One line of proof the screen doesn't show, 90 characters or fewer.",
+        "src": "string, required. The portrait screenshot (a 390x844 capture or the same shape).",
+        "alt": "string, required. What it shows, for assistive tech.",
+        "tag": "string. A sticker beside the phone, three words or fewer: \"Example screen\" for an invented one."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "arcade",
+          "path": "snapchat/04.webp",
+          "why": "Headline and one line on the left; a tall phone on the right running the real interaction."
+        },
+        {
+          "source": "arcade",
+          "path": "iphone/06.webp",
+          "why": "A wide left column of type beside a device at nearly full height."
+        },
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/ai-software-sales-deck/02.jpg",
+          "why": "The phone standing in a quiet field of its own, the type kept apart from it."
+        }
+      ]
+    },
+    {
+      "name": "product-annotated",
+      "type": "product",
+      "variant": "annotated",
+      "job": "Point at the parts of one screen that matter, with numbered leader-line callouts.",
+      "use_when": "One screenshot has two to four parts worth naming, and one of them carries the point. The labels use the product's own names.",
+      "avoid_when": "The screen proves one thing as a whole (product-browser). The callouts would rename steps the screen already shows (craft: words beside a screenshot match it). More than four parts: split the screen across slides.",
+      "default_tone": "paper",
+      "props": {
+        "headline": "string, required. What the screen proves, a whole sentence of 12 words or fewer. Two lines across the top.",
+        "hl": "string. One phrase of the headline, word for word, in the accent.",
+        "src": "string, required. The screenshot, wide, about 16:10.",
+        "alt": "string, required. What it shows, for assistive tech.",
+        "callouts": "{label, x, y, side?}[], one to four. label: 40 characters or fewer. x, y: the spot, as fractions of the screenshot (0 to 1). side: the margin for the label, default the nearer. Two labels in one margin need 0.16 between their y, or the build stops.",
+        "focus": "number. The callout that carries the point, from 1. Its dot takes the accent and its label the weight."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/case-study/24.jpg",
+          "why": "One screen centered, thin leader lines running from parts of it to short labels set on the lines, left and right."
+        },
+        {
+          "source": "arcade",
+          "path": "pied-piper/04.webp",
+          "why": "The proof metric picked out on the screen with the one accent."
+        }
+      ]
+    },
+    {
+      "name": "how-it-works-three-steps",
+      "type": "how-it-works",
+      "variant": "three-steps",
+      "job": "Show three steps that climb to an outcome, with the outcome as the hero.",
+      "use_when": "The process really is three steps and the last (or one other) is the point. Each step is a name of four words or fewer and one line.",
+      "avoid_when": "Four or more steps, or one step is what sets the company apart (how-it-works-focal-step). The steps are a mechanism, not a sequence (how-it-works-diagram).",
+      "default_tone": "paper",
+      "props": {
+        "headline": "string, required. What the steps add up to, a whole sentence of 12 words or fewer.",
+        "hl": "string. One phrase of the headline, word for word, in the accent; the focal step then keeps its weight and gives up the color.",
+        "steps": "{name, detail?}[], exactly three. name: four words or fewer. detail: one line, 80 characters or fewer.",
+        "focus": "number, 1 to 3, default 3. The step that carries the point."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/ai-software-sales-deck/24.jpg",
+          "why": "Numbered steps at rising heights, left to right, between hairline columns, with no connectors."
+        },
+        {
+          "source": "arcade",
+          "path": "tesla-master-plan/08.webp",
+          "why": "Three steps in a row where each one pays for the next, ending on the one-line moral."
+        }
+      ]
+    },
+    {
+      "name": "how-it-works-focal-step",
+      "type": "how-it-works",
+      "variant": "focal-step",
+      "job": "Show the whole process on one line and open up the one step that sets the company apart.",
+      "use_when": "Three to six steps, most of them generic, and one that only this company does. The audience should leave remembering that step.",
+      "avoid_when": "Every step matters equally (cut to three: how-it-works-three-steps). The process branches or converges (how-it-works-diagram).",
+      "default_tone": "paper",
+      "props": {
+        "headline": "string, required. What the process does, a whole sentence of 12 words or fewer.",
+        "hl": "string. One phrase of the headline, word for word, in the accent; the focal node then goes to ink.",
+        "steps": "{name, detail?}[], three to six. name: four words or fewer. Only the focal step's detail shows, and it is required: 120 characters or fewer.",
+        "focus": "number, required. The step that sets the company apart, from 1."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "arcade",
+          "path": "miyagi/08.webp",
+          "why": "A row of quiet tiles where the active ones carry the content, the rest kept as outlines."
+        },
+        {
+          "source": "arcade",
+          "path": "office-space/05.webp",
+          "why": "A row of identical small items with lines converging on the one highlighted item below, which carries its own label."
+        }
+      ]
+    },
+    {
+      "name": "how-it-works-diagram",
+      "type": "how-it-works",
+      "variant": "diagram",
+      "job": "Show the mechanism as many paths meeting one node, or one node feeding many.",
+      "use_when": "The point is convergence (many inputs, one plan) or fan-out (one source, many recipients), with two to five named paths and one that matters most.",
+      "avoid_when": "The process is a sequence (how-it-works-three-steps or focal-step). The paths need numbers on them: that's a chart.",
+      "default_tone": "ink",
+      "props": {
+        "headline": "string, required. What the mechanism does, a whole sentence of 12 words or fewer.",
+        "hl": "string. One phrase of the headline, word for word, in the accent.",
+        "caption": "string. One line of proof the diagram doesn't show, 90 characters or fewer.",
+        "paths": "string[], two to five, top to bottom, three words or fewer each.",
+        "node": "string, required. The node's label, three words or fewer.",
+        "flow": "\"in\" or \"out\", default \"in\". Paths run into the node, or out of it.",
+        "focus": "number. The path that carries the point, from 1. It is drawn in the accent."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "arcade",
+          "path": "netflix/09.webp",
+          "why": "Headline left; three labelled paths starting apart and converging on one ringed node, one path in the accent."
+        },
+        {
+          "source": "arcade",
+          "path": "office-space/05.webp",
+          "why": "Curved connectors from many sources meeting one highlighted target."
+        }
+      ]
+    },
+    {
+      "name": "demo-slider-calculator",
+      "type": "demo",
+      "variant": "slider-calculator",
+      "job": "Let the buyer move one input they know and watch the result change at poster size.",
+      "use_when": "The value scales with one number the buyer knows (crews, seats, sites) by a rate you can state. Start the slider on their real figure.",
+      "avoid_when": "The math needs two or more inputs or isn't linear (model-calculator). The rate is invented: say so in the output label and the notes, or don't use it.",
+      "default_tone": "paper",
+      "props": {
+        "headline": "string, required. The question the slider answers, a whole sentence of 12 words or fewer.",
+        "hl": "string. One phrase of the headline, word for word, in the accent; the result then goes to ink.",
+        "input": "{label, min, max, step?, value, prefix?, unit?}, required. value is where it starts and what the PDF prints.",
+        "output": "{label, prefix?, unit?, decimals?}, required. label: what the result is and on what assumption, 64 characters or fewer.",
+        "rate": "number, required. The result per unit of input: result = input x rate + base.",
+        "base": "number, default 0. Added to every result."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "arcade",
+          "path": "office-space/05.webp",
+          "why": "A poster-size figure on the left with a live counter and one button that changes it."
+        },
+        {
+          "source": "arcade",
+          "path": "spanx/04.webp",
+          "why": "A control under the headline on the left, the thing it changes filling the right."
+        },
+        {
+          "source": "arcade",
+          "path": "trojan-horse/02.webp",
+          "why": "One huge figure with a mono caption saying exactly what it measures."
+        }
+      ]
+    },
+    {
+      "name": "demo-click-queue",
+      "type": "demo",
+      "variant": "click-queue",
+      "job": "Let the buyer clear a real queue, approve or skip, with a counter keeping score.",
+      "use_when": "The product turns a pile of decisions into a quick yes or no per item, and doing it is the proof. Two to six real items in the product's words.",
+      "avoid_when": "The items need reading or comparing (a list or a table). The decision isn't the buyer's to make in the product.",
+      "default_tone": "warm",
+      "props": {
+        "headline": "string, required. What clearing the queue proves, a whole sentence of 12 words or fewer.",
+        "hl": "string. One phrase of the headline, word for word, in the accent.",
+        "items": "{title, detail?}[], two to six, in order. title: 60 characters or fewer; detail: one line, 80 or fewer.",
+        "approve": "string, required. The approve button's label, in the product's words.",
+        "skip": "string, required. The skip button's label.",
+        "counter": "string, required. What the counter counts: \"changes approved\".",
+        "done": "string, required. The line when the queue is empty. The PDF prints it with every item approved.",
+        "again": "string. The label of a button that refills the queue. Without it the queue refills when the slide comes round again."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "arcade",
+          "path": "office-space/05.webp",
+          "why": "A live counter over its label beside the exhibit, with one button that acts and the count answering."
+        },
+        {
+          "source": "arcade",
+          "path": "snapchat/04.webp",
+          "why": "Headline left and the product's own interaction on the right, run by the audience."
+        }
+      ]
+    },
+    {
+      "name": "demo-toggle",
+      "type": "demo",
+      "variant": "toggle",
+      "job": "Let one switch flip the whole view between the old way and the new.",
+      "use_when": "Two screenshots of the same job, the old way and the new, make the point by contrast, and the buyer flipping between them is the moment.",
+      "avoid_when": "There are three or more states (one slide each). The two views need reading side by side (before-after-split). Craft: a switch with one state showing doesn't work in a sent PDF, so this layout prints both views.",
+      "default_tone": "paper",
+      "props": {
+        "headline": "string, required. What flipping the switch proves, a whole sentence of 12 words or fewer.",
+        "hl": "string. One phrase of the headline, word for word, in the accent.",
+        "states": "{label, src, alt, note?}[], exactly two: the old way, then the new. label: two words or fewer. note: one line, 80 characters or fewer, shown under the switch in that state.",
+        "mute": "boolean, default true. Mutes the first state's view to grey as the old way; false when the two are peers."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "arcade",
+          "path": "iphone/06.webp",
+          "why": "A two-state old/new switch under the headline, the device on the right changing with it."
+        },
+        {
+          "source": "arcade",
+          "path": "spanx/04.webp",
+          "why": "A segmented control on the left flips one object on the right between without and with."
+        },
+        {
+          "source": "arcade",
+          "path": "tesla-master-plan/08.webp",
+          "why": "A two-way toggle at the corner that re-runs the whole diagram in the other order."
+        }
+      ]
+    },
+    {
+      "name": "chart-bar-highlight",
+      "type": "chart",
+      "variant": "bar-highlight",
+      "job": "Show one period or category standing out from an ordinary run of them.",
+      "use_when": "The point is that one bar is different: the peak, the outlier, the one that matters. 3 to 12 bars on one scale, all zero or more.",
+      "avoid_when": "Every bar matters equally (a table, or cut to the one). The data is a trend over many points (chart-line-annotated). Values go negative or add up to a total (chart-waterfall).",
+      "default_tone": "paper",
+      "props": {
+        "headline": "string, required. The point the hero bar proves, as a sentence. 14 words or fewer. Fitted to the left column.",
+        "hl": "string. One phrase of the headline, word for word, in the accent. The focal mark then goes to full ink.",
+        "note": "string. One line under the headline with a fact the chart doesn't show. 110 characters or fewer; most charts need none.",
+        "bars": "{label, value}[], required, 3 to 12. Drawn to scale from zero.",
+        "highlight": "number | string. The hero bar's index or label. Default the largest.",
+        "display": "string. The hero's value as written (\"$150M+\"). Default its value with prefix and unit.",
+        "prefix": "string. Before a formatted value: \"$\".",
+        "unit": "string. After a formatted value: \"%\", \" min\".",
+        "caption": "string, required. What was measured, over what, when, in one line."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "arcade",
+          "path": "oceans-eleven/03.webp",
+          "why": "Headline left; muted bars for the ordinary periods and one accent bar, twice as tall, with its value above it."
+        },
+        {
+          "source": "arcade",
+          "path": "uber/03.webp",
+          "why": "Bars drawn honestly to scale so the gap is the argument, the values set large."
+        },
+        {
+          "source": "pu-layouts",
+          "path": "external/beautiful-ai/sales-pipeline-review/03.jpg",
+          "why": "A single series with the values carried by the shape and quiet labels beneath."
+        }
+      ]
+    },
+    {
+      "name": "chart-line-annotated",
+      "type": "chart",
+      "variant": "line-annotated",
+      "job": "Show a trend turning, with the moment it turned marked on the line.",
+      "use_when": "The point is a change over time: a line that breaks, crosses or takes off after an event. One to three series; the one the headline is about is focal.",
+      "avoid_when": "There are fewer than six points or one point is the whole story (chart-bar-highlight). Several lines matter equally: cut to the ones the headline names.",
+      "default_tone": "paper",
+      "props": {
+        "headline": "string, required. What the trend proves, as a sentence. 14 words or fewer; two lines across the top.",
+        "hl": "string. One phrase of the headline, word for word, in the accent. The focal mark then goes to full ink.",
+        "x": "string[], required, 3 to 24. One label per point; \"\" leaves a point unlabelled. Label 8 at most.",
+        "series": "{name, values, focal?}[], required, 1 to 3. One value per x label. Named at the line's end; focal (default the first) is drawn heavy in the accent.",
+        "callout": "{at, text}. A ringed point on the focal line at index at, with its words on a leader. 48 characters or fewer.",
+        "event": "{at, label}. A dashed vertical line at index at, labelled at its top.",
+        "caption": "string, required. What was measured, over what, when, in one line.",
+        "yFrom": "number. Where the y scale starts. Default zero, or the lowest value when one is negative."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "arcade",
+          "path": "romeo-juliet/04.webp",
+          "why": "Two lines over a short time axis: the old one drops at a dashed event line as the new one climbs, named at its end, with a callout at the crossing."
+        },
+        {
+          "source": "arcade",
+          "path": "jurassic-park/06.webp",
+          "why": "A line over time with annotated event markers carrying the story."
+        },
+        {
+          "source": "arcade",
+          "path": "snapchat/08.webp",
+          "why": "A two-line chart where the series are labelled on the lines, not in a legend."
+        }
+      ]
+    },
+    {
+      "name": "chart-waterfall",
+      "type": "chart",
+      "variant": "waterfall",
+      "job": "Show how parts add up to (or eat into) one total, step by step.",
+      "use_when": "A total is the point and its parts explain it: where the lost hours go, how a cost comes down from today to after. 2 to 7 steps, an optional starting bar, and the total as the hero.",
+      "avoid_when": "The parts don't sum to the total. There is one change, not several (big-number-number-context). The bars are separate categories with no running total (chart-bar-highlight).",
+      "default_tone": "paper",
+      "props": {
+        "headline": "string, required. The total's meaning, as a sentence. 14 words or fewer; two lines across the top.",
+        "hl": "string. One phrase of the headline, word for word, in the accent. The focal mark then goes to full ink.",
+        "start": "{label, value}. A starting bar the steps run from (today's cost). Without one the steps stack from zero.",
+        "steps": "{label, value}[], required, 2 to 7. Signed changes: positive adds, negative takes away.",
+        "end": "{label, display?}, required. The total bar, computed from start and steps, in the accent; display writes its value as published.",
+        "prefix": "string. Before every formatted value: \"$\".",
+        "unit": "string. After every formatted value: \"k\", \" min\".",
+        "caption": "string. What was measured, over what, when, in one line."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "pu-layouts",
+          "path": "external/beautiful-ai/technology-sales-proposal/02.jpg",
+          "why": "Four loss bars stepping down in a pale tint, closing on one tall total bar in the full accent."
+        },
+        {
+          "source": "arcade",
+          "path": "office-space/06.webp",
+          "why": "A tall starting bar, accent steps down for each loss, and a near-zero final bar flagged as the point."
+        },
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/board-deck/12.jpg",
+          "why": "Opening and ending bars with the drivers between them, gains and losses carried by their signed amounts."
+        }
+      ]
+    },
+    {
+      "name": "chart-pictograph",
+      "type": "chart",
+      "variant": "pictograph",
+      "job": "Make a share of people (or things) countable: seven in ten, drawn as ten.",
+      "use_when": "A percentage of people, customers or units is the point and should feel human. One or two rows; the first is the hero.",
+      "avoid_when": "The figure isn't a share of a whole. Three or more groups compare (chart-bar-highlight). The share is tiny or precise to the decimal (big-number-number-label).",
+      "default_tone": "ink",
+      "props": {
+        "headline": "string, required. What the share means, as a sentence. 14 words or fewer.",
+        "hl": "string. One phrase of the headline, word for word, in the accent. The focal mark then goes to full ink.",
+        "rows": "{value, label, display?}[], required, 1 or 2. value is a percent, 0 to 100; display writes it as published (\"2 in 3\"). The first row is the hero.",
+        "icons": "number, default 10. Marks per row, 5 to 20; the last filled mark is filled in part.",
+        "mark": "\"person\" | \"square\", default \"person\". Person for people; square for anything else."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "pu-layouts",
+          "path": "external/beautiful-ai/brand-partnership/07.jpg",
+          "why": "A percentage at poster size, then ten outlined people with the share filled and the rest faded, a label under the row."
+        },
+        {
+          "source": "arcade",
+          "path": "jerry-maguire/06.webp",
+          "why": "A row of person marks as the unit of the argument."
+        }
+      ]
+    },
+    {
+      "name": "proof-case-metric",
+      "type": "proof",
+      "variant": "case-metric",
+      "job": "Prove it worked for a named customer, with the one result that matters.",
+      "use_when": "One customer's result, as a number they would put their name to, is the proof. A photo of their people or place if there is one; their logo or name if not.",
+      "avoid_when": "The proof is their words (proof-testimonial-photo, quote-hero-quote). Several customers share the credit (proof-logo-wall). The number is invented: say so on the slide and in the notes.",
+      "default_tone": "paper",
+      "props": {
+        "headline": "string, required. What changed for the customer, as a sentence. 14 words or fewer.",
+        "hl": "string. One phrase of the headline, word for word, in the accent. The metric then goes to full ink.",
+        "customer": "string, required. The customer's name, as they write it.",
+        "logo": "string. Their logo URL, shown on the panel. Without it, their name in the display face.",
+        "photo": "string. A photo URL for the panel (their crew, their site). Without it, a quiet field with the logo or name.",
+        "metric": "{value, label}, required. The result as written (\"−78%\") and what it measures.",
+        "supports": "{value, label}[], up to 2. Quiet facts under the metric: how long it took, how many."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "pu-layouts",
+          "path": "external/beautiful-ai/customer-success-qbr/05.jpg",
+          "why": "A photo panel on one side, the result as a figure as large as its tile allows on the other."
+        },
+        {
+          "source": "arcade",
+          "path": "dunder-mifflin/06.webp",
+          "why": "A short customer story beside the evidence panel, with the count set big."
+        },
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/series-b-pitch-deck/25.jpg",
+          "why": "A tall photo panel with the customer's logo tag, the story in the column beside it."
+        }
+      ]
+    },
+    {
+      "name": "proof-testimonial-photo",
+      "type": "proof",
+      "variant": "testimonial-photo",
+      "job": "Put a real person's face and words on the proof.",
+      "use_when": "There is a photo of the person and a quote of up to 120 characters. The face matters: a buyer will recognize them, or the photo shows their work.",
+      "avoid_when": "There's no photo: a monogram stands in, but quote-hero-quote reads better. The quote is short enough to be the headline alone (quote-hero-quote). The proof is a number (proof-case-metric).",
+      "default_tone": "paper",
+      "props": {
+        "quote": "string, required. Verbatim, without quotation marks, 120 characters or fewer. The slide's headline, set at the largest size that fits three lines.",
+        "hl": "string. One phrase of the quote, word for word, in the accent.",
+        "name": "string, required. Who said it, as published.",
+        "role": "string. Their title.",
+        "company": "string. Their company.",
+        "photo": "string. A portrait URL, cropped tall. Without one, a field with their monogram.",
+        "logo": "string. Their company's logo URL, tagged on the photo's corner."
+      },
+      "slots": {
+        "quote": "Markup in place of quote."
+      },
+      "references": [
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/series-b-pitch-deck/25.jpg",
+          "why": "A tall portrait bleeding off the left with a small logo tag in its corner; the person and their story in the column beside it."
+        },
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/consulting-proposal/08.jpg",
+          "why": "The quote left-aligned and large, the name and title under a hairline."
+        }
+      ]
+    },
+    {
+      "name": "proof-logo-wall",
+      "type": "proof",
+      "variant": "logo-wall",
+      "job": "Show who already runs on it, led by one hero customer and their result.",
+      "use_when": "The customer list is the proof and one name on it will land hardest with this buyer. 4 to 15 others, as logos or names.",
+      "avoid_when": "There are fewer than four customers (proof-case-metric). Every logo is equally important to this buyer: pick the one that is most like them anyway.",
+      "default_tone": "warm",
+      "props": {
+        "headline": "string, required. What the list proves, as a sentence. 14 words or fewer.",
+        "hl": "string. One phrase of the headline, word for word, in the accent. The focal mark then goes to full ink.",
+        "hero": "{name, logo?, metric?, result}, required. The customer this buyer will recognize: logo (or name), the result as a figure, and one line on what it measures.",
+        "logos": "{name, logo?}[], required, 4 to 15. The rest, quiet and equal. A logo URL, or the name set in type."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "arcade",
+          "path": "dunder-mifflin/06.webp",
+          "why": "The customers counted out one by one, with the count that matters set big."
+        },
+        {
+          "source": "arcade",
+          "path": "wonka/06.webp",
+          "why": "A numbered list of names beside the visual that places them."
+        }
+      ]
+    },
+    {
+      "name": "objection-question-answer",
+      "type": "objection",
+      "variant": "question-answer",
+      "job": "Answer the buyer's biggest doubt in one line they'll remember.",
+      "use_when": "One objection keeps coming up and the answer fits one or two short sentences, with a fact behind it.",
+      "avoid_when": "Several questions need answers (objection-faq-stack). The answer needs a chart or a demo: answer it on that slide. The objection is a straw man nobody raised.",
+      "default_tone": "ink",
+      "props": {
+        "question": "string, required. The objection as they'd say it, without quotation marks, 120 characters or fewer.",
+        "asker": "string. Who raises it (40 or fewer).",
+        "answer": "string, required. The answer, 90 characters or fewer. Set at the largest size that fits three lines.",
+        "hl": "string. One phrase of the answer, word for word, in the accent.",
+        "proof": "string. One line of proof behind the answer (110 or fewer): a number, a customer, a date."
+      },
+      "slots": {
+        "answer": "Markup in place of answer."
+      },
+      "references": [
+        {
+          "source": "arcade",
+          "path": "barbie/07.webp",
+          "why": "The objection quoted small, the answer in big display type, one proof line under it, on a dark field."
+        },
+        {
+          "source": "pu-layouts",
+          "path": "external/beautiful-ai/sales-battlecard-presentation/13.jpg",
+          "why": "A plain dark slide with the answer as a large left-aligned statement."
+        }
+      ]
+    },
+    {
+      "name": "objection-faq-stack",
+      "type": "objection",
+      "variant": "faq-stack",
+      "job": "Answer the questions every buyer asks, the hardest one first.",
+      "use_when": "Two to four questions come up in every deal and each has a short, plain answer. One of them matters most.",
+      "avoid_when": "One question carries the slide (objection-question-answer). The answers run past two lines: they're slides of their own, or the appendix.",
+      "default_tone": "warm",
+      "props": {
+        "headline": "string, required. What the stack says, one sentence, 12 words or fewer.",
+        "hl": "string. One phrase of the headline, word for word, in the accent. The hero question then takes the ink.",
+        "items": "{q, a}[], 2 to 4, required. Each question as the buyer asks it (64 or fewer) and its answer (120 or fewer).",
+        "focus": "number, default 0. Which question is the hero, set a size up."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "arcade",
+          "path": "tesla-master-plan/09.webp",
+          "why": "Headline over ruled rows, a large phrase on the left of each and a short answer on the right."
+        },
+        {
+          "source": "arcade",
+          "path": "darcy/06.webp",
+          "why": "Full-width ruled rows pairing what was said with the response."
+        }
+      ]
+    },
+    {
+      "name": "model-formula",
+      "type": "model",
+      "variant": "formula",
+      "job": "Show the math behind a number: a × b × c = d, each term named.",
+      "use_when": "A big figure comes from a few plain inputs and showing them makes it believable. 2 to 4 terms and a result, every term sourced.",
+      "avoid_when": "The audience should change the inputs (model-calculator). There is no math, only the figure (big-number-number-label). More than four terms: group them, or put the working in the notes.",
+      "default_tone": "paper",
+      "props": {
+        "headline": "string, required. What the result means, as a sentence. 14 words or fewer.",
+        "hl": "string. One phrase of the headline, word for word, in the accent. The focal mark then goes to full ink.",
+        "terms": "{value, label}[], required, 2 to 4. Each input as written (\"62\") and what it is (\"Crews\").",
+        "ops": "string[]. The operators between terms, each one of × + − ÷. Default all ×.",
+        "result": "{value, label}, required. The answer as written and what it is. The focal element, in the accent.",
+        "caption": "string. Where the inputs come from, in one quiet line."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "arcade",
+          "path": "moneyball/06.webp",
+          "why": "The formula written out in a box beside the headline, with the ratio it produces set big."
+        },
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/board-deck/12.jpg",
+          "why": "The drivers of a total laid out between the bars as small signed chips."
+        },
+        {
+          "source": "arcade",
+          "path": "darcy/05.webp",
+          "why": "A small ledger of line items summing to a poster-size total."
+        }
+      ]
+    },
+    {
+      "name": "model-nested-size",
+      "type": "model",
+      "variant": "nested-size",
+      "job": "Size a market as nested shapes drawn to scale: total, serviceable, obtainable.",
+      "use_when": "TAM, SAM and SOM (or any whole and its parts) need to be seen at their true proportions. 2 to 4 levels, each inside the last.",
+      "avoid_when": "The levels aren't subsets of each other. One figure is the only one that matters (big-number-number-label). The audience should test the assumptions (model-calculator).",
+      "default_tone": "paper",
+      "props": {
+        "headline": "string, required. What the market sizing means, as a sentence. 14 words or fewer.",
+        "hl": "string. One phrase of the headline, word for word, in the accent. The focal mark then goes to full ink.",
+        "levels": "{label, value, display}[], required, 2 to 4, outermost first. value draws the square's area to scale; display writes it (\"$1.2B\").",
+        "focus": "number. The index of the focal level, in the accent. Default the innermost.",
+        "caption": "string. How the market was sized, in one quiet line."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "arcade",
+          "path": "uber/09.webp",
+          "why": "Area-scaled squares: a small solid one for today inside a large dashed outline for the whole."
+        },
+        {
+          "source": "pu-layouts",
+          "path": "external/beautiful-ai/sales-go-to-market/07.jpg",
+          "why": "TAM, SAM, target and share as shapes shrinking to scale, values beside the small ones."
+        }
+      ]
+    },
+    {
+      "name": "model-calculator",
+      "type": "model",
+      "variant": "calculator",
+      "job": "Let the buyer move the assumptions and watch the result change.",
+      "use_when": "The result depends on inputs the buyer knows better than the seller, and their own numbers will convince them. One to three sliders, one result.",
+      "avoid_when": "The deck is mostly read as a PDF: the static render shows only the default (model-formula). The math has more than three inputs, or the result is a list, not a number.",
+      "default_tone": "warm",
+      "props": {
+        "headline": "string, required. What the default result means, as a sentence. 14 words or fewer.",
+        "hl": "string. One phrase of the headline, word for word, in the accent. The focal mark then goes to full ink.",
+        "inputs": "{label, min, max, value, step?, prefix?, unit?}[], required, 1 to 3. Each is a slider; value is the default the PDF shows.",
+        "factor": "number, default 1. The constant the inputs multiply by: result = factor × every input.",
+        "result": "{label, prefix?, unit?, decimals?, compact?}, required. How to write the result; compact writes 1,200,000 as 1.2M.",
+        "formula": "string. The math in words (\"minutes × crews × 250 days × $54 an hour\"), in one quiet line."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "arcade",
+          "path": "uber/09.webp",
+          "why": "A slider panel with a live output value, the shape on the right growing with it."
+        },
+        {
+          "source": "arcade",
+          "path": "moneyball/06.webp",
+          "why": "Two labelled assumption sliders under the formula, and the result as a big readout."
+        },
+        {
+          "source": "arcade",
+          "path": "taylors-version/07.webp",
+          "why": "Assumption sliders with live values beside a bar that moves with them."
+        }
+      ]
+    },
+    {
+      "name": "roadmap-timeline",
+      "type": "roadmap",
+      "variant": "timeline",
+      "job": "Show the plan as dated phases, with the one that carries the point made heavy.",
+      "use_when": "The plan has real dates or periods, two to five phases, and one phase (usually the outcome) is what the audience should remember. Rollouts, pilots, implementation plans in proposals.",
+      "avoid_when": "The dates aren't committed (roadmap-now-next-later). The plan is a dozen workstreams: show the one that matters and put the rest in the notes. The slide is the next few days after the meeting (next-steps-dated-steps).",
+      "default_tone": "paper",
+      "props": {
+        "headline": "string, required. What lands and when, as a whole sentence, 12 words or fewer. Set at the largest size that fits two lines.",
+        "hl": "string. One phrase of the headline, word for word, in the accent. The focal phase then keeps its weight in ink.",
+        "periods": "string[], 2 to 6, required. The axis left to right, 12 characters or fewer each: \"Dec\", \"Week 2\", \"Q3\".",
+        "phases": "{name, from, to?}[], 2 to 5, required. Each phase's name (40 characters or fewer) and its first and last period by label; to defaults to from.",
+        "focus": "number. Index of the phase that carries the point. Default the last."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/case-study/14.jpg",
+          "why": "Phases as short bars stepping down and right across month columns, names under the bars, months along the foot."
+        },
+        {
+          "source": "arcade",
+          "path": "office-space/10.webp",
+          "why": "A plan on a dated grid where one moment is marked and everything else stays quiet."
+        },
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/go-to-market-strategy/25.jpg",
+          "why": "Overlapping phase bars on a month axis, ending in the launch."
+        }
+      ]
+    },
+    {
+      "name": "roadmap-now-next-later",
+      "type": "roadmap",
+      "variant": "now-next-later",
+      "job": "Show what comes first and what follows, without promising dates.",
+      "use_when": "The order is certain but the dates aren't: a product roadmap, a phased offer, what ships first. Two or three horizons, the first (or the one the audience cares about) the hero.",
+      "avoid_when": "The dates are committed and matter (roadmap-timeline). Every horizon matters equally: it's a list, so cut to the one that carries the point. More than four items a horizon.",
+      "default_tone": "warm",
+      "props": {
+        "headline": "string, required. What comes first and why, as a whole sentence, 12 words or fewer.",
+        "hl": "string. One phrase of the headline, word for word, in the accent. The focal segment then goes to ink.",
+        "lanes": "{label, when?, items}[], 2 or 3, required. Each horizon's label (12 characters or fewer), an optional when (\"Q1 2027\") and 1 to 4 items of 48 characters or fewer; the focal horizon holds three at most.",
+        "focus": "number. Index of the horizon that carries the point. Default 0."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "arcade",
+          "path": "sell-me-this-pen/02.webp",
+          "why": "One segmented bar across the slide, every segment quiet but the one in the accent, a label and line under each."
+        },
+        {
+          "source": "arcade",
+          "path": "spanx/05.webp",
+          "why": "A short list where the active step fills with the accent and the rest stay plain."
+        }
+      ]
+    },
+    {
+      "name": "team-portrait-row",
+      "type": "team",
+      "variant": "portrait-row",
+      "job": "Introduce the people the client will work with, faces first, one of them the lead.",
+      "use_when": "Two to four people, there are real headshots (or monograms are fine for the brand), and one person leads. The brand shows its people.",
+      "avoid_when": "Five or more people, or one name answers the phone and the rest are support (team-lead-list). Stock photos stand in for the real team: use monograms. The headline only lists names: say why this team.",
+      "default_tone": "paper",
+      "props": {
+        "headline": "string, required. Why this team, as a whole sentence, 12 words or fewer.",
+        "hl": "string. One phrase of the headline, word for word, in the accent. The lead's tile then goes quiet.",
+        "people": "{name, role, owns?, photo?}[], 2 to 4, required. A role of 32 characters or fewer; owns (48 or fewer) shows for the lead; photo is a headshot URL, else a monogram.",
+        "lead": "number. Index of the person who leads, shown first and largest. Default 0."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "arcade",
+          "path": "airbnb/09.webp",
+          "why": "A sentence headline over a row of people, each an initials tile, a bold name and a role beneath."
+        },
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/consulting-proposal/03.jpg",
+          "why": "Portraits standing on the slide's foot, the name and role under each in small type."
+        }
+      ]
+    },
+    {
+      "name": "team-lead-list",
+      "type": "team",
+      "variant": "lead-list",
+      "job": "Name the one person the client deals with, and the team behind them.",
+      "use_when": "A proposal or account team where one name answers the phone. A team of three to seven where a row of portraits would be equal-weight.",
+      "avoid_when": "Two to four people of equal standing with real photos (team-portrait-row). A founders slide in a fundraising deck where every founder matters equally: pick the story, not the list.",
+      "default_tone": "warm",
+      "props": {
+        "headline": "string, required. Who the client deals with, as a whole sentence, 12 words or fewer. Set at the largest size that fits three lines of the left column.",
+        "hl": "string. One phrase of the headline, word for word, in the accent. The lead's monogram then goes quiet.",
+        "lead": "{name, role, line?, photo?}, required. A role of 32 characters or fewer, one line on what they do for the client (64 or fewer), an optional headshot URL.",
+        "people": "{name, role}[], 2 to 6, required. A name and a role or one-line contribution of 48 characters or fewer."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "arcade",
+          "path": "wright/11.webp",
+          "why": "A poster headline on the left, a ruled list of people with a bold name and a one-line contribution on the right."
+        },
+        {
+          "source": "arcade",
+          "path": "oceans-eleven/05.webp",
+          "why": "Each person with a role and what they own, so the list says who does what."
+        }
+      ]
+    },
+    {
+      "name": "pricing-single-price",
+      "type": "pricing",
+      "variant": "single-price",
+      "job": "State one price plainly, with what it buys and on what terms.",
+      "use_when": "There is one price to quote (a plan, a pilot, a project fee), and the buyer needs the terms beside it to judge it.",
+      "avoid_when": "There are tiers to choose between (pricing-plans-hero). The number is a return or a saving, not a price (big-number-number-label). The price isn't settled: leave the slide out rather than invent one.",
+      "default_tone": "paper",
+      "props": {
+        "headline": "string, required. What they get for the price, one sentence, 12 words or fewer.",
+        "hl": "string. One phrase of the headline, word for word, in the accent. The price then goes to ink.",
+        "price": "string, required. The price as written without the currency, 9 characters or fewer: \"1,240\", \"4.5k\".",
+        "currency": "string. Set smaller before the price: \"$\".",
+        "per": "string. What the price is per, under it (32 or fewer): \"per crew, per month\".",
+        "caption": "string. One line on the card's foot (48 or fewer): what's included or the term.",
+        "terms": "{label, value}[], up to 5. The terms in a quiet ruled list beside the card."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "arcade",
+          "path": "taylors-version/04.webp",
+          "why": "Headline across the top, the price as a large tilted tag lower left, a label-value list of terms lower right."
+        },
+        {
+          "source": "arcade",
+          "path": "ben-jerrys/09.webp",
+          "why": "The amount set as the one heavy thing, with the terms in a quiet ledger."
+        }
+      ]
+    },
+    {
+      "name": "pricing-plans-hero",
+      "type": "pricing",
+      "variant": "plans-hero",
+      "job": "Lay out the plans as a rate card, with the one to buy raised.",
+      "use_when": "Two to four tiers, one of which you want them to pick. Each tier fits a name, one line and a price.",
+      "avoid_when": "There's one price (pricing-single-price). The tiers differ by a feature list: compare them in comparison-check-matrix. You have no recommendation: then there is no hero, and you should have one.",
+      "default_tone": "paper",
+      "props": {
+        "headline": "string, required. What the plans add up to, one sentence, 12 words or fewer.",
+        "hl": "string. One phrase of the headline, word for word, in the accent. The hero's price then goes to ink.",
+        "plans": "{name, line, price, per?}[], 2 to 4, required, cheapest first. A name (20 or fewer), one line (64 or fewer), the price as written (10 or fewer), what it's per (16 or fewer).",
+        "hero": "number, default 1. Which plan is raised as the slide's one card.",
+        "badge": "string. One or two words on the hero (16 or fewer).",
+        "note": "string. One line under the stack, the term every plan shares (90 or fewer)."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "arcade",
+          "path": "truman-show/11.webp",
+          "why": "Full-width stacked tier rows, each name, one line and a right-aligned price, the premium tier raised with a shadow, a policy note under it."
+        },
+        {
+          "source": "arcade",
+          "path": "fyre-festival/05.webp",
+          "why": "Tier names with prices and availability, one tier marked."
+        }
+      ]
+    },
+    {
+      "name": "next-steps-dated-steps",
+      "type": "next-steps",
+      "variant": "dated-steps",
+      "job": "Say what happens after this meeting, step by dated step, with owners.",
+      "use_when": "A proposal or a meeting deck where both sides leave with dated steps. Two to five steps, one (usually the first, starting now) the one that matters.",
+      "avoid_when": "A sales deck: its close is the ask (ask-line-button or ask-line-contact), not a list of next steps. The steps are decisions the people in the room make (next-steps-decisions). The plan runs for months (roadmap-timeline).",
+      "default_tone": "ink",
+      "props": {
+        "headline": "string, required. Where the steps lead, with its date, as a whole sentence, 12 words or fewer. Set at the largest size that fits three lines of the left column.",
+        "hl": "string. One phrase of the headline, word for word, in the accent. The focal step then keeps its weight in ink.",
+        "steps": "{date, step, owner?}[], 2 to 5, required. A date of 12 characters or fewer (\"Nov 24\"), the step as a sentence of 56 or fewer, who owns it.",
+        "focus": "number. Index of the step that matters most. Default 0."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "arcade",
+          "path": "uber/11.webp",
+          "why": "A headline ending on the date, and a numbered list of next steps with the current one in the accent."
+        },
+        {
+          "source": "arcade",
+          "path": "jerry-maguire/07.webp",
+          "why": "Time slots down the left, a task and an owner on each line, one line marked."
+        },
+        {
+          "source": "arcade",
+          "path": "trojan-horse/10.webp",
+          "why": "A short dated timeline beside the headline, each stop a marker on a rule with one line."
+        }
+      ]
+    },
+    {
+      "name": "next-steps-decisions",
+      "type": "next-steps",
+      "variant": "decisions",
+      "job": "Put the decisions the people in the room make on the table, each with who and by when.",
+      "use_when": "A proposal or a meeting deck that ends on choices the audience owns: approve the pilot, name an owner, pick a start date. One of them is made in the room, today.",
+      "avoid_when": "A sales deck: its close is the ask (ask-line-button or ask-line-contact), not a list of next steps. The next steps are tasks, not decisions (next-steps-dated-steps). More than four decisions: the meeting isn't ready to decide.",
+      "default_tone": "paper",
+      "props": {
+        "headline": "string, required. What the decisions unlock, as a whole sentence, 12 words or fewer.",
+        "hl": "string. One phrase of the headline, word for word, in the accent. The focal verb then goes to ink.",
+        "decisions": "{verb, what, who?, by}[], 1 to 4, required. One verb of 12 characters or fewer (\"Approve\"), what it decides (56 or fewer), who decides, and by when (\"Today\", \"Nov 28\").",
+        "focus": "number. Index of the decision that matters most, set first and large. Default 0."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "arcade",
+          "path": "fetch/10.webp",
+          "why": "A ruled decision table where the decision verb is set at display size, with what, owner and when in columns."
+        },
+        {
+          "source": "arcade",
+          "path": "moonshot/11.webp",
+          "why": "A headline over a short checklist of what has to be true, with a dated stamp."
+        }
+      ]
+    },
+    {
+      "name": "ask-line-button",
+      "type": "ask",
+      "variant": "line-button",
+      "job": "Close on one request and the one thing to press.",
+      "use_when": "The next step is one action the audience can take from the deck: book the call, sign, reply. The ask is 12 words or fewer and the button has a real link.",
+      "avoid_when": "The next step is a person to talk to, not a link (ask-line-contact). The close needs terms, dates or owners (next-steps). There are two asks: pick one.",
+      "default_tone": "ink",
+      "props": {
+        "headline": "string, required. The ask, one whole sentence of 12 words or fewer. Set at the largest size that fits three lines.",
+        "hl": "string. One phrase of the headline, word for word, in the accent.",
+        "detail": "string. One line of terms under the ask: when, how long, who. 80 characters or fewer.",
+        "button": "{label, href?}, required. The next step as a verb phrase (24 characters or fewer) and where it goes. Without href it is drawn but does nothing."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "arcade",
+          "path": "uber/01.webp",
+          "why": "The headline on the left and one round call-to-action on the right, ringed."
+        },
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/series-a-pitch-deck/24.jpg",
+          "why": "The ask held by one large circle on a full field."
+        },
+        {
+          "source": "arcade",
+          "path": "taylors-version/11.webp",
+          "why": "A three-line recommendation at poster size on a full field as the close."
+        }
+      ]
+    },
+    {
+      "name": "ask-line-contact",
+      "type": "ask",
+      "variant": "line-contact",
+      "job": "Close on one request and the person to answer.",
+      "use_when": "The deck is sent ahead or left behind and the reader acts alone: the next step is to reach a named person. The ask is 12 words or fewer.",
+      "avoid_when": "There is one link to press (ask-line-button). The close needs terms, dates or owners (next-steps).",
+      "default_tone": "paper",
+      "props": {
+        "headline": "string, required. The ask, one whole sentence of 12 words or fewer. Set at the largest size that fits three lines.",
+        "hl": "string. One phrase of the headline, word for word, in the accent.",
+        "name": "string, required. Who to answer.",
+        "role": "string. Their title.",
+        "photo": "string. A headshot URL. Without one, a monogram of the name.",
+        "email": "string. Their email address, as a mailto link.",
+        "phone": "string. Their phone number, as a tel link.",
+        "link": "{label, href}. One more way in: a calendar or a page. At least one of email, phone or link is required."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/saas-investor-update/23.jpg",
+          "why": "The ask alone in bold display type with one supporting line and nothing else."
+        },
+        {
+          "source": "arcade",
+          "path": "elle-woods/09.webp",
+          "why": "The close as a headline over label and value rows saying who does what next."
+        }
+      ]
+    }
+  ],
+  "planned": []
+}

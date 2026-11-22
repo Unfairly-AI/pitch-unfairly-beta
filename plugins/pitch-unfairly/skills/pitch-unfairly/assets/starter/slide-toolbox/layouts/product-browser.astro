@@ -1,0 +1,189 @@
+---
+/**
+ * product-browser: the product working, as a screenshot in browser chrome.
+ *
+ * A narrow column holds the headline at the top and one line of proof at the
+ * foot. The screen fills the rest of the stage at the largest size the column
+ * leaves, in a quiet window frame with the brand's focal shadow, leaning by
+ * the brand's tilt. The screenshot is the focal element: the words beside it
+ * name the one thing it proves, never the steps it already shows.
+ */
+import Slide from '../../src/components/Slide.astro';
+import { fitType, splitHl, type SlideBase } from '../lib';
+
+interface Props extends SlideBase {
+  /** What the screen proves, as a whole sentence. 12 words or fewer. */
+  headline: string;
+  /** One phrase of the headline, word for word, in the accent. */
+  hl?: string;
+  /** One line of proof the screen doesn't show: a number, a customer, a date. 90 characters or fewer. */
+  caption?: string;
+  /** The screenshot: a path under public/ or an imported URL. Wide, about 16:10. */
+  src: string;
+  /** What the screenshot shows, for assistive tech. */
+  alt: string;
+  /** The address in the window bar, without https:// ("app.northline.io/board"). Leave it off for a bare bar. */
+  url?: string;
+  /** A sticker on the window's corner. Use it to label an invented screen: "Example screen". */
+  tag?: string;
+}
+
+const { id, label = 'Product', tone = 'paper', notes, brand, headline, hl, caption, src, alt, url, tag } = Astro.props;
+const where = `product-browser "${id}"`;
+if (headline.split(/\s+/).length > 14) throw new Error(`${where}: the headline is ${headline.split(/\s+/).length} words; the screen carries the detail. Cut it to 12 or fewer.`);
+if (caption && caption.length > 90) throw new Error(`${where}: the caption is ${caption.length} characters; one line of 90 or fewer. Move the rest to the notes.`);
+if (tag && tag.length > 24) throw new Error(`${where}: the tag is ${tag.length} characters; a sticker is two or three words.`);
+const [before, phrase, after] = splitHl(headline, hl, where);
+// Display type sets narrower than the estimate's average, and balanced lines leave room: the width is the column's plus a tenth.
+const head = fitType(headline.length, { width: 700, lines: 3, min: 60, max: 112 });
+const phone = fitType(headline.length, { width: 330, lines: 4, min: 28, max: 44 });
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <div class="st-browser" style={`--head: ${head}px; --head-phone: ${phone}px`}>
+    <div class="st-browser-copy">
+      <h2 data-fit="3 4" class="display st-browser-head rise">
+        <slot name="headline">{before}{phrase && <span class="hl">{phrase}</span>}{after}</slot>
+      </h2>
+      {caption && <p class="st-browser-cap rise" style="--d: 480ms">{caption}</p>}
+    </div>
+    <figure class="st-browser-shot rise" style="--d: 160ms">
+      <div class="st-browser-window">
+        <div class="st-browser-bar" aria-hidden="true">
+          <i></i><i></i><i></i>
+          {url && <span>{url}</span>}
+        </div>
+        <img src={src} alt={alt} />
+      </div>
+      {tag && <span class="st-browser-tag pop" style="--d: 620ms; --r: 3deg">{tag}</span>}
+    </figure>
+  </div>
+</Slide>
+
+<style>
+  .st-browser {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 640px minmax(0, 1fr);
+    column-gap: calc(var(--gap) * 1.5);
+    align-items: stretch;
+  }
+
+  .st-browser-copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-bottom: 8px;
+  }
+
+  .st-browser-head { font-size: calc(var(--head) * var(--display-scale)); }
+
+  .st-browser-cap {
+    max-width: 30ch;
+    font-size: var(--t-lede);
+    line-height: 1.3;
+    color: color-mix(in oklab, currentColor 74%, transparent);
+    text-wrap: pretty;
+  }
+
+  /* The focal element: the screen at the largest size its column allows. */
+  .st-browser-shot {
+    position: relative;
+    align-self: center;
+    min-width: 0;
+  }
+
+  .st-browser-window {
+    overflow: hidden;
+    border: var(--border-w) solid var(--border-color);
+    border-radius: calc(var(--radius) * 0.75);
+    background: var(--paper);
+    box-shadow: var(--shadow-focal);
+    transform: rotate(calc(-1deg * var(--tilt)));
+  }
+
+  .st-browser-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 52px;
+    padding: 0 22px;
+    background: color-mix(in oklab, var(--ink) 6%, var(--paper));
+    border-bottom: 1px solid color-mix(in oklab, var(--ink) 14%, transparent);
+    color: var(--ink);
+  }
+
+  .st-browser-bar i {
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: color-mix(in oklab, var(--ink) 22%, transparent);
+  }
+
+  .st-browser-bar span {
+    flex: 0 1 46%;
+    margin: 0 auto;
+    padding: 7px 18px;
+    border-radius: 999px;
+    background: var(--paper);
+    font-family: var(--font-mono);
+    font-size: var(--t-fine);
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: color-mix(in oklab, var(--ink) 70%, transparent);
+    transform: translateX(-20px);
+  }
+
+  .st-browser-window img {
+    width: 100%;
+    height: auto;
+  }
+
+  /* One sticker at most, on the frame's corner, never on the screen. */
+  .st-browser-tag {
+    position: absolute;
+    top: -26px;
+    right: 40px;
+    padding: 10px 20px;
+    border: var(--border-w) solid var(--border-color);
+    border-radius: 999px;
+    /* The kit's contrast-safe fill: small text on the accent itself can fall under 4.5:1 (MMA's pink). */
+    background: var(--accent-fill, var(--accent));
+    color: var(--on-accent-fill, var(--on-accent));
+    font-family: var(--font-mono);
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: var(--label-case, uppercase);
+    transform: rotate(calc(3deg * var(--tilt)));
+  }
+
+  /* Phone: the headline, then the screen at full width, then the proof. */
+  @media (max-width: 799px) {
+    .st-browser {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto auto;
+      align-content: start;
+      row-gap: calc(var(--gap) * 1.6);
+    }
+
+    .st-browser-copy { display: contents; }
+    .st-browser-head { font-size: calc(var(--head-phone) * var(--display-scale)); order: 1; }
+    .st-browser-shot { order: 2; align-self: start; }
+    .st-browser-cap { order: 3; max-width: none; font-size: var(--t-body); }
+    .st-browser-window { transform: none; }
+    .st-browser-bar { height: 22px; gap: 4px; padding: 0 8px; }
+    .st-browser-bar i { width: 6px; height: 6px; }
+    .st-browser-bar span { display: none; }
+    .st-browser-tag { top: -14px; right: 14px; padding: 4px 10px; }
+  }
+
+  /* PDF and every static render: the screenshot prints as it sits, the sticker at its lean. */
+  :global(html.is-static) .st-browser .rise {
+    opacity: 1;
+    transform: none;
+  }
+</style>

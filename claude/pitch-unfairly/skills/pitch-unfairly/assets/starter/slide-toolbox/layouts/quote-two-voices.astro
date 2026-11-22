@@ -1,0 +1,207 @@
+---
+/**
+ * quote-two-voices: two people, two sides of the point, one of them the answer.
+ *
+ * The slide splits unevenly. The quiet voice sits on the slide's own tone, its
+ * words in the display face at a modest size; the hero voice takes the larger
+ * side as a full-bleed field of the accent, its words set as large as three
+ * lines allow. Before and after, the field and the office, the rep and the
+ * buyer: the pair argues, and the field says who wins. Each voice can carry a
+ * short tag ("Before", "After one season") above its words.
+ */
+import Slide from '../../src/components/Slide.astro';
+import { fitType, splitHl, type SlideBase } from '../lib';
+
+interface Voice {
+  /** The quote, verbatim, without quotation marks. 110 characters or fewer. */
+  quote: string;
+  /** One phrase of the quote, word for word, to emphasize. Hero voice only. */
+  hl?: string;
+  /** Who said it. */
+  name: string;
+  /** Their title and company, as one line. */
+  role?: string;
+  /** A short tag above the words: "Before", "After one season". 24 characters or fewer. */
+  tag?: string;
+}
+
+interface Props extends SlideBase {
+  /** Exactly two voices, in reading order. */
+  voices: Voice[];
+  /** Which voice is the answer and takes the accent field: 0 or 1. Default 1, the second. */
+  hero?: 0 | 1;
+}
+
+const { id, label = 'Two voices', tone = 'paper', notes, brand, voices, hero = 1 } = Astro.props;
+const where = `quote-two-voices "${id}"`;
+if (voices?.length !== 2) throw new Error(`${where}: exactly two voices (got ${voices?.length ?? 0}); one voice is quote-hero-quote, three or more is a quote wall.`);
+voices.forEach((v, i) => {
+  if (/^["“'‘]|["”'’]$/.test(v.quote.trim())) throw new Error(`${where}: voice ${i + 1}: leave the quotation marks off; the layout sets them.`);
+  if (v.quote.length > 110) throw new Error(`${where}: voice ${i + 1} is ${v.quote.length} characters; 110 or fewer, so both read at a glance.`);
+  if (v.tag && v.tag.length > 24) throw new Error(`${where}: voice ${i + 1}'s tag is ${v.tag.length} characters; 24 or fewer.`);
+  if (i !== hero && v.hl) throw new Error(`${where}: voice ${i + 1} isn't the hero; only the hero voice takes an hl.`);
+});
+const main = voices[hero]!;
+const quiet = voices[1 - hero]!;
+const [before, phrase, after] = splitHl(main.quote, main.hl, where);
+const big = fitType(main.quote.length + 1, { width: 880, lines: 3, min: 54, max: 104 });
+const small = Math.min(Math.round(big * 0.6), fitType(quiet.quote.length + 1, { width: 620, lines: 4, min: 34, max: 60 }));
+const bigPhone = fitType(main.quote.length + 1, { width: 330, lines: 4, min: 22, max: 34 });
+const smallPhone = Math.min(Math.round(bigPhone * 0.72), fitType(quiet.quote.length + 1, { width: 330, lines: 4, min: 17, max: 24 }));
+const order = hero === 1 ? 'is-hero-second' : 'is-hero-first';
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <div class:list={['st-two', order]} style={`--big: ${big}px; --small: ${small}px; --big-phone: ${bigPhone}px; --small-phone: ${smallPhone}px`}>
+    <figure class="st-two-voice is-quiet">
+      {quiet.tag && <p class="st-two-tag rise">{quiet.tag}</p>}
+      <blockquote class="rise" style="--d: 80ms"><p class="display st-two-line">“{quiet.quote}”</p></blockquote>
+      <figcaption class="st-two-who rise" style="--d: 160ms"><b>{quiet.name}</b>{quiet.role && <span>{quiet.role}</span>}</figcaption>
+    </figure>
+    <figure class="st-two-voice is-hero" data-bleed>
+      {main.tag && <p class="st-two-tag rise" style="--d: 320ms">{main.tag}</p>}
+      <blockquote class="rise" style="--d: 400ms">
+        <h2 data-fit="3 4" class="display st-two-line">
+          <slot name="quote">“{before}{phrase && <span class="hl">{phrase}</span>}{after}”</slot>
+        </h2>
+      </blockquote>
+      <figcaption class="st-two-who rise" style="--d: 520ms"><b>{main.name}</b>{main.role && <span>{main.role}</span>}</figcaption>
+    </figure>
+  </div>
+</Slide>
+
+<style>
+  /* The field bleeds, so the layout takes the whole slide and pads each voice itself. */
+  .st-two {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 44fr) minmax(0, 56fr);
+  }
+
+  .st-two.is-hero-first { grid-template-columns: minmax(0, 56fr) minmax(0, 44fr); }
+  .st-two.is-hero-first .is-hero { grid-column: 1; grid-row: 1; }
+  .st-two.is-hero-first .is-quiet { grid-column: 2; grid-row: 1; }
+
+  /* Both voices start on one line, so the two tags and the two first lines line up across the split. */
+  .st-two-voice {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-width: 0;
+    padding: calc(var(--pad-y) * 2.3) calc(var(--gap) * 1.5) var(--pad-y);
+  }
+
+  .st-two.is-hero-second .is-quiet { padding-left: var(--pad-x); }
+  .st-two.is-hero-second .is-hero { padding-right: var(--pad-x); }
+  .st-two.is-hero-first .is-hero { padding-left: var(--pad-x); }
+  .st-two.is-hero-first .is-quiet { padding-right: var(--pad-x); }
+
+  /* The focal element: the answer, on a field of the accent. */
+  .st-two-voice.is-hero {
+    background: var(--accent);
+    color: var(--on-accent);
+    /* The kit's highlight is often the accent itself, so the phrase keeps the field's text color and is underlined. */
+    --hl-color: var(--on-accent);
+    --headline-color: var(--on-accent);
+  }
+
+  .st-two-voice.is-hero .hl {
+    text-decoration: underline;
+    text-decoration-thickness: 0.06em;
+    text-underline-offset: 0.14em;
+  }
+
+  :global(.tone-accent) .st-two-voice.is-hero .hl { text-decoration: none; }
+
+  :global(.tone-accent) .st-two-voice.is-hero {
+    background: var(--night);
+    color: var(--on-night);
+    --hl-color: var(--accent-on-night);
+    --headline-color: var(--on-night);
+  }
+
+  .st-two-tag {
+    margin-bottom: calc(var(--gap) * 0.6);
+    font-family: var(--font-mono);
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: var(--caps-tracking, 0.12em);
+    text-transform: var(--label-case, uppercase);
+    color: color-mix(in oklab, currentColor 66%, transparent);
+  }
+
+  .st-two-line {
+    font-size: calc(var(--small) * var(--display-scale));
+    line-height: max(var(--display-line), 1.06);
+    text-indent: -0.42em;
+  }
+
+  .is-quiet .st-two-line { color: color-mix(in oklab, currentColor 82%, transparent); }
+
+  .is-hero .st-two-line {
+    font-size: calc(var(--big) * var(--display-scale));
+    line-height: max(var(--display-line), 1.02);
+    color: var(--headline-color);
+  }
+
+  .is-hero .st-two-line .hl { color: var(--hl-color); }
+
+  .st-two-who {
+    display: grid;
+    gap: 4px;
+    margin-top: calc(var(--gap) * 0.9);
+  }
+
+  .st-two-who b {
+    font-size: var(--t-body);
+    font-weight: 700;
+  }
+
+  .st-two-who span {
+    font-size: var(--t-label);
+    color: color-mix(in oklab, currentColor 72%, transparent);
+  }
+
+  /* The page number sits on the field when the hero is second: it takes the field's ink. */
+  :global(.slide:has(> .st-two.is-hero-second) > .slide-num) {
+    z-index: 1;
+    color: var(--on-accent);
+  }
+
+  :global(.tone-accent:has(> .st-two.is-hero-second) > .slide-num) { color: var(--on-night); }
+
+  /* Phone: the quiet voice, then the answer on its field, full width, in reading order. */
+  @media (max-width: 799px) {
+    .st-two,
+    .st-two.is-hero-first {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto minmax(0, 1fr);
+    }
+
+    .st-two.is-hero-second .is-quiet,
+    .st-two.is-hero-first .is-quiet { grid-column: 1; grid-row: 1; }
+
+    .st-two.is-hero-second .is-hero,
+    .st-two.is-hero-first .is-hero { grid-column: 1; grid-row: 2; }
+
+    .st-two .st-two-voice,
+    .st-two.is-hero-second .is-quiet,
+    .st-two.is-hero-second .is-hero,
+    .st-two.is-hero-first .is-quiet,
+    .st-two.is-hero-first .is-hero {
+      padding: 36px var(--pad-x) 32px;
+    }
+
+    .st-two-tag { margin-bottom: 10px; font-size: 13px; }
+    .st-two-line { font-size: calc(var(--small-phone) * var(--display-scale)); }
+    .is-hero .st-two-line { font-size: calc(var(--big-phone) * var(--display-scale)); }
+    .st-two-who { margin-top: 14px; gap: 2px; }
+  }
+
+  /* PDF and every static render: both voices in place. */
+  :global(html.is-static) .st-two .rise {
+    opacity: 1;
+    transform: none;
+  }
+</style>

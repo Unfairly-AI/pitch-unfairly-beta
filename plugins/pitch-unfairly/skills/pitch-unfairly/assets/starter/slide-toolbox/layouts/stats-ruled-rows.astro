@@ -1,0 +1,191 @@
+---
+/**
+ * stats-ruled-rows: two to four figures as ruled rows, one of them the hero.
+ *
+ * The headline at the top left. Under it, full-width rows divided by
+ * hairlines, each a figure in a fixed column on the left and what it means in
+ * plain words on the right, as a list a reader can scan. The hero row is
+ * taller, its figure at poster size in the accent and its words in full ink;
+ * the other rows stay small and muted. Reads like a ledger, not a dashboard.
+ */
+import Slide from '../../src/components/Slide.astro';
+import CountUp from '../../src/components/motion/CountUp.astro';
+import { figureEm, fitType, splitHl, unitScale, type SlideBase } from '../lib';
+
+interface Row {
+  /** The figure as written, digits only: "1,186", "62", "9". */
+  number: string;
+  /** Set before the figure, smaller: "$". */
+  prefix?: string;
+  /** Set after the figure: "%", "x", or a short word ("days"). */
+  unit?: string;
+  /** What it means, in plain words: "Jobs re-planned without a phone call". 48 characters or fewer. */
+  label: string;
+}
+
+interface Props extends SlideBase {
+  /** The point the rows prove, in a whole sentence. 12 words or fewer. */
+  headline: string;
+  /** One phrase of the headline, word for word, in the accent. */
+  hl?: string;
+  /** Two to four rows, in reading order. */
+  rows: Row[];
+  /** Which row is the hero (0-based). Default 0, the first. */
+  hero?: number;
+}
+
+const { id, label = 'Stats', tone = 'paper', notes, brand, headline, hl, rows, hero = 0 } = Astro.props;
+const where = `stats-ruled-rows "${id}"`;
+if (rows.length < 2 || rows.length > 4) throw new Error(`${where}: 2 to 4 rows (got ${rows.length}); one figure is big-number, more than four go in the notes.`);
+if (!rows[hero]) throw new Error(`${where}: hero ${hero} isn't one of the ${rows.length} rows (0 to ${rows.length - 1}).`);
+for (const r of rows) {
+  if (!/\d/.test(r.number)) throw new Error(`${where}: "${r.number}" has no digits; a word goes in the label.`);
+  if (r.label.length > 48) throw new Error(`${where}: label "${r.label}" is ${r.label.length} characters; 48 or fewer.`);
+}
+const [before, phrase, after] = splitHl(headline, hl, where);
+const col = 640;
+const size = (r: Row, w: number, max: number) => Math.round(Math.min(max, w / figureEm(r.number, r.prefix, r.unit)));
+const heroFig = size(rows[hero]!, col - 40, 236);
+const restFig = Math.min(Math.round(heroFig * 0.46), ...rows.filter((_, i) => i !== hero).map((r) => size(r, col - 40, 112)));
+const heroPhone = size(rows[hero]!, 330, 88);
+const restPhone = Math.min(Math.round(heroPhone * 0.5), ...rows.filter((_, i) => i !== hero).map((r) => size(r, 330, 40)));
+const head = fitType(headline.length, { width: 1240, lines: 2, min: 64, max: 96 });
+const headPhone = fitType(headline.length, { width: 330, lines: 4, min: 26, max: 40 });
+const plain = (n: string) => /^\d+(\.\d+)?$/.test(n);
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <div class="st-rows" style={`--head: ${head}px; --head-phone: ${headPhone}px; --hero: ${heroFig}px; --rest: ${restFig}px; --hero-phone: ${heroPhone}px; --rest-phone: ${restPhone}px; --col: ${col}px`}>
+    <h2 data-fit="2 4" class="display st-rows-head rise">
+      <slot name="headline">{before}{phrase && <span class="hl">{phrase}</span>}{after}</slot>
+    </h2>
+    <ul class="st-rows-list">
+      {rows.map((r, i) => (
+        <li class:list={['st-rows-row', { 'is-hero': i === hero }, 'rise']} style={`--d: ${140 + i * 110}ms; --unit: ${unitScale(r.unit)}em`}>
+          <p class="st-rows-n display">
+            {r.prefix && <span class="st-rows-pre">{r.prefix}</span>}
+            {i === hero && plain(r.number) ? <CountUp to={Number(r.number)} decimals={r.number.includes('.') ? r.number.split('.')[1]!.length : 0} /> : <span>{r.number}</span>}
+            {r.unit && <span class:list={['st-rows-unit', { 'is-word': [...r.unit].length > 1 }]}>{r.unit}</span>}
+          </p>
+          <p class="st-rows-l">{r.label}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Slide>
+
+<style>
+  .st-rows {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    row-gap: calc(var(--gap) * 0.9);
+  }
+
+  .st-rows-head {
+    max-width: 1240px;
+    font-size: calc(var(--head) * var(--display-scale));
+    line-height: min(var(--display-line), 1);
+  }
+
+  .st-rows-head .hl { white-space: nowrap; }
+
+  .st-rows-list {
+    align-self: end;
+    margin: 0;
+    border-bottom: 1px solid color-mix(in oklab, currentColor 24%, transparent);
+  }
+
+  /* Each row: the figure in a fixed column, its meaning beside it, on one baseline. */
+  .st-rows-row {
+    display: grid;
+    grid-template-columns: var(--col) minmax(0, 1fr);
+    align-items: baseline;
+    padding: 30px 0 26px;
+    border-top: 1px solid color-mix(in oklab, currentColor 24%, transparent);
+  }
+
+  .st-rows-n {
+    grid-column: 1;
+    grid-row: 1;
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    font-size: calc(var(--rest) * var(--display-scale));
+    line-height: 0.86;
+    letter-spacing: -0.035em;
+    font-variant-numeric: lining-nums tabular-nums;
+    white-space: nowrap;
+    margin-left: -0.02em;
+    color: color-mix(in oklab, currentColor 84%, transparent);
+  }
+
+  .st-rows-l {
+    grid-column: 2;
+    grid-row: 1;
+    font-size: var(--t-lede);
+    line-height: 1.25;
+    color: color-mix(in oklab, currentColor 72%, transparent);
+    text-wrap: balance;
+  }
+
+  /* The focal element: the hero row's figure at poster size, in the accent. */
+  .st-rows-row.is-hero { padding: 40px 0 34px; }
+
+  .is-hero .st-rows-n {
+    font-size: calc(var(--hero) * var(--display-scale));
+    color: var(--hl-color);
+  }
+
+  :global(.tone-accent) .is-hero .st-rows-n { color: var(--on-accent); }
+
+  .is-hero .st-rows-l {
+    font-family: var(--font-display);
+    font-size: calc(var(--t-title) * 0.62);
+    font-weight: var(--display-weight);
+    letter-spacing: -0.02em;
+    color: inherit;
+  }
+
+  .st-rows-pre {
+    align-self: flex-start;
+    font-size: 0.5em;
+    margin: 0.04em 0.04em 0 0;
+  }
+
+  .st-rows-unit { font-size: var(--unit); margin-left: 0.02em; }
+  .st-rows-unit.is-word { margin-left: 0.12em; letter-spacing: -0.02em; }
+
+  :global(.tone-ink) .st-rows-head { letter-spacing: calc(var(--display-tracking) * 0.85); }
+
+  /* Phone: each row is the figure over its words, the hero still the largest. */
+  @media (max-width: 799px) {
+    .st-rows {
+      grid-template-rows: auto auto;
+      align-content: start;
+      row-gap: calc(var(--gap) * 1.4);
+    }
+
+    .st-rows-head { font-size: calc(var(--head-phone) * var(--display-scale)); }
+
+    .st-rows-row,
+    .st-rows-row.is-hero {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: 6px;
+      padding: 14px 0 12px;
+    }
+
+    .st-rows-l { grid-column: 1; grid-row: 2; font-size: 15px; }
+    .is-hero .st-rows-l { font-size: 18px; }
+    .st-rows-n { grid-column: 1; font-size: calc(var(--rest-phone) * var(--display-scale)); }
+    .is-hero .st-rows-n { font-size: calc(var(--hero-phone) * var(--display-scale)); }
+    .st-rows-unit.is-word { font-size: max(var(--unit), 13px); }
+  }
+
+  /* PDF and every static render: CountUp prints the final figure; every row in place. */
+  :global(html.is-static) .st-rows .rise {
+    opacity: 1;
+    transform: none;
+  }
+</style>

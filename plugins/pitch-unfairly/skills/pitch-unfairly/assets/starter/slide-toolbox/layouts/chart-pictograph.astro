@@ -1,0 +1,193 @@
+---
+/**
+ * chart-pictograph: a share made countable, seven in ten drawn as ten.
+ *
+ * The headline across the top, then one or two rows. Each row is its figure
+ * set large on the left and a line of marks on the right, the share filled
+ * and the rest faded, the last filled mark filled in part, with a label under
+ * the marks. The first row is the hero: its figure at poster size in the
+ * accent, its marks in the accent. A second row is the quiet comparison: a
+ * smaller figure in ink, its marks in a muted tint, on the same grid so the
+ * two shares read against each other.
+ */
+import Slide from '../../src/components/Slide.astro';
+import { fitType, splitHl, type SlideBase } from '../lib';
+
+interface Props extends SlideBase {
+  /** What the share means, as a sentence. 14 words or fewer. */
+  headline: string;
+  /** One phrase of the headline, word for word, in the accent. The hero row then goes to full ink. */
+  hl?: string;
+  /** One or two rows; the first is the hero. value is a percent, 0 to 100; display writes it as published ("7 in 10"). */
+  rows: { value: number; label: string; display?: string }[];
+  /** Marks per row, 5 to 20. Default 10. */
+  icons?: number;
+  /** The mark: a person for people, a square for anything else. Default person. */
+  mark?: 'person' | 'square';
+}
+
+const { id, label = 'Pictograph', tone = 'ink', notes, brand, headline, hl, rows, icons = 10, mark = 'person' } = Astro.props;
+const where = `chart-pictograph "${id}"`;
+if (rows.length < 1 || rows.length > 2) throw new Error(`${where}: one or two rows (got ${rows.length}). Three or more groups compare better as bars (chart-bar-highlight).`);
+if (!(icons >= 5 && icons <= 20 && Number.isInteger(icons))) throw new Error(`${where}: icons is a whole number from 5 to 20 (got ${icons}).`);
+for (const r of rows) if (!(r.value >= 0 && r.value <= 100)) throw new Error(`${where}: "${r.label}" has value ${r.value}; a pictograph shows a percent, 0 to 100.`);
+const [before, phrase, after] = splitHl(headline, hl, where);
+const head = fitType(headline.length, { width: 1500, lines: 2, min: 72, max: 112 });
+const texts = rows.map((r) => r.display ?? `${r.value}%`);
+const widest = Math.max(...texts.map((t) => t.length));
+// The hero figure fills its 520px column; the comparison sits at about half its size.
+const fig = Math.max(120, Math.min(280, Math.floor(520 / (widest * 0.6))));
+const figPhone = Math.max(56, Math.min(110, Math.floor(330 / (texts[0]!.length * 0.6))));
+const perRow = icons > 10 ? Math.ceil(icons / 2) : icons;
+const filled = rows.map((r) => Array.from({ length: icons }, (_, i) => Math.max(0, Math.min(1, (r.value / 100) * icons - i))));
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <div class:list={['st-pic', `is-${mark}`, { 'has-hl': !!phrase }]} style={`--head: ${head}px; --fig: ${fig}px; --fig-phone: ${figPhone}px; --per: ${perRow}`}>
+    <h2 data-fit="2 4" class="display st-pic-head rise">
+      <slot name="headline">{before}{phrase && <span class="hl">{phrase}</span>}{after}</slot>
+    </h2>
+    <div class="st-pic-rows">
+      {rows.map((r, k) => (
+        <figure class:list={['st-pic-row', k === 0 ? 'is-hero' : 'is-quiet']} aria-label={`${texts[k]}: ${r.label}`}>
+          <p class="st-pic-fig display rise" style={`--d: ${120 + k * 260}ms`}>{texts[k]}</p>
+          <div class="st-pic-marks" aria-hidden="true">
+            {filled[k]!.map((f, i) => (
+              <span class="st-pic-mark pop" style={`--f: ${f.toFixed(3)}; --d: ${260 + k * 260 + i * 40}ms`}>
+                {mark === 'person' ? (
+                  <>
+                    <svg class="st-pic-empty" viewBox="0 0 40 56"><circle cx="20" cy="11" r="10" /><path d="M2 56V45C2 33.5 10 26 20 26s18 7.5 18 19v11z" /></svg>
+                    <svg class="st-pic-full" viewBox="0 0 40 56"><circle cx="20" cy="11" r="10" /><path d="M2 56V45C2 33.5 10 26 20 26s18 7.5 18 19v11z" /></svg>
+                  </>
+                ) : (
+                  <>
+                    <svg class="st-pic-empty" viewBox="0 0 40 40"><rect x="2" y="2" width="36" height="36" rx="6" /></svg>
+                    <svg class="st-pic-full" viewBox="0 0 40 40"><rect x="2" y="2" width="36" height="36" rx="6" /></svg>
+                  </>
+                )}
+              </span>
+            ))}
+          </div>
+          <figcaption class="st-pic-label rise" style={`--d: ${420 + k * 260}ms`}>{r.label}</figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</Slide>
+
+<style>
+  .st-pic {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    row-gap: var(--gap);
+  }
+
+  .st-pic-head {
+    max-width: 1500px;
+    font-size: calc(var(--head) * var(--display-scale));
+  }
+
+  .st-pic-rows {
+    align-self: center;
+    display: grid;
+    row-gap: calc(var(--gap) * 1.6);
+  }
+
+  .st-pic-row {
+    display: grid;
+    grid-template-columns: 520px minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    column-gap: calc(var(--gap) * 1.5);
+    align-items: end;
+  }
+
+  .st-pic-fig {
+    grid-row: 1 / span 2;
+    align-self: center;
+    font-size: calc(var(--fig) * var(--display-scale));
+    line-height: 0.82;
+    letter-spacing: -0.04em;
+    white-space: nowrap;
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+
+  /* The focal element: the hero's figure and filled marks in the accent. */
+  .is-hero .st-pic-fig { color: var(--hl-color); }
+  .is-quiet .st-pic-fig {
+    font-size: calc(var(--fig) * var(--display-scale) * 0.5);
+    color: color-mix(in oklab, currentColor 80%, transparent);
+  }
+
+  .st-pic-marks {
+    display: grid;
+    grid-template-columns: repeat(var(--per), minmax(0, 1fr));
+    gap: 16px 22px;
+    max-width: calc(var(--per) * 112px);
+  }
+
+  .st-pic-mark {
+    position: relative;
+    display: block;
+  }
+
+  .st-pic-mark svg { display: block; width: 100%; height: auto; }
+
+  .st-pic-empty { fill: color-mix(in oklab, currentColor 14%, transparent); }
+
+  .st-pic-full {
+    position: absolute;
+    inset: 0;
+    clip-path: inset(0 calc((1 - var(--f)) * 100%) 0 0);
+  }
+
+  .is-hero .st-pic-full { fill: var(--hl-color); }
+  .is-quiet .st-pic-full { fill: color-mix(in oklab, currentColor 62%, transparent); }
+  .st-pic.has-hl .is-hero .st-pic-fig { color: currentColor; }
+  .st-pic.has-hl .is-hero .st-pic-full { fill: currentColor; }
+  :global(.tone-accent) .is-hero .st-pic-fig { color: var(--on-accent); }
+  :global(.tone-accent) .is-hero .st-pic-full { fill: var(--on-accent); }
+
+  /* The comparison row's marks are smaller, so the hero reads first. */
+  .is-quiet .st-pic-marks { max-width: calc(var(--per) * 72px); }
+
+  .st-pic-label {
+    grid-column: 2;
+    margin-top: 18px;
+    font-size: var(--t-body);
+    line-height: 1.25;
+  }
+
+  .is-quiet .st-pic-label { color: color-mix(in oklab, currentColor 72%, transparent); }
+
+  /* Phone: each row stacks, figure over its marks; the marks keep their grid
+     and the hero figure stays the biggest thing on the screen. */
+  @media (max-width: 799px) {
+    .st-pic {
+      grid-template-rows: auto auto;
+      align-content: start;
+      row-gap: calc(var(--gap) * 1.6);
+    }
+
+    .st-pic-head { max-width: none; font-size: var(--t-display); }
+    .st-pic-rows { align-self: start; row-gap: calc(var(--gap) * 1.6); }
+
+    .st-pic-row {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: 12px;
+    }
+
+    .st-pic-fig { grid-row: auto; font-size: calc(var(--fig-phone) * var(--display-scale)); }
+    .is-quiet .st-pic-fig { font-size: calc(var(--fig-phone) * var(--display-scale) * 0.5); }
+    .st-pic-marks { gap: 6px 7px; }
+    .st-pic-label { grid-column: 1; margin-top: 2px; }
+  }
+
+  /* PDF and every static render: every mark in place, nothing waits on an entrance. */
+  :global(html.is-static) .st-pic .rise,
+  :global(html.is-static) .st-pic .pop {
+    opacity: 1;
+    transform: none;
+  }
+</style>

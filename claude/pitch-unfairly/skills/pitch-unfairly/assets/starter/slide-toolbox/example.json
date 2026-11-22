@@ -1,0 +1,1435 @@
+{
+  "about": "A made-up worked example for the gallery: Northline, a crew-scheduling vendor, pitching Harlow Services, a field-service company with 62 crews. Every name, number and quote is invented. Each entry under slides is the props for that layout (an array shows it more than once, on different tones); the gallery adds id and label.",
+  "company": {
+    "name": "Northline",
+    "client": "Harlow Services",
+    "fictional": true
+  },
+  "slides": {
+    "title-statement": {
+      "headline": "Harlow's crews can finish every route by 3pm.",
+      "meta": [
+        {
+          "label": "Prepared for",
+          "value": "Harlow Services"
+        },
+        {
+          "label": "From",
+          "value": "Northline"
+        },
+        {
+          "label": "Date",
+          "value": "November 2026"
+        }
+      ],
+      "notes": "Open on the promise. Everything after this slide proves it."
+    },
+    "title-photo-bleed": {
+      "headline": "Every Harlow route, finished by 3pm.",
+      "photo": "slide-toolbox/photo-crew.svg",
+      "alt": "A Harlow service van at the curb on a residential street at first light",
+      "focus": "70% 60%",
+      "meta": [
+        {
+          "label": "Prepared for",
+          "value": "Harlow Services"
+        },
+        {
+          "label": "From",
+          "value": "Northline"
+        },
+        {
+          "label": "Date",
+          "value": "November 2026"
+        }
+      ],
+      "notes": "Sample illustration in place of Harlow's own photography."
+    },
+    "title-split-product": {
+      "headline": "Plan all 62 routes before the crews get home.",
+      "hl": "before the crews get home",
+      "shot": "slide-toolbox/product-board.svg",
+      "alt": "Northline's schedule board with Harlow's crews laid out across the day",
+      "url": "app.northline.co/board",
+      "meta": [
+        {
+          "label": "Prepared for",
+          "value": "Harlow Services"
+        },
+        {
+          "label": "Date",
+          "value": "November 2026"
+        }
+      ],
+      "notes": "Example screenshot."
+    },
+    "section-number-title": [
+      {
+        "number": "02",
+        "title": "Where the day goes",
+        "line": "What the dispatch logs show about a crew's morning.",
+        "total": 4,
+        "notes": "Act two: the problem in Harlow's own data."
+      },
+      {
+        "tone": "ink",
+        "number": "04",
+        "title": "What we propose",
+        "total": 4
+      }
+    ],
+    "section-color-field": [
+      {
+        "number": "03",
+        "title": "How the board works",
+        "line": "Three things change for a dispatcher on day one."
+      },
+      {
+        "tone": "ink",
+        "title": "The pilot"
+      }
+    ],
+    "agenda-running-text": [
+      {
+        "items": [
+          {
+            "title": "Where the day goes",
+            "at": "03"
+          },
+          {
+            "title": "What it costs",
+            "at": "07"
+          },
+          {
+            "title": "How the board works",
+            "at": "11"
+          },
+          {
+            "title": "The pilot",
+            "at": "16"
+          },
+          {
+            "title": "Questions",
+            "at": "20"
+          }
+        ],
+        "headline": "Next, what the re-routing costs Harlow.",
+        "current": 2,
+        "notes": "Shown before each part, with the next part lit."
+      },
+      {
+        "tone": "paper",
+        "headline": "Three parts, forty minutes.",
+        "items": [
+          {
+            "title": "Where the day goes"
+          },
+          {
+            "title": "How the board works"
+          },
+          {
+            "title": "The pilot"
+          }
+        ]
+      }
+    ],
+    "agenda-numbered": {
+      "headline": "Forty minutes to decide on a three-crew pilot.",
+      "items": [
+        {
+          "title": "Where the day goes",
+          "time": "10 min"
+        },
+        {
+          "title": "How the board works",
+          "detail": "A live run of tomorrow's routes with Harlow's own jobs.",
+          "time": "15 min"
+        },
+        {
+          "title": "The pilot",
+          "time": "10 min"
+        },
+        {
+          "title": "Questions",
+          "time": "5 min"
+        }
+      ],
+      "current": 2
+    },
+    "statement-centered": [
+      {
+        "kicker": "The goal for spring",
+        "statement": "Every Harlow crew home by 4pm, five days a week, by the end of April.",
+        "hl": "home by 4pm",
+        "support": "Today one in three crews finishes after 5pm.",
+        "notes": "Made-up example figures."
+      },
+      {
+        "tone": "ink",
+        "statement": "The routes were never the problem. The 6am reshuffle was."
+      }
+    ],
+    "statement-left-space": [
+      {
+        "kicker": "Where we agree",
+        "statement": "Harlow's dispatchers know the city better than any software.",
+        "hl": "better than any software",
+        "aside": {
+          "label": "From the March ride-alongs",
+          "value": "Six dispatchers, two depots, nine days"
+        }
+      },
+      {
+        "tone": "paper",
+        "statement": "Northline doesn't replace that judgment. It gives it the whole morning back."
+      }
+    ],
+    "problem-artifact": [
+      {
+        "headline": "Every morning at Harlow starts with this email.",
+        "context": "Dispatch sent 212 of them between March and May.",
+        "kind": "email",
+        "title": "Route 14 moved again: Mike's van is down",
+        "fields": [
+          {
+            "label": "From",
+            "value": "Dispatch, Eastside"
+          },
+          {
+            "label": "To",
+            "value": "All crew leads"
+          },
+          {
+            "label": "Sent",
+            "value": "Tue 6:12am"
+          }
+        ],
+        "body": "Moving Mike's 9 jobs to Routes 22 and 31. 22, your 8am is now 10:30. I'll call the customers before 8. Reply if you can't take them.",
+        "stamp": "4th this week",
+        "caption": "One of 212 re-route emails, spring 2026",
+        "notes": "Made-up example email, reconstructed for illustration. The count is an example figure."
+      },
+      {
+        "tone": "warm",
+        "headline": "One re-routed Tuesday costs Harlow almost three thousand dollars.",
+        "kind": "receipt",
+        "title": "Harlow Services, Tue May 12",
+        "fields": [
+          {
+            "label": "Overtime, 6 crews",
+            "value": "$1,840"
+          },
+          {
+            "label": "Missed windows refunded",
+            "value": "$620"
+          },
+          {
+            "label": "Second trips",
+            "value": "$410"
+          }
+        ],
+        "total": {
+          "label": "Total",
+          "value": "$2,870"
+        },
+        "stamp": "Every week",
+        "notes": "Made-up example figures."
+      }
+    ],
+    "problem-moment-photo": {
+      "headline": "By 6am, a third of the day's routes have already changed.",
+      "hl": "already changed",
+      "caption": "Dispatchers rebuild them by phone before the first van leaves the yard.",
+      "photo": "slide-toolbox/depot-dawn.svg",
+      "alt": "A service depot before sunrise, vans parked with their lights on",
+      "moment": "6:04am, Eastside depot",
+      "focus": "50% 70%",
+      "notes": "Sample photo. Use Harlow's own photo of the yard."
+    },
+    "problem-cost-waterfall": [
+      {
+        "headline": "An eight-hour day leaves Harlow's crews five and a half hours of work.",
+        "hl": "five and a half hours",
+        "start": {
+          "label": "Paid day",
+          "value": 8
+        },
+        "steps": [
+          {
+            "label": "Re-routing",
+            "value": 0.7
+          },
+          {
+            "label": "Waiting on parts",
+            "value": 0.9
+          },
+          {
+            "label": "Second trips",
+            "value": 0.6
+          },
+          {
+            "label": "Driving between zones",
+            "value": 0.3
+          }
+        ],
+        "end": {
+          "label": "Time on the job"
+        },
+        "unit": "h",
+        "decimals": 1,
+        "notes": "Made-up example figures. Per crew, average day, March to May 2026."
+      },
+      {
+        "tone": "ink",
+        "headline": "Re-routing drains Harlow's year in four places.",
+        "steps": [
+          {
+            "label": "Overtime",
+            "value": 480
+          },
+          {
+            "label": "Refunded windows",
+            "value": 310
+          },
+          {
+            "label": "Second trips",
+            "value": 260
+          },
+          {
+            "label": "Idle crews",
+            "value": 150
+          }
+        ],
+        "end": {
+          "label": "Lost a year",
+          "display": "$1.2M"
+        },
+        "prefix": "$",
+        "unit": "k",
+        "notes": "Made-up example figures."
+      }
+    ],
+    "quote-hero-quote": [
+      {
+        "quote": "We stopped planning the day at 6am. The board does it before we're awake.",
+        "hl": "before we're awake",
+        "name": "Dana Ortiz",
+        "role": "Operations Director",
+        "company": "Harlow Services",
+        "notes": "Made-up example quote."
+      },
+      {
+        "tone": "paper",
+        "quote": "Our dispatchers go home on time now.",
+        "name": "Sam Whitfield",
+        "role": "Head of Dispatch",
+        "company": "Harlow Services",
+        "notes": "Made-up example quote."
+      }
+    ],
+    "quote-quote-photo": {
+      "quote": "Half my morning is phone calls telling crews where they're not going anymore.",
+      "name": "Marcus Lee",
+      "role": "Dispatch Lead",
+      "company": "Harlow Services",
+      "photo": "slide-toolbox/crew-van.svg",
+      "alt": "A Harlow service van at a job with its side door open",
+      "focus": "40% 50%",
+      "notes": "Made-up example quote. Sample photo."
+    },
+    "quote-two-voices": {
+      "voices": [
+        {
+          "tag": "Before",
+          "quote": "I find out my first job moved when I'm already parked outside it.",
+          "name": "Ray Kim",
+          "role": "Crew Lead, Harlow Services"
+        },
+        {
+          "tag": "After one season",
+          "quote": "Now the change is on my phone before I've left the yard.",
+          "hl": "before I've left the yard",
+          "name": "Ray Kim",
+          "role": "Crew Lead, Harlow Services"
+        }
+      ],
+      "notes": "Made-up example quotes."
+    },
+    "big-number-number-label": [
+      {
+        "tone": "warm",
+        "headline": "Every crew loses this much of its day to re-routing.",
+        "number": "41",
+        "unit": "min",
+        "caption": "Average per crew, March to May 2026",
+        "supports": [
+          {
+            "label": "Crews on the road",
+            "value": "62"
+          },
+          {
+            "label": "Hours lost a year",
+            "value": "10,600"
+          },
+          {
+            "label": "Routes changed after 7am",
+            "value": "1 in 3"
+          }
+        ],
+        "notes": "Made-up example figures. Source: Harlow's dispatch logs, March to May 2026."
+      },
+      {
+        "tone": "ink",
+        "headline": "Harlow's first-visit fix rate after one season on Northline.",
+        "number": "94",
+        "unit": "%",
+        "caption": "Up from 81% the season before",
+        "notes": "Made-up example figure."
+      }
+    ],
+    "big-number-number-context": {
+      "headline": "Harlow's crews lose seven times the minutes our pilot crews lose.",
+      "caption": "Re-routing per crew per day, March to May 2026.",
+      "number": "41",
+      "unit": "min",
+      "measures": "Harlow, per crew per day",
+      "context": {
+        "number": "6",
+        "label": "Northline pilot crews"
+      },
+      "notes": "Made-up example figures."
+    },
+    "stats-hero-row": {
+      "tone": "ink",
+      "headline": "One season on Northline moved four numbers at Harlow.",
+      "stats": [
+        {
+          "number": "94",
+          "unit": "%",
+          "label": "First-visit fix rate"
+        },
+        {
+          "number": "38",
+          "unit": "%",
+          "label": "Less overtime"
+        },
+        {
+          "number": "2.4",
+          "unit": "h",
+          "label": "Back per crew each week"
+        },
+        {
+          "number": "0",
+          "label": "Routes past 6pm in May"
+        }
+      ],
+      "notes": "Made-up example figures."
+    },
+    "stats-ruled-rows": {
+      "headline": "Here's what the first 90 days delivered at Harlow.",
+      "rows": [
+        {
+          "number": "1,186",
+          "label": "Jobs re-planned without a phone call"
+        },
+        {
+          "number": "62",
+          "label": "Crews on one live board"
+        },
+        {
+          "number": "9",
+          "unit": "days",
+          "label": "From kickoff to the first live route"
+        }
+      ],
+      "notes": "Made-up example figures."
+    },
+    "before-after-split": {
+      "headline": "Dispatch stops rebuilding the day every morning.",
+      "before": {
+        "label": "Today at Harlow",
+        "items": [
+          "Dispatchers rebuild 62 routes by hand at 6am",
+          "Crews call in when a job runs long",
+          "Late jobs roll to tomorrow's list"
+        ]
+      },
+      "after": {
+        "label": "With Northline",
+        "items": [
+          "Routes are built overnight from the job list",
+          "The board re-routes when a job runs long",
+          "Late jobs move to the nearest free crew"
+        ]
+      },
+      "notes": "Made-up example. The three lines are the three moments dispatch told us cost them the most."
+    },
+    "before-after-slider": [
+      {
+        "headline": "Same 62 crews, finished hours earlier.",
+        "before": {
+          "label": "Spring 2026",
+          "figure": "5:40pm",
+          "caption": "Median time the last route finishes"
+        },
+        "after": {
+          "label": "With Northline",
+          "figure": "2:55pm",
+          "caption": "Median time the last route finishes"
+        },
+        "notes": "Made-up example figures. Drag the divider to compare; it prints split down the middle."
+      }
+    ],
+    "comparison-two-column": {
+      "headline": "Harlow has three ways to fix routing. One fits this season.",
+      "hl": "One fits this season.",
+      "options": [
+        {
+          "name": "Hire two more dispatchers",
+          "line": "About $140k a year, and the routes are still built by hand.",
+          "reason": "Same process, more cost"
+        },
+        {
+          "name": "Build it in-house",
+          "line": "A routing engine on top of the job system.",
+          "reason": "Eighteen months out"
+        },
+        {
+          "name": "Keep the whiteboard",
+          "line": "What dispatch does today, every morning at 6am.",
+          "reason": "41 minutes lost a crew"
+        }
+      ],
+      "choice": {
+        "label": "Option C",
+        "name": "Northline, live by March",
+        "line": "Routes built overnight from the jobs Harlow already logs, on the crews' phones by 6am."
+      },
+      "stamp": "Recommended",
+      "notes": "Made-up example costs and timelines."
+    },
+    "comparison-check-matrix": {
+      "headline": "Only one option re-routes the crews mid-day.",
+      "options": [
+        "Whiteboard",
+        "Route planner",
+        "Northline"
+      ],
+      "ours": "Northline",
+      "rows": [
+        {
+          "label": "Routes ready by 6am",
+          "values": [
+            false,
+            true,
+            true
+          ]
+        },
+        {
+          "label": "Re-routes mid-day",
+          "values": [
+            false,
+            false,
+            true
+          ]
+        },
+        {
+          "label": "Works without an app",
+          "values": [
+            true,
+            false,
+            true
+          ]
+        },
+        {
+          "label": "Reads Harlow's job system",
+          "values": [
+            false,
+            "partial",
+            true
+          ]
+        },
+        {
+          "label": "Cost per crew a month",
+          "values": [
+            "$0",
+            "$35",
+            "$48"
+          ]
+        }
+      ],
+      "notes": "Made-up example. Route planner stands for the category, not a named product."
+    },
+    "comparison-one-of-many": {
+      "headline": "Every tool plans the morning. Ours re-plans the afternoon.",
+      "hl": "Ours re-plans the afternoon.",
+      "many": [
+        "Whiteboard",
+        "Spreadsheet",
+        "Shared calendar",
+        "Route planner",
+        "Job tracker",
+        "Dispatch app",
+        "Field CRM",
+        "Fleet GPS",
+        "Work orders",
+        "Shift rota",
+        "Group text"
+      ],
+      "ours": "Northline",
+      "notes": "Made-up example. The tiles are categories of tools Harlow's team named, not products."
+    },
+    "product-browser": {
+      "headline": "The board plans all 62 crews before anyone clocks in.",
+      "caption": "Thursday's routes, built at 5:40am, every one home by 3pm.",
+      "src": "slide-toolbox/board.webp",
+      "alt": "Northline's board for Thursday: twelve crews' jobs on a timeline, all ending before a 3pm line, with three changes waiting for approval.",
+      "url": "app.northline.io/board",
+      "tag": "Example screen",
+      "notes": "Made-up example screen and figures."
+    },
+    "product-phone": [
+      {
+        "tone": "warm",
+        "headline": "Each crew sees its whole day, and the swap that saved it.",
+        "caption": "Crew 12 finished at 2:40pm after a swap at 9:12.",
+        "src": "slide-toolbox/phone.webp",
+        "alt": "Crew 12's day in the Northline crew app: route finishes at 2:40pm, seven stops with the next one highlighted.",
+        "tag": "Example screen",
+        "notes": "Made-up example screen."
+      },
+      {
+        "tone": "ink",
+        "headline": "Crews stop calling dispatch to ask where they're going next.",
+        "hl": "where they're going next",
+        "src": "slide-toolbox/phone.webp",
+        "alt": "Crew 12's day in the Northline crew app, the next stop highlighted.",
+        "notes": "Made-up example screen."
+      }
+    ],
+    "product-annotated": {
+      "headline": "One screen tells dispatch what changed, and what to do about it.",
+      "src": "slide-toolbox/board.webp",
+      "alt": "Northline's board for Thursday: twelve crews' jobs on a timeline, all ending before a 3pm line, with three changes waiting for approval.",
+      "callouts": [
+        {
+          "label": "The 3pm finish line",
+          "x": 0.633,
+          "y": 0.09,
+          "side": "right"
+        },
+        {
+          "label": "A swap that saves 38 minutes",
+          "x": 0.6,
+          "y": 0.265,
+          "side": "left"
+        },
+        {
+          "label": "Changes waiting for a yes",
+          "x": 0.86,
+          "y": 0.32,
+          "side": "right"
+        },
+        {
+          "label": "Every crew's day on one row",
+          "x": 0.07,
+          "y": 0.5,
+          "side": "left"
+        }
+      ],
+      "focus": 2,
+      "notes": "Made-up example screen."
+    },
+    "how-it-works-three-steps": {
+      "headline": "Harlow goes from a 6am scramble to a set board in three steps.",
+      "steps": [
+        {
+          "name": "Connect dispatch",
+          "detail": "Northline reads tickets and crews from your current system."
+        },
+        {
+          "name": "Plan overnight",
+          "detail": "Routes for all 62 crews are built by 5:40am."
+        },
+        {
+          "name": "Approve by 7am",
+          "detail": "Dispatch says yes to the few changes, and crews roll."
+        }
+      ],
+      "notes": "Step two is the one that takes the night shift."
+    },
+    "how-it-works-focal-step": {
+      "headline": "Every scheduler does four of these. Only Northline re-plans at noon.",
+      "steps": [
+        {
+          "name": "Ticket comes in"
+        },
+        {
+          "name": "Crew assigned"
+        },
+        {
+          "name": "Route built"
+        },
+        {
+          "name": "Day re-plans live",
+          "detail": "When a job runs long, the rest of the day re-plans in under a minute, and every crew still finishes by 3pm."
+        },
+        {
+          "name": "Job closed"
+        }
+      ],
+      "focus": 4,
+      "notes": "The other four steps are table stakes; spend the time on step four."
+    },
+    "how-it-works-diagram": [
+      {
+        "headline": "Every change in the day lands in one plan.",
+        "caption": "1,186 changes absorbed in Harlow's pilot month.",
+        "paths": [
+          "New tickets",
+          "Sick calls",
+          "Traffic",
+          "Jobs running long"
+        ],
+        "node": "One plan",
+        "focus": 4,
+        "notes": "Made-up example figure."
+      },
+      {
+        "tone": "paper",
+        "headline": "One plan reaches everyone who needs it, at once.",
+        "hl": "at once",
+        "paths": [
+          "Crews",
+          "Dispatch",
+          "Customers"
+        ],
+        "node": "Thursday's plan",
+        "flow": "out",
+        "focus": 3,
+        "caption": "Customers get an arrival window by 7am.",
+        "notes": "Made-up example."
+      }
+    ],
+    "demo-slider-calculator": {
+      "headline": "How many hours would Northline give back to your crews?",
+      "input": {
+        "label": "Crews on the road",
+        "min": 10,
+        "max": 120,
+        "value": 62,
+        "unit": "crews"
+      },
+      "output": {
+        "label": "Hours back a year, at 41 minutes a crew a day",
+        "unit": "hrs"
+      },
+      "rate": 171,
+      "notes": "Example rate: 41 minutes a crew a day, 250 working days, is about 171 hours a crew a year."
+    },
+    "demo-click-queue": {
+      "headline": "Dispatch clears the morning's changes before the coffee's done.",
+      "items": [
+        {
+          "title": "Move Crew 12's 1:30 job to Crew 07",
+          "detail": "Saves 38 minutes of driving. Both crews finish before 3pm."
+        },
+        {
+          "title": "Swap Crew 03's stops 4 and 5",
+          "detail": "Avoids the bridge closure on Route 9."
+        },
+        {
+          "title": "Add the Hollis Rd repair to Crew 21",
+          "detail": "New ticket at 7:52am, two miles from their stop."
+        },
+        {
+          "title": "Push Crew 30's quote visit to Friday",
+          "detail": "The customer asked for a morning slot."
+        }
+      ],
+      "approve": "Approve",
+      "skip": "Skip",
+      "counter": "changes approved",
+      "done": "Thursday's board is set.",
+      "again": "Run it again",
+      "notes": "Made-up example changes. Hand the clicker to the buyer."
+    },
+    "demo-toggle": {
+      "headline": "Flip Thursday from the spreadsheet to the board.",
+      "states": [
+        {
+          "label": "Spreadsheet",
+          "src": "slide-toolbox/sheet.webp",
+          "alt": "Thursday's routes in a spreadsheet, version 7, with struck-out times and highlighted notes.",
+          "note": "Version 7, edited at 6:52am, with nine routes still past 3pm."
+        },
+        {
+          "label": "Northline",
+          "src": "slide-toolbox/board.webp",
+          "alt": "Northline's board for Thursday: twelve crews' jobs on a timeline, all ending before a 3pm line, with three changes waiting for approval.",
+          "note": "Built at 5:40am. Every route finishes by 3pm."
+        }
+      ],
+      "notes": "Made-up example screens. Let the buyer flip it."
+    },
+    "chart-bar-highlight": [
+      {
+        "headline": "Most of Harlow's re-routing happens before 8am.",
+        "bars": [
+          {
+            "label": "6am",
+            "value": 12
+          },
+          {
+            "label": "7am",
+            "value": 41
+          },
+          {
+            "label": "8am",
+            "value": 17
+          },
+          {
+            "label": "9am",
+            "value": 11
+          },
+          {
+            "label": "10am",
+            "value": 9
+          },
+          {
+            "label": "11am",
+            "value": 8
+          },
+          {
+            "label": "Noon",
+            "value": 6
+          },
+          {
+            "label": "1pm",
+            "value": 5
+          },
+          {
+            "label": "2pm",
+            "value": 4
+          }
+        ],
+        "caption": "Route changes a day, by hour, March to May 2026",
+        "notes": "Made-up example figures. Source: Harlow's dispatch logs."
+      },
+      {
+        "tone": "ink",
+        "headline": "One region carries half of Harlow's late finishes.",
+        "note": "North Valley has a fifth of the crews and the longest drives.",
+        "bars": [
+          {
+            "label": "Coast",
+            "value": 38
+          },
+          {
+            "label": "Metro",
+            "value": 44
+          },
+          {
+            "label": "North Valley",
+            "value": 196
+          },
+          {
+            "label": "South",
+            "value": 52
+          },
+          {
+            "label": "Foothills",
+            "value": 61
+          }
+        ],
+        "highlight": "North Valley",
+        "caption": "Routes finished after 3pm, by region, spring 2026",
+        "notes": "Made-up example figures."
+      }
+    ],
+    "chart-line-annotated": {
+      "headline": "Late finishes stopped the week Northline went live.",
+      "x": [
+        "Mar 2",
+        "",
+        "",
+        "Mar 23",
+        "",
+        "",
+        "Apr 13",
+        "",
+        "",
+        "May 4",
+        "",
+        "May 18"
+      ],
+      "series": [
+        {
+          "name": "Pilot crews",
+          "values": [
+            31,
+            29,
+            33,
+            30,
+            32,
+            14,
+            9,
+            7,
+            6,
+            5,
+            4,
+            4
+          ],
+          "focal": true
+        },
+        {
+          "name": "Other crews",
+          "values": [
+            30,
+            32,
+            29,
+            31,
+            33,
+            30,
+            32,
+            29,
+            31,
+            30,
+            32,
+            31
+          ]
+        }
+      ],
+      "event": {
+        "at": 5,
+        "label": "Northline live"
+      },
+      "callout": {
+        "at": 9,
+        "text": "Late finishes down to 5%"
+      },
+      "caption": "Share of routes finished after 3pm, by week, spring 2026",
+      "notes": "Made-up example figures. Pilot: 12 crews in North Valley."
+    },
+    "chart-waterfall": [
+      {
+        "headline": "Four kinds of re-routing add up to 41 minutes a crew, every day.",
+        "steps": [
+          {
+            "label": "Late cancellations",
+            "value": 14
+          },
+          {
+            "label": "Missing parts",
+            "value": 11
+          },
+          {
+            "label": "Wrong address",
+            "value": 9
+          },
+          {
+            "label": "Double bookings",
+            "value": 7
+          }
+        ],
+        "end": {
+          "label": "Lost a day"
+        },
+        "unit": " min",
+        "caption": "Average per crew, March to May 2026",
+        "notes": "Made-up example figures. Source: Harlow's dispatch logs."
+      },
+      {
+        "tone": "ink",
+        "headline": "Northline takes the 41 lost minutes down to 8.",
+        "start": {
+          "label": "Today",
+          "value": 41
+        },
+        "steps": [
+          {
+            "label": "Live re-routing",
+            "value": -18
+          },
+          {
+            "label": "Parts check",
+            "value": -9
+          },
+          {
+            "label": "Address check",
+            "value": -6
+          }
+        ],
+        "end": {
+          "label": "With Northline"
+        },
+        "unit": " min",
+        "notes": "Made-up example figures, from the pilot."
+      }
+    ],
+    "chart-pictograph": {
+      "headline": "Most of Harlow's customers want a one-hour arrival window.",
+      "rows": [
+        {
+          "value": 70,
+          "label": "Want a window of an hour or less",
+          "display": "7 in 10"
+        },
+        {
+          "value": 20,
+          "label": "Get one from Harlow today",
+          "display": "2 in 10"
+        }
+      ],
+      "notes": "Made-up example figures. Source: Harlow customer survey, April 2026."
+    },
+    "proof-case-metric": {
+      "headline": "Bramley's 40 crews now finish by 3pm four days in five.",
+      "customer": "Bramley Plumbing",
+      "metric": {
+        "value": "−78%",
+        "label": "Time lost to re-routing, first season"
+      },
+      "supports": [
+        {
+          "value": "6 weeks",
+          "label": "From signature to live"
+        },
+        {
+          "value": "40",
+          "label": "Crews on Northline"
+        }
+      ],
+      "notes": "Made-up example customer and figures."
+    },
+    "proof-testimonial-photo": [
+      {
+        "quote": "We used to fix the day by phone at six. Now the crews just drive.",
+        "hl": "the crews just drive",
+        "name": "Priya Nand",
+        "role": "Operations Manager",
+        "company": "Bramley Plumbing",
+        "notes": "Made-up example quote. No photo: the monogram stands in."
+      }
+    ],
+    "proof-logo-wall": {
+      "headline": "Forty field-service firms plan their day on Northline.",
+      "hero": {
+        "name": "Bramley Plumbing",
+        "metric": "−78%",
+        "result": "Time lost to re-routing, first season"
+      },
+      "logos": [
+        {
+          "name": "Castor Electric"
+        },
+        {
+          "name": "Ridgeway HVAC"
+        },
+        {
+          "name": "Pell & Sons"
+        },
+        {
+          "name": "Larkfield Pest"
+        },
+        {
+          "name": "Oakhurst Gas"
+        },
+        {
+          "name": "Tidewater Pools"
+        },
+        {
+          "name": "Marlow Roofing"
+        },
+        {
+          "name": "Brightside Solar"
+        },
+        {
+          "name": "Eastgate Locks"
+        },
+        {
+          "name": "Fernbrook Fire"
+        },
+        {
+          "name": "Holloway Water"
+        }
+      ],
+      "notes": "Made-up example customers."
+    },
+    "objection-question-answer": [
+      {
+        "question": "We tried scheduling software in 2023 and the crews ignored it.",
+        "asker": "Harlow's operations team",
+        "answer": "Crews never open Northline. Their route arrives as a text at 6am.",
+        "hl": "arrives as a text",
+        "proof": "At a 40-crew pilot, 38 crews followed the texted route from the first week.",
+        "notes": "Made-up example quote and pilot figure."
+      },
+      {
+        "tone": "paper",
+        "question": "What happens when the system is down at 6am?",
+        "answer": "Yesterday's routes are on every crew's phone already.",
+        "proof": "Routes sync the night before and work offline.",
+        "notes": "Made-up example."
+      }
+    ],
+    "objection-faq-stack": {
+      "headline": "The four questions every operations lead asks us first.",
+      "items": [
+        {
+          "q": "Do the crews need a new app?",
+          "a": "No. Each crew gets its route as a text at 6am, and replies to it when a job runs long."
+        },
+        {
+          "q": "How long until it's live?",
+          "a": "Six weeks from the signed order to the first routed morning."
+        },
+        {
+          "q": "Who owns the routes?",
+          "a": "Dispatch does. They can move any job, and the board re-plans around it."
+        },
+        {
+          "q": "What does it read from?",
+          "a": "The job system Harlow already uses, through its export."
+        }
+      ],
+      "notes": "Made-up example answers."
+    },
+    "model-formula": {
+      "headline": "Forty-one minutes a day adds up to 10,600 crew hours a year.",
+      "terms": [
+        {
+          "value": "62",
+          "label": "Crews"
+        },
+        {
+          "value": "41",
+          "label": "Minutes lost a day"
+        },
+        {
+          "value": "250",
+          "label": "Working days"
+        },
+        {
+          "value": "60",
+          "label": "Minutes an hour"
+        }
+      ],
+      "ops": [
+        "×",
+        "×",
+        "÷"
+      ],
+      "result": {
+        "value": "10,600",
+        "label": "Crew hours a year"
+      },
+      "caption": "Harlow dispatch logs, March to May 2026",
+      "notes": "Made-up example figures. 62 × 41 × 250 ÷ 60 = 10,592, rounded."
+    },
+    "model-nested-size": {
+      "headline": "Regional field-service firms are a $1.2B market.",
+      "levels": [
+        {
+          "label": "US field-service scheduling",
+          "value": 4800,
+          "display": "$4.8B"
+        },
+        {
+          "label": "Firms with 20 to 200 crews",
+          "value": 1200,
+          "display": "$1.2B"
+        },
+        {
+          "label": "Northline by 2029",
+          "value": 90,
+          "display": "$90M"
+        }
+      ],
+      "caption": "Bottom-up: 14,000 firms × average crews × $1,400 a crew a year",
+      "notes": "Made-up example figures."
+    },
+    "model-calculator": {
+      "headline": "Thirty minutes back per crew is worth $419k a year to Harlow.",
+      "inputs": [
+        {
+          "label": "Minutes back per crew a day",
+          "min": 5,
+          "max": 41,
+          "value": 30,
+          "unit": " min"
+        },
+        {
+          "label": "Crews on Northline",
+          "min": 10,
+          "max": 120,
+          "value": 62,
+          "step": 1
+        }
+      ],
+      "factor": 225,
+      "result": {
+        "label": "Back to Harlow a year",
+        "prefix": "$",
+        "compact": true,
+        "decimals": 0
+      },
+      "formula": "minutes × crews × 250 days ÷ 60 × $54 a crew hour",
+      "notes": "Made-up example figures. $54 is Harlow's loaded cost per crew hour."
+    },
+    "roadmap-timeline": {
+      "headline": "All 62 Harlow crews run on Northline by the end of March.",
+      "periods": [
+        "Dec",
+        "Jan",
+        "Feb",
+        "Mar"
+      ],
+      "phases": [
+        {
+          "name": "Connect dispatch and job data",
+          "from": "Dec"
+        },
+        {
+          "name": "Pilot with eight north-side crews",
+          "from": "Jan",
+          "to": "Feb"
+        },
+        {
+          "name": "Train every dispatcher",
+          "from": "Feb"
+        },
+        {
+          "name": "All 62 crews live",
+          "from": "Mar"
+        }
+      ],
+      "notes": "Made-up example plan. Dates assume the pilot is approved by November 28."
+    },
+    "roadmap-now-next-later": {
+      "headline": "Crews get the board first, and billing waits until they trust it.",
+      "lanes": [
+        {
+          "label": "Now",
+          "when": "Q1 2027",
+          "items": [
+            "A live board for all 62 crews",
+            "Same-day re-routing",
+            "Handoff notes between dispatchers"
+          ]
+        },
+        {
+          "label": "Next",
+          "when": "Q2 2027",
+          "items": [
+            "Parts check before dispatch",
+            "Arrival texts to customers"
+          ]
+        },
+        {
+          "label": "Later",
+          "when": "Second half",
+          "items": [
+            "Invoices from completed jobs",
+            "Route cost reports"
+          ]
+        }
+      ],
+      "notes": "Made-up example roadmap."
+    },
+    "team-portrait-row": {
+      "headline": "The four people moving Harlow onto Northline have done it forty times.",
+      "people": [
+        {
+          "name": "Priya Raman",
+          "role": "Rollout lead",
+          "owns": "Owns the March go-live, start to finish"
+        },
+        {
+          "name": "Marcus Lee",
+          "role": "Solutions engineer"
+        },
+        {
+          "name": "Elena Petrova",
+          "role": "Dispatcher training"
+        },
+        {
+          "name": "Tom Okafor",
+          "role": "Support, on call from 6am"
+        }
+      ],
+      "notes": "Made-up example team and figure."
+    },
+    "team-lead-list": {
+      "headline": "Priya answers for Harlow's account from the pilot to renewal.",
+      "lead": {
+        "name": "Priya Raman",
+        "role": "Customer lead",
+        "line": "Your one call for anything, from 6am to the last route."
+      },
+      "people": [
+        {
+          "name": "Marcus Lee",
+          "role": "Connects Harlow's dispatch and job data"
+        },
+        {
+          "name": "Elena Petrova",
+          "role": "Trains every dispatcher in one morning"
+        },
+        {
+          "name": "Tom Okafor",
+          "role": "Runs support from 6am"
+        },
+        {
+          "name": "Ana Ruiz",
+          "role": "Reviews routes with Dana every month"
+        }
+      ],
+      "notes": "Made-up example team."
+    },
+    "pricing-single-price": {
+      "headline": "One price per crew covers every route, re-route and text.",
+      "currency": "$",
+      "price": "48",
+      "per": "per crew, per month",
+      "caption": "Billed yearly, for 62 crews",
+      "terms": [
+        {
+          "label": "Year one",
+          "value": "$35,712 for 62 crews"
+        },
+        {
+          "label": "Setup",
+          "value": "Included, six weeks to the first routed morning"
+        },
+        {
+          "label": "Term",
+          "value": "Twelve months, then month to month"
+        },
+        {
+          "label": "If it misses",
+          "value": "Leave at month three with a full refund"
+        }
+      ],
+      "notes": "Made-up example price and terms."
+    },
+    "pricing-plans-hero": {
+      "headline": "Three ways to start, priced per crew.",
+      "plans": [
+        {
+          "name": "Pilot",
+          "line": "Ten crews for one quarter, routes built overnight.",
+          "price": "$2,400",
+          "per": "per quarter"
+        },
+        {
+          "name": "Fleet",
+          "line": "Every crew, overnight routes and mid-day re-routing.",
+          "price": "$48",
+          "per": "per crew/mo"
+        },
+        {
+          "name": "Fleet plus",
+          "line": "Fleet, with Northline's planners on the morning call.",
+          "price": "$72",
+          "per": "per crew/mo"
+        }
+      ],
+      "hero": 1,
+      "badge": "Our pick",
+      "note": "Every plan includes setup and texted routes, billed yearly.",
+      "notes": "Made-up example prices."
+    },
+    "next-steps-dated-steps": {
+      "headline": "Eight Harlow crews can run on the board by January 11.",
+      "steps": [
+        {
+          "date": "Nov 24",
+          "step": "Harlow shares three months of dispatch logs",
+          "owner": "Sam Whitfield, Harlow"
+        },
+        {
+          "date": "Dec 2",
+          "step": "Northline maps the north-side routes",
+          "owner": "Marcus Lee, Northline"
+        },
+        {
+          "date": "Dec 9",
+          "step": "Pilot dispatchers train in one morning",
+          "owner": "Elena Petrova, Northline"
+        },
+        {
+          "date": "Jan 11",
+          "step": "Eight crews run the day on the board",
+          "owner": "Dana Ortiz, Harlow"
+        }
+      ],
+      "notes": "Made-up example dates. The first step starts the day after this meeting."
+    },
+    "next-steps-decisions": {
+      "headline": "Three decisions put eight crews on the board in January.",
+      "decisions": [
+        {
+          "verb": "Approve",
+          "what": "The eight-crew pilot on the north side",
+          "who": "Dana Ortiz",
+          "by": "Today"
+        },
+        {
+          "verb": "Name",
+          "what": "One dispatcher to own the board",
+          "who": "Sam Whitfield",
+          "by": "Nov 28"
+        },
+        {
+          "verb": "Share",
+          "what": "Three months of dispatch logs",
+          "who": "Harlow IT",
+          "by": "Dec 2"
+        }
+      ],
+      "notes": "Made-up example. The first decision is the one to make in this meeting."
+    },
+    "ask-line-button": [
+      {
+        "headline": "Start the pilot with three crews in January.",
+        "hl": "three crews",
+        "detail": "Six weeks, two depots, no change to Harlow's dispatch software.",
+        "button": {
+          "label": "Book the kickoff",
+          "href": "mailto:dana@northline.example?subject=Harlow%20pilot%20kickoff"
+        },
+        "notes": "Made-up example. The button opens an email to Northline."
+      },
+      {
+        "tone": "accent",
+        "headline": "Pick the three crews and we'll do the rest.",
+        "button": {
+          "label": "Choose the crews"
+        }
+      }
+    ],
+    "ask-line-contact": [
+      {
+        "headline": "Reply by December 12 and three crews start in January.",
+        "hl": "December 12",
+        "name": "Priya Raman",
+        "role": "Account lead, Northline",
+        "email": "priya@northline.example",
+        "phone": "+1 555 0142",
+        "link": {
+          "label": "Book 30 minutes",
+          "href": "https://northline.example/priya"
+        },
+        "notes": "Made-up example contact."
+      },
+      {
+        "tone": "ink",
+        "headline": "Tell us which depot should go first.",
+        "name": "Priya Raman",
+        "role": "Account lead, Northline",
+        "email": "priya@northline.example"
+      }
+    ]
+  }
+}

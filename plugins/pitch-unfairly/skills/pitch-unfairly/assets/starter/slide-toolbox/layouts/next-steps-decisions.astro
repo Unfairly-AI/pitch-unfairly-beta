@@ -1,0 +1,194 @@
+---
+/**
+ * next-steps-decisions: the decisions the people in the room make, with dates.
+ *
+ * The headline says what the decisions unlock. Below it a ruled table, one
+ * decision per row: the verb set in the display face, what it decides, who
+ * decides it and by when. The decision that matters most (by default the
+ * first, made in the room) is the focal row: its verb at poster size in the
+ * accent, its date in the display face. The rest are quiet rows under it. For
+ * proposals and meeting decks; a sales deck closes on the ask instead.
+ */
+import Slide from '../../src/components/Slide.astro';
+import { fitType, splitHl, type SlideBase } from '../lib';
+
+interface Props extends SlideBase {
+  /** What the decisions unlock, as a whole sentence. 12 words or fewer. */
+  headline: string;
+  /** One phrase of the headline, word for word, in the accent. The focal verb then goes to ink. */
+  hl?: string;
+  /** 1 to 4 decisions, each a verb of 12 characters or fewer ("Approve"), what it decides (56 or fewer), who decides, and by when ("Today", "Nov 28"). */
+  decisions: { verb: string; what: string; who?: string; by: string }[];
+  /** Index of the decision that matters most, set large. Default 0, the one made in the room. */
+  focus?: number;
+}
+
+const { id, label = 'Decisions', tone = 'paper', notes, brand, headline, hl, decisions, focus = 0 } = Astro.props;
+const where = `next-steps-decisions "${id}"`;
+if (!decisions.length || decisions.length > 4) throw new Error(`${where}: 1 to 4 decisions (got ${decisions.length}); the rest are steps for next-steps-dated-steps or the notes.`);
+if (focus < 0 || focus >= decisions.length) throw new Error(`${where}: focus ${focus} isn't a decision; use 0 to ${decisions.length - 1}.`);
+for (const d of decisions) {
+  if (d.verb.length > 12 || /\s/.test(d.verb.trim())) throw new Error(`${where}: verb "${d.verb}" is one word of 12 characters or fewer ("Approve", "Choose", "Name").`);
+  if (d.what.length > 56) throw new Error(`${where}: "${d.what}" is ${d.what.length} characters; 56 or fewer.`);
+  if (d.by.length > 12) throw new Error(`${where}: by "${d.by}" is over 12 characters ("Today", "Nov 28").`);
+}
+// The focal row first; the rest keep their order beneath it.
+const rows = [decisions[focus]!, ...decisions.filter((_, i) => i !== focus)];
+const verb = fitType(rows[0]!.verb.length, { width: 600, lines: 1, min: 96, max: 172, em: 0.6 });
+const [before, phrase, after] = splitHl(headline, hl, where);
+const head = fitType(headline.length, { width: 1500, lines: 2, min: 72, max: 112 });
+const phone = fitType(headline.length, { width: 330, lines: 4, min: 28, max: 44 });
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <div class:list={['st-dec', { 'has-hl': !!phrase }]} style={`--verb: ${verb}px; --head: ${head}px; --head-phone: ${phone}px`}>
+    <h2 data-fit="2 4" class="display st-dec-head rise">
+      <slot name="headline">{before}{phrase && <span class="hl">{phrase}</span>}{after}</slot>
+    </h2>
+    <ol class="st-dec-rows">
+      {rows.map((d, i) => (
+        <li class:list={['st-dec-row', { 'is-focus': i === 0 }]}>
+          <b class:list={['st-dec-verb display', i === 0 ? 'pop' : 'rise']} style={`--d: ${200 + i * 110}ms`}>{d.verb}</b>
+          <span class="st-dec-what rise" style={`--d: ${260 + i * 110}ms`}>{d.what}</span>
+          <span class="st-dec-who rise" style={`--d: ${300 + i * 110}ms`}>{d.who}</span>
+          <time class="st-dec-by rise" style={`--d: ${300 + i * 110}ms`}>{d.by}</time>
+        </li>
+      ))}
+    </ol>
+  </div>
+</Slide>
+
+<style>
+  .st-dec {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    row-gap: var(--gap);
+  }
+
+  .st-dec-head {
+    max-width: 1500px;
+    font-size: calc(var(--head) * var(--display-scale));
+  }
+
+  /* A ruled table: verb, what, who, by. The columns line up across every row. */
+  .st-dec-rows {
+    align-self: end;
+    display: grid;
+    grid-template-columns: 600px minmax(0, 1fr) 260px 170px;
+    column-gap: 40px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-bottom: 1px solid color-mix(in oklab, currentColor 22%, transparent);
+  }
+
+  .st-dec-row {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    align-items: baseline;
+    padding: 26px 0;
+    border-top: 1px solid color-mix(in oklab, currentColor 22%, transparent);
+  }
+
+  .st-dec-verb {
+    font-size: calc(56px * var(--display-scale));
+    line-height: 1;
+    color: color-mix(in oklab, currentColor 78%, transparent);
+  }
+
+  .st-dec-what {
+    font-size: var(--t-body);
+    line-height: 1.25;
+  }
+
+  .st-dec-who {
+    font-size: var(--t-label);
+    color: color-mix(in oklab, currentColor 70%, transparent);
+  }
+
+  .st-dec-by {
+    justify-self: end;
+    font-family: var(--font-mono);
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: var(--caps-tracking, 0.12em);
+    text-transform: var(--label-case, uppercase);
+    font-variant-numeric: tabular-nums;
+    color: color-mix(in oklab, currentColor 70%, transparent);
+  }
+
+  /* The focal row: the verb at poster size in the accent, the date in the display face. */
+  .st-dec-row.is-focus {
+    padding: 34px 0 40px;
+    border-top: 2px solid currentColor;
+  }
+
+  .st-dec-row.is-focus .st-dec-verb {
+    font-size: calc(var(--verb) * var(--display-scale));
+    line-height: 0.86;
+    color: var(--hl-color);
+    margin-left: -0.03em;
+  }
+
+  .st-dec-row.is-focus .st-dec-what { font-size: var(--t-lede); line-height: 1.2; }
+  .st-dec-row.is-focus .st-dec-who { font-size: var(--t-body); color: color-mix(in oklab, currentColor 76%, transparent); }
+
+  .st-dec-row.is-focus .st-dec-by {
+    font-family: var(--font-display);
+    font-weight: var(--display-weight);
+    font-size: var(--t-lede);
+    letter-spacing: -0.01em;
+    text-transform: none;
+    color: currentColor;
+  }
+
+  .st-dec.has-hl .st-dec-row.is-focus .st-dec-verb { color: var(--headline-color); }
+  :global(.tone-accent) .st-dec-row.is-focus .st-dec-verb { color: var(--on-accent); }
+
+  /* Phone: one decision per block: the verb, then what it decides, then who and when on one line. */
+  @media (max-width: 799px) {
+    .st-dec {
+      grid-template-rows: auto;
+      align-content: start;
+      row-gap: calc(var(--gap) * 1.4);
+    }
+
+    .st-dec-head {
+      max-width: none;
+      font-size: calc(var(--head-phone) * var(--display-scale));
+    }
+
+    .st-dec-rows {
+      align-self: start;
+      grid-template-columns: minmax(0, 1fr) auto;
+      column-gap: 12px;
+    }
+
+    .st-dec-row,
+    .st-dec-row.is-focus {
+      grid-template-areas: 'verb verb' 'what what' 'who by';
+      row-gap: 4px;
+      padding: 12px 0;
+    }
+
+    .st-dec-verb { grid-area: verb; font-size: calc(22px * var(--display-scale)); }
+    .st-dec-what { grid-area: what; }
+    .st-dec-who { grid-area: who; }
+    .st-dec-by { grid-area: by; }
+    .st-dec-row.is-focus { padding: 14px 0 18px; }
+    .st-dec-row.is-focus .st-dec-verb { font-size: calc(48px * var(--display-scale)); margin-bottom: 4px; }
+    .st-dec-row.is-focus .st-dec-what { font-size: var(--t-lede); }
+    .st-dec-row.is-focus .st-dec-who { font-size: var(--t-label); }
+    .st-dec-row.is-focus .st-dec-by { font-size: var(--t-body); }
+  }
+
+  /* PDF and every static render: nothing waits on an entrance. */
+  :global(html.is-static) .st-dec .rise,
+  :global(html.is-static) .st-dec .pop {
+    opacity: 1;
+    transform: none;
+  }
+</style>

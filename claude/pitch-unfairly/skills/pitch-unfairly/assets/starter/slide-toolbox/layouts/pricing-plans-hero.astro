@@ -1,0 +1,219 @@
+---
+/**
+ * pricing-plans-hero: the plans as a stacked rate card, one of them raised.
+ *
+ * The headline across the top. Below it two to four plans, each a full-width
+ * row: its name, one line of what it is, and its price at the right edge.
+ * One plan is the hero: the slide's one card, raised with the focal shadow,
+ * its name in the display face and its price a size up in the accent, with an
+ * optional badge. The others sit between hairlines in muted ink. A note under
+ * the stack holds the one term that applies to every plan.
+ */
+import Slide from '../../src/components/Slide.astro';
+import { fitType, splitHl, type SlideBase } from '../lib';
+
+interface Props extends SlideBase {
+  /** What the plans add up to, one whole sentence, 12 words or fewer. */
+  headline: string;
+  /** One phrase of the headline, word for word, in the accent. Then the hero's price takes the ink. */
+  hl?: string;
+  /** Two to four plans, cheapest first: a name (20 characters or fewer), one line (64 or fewer), the price as written ("$40k", "Included"), and what it's per ("per month", 16 or fewer). */
+  plans: { name: string; line: string; price: string; per?: string }[];
+  /** Which plan is the hero, counting from 0. Default: the second, or the only other. */
+  hero?: number;
+  /** A one- or two-word badge on the hero ("Recommended"), 16 characters or fewer. */
+  badge?: string;
+  /** One line under the stack: the term every plan shares. 90 characters or fewer. */
+  note?: string;
+}
+
+const { id, label = 'Plans', tone = 'paper', notes, brand, headline, hl, plans = [], hero = 1, badge, note } = Astro.props;
+const where = `pricing-plans-hero "${id}"`;
+if (plans.length < 2 || plans.length > 4) throw new Error(`${where}: two to four plans (got ${plans.length}); one plan is pricing-single-price.`);
+for (const p of plans) {
+  if (p.name.length > 20) throw new Error(`${where}: plan "${p.name}" is ${p.name.length} characters; 20 or fewer.`);
+  if (p.line.length > 64) throw new Error(`${where}: plan "${p.name}" line is ${p.line.length} characters; 64 or fewer.`);
+  if (p.price.length > 10) throw new Error(`${where}: plan "${p.name}" price "${p.price}" is ${p.price.length} characters; 10 or fewer.`);
+  if (p.per && p.per.length > 16) throw new Error(`${where}: plan "${p.name}" per is ${p.per.length} characters; 16 or fewer.`);
+}
+if (hero < 0 || hero >= plans.length) throw new Error(`${where}: hero ${hero} is outside the plans (0 to ${plans.length - 1}).`);
+if (badge && badge.length > 16) throw new Error(`${where}: badge "${badge}" is ${badge.length} characters; 16 or fewer.`);
+if (note && note.length > 90) throw new Error(`${where}: note is ${note.length} characters; 90 or fewer.`);
+const [pre, phrase, post] = splitHl(headline, hl, where);
+const head = fitType(headline.length, { width: 1500, lines: 2, min: 76, max: 112 });
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <div class:list={['st-plans', { 'has-hl': !!phrase }]} style={`--head: ${head}px`}>
+    <h2 data-fit="2 4" class="display st-plans-head rise">
+      <slot name="headline">{pre}{phrase && <span class="hl">{phrase}</span>}{post}</slot>
+    </h2>
+    <div class="st-plans-body">
+      <ul class="st-plans-list">
+        {plans.map((p, i) => (
+          <li class:list={['st-plans-row', i === hero ? 'is-hero card pop' : 'rise']} style={`--d: ${i === hero ? 200 + plans.length * 90 : 200 + i * 90}ms; --r: -0.5deg`}>
+            <p class:list={['st-plans-name', { display: i === hero }]}>
+              <span>{p.name}</span>
+              {i === hero && badge && <span class="st-plans-badge">{badge}</span>}
+            </p>
+            <p class="st-plans-line">{p.line}</p>
+            <p class="st-plans-price">
+              <b class="display">{p.price}</b>
+              {p.per && <span>{p.per}</span>}
+            </p>
+          </li>
+        ))}
+      </ul>
+      {note && <p class="st-plans-note rise" style={`--d: ${300 + plans.length * 90}ms`}>{note}</p>}
+    </div>
+  </div>
+</Slide>
+
+<style>
+  .st-plans {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    row-gap: calc(var(--gap) * 0.9);
+  }
+
+  .st-plans-head {
+    max-width: 1500px;
+    font-size: calc(var(--head) * var(--display-scale));
+  }
+
+  .st-plans-head .hl { white-space: nowrap; }
+
+  .st-plans-body { align-self: end; }
+
+  .st-plans-row {
+    display: grid;
+    grid-template-columns: 400px minmax(0, 1fr) auto;
+    column-gap: calc(var(--gap) * 0.8);
+    align-items: baseline;
+    padding: 26px 0;
+    border-top: 1px solid color-mix(in oklab, currentColor 22%, transparent);
+  }
+
+  .st-plans-row:last-child { border-bottom: 1px solid color-mix(in oklab, currentColor 22%, transparent); }
+
+  /* Quiet rows. */
+  .st-plans-name {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 18px;
+    font-size: var(--t-lede);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .st-plans-line {
+    font-size: var(--t-body);
+    line-height: 1.3;
+    color: color-mix(in oklab, currentColor 70%, transparent);
+  }
+
+  .st-plans-price {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-end;
+    gap: 14px;
+    white-space: nowrap;
+  }
+
+  .st-plans-price b {
+    font-size: calc(56px * var(--display-scale));
+    line-height: 1;
+    font-variant-numeric: lining-nums tabular-nums;
+    color: color-mix(in oklab, currentColor 82%, transparent);
+  }
+
+  .st-plans-price span {
+    font-family: var(--font-mono);
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: var(--caps-tracking, 0.12em);
+    text-transform: var(--label-case, uppercase);
+    color: color-mix(in oklab, currentColor 66%, transparent);
+  }
+
+  /* The focal element: the hero plan, the slide's one card, raised. */
+  .st-plans-row.is-hero {
+    position: relative;
+    z-index: 1;
+    margin: 6px -40px;
+    padding: 40px 40px;
+    border: var(--border-w) solid var(--border-color);
+    box-shadow: var(--shadow-focal, var(--shadow-card));
+    transform: rotate(calc(-0.5deg * var(--tilt)));
+  }
+
+  .st-plans-row.is-hero + .st-plans-row { border-top-color: transparent; }
+
+  .is-hero .st-plans-name { font-size: calc(64px * var(--display-scale)); }
+  .is-hero .st-plans-line { color: var(--ink); }
+  .is-hero .st-plans-price b { font-size: calc(96px * var(--display-scale)); color: var(--accent-text, var(--accent)); }
+  .st-plans.has-hl .is-hero .st-plans-price b { color: var(--ink); }
+
+  .st-plans-badge {
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: var(--accent-fill, var(--accent));
+    color: var(--on-accent-fill, var(--on-accent));
+    font-family: var(--font-mono);
+    font-size: var(--t-fine);
+    font-weight: 700;
+    letter-spacing: var(--caps-tracking, 0.12em);
+    text-transform: var(--label-case, uppercase);
+  }
+
+  .st-plans-note {
+    margin-top: 26px;
+    font-size: var(--t-body);
+    color: color-mix(in oklab, currentColor 72%, transparent);
+  }
+
+  /* Phone: each plan is its name and price on one line, its line under. */
+  @media (max-width: 799px) {
+    .st-plans {
+      grid-template-rows: auto;
+      align-content: start;
+      row-gap: calc(var(--gap) * 1.2);
+    }
+
+    .st-plans-head {
+      max-width: none;
+      font-size: var(--t-display);
+    }
+
+    .st-plans-body { align-self: start; }
+
+    .st-plans-row {
+      grid-template-columns: minmax(0, 1fr) auto;
+      row-gap: 4px;
+      column-gap: 12px;
+      padding: 12px 0;
+    }
+
+    .st-plans-line { grid-column: 1 / -1; grid-row: 2; font-size: var(--t-body); }
+    .st-plans-name { font-size: var(--t-body); gap: 6px 8px; }
+    .st-plans-price { gap: 6px; }
+    .st-plans-price b { font-size: calc(24px * var(--display-scale)); }
+
+    .st-plans-row.is-hero { margin: 6px -10px; padding: 16px 10px; }
+    .is-hero .st-plans-name { font-size: var(--t-title); }
+    .is-hero .st-plans-price b { font-size: var(--t-title); }
+    .st-plans-badge { padding: 3px 8px; }
+    .st-plans-note { margin-top: 12px; }
+  }
+
+  /* PDF and every static render: every plan and price shows. */
+  :global(html.is-static) .st-plans .rise {
+    opacity: 1;
+    transform: none;
+  }
+
+  :global(html.is-static) .st-plans .pop { opacity: 1; }
+</style>

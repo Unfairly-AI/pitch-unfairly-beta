@@ -1,0 +1,263 @@
+---
+/**
+ * chart-waterfall: how the parts add up to (or eat into) one total.
+ *
+ * The headline across the top, the waterfall edge to edge beneath it. An
+ * optional starting bar, then each step floating from where the last one
+ * ended, joined by dashed connectors, then the total standing from zero in
+ * the accent with its value at display size. Steps are quiet tints with
+ * their signed values; the total is computed, so it always adds up. On a
+ * phone the bars keep their shape and only the start and the total keep
+ * their words.
+ */
+import Slide from '../../src/components/Slide.astro';
+import { fitType, formatNumber, splitHl, type SlideBase } from '../lib';
+
+interface Props extends SlideBase {
+  /** What the total means, as a sentence. 14 words or fewer. */
+  headline: string;
+  /** One phrase of the headline, word for word, in the accent. The total's bar then goes to full ink. */
+  hl?: string;
+  /** A starting bar the steps run from ("Today", 41). Without one the steps stack from zero. */
+  start?: { label: string; value: number };
+  /** The steps, 2 to 7: signed changes, positive adds and negative takes away. */
+  steps: { label: string; value: number }[];
+  /** The total bar, computed from start and steps. display writes its value as published. */
+  end: { label: string; display?: string };
+  /** Set before every formatted value: "$". */
+  prefix?: string;
+  /** Set after every formatted value: "k", " min". */
+  unit?: string;
+  /** What was measured, over what, when, in one line. */
+  caption?: string;
+}
+
+const { id, label = 'Waterfall', tone = 'paper', notes, brand, headline, hl, start, steps, end, prefix = '', unit = '', caption } = Astro.props;
+const where = `chart-waterfall "${id}"`;
+if (steps.length < 2 || steps.length > 7) throw new Error(`${where}: 2 to 7 steps (got ${steps.length}). One step is a before and after; more than seven, group the small ones.`);
+if (steps.some((s) => !Number.isFinite(s.value) || s.value === 0)) throw new Error(`${where}: every step needs a non-zero value; drop the ones that don't move the total.`);
+const fmt = (v: number, sign = false) => formatNumber(v, { prefix, unit, sign });
+const total = (start?.value ?? 0) + steps.reduce((a, s) => a + s.value, 0);
+// Every bar as [from, to] on the value scale, in order.
+type Bar = { kind: 'start' | 'step' | 'end'; label: string; from: number; to: number; text: string };
+const bars: Bar[] = [];
+if (start) bars.push({ kind: 'start', label: start.label, from: 0, to: start.value, text: fmt(start.value) });
+let at = start?.value ?? 0;
+for (const s of steps) {
+  bars.push({ kind: 'step', label: s.label, from: at, to: at + s.value, text: fmt(s.value, true) });
+  at += s.value;
+}
+bars.push({ kind: 'end', label: end.label, from: 0, to: total, text: end.display ?? fmt(total) });
+const levels = bars.flatMap((b) => [b.from, b.to]);
+const hi = Math.max(0, ...levels);
+const lo = Math.min(0, ...levels);
+const span = hi - lo || 1;
+const n = bars.length;
+const y = (v: number) => (hi - v) / span;
+const pct = (f: number) => `${(f * 100).toFixed(3)}%`;
+const placed = bars.map((b, k) => {
+  const top = y(Math.max(b.from, b.to));
+  const bottom = y(Math.min(b.from, b.to));
+  // A value sits where the bar lands: above a rise, below a fall.
+  const below = b.kind === 'step' ? b.to < b.from : b.to < 0;
+  return { ...b, k, top, height: Math.max(bottom - top, 0.004), below };
+});
+const [before, phrase, after] = splitHl(headline, hl, where);
+const head = fitType(headline.length, { width: 1500, lines: 2, min: 72, max: 112 });
+const heroText = placed[n - 1]!.text;
+const heroSize = Math.max(64, Math.min(132, Math.floor(1648 / n / Math.max(heroText.length * 0.62, 1.6))));
+const describe = `${caption ? `${caption}. ` : ''}${bars.map((b) => `${b.label}: ${b.text}`).join('; ')}.`;
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <div class:list={['st-fall', { 'has-hl': !!phrase }]} style={`--head: ${head}px; --hero: ${heroSize}px; --n: ${n}`}>
+    <h2 data-fit="2 4" class="display st-fall-head rise">
+      <slot name="headline">{before}{phrase && <span class="hl">{phrase}</span>}{after}</slot>
+    </h2>
+    <figure class="st-fall-chart">
+      <div class="st-fall-plot" role="img" aria-label={describe}>
+        <div class="st-fall-area">
+          <span class="st-fall-zero" style={`top: ${pct(y(0))}`}></span>
+          {placed.slice(0, -1).map((b) => (
+            <span class="st-fall-link rise" style={`top: ${pct(y(b.to))}; left: ${pct((b.k + 0.82) / n)}; width: ${pct(0.36 / n)}; --d: ${260 + b.k * 110}ms`}></span>
+          ))}
+          {placed.map((b) => (
+            <div class:list={['st-fall-col', `is-${b.kind}`, { 'is-below': b.below }]} style={`left: ${pct(b.k / n)}; width: ${pct(1 / n)}`}>
+              <span class="st-fall-bar" style={`top: ${pct(b.top)}; height: ${pct(b.height)}; --d: ${200 + b.k * 110}ms`}></span>
+              <span class="st-fall-value" style={b.below ? `top: ${pct(b.top + b.height)}` : `bottom: ${pct(1 - b.top)}`}>
+                <span class:list={['rise', { display: b.kind !== 'step' }]} style={`--d: ${360 + b.k * 110}ms`}>{b.text}</span>
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div class="st-fall-x" aria-hidden="true">
+        {placed.map((b) => <span class:list={[`is-${b.kind}`]}>{b.label}</span>)}
+      </div>
+      {caption && <figcaption class="st-fall-cap rise" style="--d: 500ms">{caption}</figcaption>}
+    </figure>
+  </div>
+</Slide>
+
+<style>
+  .st-fall {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    row-gap: calc(var(--gap) * 0.9);
+  }
+
+  .st-fall-head {
+    max-width: 1500px;
+    font-size: calc(var(--head) * var(--display-scale));
+  }
+
+  .st-fall-chart {
+    min-height: 0;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto auto;
+  }
+
+  /* Headroom above and below the area for the values that sit off the bars' ends. */
+  .st-fall-plot {
+    position: relative;
+    padding: calc(var(--hero) * var(--display-scale) * 1.15) 0 56px;
+  }
+
+  .st-fall-area {
+    position: relative;
+    height: 100%;
+  }
+
+  .st-fall-zero {
+    position: absolute;
+    left: 0;
+    right: 0;
+    border-top: 2px solid color-mix(in oklab, currentColor 30%, transparent);
+  }
+
+  .st-fall-col {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+  }
+
+  .st-fall-bar {
+    position: absolute;
+    left: 18%;
+    right: 18%;
+    border-radius: min(var(--radius), 6px);
+    background: color-mix(in oklab, currentColor 20%, transparent);
+    transform-origin: 50% 0;
+  }
+
+  .is-start .st-fall-bar { background: color-mix(in oklab, currentColor 58%, transparent); }
+
+  /* The focal element: the total, in the accent, its value at display size. */
+  .is-end .st-fall-bar { background: var(--hl-color); }
+  .st-fall.has-hl .is-end .st-fall-bar { background: currentColor; }
+  :global(.tone-accent) .is-end .st-fall-bar { background: var(--on-accent); }
+
+  .st-fall-link {
+    position: absolute;
+    border-top: 2px dashed color-mix(in oklab, currentColor 40%, transparent);
+  }
+
+  .st-fall-value {
+    position: absolute;
+    left: -20%;
+    right: -20%;
+    text-align: center;
+    white-space: nowrap;
+    font-size: var(--t-body);
+    font-weight: 600;
+    font-variant-numeric: lining-nums tabular-nums;
+    line-height: 1;
+    padding: 14px 0;
+  }
+
+  .st-fall-value > span { display: inline-block; white-space: nowrap; }
+
+  .is-start .st-fall-value {
+    font-size: calc(var(--hero) * var(--display-scale) * 0.5);
+  }
+
+  /* The total's value is right-aligned to its bar, so it never runs off the slide. */
+  .is-end .st-fall-value {
+    left: auto;
+    right: 18%;
+    width: max-content;
+    text-align: right;
+    font-size: calc(var(--hero) * var(--display-scale));
+    padding: 0.12em 0;
+  }
+
+  .st-fall-x {
+    display: grid;
+    grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+    padding-top: 18px;
+    font-family: var(--font-mono);
+    font-size: var(--t-label);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: var(--label-case, uppercase);
+    text-align: center;
+    line-height: 1.2;
+    color: color-mix(in oklab, currentColor 62%, transparent);
+  }
+
+  .st-fall-x span { padding: 0 8px; text-wrap: balance; }
+  .st-fall-x .is-end { color: currentColor; }
+
+  .st-fall-cap {
+    margin-top: calc(var(--gap) * 0.4);
+    font-size: var(--t-label);
+    color: color-mix(in oklab, currentColor 66%, transparent);
+  }
+
+  /* Motion: each bar drops into place in order, then the connectors and values land. */
+  :global(.is-active) .st-fall-bar { animation: st-fall-in 560ms var(--ease) var(--d, 0ms) both; }
+
+  @keyframes st-fall-in {
+    from { opacity: 0; transform: scaleY(0); }
+    to { opacity: 1; transform: none; }
+  }
+
+  /* Phone: the same waterfall at a fixed height. The steps keep their bars;
+     only the start and the total keep their values and labels. */
+  @media (max-width: 799px) {
+    .st-fall {
+      grid-template-rows: auto auto;
+      align-content: start;
+      row-gap: calc(var(--gap) * 1.6);
+    }
+
+    .st-fall-head { max-width: none; font-size: var(--t-display); }
+    .st-fall-plot {
+      height: 340px;
+      padding: calc(min(var(--hero), 64px) * var(--display-scale) * 1.15) 0 28px;
+    }
+
+    .is-step .st-fall-value,
+    .st-fall-x .is-step { visibility: hidden; }
+
+    .is-start .st-fall-value { font-size: var(--t-body); padding: 8px 0; }
+    .is-end .st-fall-value { font-size: calc(min(var(--hero), 64px) * var(--display-scale)); }
+    .st-fall-x { padding-top: 10px; letter-spacing: 0.02em; }
+    .st-fall-x span { padding: 0; }
+    .st-fall-x .is-start,
+    .st-fall-x .is-end { overflow: visible; white-space: nowrap; }
+    .st-fall-x .is-start { display: flex; justify-content: flex-start; }
+    .st-fall-x .is-end { display: flex; justify-content: flex-end; }
+    .st-fall-cap { margin-top: 12px; }
+  }
+
+  /* PDF and every static render: every bar in place, nothing waits on an entrance. */
+  :global(html.is-static) .st-fall .rise,
+  :global(html.is-static) .st-fall .st-fall-bar {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+</style>
