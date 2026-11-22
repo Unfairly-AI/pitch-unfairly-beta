@@ -18,10 +18,18 @@ const REQUIRED_ROLES = ['paper', 'ink', 'accent'];
 const HEX = /^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i;
 const FONT_EXT = /\.(woff2|woff|ttf|otf)$/i;
 
-const MOTION = {
-  calm: { ease: 'cubic-bezier(0.25, 0.1, 0.25, 1)', pop: 'cubic-bezier(0.25, 0.1, 0.25, 1)', enter: 600, stagger: 110 },
-  crisp: { ease: 'cubic-bezier(0.165, 0.84, 0.44, 1)', pop: 'cubic-bezier(0.3, 1.4, 0.5, 1)', enter: 400, stagger: 70 },
-  playful: { ease: 'cubic-bezier(0.34, 1.3, 0.64, 1)', pop: 'cubic-bezier(0.3, 1.7, 0.5, 1)', enter: 450, stagger: 80 },
+// Motion presets. Each is one easing family and one duration ladder (the
+// /steal motion playbook's pick table): calm takes Material 3 emphasized,
+// crisp Carbon productive, playful Carbon expressive with an overshoot pop.
+// `ease` enters (decelerates), `exit` leaves (accelerates), `move` carries an
+// element from one place to another. The ladder (micro/small/medium/large)
+// grows with distance; `enter` is a slide element's entrance, `stagger` the
+// step between items (capped at six by the motion kit), `dwell` how long a
+// step of a step build holds.
+export const MOTION = {
+  calm: { ease: 'cubic-bezier(0.05, 0.7, 0.1, 1)', exit: 'cubic-bezier(0.3, 0, 0.8, 0.15)', move: 'cubic-bezier(0.2, 0, 0, 1)', pop: 'cubic-bezier(0.05, 0.7, 0.1, 1)', enter: 600, stagger: 110, ladder: [100, 200, 300, 500], dwell: 1900 },
+  crisp: { ease: 'cubic-bezier(0.165, 0.84, 0.44, 1)', exit: 'cubic-bezier(0.2, 0, 1, 0.9)', move: 'cubic-bezier(0.2, 0, 0.38, 0.9)', pop: 'cubic-bezier(0.3, 1.4, 0.5, 1)', enter: 400, stagger: 70, ladder: [70, 150, 240, 400], dwell: 1300 },
+  playful: { ease: 'cubic-bezier(0.34, 1.3, 0.64, 1)', exit: 'cubic-bezier(0.4, 0.14, 1, 1)', move: 'cubic-bezier(0.4, 0.14, 0.3, 1)', pop: 'cubic-bezier(0.3, 1.7, 0.5, 1)', enter: 450, stagger: 80, ladder: [80, 160, 260, 450], dwell: 1450 },
 };
 const DENSITY = { airy: 1.2, balanced: 1, dense: 0.82 };
 const FALLBACK = {
@@ -455,6 +463,10 @@ export function brandCss(kit, fontFaces = '', relPrefix = '../../brand/', { fund
     `  --ease-pop: ${motion.pop};`,
     `  --dur-enter: ${motion.enter}ms;`,
     `  --stagger: ${motion.stagger}ms;`,
+    `  --ease-exit: ${motion.exit};`,
+    `  --ease-move: ${motion.move};`,
+    ...['micro', 'small', 'medium', 'large'].map((rung, i) => `  --dur-${rung}: ${motion.ladder[i]}ms;`),
+    `  --dwell: ${motion.dwell}ms;`,
     '}',
   ];
   const texture = {

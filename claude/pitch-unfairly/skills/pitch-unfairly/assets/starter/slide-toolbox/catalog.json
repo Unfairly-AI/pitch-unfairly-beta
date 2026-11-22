@@ -14,7 +14,8 @@
         "headline": "string, required. The promise: one whole sentence, 12 words or fewer. Set at the largest size that fits three lines.",
         "hl": "string. One phrase of the headline, word for word, in the accent. Most covers have none.",
         "meta": "{label, value}[], up to 3. The facts along the foot: who it's for, who it's from, the date.",
-        "mark": "boolean, default true. The brand's mark at the top left."
+        "mark": "boolean, default true. The brand's mark at the top left.",
+        "ambient": "boolean or string[], default off. Brand light drifting once behind the slide (motion kit Ambient): true for the accent and the highlight, or two or three color tokens (\"--c-mint\"). Never under a chart."
       },
       "slots": {
         "headline": "Markup in place of headline, for a line break or a second emphasis."
@@ -35,7 +36,8 @@
           "path": "linkedin/01.webp",
           "why": "The logo, then a wide three-line promise with one phrase in the accent."
         }
-      ]
+      ],
+      "motion": "words: the promise lands word by word (14 words or fewer); ambient optional."
     },
     {
       "name": "title-photo-bleed",
@@ -50,7 +52,7 @@
         "hl": "string. One phrase of the headline, word for word, in the accent. Most covers have none.",
         "photo": "string, required. The photograph's URL: the brand's own, or a labelled placeholder in its crop.",
         "alt": "string, required. What the photograph shows.",
-        "focus": "string, default \"50% 50%\". CSS object-position: the point of the photo to keep in frame.",
+        "focus": "string, required, \"x% y%\". CSS object-position: the point of the photo to keep in frame, a person's face (their eyes) or the photo's own subject. Look at the photo at the slide's crop before setting it; the centre crop cuts heads off.",
         "meta": "{label, value}[], up to 3. The facts along the foot.",
         "mark": "boolean, default true. The brand's mark at the top left."
       },
@@ -90,7 +92,8 @@
         "alt": "string, required. What the screenshot shows.",
         "url": "string. The address in a thin bar over the screenshot, for a web app. Without it, a plain frame.",
         "meta": "{label, value}[], up to 2. Facts at the foot of the left column.",
-        "mark": "boolean, default true. The brand's mark at the top left."
+        "mark": "boolean, default true. The brand's mark at the top left.",
+        "carry": "string. A key shared with the next slide's screenshot (product-browser, product-spotlight): the screen travels there from the cover."
       },
       "slots": {
         "headline": "Markup in place of headline."
@@ -111,7 +114,8 @@
           "path": "darcy/01.webp",
           "why": "The sender's mark and a three-line promise on the left, one object at scale on the right."
         }
-      ]
+      ],
+      "motion": "carry optional: the screen travels to the next slide."
     },
     {
       "name": "section-number-title",
@@ -152,7 +156,8 @@
       "props": {
         "title": "string, required. The act's name, six words or fewer. Set at the largest size that fits two lines.",
         "number": "string. The act's number, set faint and enormous, cropped by the right and bottom edges.",
-        "line": "string. One quiet line under the title. 90 characters or fewer."
+        "line": "string. One quiet line under the title. 90 characters or fewer.",
+        "ambient": "boolean or string[], default off. Brand light drifting once behind the slide (motion kit Ambient): true for the accent and the highlight, or two or three color tokens (\"--c-mint\"). Never under a chart."
       },
       "slots": {},
       "references": [
@@ -166,7 +171,8 @@
           "path": "linkedin/01.webp",
           "why": "A full brand-color field carrying one wide headline."
         }
-      ]
+      ],
+      "motion": "words on the title; ambient optional."
     },
     {
       "name": "agenda-running-text",
@@ -247,7 +253,8 @@
           "path": "external/pitch/saas-investor-update/23.jpg",
           "why": "A small eyebrow, the request centered in two bold lines, one supporting sentence under it."
         }
-      ]
+      ],
+      "motion": "words: the sentence lands word by word when it is 14 words or fewer."
     },
     {
       "name": "statement-left-space",
@@ -277,7 +284,8 @@
           "path": "external/pitch/series-a-pitch-deck/04.jpg",
           "why": "A large sentence with its number in the accent, generous space, quiet facts at the foot."
         }
-      ]
+      ],
+      "motion": "words: the sentence lands word by word when it is 14 words or fewer."
     },
     {
       "name": "problem-artifact",
@@ -336,7 +344,7 @@
         "alt": "string, required. What the photo shows.",
         "moment": "string. When and where, set on the photo's corner like a camera stamp: \"6:04am, Eastside depot\". 32 characters or fewer.",
         "side": "\"left\" | \"right\", default \"right\". Which side the photo bleeds off.",
-        "focus": "string, default \"50% 50%\". The photo's focal point as CSS object-position."
+        "focus": "string, required, \"x% y%\". CSS object-position: the point of the photo to keep in frame, a person's face (their eyes) or the photo's own subject. Look at the photo at the slide's crop before setting it; the centre crop cuts heads off."
       },
       "slots": {
         "headline": "Markup in place of headline."
@@ -386,7 +394,8 @@
           "path": "external/beautiful-ai/technology-sales-proposal/02.jpg",
           "why": "Four loss bars stepping down in a pale tint, closing on one tall total bar in the full accent."
         }
-      ]
+      ],
+      "motion": "grow: the cost drains step by step."
     },
     {
       "name": "quote-hero-quote",
@@ -442,7 +451,7 @@
         "photo": "string, required. The speaker or their workplace. Bleeds off one side, 38% of the slide.",
         "alt": "string, required. What the photo shows.",
         "side": "\"left\" | \"right\", default \"right\".",
-        "focus": "string, default \"50% 50%\". The photo's focal point as CSS object-position."
+        "focus": "string, required, \"x% y%\". CSS object-position: the point of the photo to keep in frame, a person's face (their eyes) or the photo's own subject. Look at the photo at the slide's crop before setting it; the centre crop cuts heads off."
       },
       "slots": {
         "quote": "Markup in place of quote."
@@ -524,7 +533,8 @@
           "path": "blockbuster/02.webp",
           "why": "The figure as the one heavy thing on the slide, the supporting facts as a spec list."
         }
-      ]
+      ],
+      "motion": "count: the number counts up to its value."
     },
     {
       "name": "big-number-number-context",
@@ -559,7 +569,8 @@
           "path": "external/beautiful-ai/business-proposal/08.jpg",
           "why": "The figure set against its remainder on the same line, so the share reads at a glance."
         }
-      ]
+      ],
+      "motion": "count: the number counts up to its value."
     },
     {
       "name": "stats-hero-row",
@@ -594,7 +605,8 @@
           "path": "wright/04.webp",
           "why": "The hero figure huge with its unit and caption, the supporting metrics quiet beside it."
         }
-      ]
+      ],
+      "motion": "count: the hero stat counts up."
     },
     {
       "name": "stats-ruled-rows",
@@ -624,7 +636,8 @@
           "path": "external/pitch/ai-software-sales-deck/26.jpg",
           "why": "The headline top left, three ruled rows of figure and two-line label below it."
         }
-      ]
+      ],
+      "motion": "count: the hero row counts up."
     },
     {
       "name": "before-after-split",
@@ -801,10 +814,11 @@
         "headline": "string, required. What the screen proves, a whole sentence of 12 words or fewer. Set at the largest size that fits its column.",
         "hl": "string. One phrase of the headline, word for word, in the accent.",
         "caption": "string. One line of proof the screen doesn't show (a number, a customer, a date), 90 characters or fewer.",
-        "src": "string, required. The screenshot, wide, about 16:10.",
+        "src": "string, required. The screenshot, wide, about 16:10, cropped to the panel the headline is about: its UI text must read at stage size (about 16px or more on the 1920 stage, the size of the slide's quiet support line). A whole page with its nav shrinks every label past reading; crop it.",
         "alt": "string, required. What it shows, for assistive tech.",
         "url": "string. The address in the window bar, without https://.",
-        "tag": "string. A sticker on the window's corner, three words or fewer. Label an invented screen: \"Example screen\"."
+        "tag": "string. A sticker on the window's corner, three words or fewer. Label an invented screen: \"Example screen\".",
+        "carry": "string. A key shared with the neighbouring slide's screenshot (product-spotlight): the screen travels between the two slides."
       },
       "slots": {
         "headline": "Markup in place of headline."
@@ -819,6 +833,46 @@
           "source": "arcade",
           "path": "tesla-master-plan/11.webp",
           "why": "Headline left, a browser window right showing the real artifact the headline names."
+        }
+      ],
+      "motion": "carry optional: the screen travels from or to its neighbour."
+    },
+    {
+      "name": "product-spotlight",
+      "type": "product",
+      "variant": "spotlight",
+      "job": "Point at the one part of the product the headline is about.",
+      "use_when": "One region of a real screenshot proves the point (a filled scorecard, a flagged row, a number on a dashboard) and the rest of the screen is context.",
+      "avoid_when": "The whole screen is the point (product-browser), or the point is a sequence of parts (product-annotated). The screenshot is an invented screen with nothing real to find.",
+      "default_tone": "paper",
+      "motion": "focus: the frame closes in on the detail, dims the rest, rings it and names it. Rests on the end state in the PDF. carry optional.",
+      "props": {
+        "headline": "string, required. What the detail proves, as a whole sentence, 12 words or fewer.",
+        "hl": "string. One phrase of the headline, word for word, in the accent.",
+        "caption": "string. One line of proof the screen doesn't show, 90 characters or fewer.",
+        "src": "string, required. The screenshot.",
+        "alt": "string, required. What the screenshot shows.",
+        "ratio": "string, default \"16 / 10\". The screenshot's aspect ratio as CSS.",
+        "crop": "{x, y, w, h}. The part of the screenshot the frame shows, in percent of it. Default all of it; crop away half-cut panels so the move starts on a clean edge.",
+        "detail": "{x, y, w, h}, required. The region in percent of the screenshot: left, top, width, height.",
+        "zoom": "number, 1 to 2. How far to close in. Default: the detail about half the frame.",
+        "callout": "string. A short label on the detail, 60 characters or fewer.",
+        "veil": "\"dark\" (default) or \"light\". The veil over the rest of the screen: light for a dark screenshot, where a dark veil wouldn't show.",
+        "carry": "string. A key shared with the previous slide's screenshot: the screen travels from there."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "arcade",
+          "path": "truman-show/07.webp",
+          "why": "One scene, with the parts that matter boxed and labelled where they sit."
+        },
+        {
+          "source": "arcade",
+          "path": "shark-tank/11.webp",
+          "why": "A spotlight on the one object, everything around it dimmed."
         }
       ]
     },
@@ -870,10 +924,10 @@
       "props": {
         "headline": "string, required. What the screen proves, a whole sentence of 12 words or fewer. Two lines across the top.",
         "hl": "string. One phrase of the headline, word for word, in the accent.",
-        "src": "string, required. The screenshot, wide, about 16:10.",
+        "src": "string, required. The screenshot, wide, about 16:10, cropped to the panel the headline is about: its UI text must read at stage size (about 16px or more on the 1920 stage, the size of the slide's quiet support line). A whole page with its nav shrinks every label past reading; crop it.",
         "alt": "string, required. What it shows, for assistive tech.",
         "callouts": "{label, x, y, side?}[], one to four. label: 40 characters or fewer. x, y: the spot, as fractions of the screenshot (0 to 1). side: the margin for the label, default the nearer. Two labels in one margin need 0.16 between their y, or the build stops.",
-        "focus": "number. The callout that carries the point, from 1. Its dot takes the accent and its label the weight."
+        "focus": "number. The callout that carries the point, from 1. Its number, line and ring take the accent and its label full ink."
       },
       "slots": {
         "headline": "Markup in place of headline."
@@ -918,6 +972,36 @@
           "source": "arcade",
           "path": "tesla-master-plan/08.webp",
           "why": "Three steps in a row where each one pays for the next, ending on the one-line moral."
+        }
+      ]
+    },
+    {
+      "name": "how-it-works-step-build",
+      "type": "how-it-works",
+      "variant": "step-build",
+      "job": "Walk the buyer through a process one beat at a time.",
+      "use_when": "Two to five steps happen in order and the order is the point: each one depends on the last. The presenter wants to talk through them.",
+      "avoid_when": "The steps are parallel options (comparison) or one of them is the point (how-it-works-focal-step). Over five steps: split the slide.",
+      "default_tone": "paper",
+      "motion": "steps: a showpiece. The steps light one by one at the brand's dwell; any step can be clicked. Rests and prints with every step shown.",
+      "props": {
+        "headline": "string, required. The outcome the steps reach, 14 words or fewer.",
+        "hl": "string. One phrase of the headline, word for word, in the accent.",
+        "steps": "{title, text?}[], 2 to 5. A title of 28 characters or fewer and one optional line of 110."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "arcade",
+          "path": "apollo-13/08.webp",
+          "why": "Rows revealed one by one on entry, the newest highlighted, the earlier ones staying."
+        },
+        {
+          "source": "arcade",
+          "path": "jerry-maguire/10.webp",
+          "why": "A step-through of three moments, each changing the same picture, ending on the last."
         }
       ]
     },
@@ -1128,7 +1212,8 @@
           "path": "external/beautiful-ai/sales-pipeline-review/03.jpg",
           "why": "A single series with the values carried by the shape and quiet labels beneath."
         }
-      ]
+      ],
+      "motion": "grow: bars rise from the baseline in order, then the hero value lands."
     },
     {
       "name": "chart-line-annotated",
@@ -1167,7 +1252,8 @@
           "path": "snapchat/08.webp",
           "why": "A two-line chart where the series are labelled on the lines, not in a legend."
         }
-      ]
+      ],
+      "motion": "draw: the line draws across, then its end point lands."
     },
     {
       "name": "chart-waterfall",
@@ -1206,7 +1292,8 @@
           "path": "external/pitch/board-deck/12.jpg",
           "why": "Opening and ending bars with the drivers between them, gains and losses carried by their signed amounts."
         }
-      ]
+      ],
+      "motion": "grow: each step drops in order."
     },
     {
       "name": "chart-pictograph",
@@ -1341,6 +1428,37 @@
       ]
     },
     {
+      "name": "proof-logo-marquee",
+      "type": "proof",
+      "variant": "logo-marquee",
+      "job": "Show a customer list too long for one row, without a wall of tiles.",
+      "use_when": "Twelve or more customers the buyer would recognize, where the breadth is the proof and no single one is the hero.",
+      "avoid_when": "One customer is the story (proof-logo-wall's hero, proof-case-metric). Fewer than six: a still row says it.",
+      "default_tone": "paper",
+      "motion": "marquee: the strip drifts at reading pace while the slide is on screen, with a pause button. Still and wrapped in the PDF and with reduced motion.",
+      "props": {
+        "headline": "string, required. What the list proves, 14 words or fewer.",
+        "hl": "string. One phrase of the headline, word for word, in the accent.",
+        "line": "string. One quiet line under the strip, 90 characters or fewer.",
+        "logos": "{name, logo?}[], 6 to 24. A logo URL, or the name set in type."
+      },
+      "slots": {
+        "headline": "Markup in place of headline."
+      },
+      "references": [
+        {
+          "source": "pu-layouts",
+          "path": "external/pitch/async-sales-deck/22.jpg",
+          "why": "A band of customer logos at one height under a short claim."
+        },
+        {
+          "source": "arcade",
+          "path": "dunder-mifflin/06.webp",
+          "why": "The customers counted out as a set, the breadth as the point."
+        }
+      ]
+    },
+    {
       "name": "objection-question-answer",
       "type": "objection",
       "variant": "question-answer",
@@ -1467,7 +1585,8 @@
           "path": "external/beautiful-ai/sales-go-to-market/07.jpg",
           "why": "TAM, SAM, target and share as shapes shrinking to scale, values beside the small ones."
         }
-      ]
+      ],
+      "motion": "grow: the squares grow out from the corner."
     },
     {
       "name": "model-calculator",
@@ -1540,7 +1659,8 @@
           "path": "external/pitch/go-to-market-strategy/25.jpg",
           "why": "Overlapping phase bars on a month axis, ending in the launch."
         }
-      ]
+      ],
+      "motion": "draw: each phase bar draws across in order."
     },
     {
       "name": "roadmap-now-next-later",
@@ -1570,7 +1690,8 @@
           "path": "spanx/05.webp",
           "why": "A short list where the active step fills with the accent and the rest stay plain."
         }
-      ]
+      ],
+      "motion": "draw: each lane rule draws in order."
     },
     {
       "name": "team-portrait-row",

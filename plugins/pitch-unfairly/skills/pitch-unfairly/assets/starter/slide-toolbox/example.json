@@ -22,7 +22,8 @@
           "value": "November 2026"
         }
       ],
-      "notes": "Open on the promise. Everything after this slide proves it."
+      "notes": "Open on the promise. Everything after this slide proves it.",
+      "ambient": true
     },
     "title-photo-bleed": {
       "headline": "Every Harlow route, finished by 3pm.",
@@ -82,7 +83,8 @@
       {
         "number": "03",
         "title": "How the board works",
-        "line": "Three things change for a dispatcher on day one."
+        "line": "Three things change for a dispatcher on day one.",
+        "ambient": true
       },
       {
         "tone": "ink",
@@ -586,7 +588,8 @@
       "alt": "Northline's board for Thursday: twelve crews' jobs on a timeline, all ending before a 3pm line, with three changes waiting for approval.",
       "url": "app.northline.io/board",
       "tag": "Example screen",
-      "notes": "Made-up example screen and figures."
+      "notes": "Made-up example screen and figures.",
+      "carry": "board"
     },
     "product-phone": [
       {
@@ -1430,6 +1433,84 @@
         "role": "Account lead, Northline",
         "email": "priya@northline.example"
       }
-    ]
+    ],
+    "product-spotlight": {
+      "headline": "Every change waits for one tap from dispatch.",
+      "hl": "one tap",
+      "caption": "Three changes on Thursday's board, approved by 6:52am.",
+      "src": "slide-toolbox/board.webp",
+      "alt": "Northline's board for Thursday with the approval panel holding three changes.",
+      "ratio": "16 / 10",
+      "detail": {
+        "x": 66,
+        "y": 14,
+        "w": 30,
+        "h": 36
+      },
+      "callout": "Three changes waiting for approval",
+      "carry": "board",
+      "notes": "Made-up example screen."
+    },
+    "how-it-works-step-build": {
+      "headline": "Harlow's day is planned before the first van starts.",
+      "steps": [
+        {
+          "title": "Tickets come in",
+          "text": "Northline reads the day's jobs from dispatch at 4am."
+        },
+        {
+          "title": "Routes are built",
+          "text": "All 62 crews are routed by 5:40am, each home by 3pm."
+        },
+        {
+          "title": "Dispatch approves",
+          "text": "A few changes need a yes; the rest are already on the vans."
+        }
+      ],
+      "notes": "Talk through each beat as it lights."
+    },
+    "proof-logo-marquee": {
+      "headline": "Forty field-service firms plan their day on Northline.",
+      "line": "Plumbing, HVAC, electrical, pest and pool crews across six states.",
+      "logos": [
+        {
+          "name": "Bramley Plumbing"
+        },
+        {
+          "name": "Castor Electric"
+        },
+        {
+          "name": "Ridgeway HVAC"
+        },
+        {
+          "name": "Pell & Sons"
+        },
+        {
+          "name": "Larkfield Pest"
+        },
+        {
+          "name": "Oakhurst Gas"
+        },
+        {
+          "name": "Tidewater Pools"
+        },
+        {
+          "name": "Marlow Roofing"
+        },
+        {
+          "name": "Brightside Solar"
+        },
+        {
+          "name": "Eastgate Locks"
+        },
+        {
+          "name": "Fernbrook Fire"
+        },
+        {
+          "name": "Holloway Water"
+        }
+      ],
+      "notes": "Made-up example customers."
+    }
   }
 }

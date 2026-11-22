@@ -306,3 +306,26 @@ test('--photos and --faces put real images in every photo prop and portrait, in 
   assert.equal(entries[0].props.photo, 'slide-toolbox/photo-crew.svg', 'the example is left as it was');
   assert.equal(withPhotos(entries), entries);
 });
+
+// Deck quality benchmark (Nov 22): callout dots hid the UI they pointed at, and
+// centre crops cut faces off cover photos.
+test('ACCEPTANCE: product-annotated marks its spot with an open ring and puts the number on the window edge, never on the UI', () => {
+  const src = source['product-annotated'];
+  assert.match(src, /<span class="st-ann-ring pop"/);
+  assert.match(src, /\.is-left \.st-ann-dot \{ left: calc\(var\(--margin\) - 22px\); \}/);
+  assert.match(src, /\.is-right \.st-ann-dot \{ right: calc\(var\(--margin\) - 22px\); \}/);
+  assert.match(src, /\.st-ann-ring \{[^}]*background: transparent;/);
+  // Every label in one face, size and weight: the focus label changes only its color.
+  const focusLabel = /\.st-ann-call\.is-focus \.st-ann-label \{([^}]*)\}/.exec(src)?.[1] ?? '';
+  assert.doesNotMatch(focusLabel, /font-(family|size|weight)/);
+  assert.doesNotMatch(src, /\.st-ann-key li\.is-focus \{[^}]*font-weight/);
+});
+
+test('ACCEPTANCE: every photo layout requires its focal point, so no crop is left to the centre', () => {
+  for (const name of ['title-photo-bleed', 'problem-moment-photo', 'quote-quote-photo']) {
+    const src = source[name];
+    assert.match(src, /^\s*focus: string;/m, `${name}: focus is a required prop`);
+    assert.match(src, /focus is required, as "x% y%"/, `${name}: a missing focus stops the build with the fix`);
+    assert.ok(example.slides[name]?.focus, `${name}: the worked example sets its focus`);
+  }
+});

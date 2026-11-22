@@ -1,0 +1,46 @@
+---
+/**
+ * Ambient: soft fields of the brand's own light behind a section or title
+ * slide, drifting once as the slide arrives and then resting. It is texture,
+ * not content: no words, never behind a chart or a quote, one per slide.
+ *
+ *   <Ambient colors={['--c-mint', '--c-cyan']} />   (Metaview's light fields)
+ *   <Ambient />                                     (the accent and the highlight)
+ *
+ * Put it first inside the slide. Colors are brand tokens, never raw colors.
+ */
+interface Props {
+  /** Two or three brand color tokens ("--accent", "--c-mint"). Default the accent and the highlight. */
+  colors?: string[];
+  /** How strong the light is, 0.2 to 0.8 (default 0.5). */
+  strength?: number;
+  /** Where the light sits: the corner it gathers in (default "top-right"). */
+  at?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'center';
+}
+
+const { colors = ['--accent', '--highlight'], strength = 0.5, at = 'top-right' } = Astro.props;
+if (colors.length < 2 || colors.length > 3) throw new Error(`Ambient: two or three brand color tokens (got ${colors.length}).`);
+for (const c of colors) if (!/^--[a-z0-9-]+$/i.test(c)) throw new Error(`Ambient: "${c}" isn't a brand token; pass the token's name, like "--accent" or "--c-mint".`);
+if (!(strength >= 0.2 && strength <= 0.8)) throw new Error(`Ambient: strength is 0.2 to 0.8 (got ${strength}); stronger competes with the words.`);
+// Each field's place, size and drift, gathered around the chosen corner.
+const spots = {
+  'top-right': [[52, -30, 70], [74, 10, 52], [36, -12, 44]],
+  'top-left': [[-22, -30, 70], [-8, 12, 52], [22, -14, 44]],
+  'bottom-right': [[50, 40, 70], [72, 18, 52], [34, 56, 44]],
+  'bottom-left': [[-20, 40, 70], [-6, 16, 52], [20, 58, 44]],
+  center: [[18, 0, 64], [44, 18, 56], [30, -16, 46]],
+}[at];
+const drift = [[6, -4], [-5, 5], [4, 6]];
+---
+
+<div class="m-ambient" data-m="ambient" aria-hidden="true">
+  {colors.map((c, i) => (
+    <i style={`--c: var(${c}); --x: ${spots[i]![0]}%; --y: ${spots[i]![1]}%; --size: ${spots[i]![2]}%; --o: ${strength}; --dx: ${drift[i]![0]}%; --dy: ${drift[i]![1]}%`}></i>
+  ))}
+</div>
+
+<style>
+  /* The light sits behind the slide's content and above its background. */
+  :global(.slide:has(> .m-ambient)) { isolation: isolate; }
+  .m-ambient { z-index: -1; }
+</style>

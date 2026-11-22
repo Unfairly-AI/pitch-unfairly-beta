@@ -247,7 +247,7 @@ const phone = fitType(headline.length, { width: 330, lines: 3, min: 26, max: 40 
     transform: translateY(calc(var(--k) * 34px)) scale(calc(1 - var(--k) * 0.045));
     transform-origin: top center;
     z-index: calc(10 - var(--k));
-    transition: transform 320ms var(--ease), opacity 320ms var(--ease);
+    transition: transform var(--dur-medium) var(--ease), opacity var(--dur-medium) var(--ease);
   }
 
   .st-queue-card:not(.is-top):not(.is-gone) > * { visibility: hidden; }

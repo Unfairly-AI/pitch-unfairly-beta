@@ -60,6 +60,13 @@
   --ease-pop: cubic-bezier(0.3, 1.4, 0.5, 1);
   --dur-enter: 400ms;
   --stagger: 70ms;
+  --ease-exit: cubic-bezier(0.2, 0, 1, 0.9);
+  --ease-move: cubic-bezier(0.2, 0, 0.38, 0.9);
+  --dur-micro: 70ms;
+  --dur-small: 150ms;
+  --dur-medium: 240ms;
+  --dur-large: 400ms;
+  --dwell: 1300ms;
 }
 
 /* Design fundamentals derived from the kit: use these where the kit says nothing. */

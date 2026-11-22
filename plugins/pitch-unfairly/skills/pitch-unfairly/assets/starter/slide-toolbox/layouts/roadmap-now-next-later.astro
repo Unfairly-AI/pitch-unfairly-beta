@@ -48,7 +48,7 @@ const phone = fitType(headline.length, { width: 330, lines: 4, min: 28, max: 44 
     <h2 data-fit="2 4" class="display st-nnl-head rise">
       <slot name="headline">{before}{phrase && <span class="hl">{phrase}</span>}{after}</slot>
     </h2>
-    <ol class="st-nnl-lanes">
+    <ol class="st-nnl-lanes" data-m="draw">
       {lanes.map((l, i) => (
         <li class:list={['st-nnl-lane', { 'is-focus': i === focus }]}>
           <span class="st-nnl-rule" aria-hidden="true" style={`--d: ${200 + i * 160}ms`}></span>
@@ -152,7 +152,7 @@ const phone = fitType(headline.length, { width: 330, lines: 4, min: 28, max: 44 
   :global(.tone-ink) .st-nnl-lane.is-focus .st-nnl-items { letter-spacing: -0.015em; }
 
   /* The showpiece: the segments draw in, now to later. */
-  :global(.is-active) .st-nnl-rule { animation: st-nnl-draw 640ms var(--ease) var(--d, 0ms) both; }
+  :global(.is-active) .st-nnl-rule { animation: st-nnl-draw var(--dur-draw) var(--ease) var(--d, 0ms) both; }
 
   @keyframes st-nnl-draw {
     from { transform: scaleX(0); }

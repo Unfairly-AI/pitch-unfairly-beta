@@ -14,6 +14,8 @@ import { clearStamp, stampPass } from './audit-stamp.mjs';
 import { contrastScript } from './contrast.mjs';
 import { refuseInCodexSandbox } from './browser-guard.mjs';
 import { checkLiveStates } from './live-check.mjs';
+import { auditShowpieces } from './showpiece-live.mjs';
+import { auditMotion, motionSourceProblems } from './motion-check.mjs';
 
 refuseInCodexSandbox('The audit');
 
@@ -74,6 +76,16 @@ const headlines = storyHeadlines(story);
 // scopes. The static render can't show this, because nothing runs there.
 for (const { name, paths } of keyframeCollisions(await styleSources([SLIDES, 'src/components', 'src/layouts', 'src/styles']))) {
   report('motion', `@keyframes ${name} is defined differently in ${paths.join(' and ')}; keyframe names are global, so one replaces the other on every slide. Give each its own name`);
+}
+
+// The motion kit's source rules (motion-check.mjs): timing from the brand's
+// tokens, and nothing animating a layout property.
+{
+  const { readdir, readFile } = await import('node:fs/promises');
+  const { join } = await import('node:path');
+  const names = (await readdir(SLIDES).catch(() => [])).filter((n) => /\.(astro|css)$/.test(n));
+  const files = await Promise.all(names.map(async (n) => ({ path: join(SLIDES, n), text: await readFile(join(SLIDES, n), 'utf8') })));
+  for (const p of motionSourceProblems(files)) report('motion', p);
 }
 
 // A real brand: no deck ships in the starter's own house brand unless it is
@@ -407,6 +419,34 @@ try {
     live.issues.forEach((issue) => report('live', issue));
     if (!live.slides.length) console.log('✓ live: no interactive slides');
     else if (!live.issues.length) console.log(`✓ live: ${live.slides.length} interactive slide${live.slides.length === 1 ? '' : 's'} work entered, settled and after a drag or click`);
+  }
+
+  // Showpieces that declare their states (showpiece-live.mjs), driven as a
+  // viewer drives them: each rests on the state its PDF prints, plays back to
+  // it, and every control shows the state it names without leaving its slide.
+  // The check above looks at what's drawn; this one at what state it's in.
+  {
+    const open = async (viewport, query) => {
+      const page = await browser.newPage();
+      await page.setViewport(viewport);
+      await page.goto(`${base}/${query}`, { waitUntil: 'load' });
+      await page.waitForFunction(() => window.__deckReady === true, { timeout: 15000 }).catch(() => {});
+      await page.evaluate(() => document.querySelector('astro-dev-toolbar')?.remove());
+      return page;
+    };
+    const pieces = await auditShowpieces(open);
+    pieces.problems.forEach((p) => problems.push(p));
+    if (pieces.count && !pieces.problems.length) console.log(`✓ showpiece: ${pieces.count} showpiece${pieces.count === 1 ? '' : 's'} rest on their PDF state, play back to it, and every control works`);
+  }
+
+  // The motion kit, played (motion-check.mjs): one showpiece per slide, every
+  // entrance inside the brand's budget, no endless loop without a pause, words
+  // that move only in short headlines, carries that travel, and everything at
+  // rest with reduced motion (stage and phone) and in the PDF.
+  {
+    const motion = await auditMotion(browser, base);
+    motion.problems.forEach((p) => problems.push(p));
+    if (!motion.problems.length) console.log(`✓ motion: ${motion.featured} slide${motion.featured === 1 ? '' : 's'} with featured motion, one showpiece each, inside the brand's timing, at rest when still`);
   }
 
   // On screen, every slide shows what its PDF page shows: nothing only the

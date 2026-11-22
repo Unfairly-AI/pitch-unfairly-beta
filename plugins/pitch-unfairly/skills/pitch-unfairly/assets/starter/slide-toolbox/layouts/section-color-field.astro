@@ -10,6 +10,7 @@
  * color is the pause between acts.
  */
 import Slide from '../../src/components/Slide.astro';
+import Ambient from '../../src/components/motion/Ambient.astro';
 import { fitType, figureEm, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
@@ -19,9 +20,11 @@ interface Props extends SlideBase {
   number?: string;
   /** One quiet line under the title: what this act answers. 90 characters or fewer. */
   line?: string;
+  /** Brand light drifting behind the slide (the motion kit's Ambient): true for the accent and the highlight, or two or three color tokens ("--c-mint"). Off by default. */
+  ambient?: boolean | string[];
 }
 
-const { id, label = 'Section', tone = 'accent', notes, brand, title, number, line } = Astro.props;
+const { id, label = 'Section', tone = 'accent', notes, brand, title, number, line, ambient = false } = Astro.props;
 const where = `section-color-field "${id}"`;
 if (title.split(/\s+/).length > 6) throw new Error(`${where}: the title is ${title.split(/\s+/).length} words; a section name is six or fewer. The rest goes in line.`);
 if (number !== undefined && !/^\d{1,3}$/.test(number)) throw new Error(`${where}: number "${number}" should be one to three digits ("03").`);
@@ -32,10 +35,11 @@ const ghost = number ? Math.min(1100, Math.floor(1300 / figureEm(number))) : 0;
 ---
 
 <Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  {ambient && <Ambient colors={Array.isArray(ambient) ? ambient : undefined} at="bottom-right" />}
   <div class="st-field" style={`--fit: ${stage}px; --fit-phone: ${phone}px; --ghost: ${ghost}px`}>
     {number && <span class="st-field-crop" aria-hidden="true"><span class="display st-field-n">{number}</span></span>}
     <div class="st-field-text">
-      <h2 data-fit="2 3" class="display st-field-title rise">{title}</h2>
+      <h2 data-fit="2 3" class="display st-field-title" data-m="words">{title}</h2>
       {line && <p class="st-field-line rise" style="--d: 160ms">{line}</p>}
     </div>
   </div>

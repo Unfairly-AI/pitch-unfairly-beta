@@ -24,6 +24,7 @@
     "brand:apply": "node bin/brand-apply.mjs",
     "brand:capture": "node bin/brand-capture.mjs",
     "brand:board": "node bin/brand-board.mjs",
+    "asset:grab": "node bin/asset-grab.mjs",
     "site:new": "node bin/site-new.mjs",
     "site:check": "node bin/site-check.mjs",
     "site:upgrade": "node bin/site-upgrade.mjs",

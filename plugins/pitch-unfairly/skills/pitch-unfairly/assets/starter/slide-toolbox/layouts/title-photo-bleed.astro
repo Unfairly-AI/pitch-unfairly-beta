@@ -22,16 +22,17 @@ interface Props extends SlideBase {
   photo: string;
   /** What the photograph shows, for assistive tech. */
   alt: string;
-  /** The point of the photo to keep in frame when it's cropped, as CSS object-position: "60% 40%". Default "50% 50%". */
-  focus?: string;
+  /** Required. The point of the photo to keep in frame when it's cropped, as CSS object-position ("60% 30%"): a person's face (their eyes), else the photo's own subject. Look at the photo at full size and at the slide's crop before you set it: the crop never cuts a head off at the eyes or leaves a torso without its face. */
+  focus: string;
   /** Up to three facts along the foot, each a short label and its value. */
   meta?: { label: string; value: string }[];
   /** Show the brand's mark at the top. Default true. */
   mark?: boolean;
 }
 
-const { id, label = 'Cover', tone = 'ink', notes, brand, headline, hl, photo, alt, focus = '50% 50%', meta = [], mark = true } = Astro.props;
+const { id, label = 'Cover', tone = 'ink', notes, brand, headline, hl, photo, alt, focus, meta = [], mark = true } = Astro.props;
 const where = `title-photo-bleed "${id}"`;
+if (!focus || !/^\d{1,3}% \d{1,3}%$/.test(focus)) throw new Error(`${where}: focus is required, as "x% y%": the point of the photo to keep in frame, a person's face or the photo's own subject. Look at the photo at the slide's crop and set it; the centre crop cuts heads off.`);
 if (!['ink', 'paper', 'warm', 'accent'].includes(tone)) throw new Error(`${where}: tone "${tone}" has no scrim; use ink (light type on the photo), paper or warm (dark type), or accent.`);
 if (!photo) throw new Error(`${where}: photo is required. Without a photograph, use title-statement.`);
 if (meta.length > 3) throw new Error(`${where}: three meta facts at most (got ${meta.length}); the rest go in the notes.`);

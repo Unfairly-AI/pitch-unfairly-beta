@@ -1,0 +1,164 @@
+---
+/**
+ * Steps: a step build. Entering the slide lights the first step, then each
+ * next one after the brand's dwell (1.9s calm, 1.3s crisp), until all are
+ * lit; a viewer can click any step to jump to it, which stops the build. It
+ * rests, and prints, with every step shown and the last one current.
+ *
+ * Each step is a title and one quiet line; the rule over the current step
+ * carries the order, so there are no step numbers to read.
+ *
+ * It is a showpiece and declares the live-state contract (data-showpiece,
+ * data-state, data-final, data-settle, data-drive on each step's button), so
+ * the audit drives it (bin/showpiece-live.mjs).
+ *
+ *   <Steps items={[{ title: 'Record', text: 'The call is captured as it happens.' }, ...]} />
+ */
+interface Props {
+  /** Two to five steps: a short title (28 characters or fewer) and an optional line. */
+  items: { title: string; text?: string }[];
+  /** Side by side (row, the default) or stacked (column). Phones always stack. */
+  direction?: 'row' | 'column';
+  class?: string;
+}
+
+const { items, direction = 'row', class: cls } = Astro.props;
+if (items.length < 2 || items.length > 5) throw new Error(`Steps: two to five steps (got ${items.length}); more is a second slide.`);
+for (const [i, it] of items.entries()) {
+  if (!it.title?.trim() || it.title.length > 28) throw new Error(`Steps: step ${i + 1}'s title is ${it.title?.length ?? 0} characters; give it one of 28 or fewer.`);
+  if (it.text && it.text.length > 110) throw new Error(`Steps: step ${i + 1}'s line is ${it.text.length} characters; keep it to 110.`);
+}
+const n = items.length;
+---
+
+<ol
+  class:list={['m-steps', `is-${direction}`, cls]}
+  data-m="steps"
+  data-showpiece="steps"
+  data-state={String(n)}
+  data-final={String(n)}
+  data-settle={String(n * 2000)}
+  style={`--n: ${n}`}>
+  {items.map((it, i) => (
+    <li class="m-step is-on" data-step={String(i + 1)} aria-current={i === n - 1 ? 'step' : undefined}>
+      <button type="button" class="m-step-head" data-drive={String(i + 1)} aria-pressed={i === n - 1 ? 'true' : 'false'} aria-label={`Step ${i + 1}: ${it.title}`}>
+        <span class="m-step-title">{it.title}</span>
+      </button>
+      {it.text && <p class="m-step-text">{it.text}</p>}
+    </li>
+  ))}
+</ol>
+
+<script>
+  import { ms } from '../../scripts/motion.js';
+
+  for (const root of document.querySelectorAll<HTMLElement>('[data-showpiece="steps"]')) {
+    const slide = root.closest('.slide');
+    const steps = [...root.querySelectorAll<HTMLElement>('.m-step')];
+    const final = steps.length;
+    let timer = 0;
+    const show = (k: number) => {
+      root.dataset.state = String(k);
+      steps.forEach((s, i) => {
+        s.classList.toggle('is-on', i < k);
+        s.querySelector('[data-drive]')?.setAttribute('aria-pressed', String(i === k - 1));
+        if (i === k - 1) s.setAttribute('aria-current', 'step');
+        else s.removeAttribute('aria-current');
+      });
+    };
+    const stop = () => {
+      clearTimeout(timer);
+      timer = 0;
+    };
+    root.querySelectorAll<HTMLButtonElement>('[data-drive]').forEach((b) => {
+      b.addEventListener('click', () => {
+        stop();
+        show(Number(b.dataset.drive));
+      });
+    });
+    slide?.addEventListener('deck:enter', () => {
+      stop();
+      if ((window as any).deckStill?.()) return show(final);
+      const dwell = ms(root, '--dwell', 1900);
+      let k = 1;
+      show(k);
+      const next = () => {
+        k += 1;
+        show(k);
+        if (k < final) timer = window.setTimeout(next, dwell);
+      };
+      timer = window.setTimeout(next, dwell);
+    });
+  }
+</script>
+
+<style>
+  .m-steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: calc(var(--gap) * 0.8);
+  }
+
+  .m-steps.is-row { grid-template-columns: repeat(var(--n), minmax(0, 1fr)); }
+
+  .m-step {
+    display: grid;
+    align-content: start;
+    gap: 14px;
+    padding-top: 22px;
+    border-top: 3px solid color-mix(in oklab, currentColor 18%, transparent);
+    opacity: 0.3;
+    transition: opacity var(--dur-medium, 300ms) var(--ease), border-color var(--dur-medium, 300ms) var(--ease);
+  }
+
+  .m-step.is-on { opacity: 1; }
+  .m-step[aria-current='step'] { border-top-color: var(--hl-color); }
+
+  .m-step-head {
+    display: grid;
+    justify-items: start;
+    gap: 10px;
+    min-height: 44px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+    font: inherit;
+  }
+
+  .m-step-title {
+    font-family: var(--font-display);
+    font-weight: var(--display-weight);
+    letter-spacing: var(--display-tracking);
+    font-size: calc(48px * var(--display-scale));
+    line-height: 1.05;
+  }
+
+  .m-step-text {
+    margin: 0;
+    font-size: var(--t-body);
+    line-height: 1.35;
+    color: color-mix(in oklab, currentColor 76%, transparent);
+  }
+
+  .m-step-head:focus-visible {
+    outline: 2px solid var(--accent-2);
+    outline-offset: 6px;
+  }
+
+  @media (max-width: 799px) {
+    .m-steps.is-row { grid-template-columns: minmax(0, 1fr); }
+    .m-steps { gap: 18px; }
+    .m-step { padding-top: 12px; gap: 6px; }
+    .m-step-head { min-height: 32px; gap: 4px; }
+    .m-step-title { font-size: calc(24px * var(--display-scale)); }
+    .m-step-text { font-size: 15px; }
+  }
+
+  /* The PDF and every still render: every step shown, the last one current. */
+  :global(html.is-static) .m-step { opacity: 1; transition: none; }
+</style>

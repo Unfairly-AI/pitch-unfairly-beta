@@ -100,6 +100,8 @@ const head = fitType(headline.length, { width: 1500, lines: 2, min: 84, max: 124
     align-items: baseline;
     font-size: calc(var(--fig) * var(--display-scale));
     line-height: 0.8;
+    /* A tall face (Roboto Condensed) rises past a 0.8 line box: keep its top clear of the headline. */
+    padding-top: 0.14em;
     letter-spacing: -0.04em;
     font-variant-numeric: lining-nums tabular-nums;
     white-space: nowrap;

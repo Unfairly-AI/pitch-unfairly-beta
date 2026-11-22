@@ -30,12 +30,13 @@ interface Props extends SlideBase {
   alt: string;
   /** Which side the photo bleeds off. Default "right". */
   side?: 'left' | 'right';
-  /** The photo's focal point, as CSS object-position. Default "50% 50%". */
-  focus?: string;
+  /** Required. The point of the photo to keep in frame when it's cropped, as CSS object-position ("60% 30%"): a person's face (their eyes), else the photo's own subject. Look at the photo at full size and at the slide's crop before you set it: the crop never cuts a head off at the eyes or leaves a torso without its face. */
+  focus: string;
 }
 
-const { id, label = 'Quote', tone = 'warm', notes, brand, quote, hl, name, role, company, photo, alt, side = 'right', focus = '50% 50%' } = Astro.props;
+const { id, label = 'Quote', tone = 'warm', notes, brand, quote, hl, name, role, company, photo, alt, side = 'right', focus } = Astro.props;
 const where = `quote-quote-photo "${id}"`;
+if (!focus || !/^\d{1,3}% \d{1,3}%$/.test(focus)) throw new Error(`${where}: focus is required, as "x% y%": the point of the photo to keep in frame, a person's face or the photo's own subject. Look at the photo at the slide's crop and set it; the centre crop cuts heads off.`);
 if (/^["“'‘]|["”'’]$/.test(quote.trim())) throw new Error(`${where}: leave the quotation marks off; the layout sets them.`);
 if (quote.length > 120) throw new Error(`${where}: the quote is ${quote.length} characters; 120 or fewer beside a photo. Cut it to the sentence that carries the point.`);
 if (!photo || !alt) throw new Error(`${where}: photo and alt are required; without a photo, use quote-hero-quote.`);

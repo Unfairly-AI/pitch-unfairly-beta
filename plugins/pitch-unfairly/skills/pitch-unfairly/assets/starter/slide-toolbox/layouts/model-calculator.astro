@@ -221,9 +221,11 @@ const config = JSON.stringify({ factor, most, result });
   .st-calc-bar {
     display: block;
     height: 100%;
-    width: calc(var(--r) * 100%);
+    width: 100%;
+    transform: scaleX(var(--r));
+    transform-origin: 0 50%;
     background: var(--hl-color);
-    transition: width 220ms var(--ease);
+    transition: transform var(--dur-small) var(--ease);
   }
 
   .st-calc.has-hl .st-calc-fig { color: currentColor; }

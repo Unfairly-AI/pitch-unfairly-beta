@@ -3,11 +3,13 @@
  * product-annotated: one screen, with numbered callouts on what matters.
  *
  * The headline across the top, then the screenshot centered in a quiet window
- * frame. Each callout is a numbered dot on the exact spot of the screen, with
- * a hairline running out to its label in the margin, the label set on the
- * line. One callout can be the point: its dot takes the accent and its label
- * the weight; the rest stay quiet. On a phone the lines go: the dots stay on
- * the screen and their labels list under it by number.
+ * frame. Each callout is a hairline from its label in the margin to a small
+ * open ring on the exact spot of the screen, with its number on the window's
+ * edge: nothing solid ever sits on the UI it points at, so the screen stays
+ * readable. One callout can be the point: its number and ring take the accent
+ * and its label full ink; the rest stay quiet, all labels in one face and size.
+ * On a phone the labels go: the numbers stay on the window's edge, the lines
+ * reach in to their rings, and the labels list under the screen by number.
  */
 import Slide from '../../src/components/Slide.astro';
 import { fitType, splitHl, type SlideBase } from '../lib';
@@ -73,6 +75,7 @@ const phone = fitType(headline.length, { width: 330, lines: 3, min: 26, max: 40 
               <li class:list={['st-ann-call', `is-${c.side}`, { 'is-focus': c.n === focus }]} style={`--x: ${c.x}; --y: ${c.y}; --d: ${420 + i * 110}ms`}>
                 <span class="st-ann-line wipe" aria-hidden="true"></span>
                 <span class="st-ann-label rise">{c.label}</span>
+                <span class="st-ann-ring pop" aria-hidden="true"></span>
                 <span class="st-ann-dot pop" aria-hidden="true">{c.n}</span>
               </li>
             ))}
@@ -197,30 +200,36 @@ const phone = fitType(headline.length, { width: 330, lines: 3, min: 26, max: 40 
     box-shadow: 0 0 0 4px var(--paper);
   }
 
-  .is-left .st-ann-dot { right: -22px; }
-  .is-right .st-ann-dot { left: -22px; }
+  /* The number sits on the window's edge, where the line enters the screen,
+     never on the UI it points at. */
+  .is-left .st-ann-dot { left: calc(var(--margin) - 22px); }
+  .is-right .st-ann-dot { right: calc(var(--margin) - 22px); }
 
-  /* The one callout that carries the point: the accent on its dot, the weight on its label. */
+  /* An open ring marks the exact spot: the UI under it stays readable. */
+  .st-ann-ring {
+    position: absolute;
+    top: -9px;
+    width: 18px;
+    height: 18px;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+    background: transparent;
+    box-shadow: 0 0 0 2px color-mix(in oklab, var(--paper) 70%, transparent);
+  }
+
+  .is-left .st-ann-ring { right: -9px; }
+  .is-right .st-ann-ring { left: -9px; }
+
+  /* The one callout that carries the point: the accent on its number, line and
+     ring, full ink on its label. Same face and size as the others. */
   .st-ann-call.is-focus .st-ann-dot {
     background: var(--accent);
     color: var(--on-accent);
-    width: 56px;
-    height: 56px;
-    top: -28px;
-    font-size: var(--t-label);
   }
 
-  .is-left.is-focus .st-ann-dot { right: -28px; }
-  .is-right.is-focus .st-ann-dot { left: -28px; }
   .st-ann-call.is-focus .st-ann-line { border-top: 2px solid var(--accent); }
-
-  .st-ann-call.is-focus .st-ann-label {
-    font-family: var(--font-display);
-    font-size: var(--t-lede);
-    font-weight: var(--display-weight);
-    letter-spacing: -0.01em;
-    color: currentColor;
-  }
+  .st-ann-call.is-focus .st-ann-ring { border-color: var(--accent); }
+  .st-ann-call.is-focus .st-ann-label { color: currentColor; }
 
   .st-ann-key { display: none; }
 
@@ -241,11 +250,9 @@ const phone = fitType(headline.length, { width: 330, lines: 3, min: 26, max: 40 
     .st-ann-fig { width: 100%; align-self: start; }
     .st-ann-bar { height: 18px; gap: 4px; padding: 0 8px; }
     .st-ann-bar i { width: 6px; height: 6px; }
-    .st-ann-line,
     .st-ann-label { display: none; }
 
-    .st-ann-dot,
-    .st-ann-call.is-focus .st-ann-dot {
+    .st-ann-dot {
       top: -12px;
       width: 24px;
       height: 24px;
@@ -253,10 +260,12 @@ const phone = fitType(headline.length, { width: 330, lines: 3, min: 26, max: 40 
       box-shadow: 0 0 0 2px var(--paper);
     }
 
-    .is-left .st-ann-dot,
-    .is-left.is-focus .st-ann-dot { right: -12px; }
-    .is-right .st-ann-dot,
-    .is-right.is-focus .st-ann-dot { left: -12px; }
+    .is-left .st-ann-dot { left: -12px; }
+    .is-right .st-ann-dot { right: -12px; }
+
+    .st-ann-ring { top: -6px; width: 12px; height: 12px; }
+    .is-left .st-ann-ring { right: -6px; }
+    .is-right .st-ann-ring { left: -6px; }
 
     .st-ann-key {
       display: grid;
@@ -279,7 +288,7 @@ const phone = fitType(headline.length, { width: 330, lines: 3, min: 26, max: 40 
       text-align: center;
     }
 
-    .st-ann-key li.is-focus { color: currentColor; font-weight: 700; }
+    .st-ann-key li.is-focus { color: currentColor; }
     .st-ann-key li.is-focus b { color: var(--hl-color); }
   }
 

@@ -66,7 +66,7 @@ const phone = fitType(headline.length, { width: 330, lines: 4, min: 26, max: 40 
     <h2 data-fit="2 4" class="display st-fall-head rise">
       <slot name="headline">{before}{phrase && <span class="hl">{phrase}</span>}{after}</slot>
     </h2>
-    <ol class="st-fall-chart">
+    <ol class="st-fall-chart" data-m="grow">
       {bars.map((b, i) => (
         <li class:list={['st-fall-col', `is-${b.kind}`]} style={`--lo: ${b.lo}; --hi: ${b.hi}; --d: ${260 + i * 140}ms`}>
           <span class="st-fall-track">
@@ -175,7 +175,7 @@ const phone = fitType(headline.length, { width: 330, lines: 4, min: 26, max: 40 
   }
 
   /* Motion: each loss drops in from where the last one ended, the result rises from the baseline. */
-  :global(.is-active) .st-fall-bar { animation: st-fall-drop 620ms var(--ease) var(--d, 0ms) both; }
+  :global(.is-active) .st-fall-bar { animation: st-fall-drop var(--dur-grow) var(--ease) var(--d, 0ms) both; }
   :global(.is-active) .is-start .st-fall-bar,
   :global(.is-active) .is-end .st-fall-bar { animation-name: st-fall-rise; }
   :global(.is-active) .st-fall-v { animation: rise var(--dur-enter) var(--ease) calc(var(--d, 0ms) + 260ms) both; }

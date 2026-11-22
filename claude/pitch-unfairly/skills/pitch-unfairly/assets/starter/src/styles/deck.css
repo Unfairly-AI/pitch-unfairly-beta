@@ -316,7 +316,7 @@ svg {
 }
 
 .is-active .pop {
-  animation: pop 480ms var(--ease-pop) var(--d, 0ms) both;
+  animation: pop var(--dur-pop, 480ms) var(--ease-pop) var(--d, 0ms) both;
 }
 
 @keyframes rise {
@@ -346,7 +346,7 @@ html.is-static .hover-only {
 
 /* Draw an SVG stroke on. Give the path pathLength="1". */
 .is-active .draw {
-  animation: draw 900ms var(--ease) var(--d, 0ms) both;
+  animation: draw var(--dur-draw, 900ms) var(--ease) var(--d, 0ms) both;
 }
 
 @keyframes draw {
@@ -356,7 +356,7 @@ html.is-static .hover-only {
 
 /* Reveal left to right, e.g. a bar growing to its value. Text inside stays unscaled. */
 .is-active .wipe {
-  animation: wipe 700ms var(--ease) var(--d, 0ms) both;
+  animation: wipe var(--dur-wipe, 700ms) var(--ease) var(--d, 0ms) both;
 }
 
 @keyframes wipe {
@@ -364,18 +364,18 @@ html.is-static .hover-only {
   to { clip-path: inset(0 0 0 0 round 6px); }
 }
 
-/* Type a single monospace line. Set --chars to its length. */
+/* Type a single monospace line. Set --chars to its length. It reveals with a
+   clip, not a width, so the line never reflows while it types. */
 .is-active .type {
   display: inline-block;
-  overflow: hidden;
   white-space: nowrap;
   vertical-align: bottom;
-  animation: type calc(var(--chars, 20) * 28ms) steps(var(--chars, 20), end) var(--d, 0ms) both;
+  animation: type calc(var(--chars, 20) * var(--dur-char, 28ms)) steps(var(--chars, 20), end) var(--d, 0ms) both;
 }
 
 @keyframes type {
-  from { width: 0; }
-  to { width: calc(var(--chars, 20) * 1ch); }
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
 }
 
 /* The one ambient loop: a slow breath on a shared clock. Ends at rest. */

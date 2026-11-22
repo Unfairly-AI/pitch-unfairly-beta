@@ -1,0 +1,151 @@
+---
+/**
+ * Marquee: a strip of logos drifting sideways at reading pace, for a wall of
+ * customers too long for one row. It drifts only while its slide is on screen,
+ * has a pause button (anything that moves on its own for more than five
+ * seconds needs one), and stands still as one wrapped row in the PDF and with
+ * reduced motion.
+ *
+ *   <Marquee logos={[{ src: acme, alt: 'Acme' }, ...]} />
+ */
+interface Props {
+  /** Six to twenty-four logos, each with its company's name as alt (set in type when there's no src). */
+  logos: { src?: string; alt: string }[];
+  /** Logo height on the stage, in px (default 56). */
+  height?: number;
+  /** The pause button's words (default "Pause"). */
+  pauseLabel?: string;
+  class?: string;
+}
+
+const { logos, height = 56, pauseLabel = 'Pause', class: cls } = Astro.props;
+if (logos.length < 6 || logos.length > 24) throw new Error(`Marquee: six to twenty-four logos (got ${logos.length}); fewer fit one still row (a logo wall).`);
+for (const l of logos) if (!l.alt?.trim()) throw new Error(`Marquee: every logo needs alt text, the company's name (${l.src ?? 'a logo with no src'}).`);
+---
+
+<div class:list={['m-marquee', cls]} data-m="marquee" style={`--n: ${logos.length}; --h-stage: ${height}px`}>
+  <div class="m-marquee-window">
+    <ul class="m-marquee-track" data-bleed>
+      {logos.map((l) => <li>{l.src ? <img src={l.src} alt={l.alt} loading="eager" decoding="async" /> : <span class="m-marquee-name">{l.alt}</span>}</li>)}
+      {logos.map((l) => <li class="m-marquee-copy" aria-hidden="true">{l.src ? <img src={l.src} alt="" loading="eager" decoding="async" /> : <span class="m-marquee-name">{l.alt}</span>}</li>)}
+    </ul>
+  </div>
+  <button type="button" class="m-marquee-pause" aria-pressed="false" data-screen-only>{pauseLabel}</button>
+</div>
+
+<script>
+  for (const root of document.querySelectorAll<HTMLElement>('[data-m="marquee"]')) {
+    const button = root.querySelector<HTMLButtonElement>('.m-marquee-pause');
+    button?.addEventListener('click', () => {
+      const paused = root.classList.toggle('is-paused');
+      button.setAttribute('aria-pressed', String(paused));
+    });
+  }
+</script>
+
+<style>
+  .m-marquee {
+    --h: var(--h-stage, 56px);
+    position: relative;
+    display: grid;
+    gap: 14px;
+    justify-items: end;
+  }
+
+  .m-marquee-window {
+    width: 100%;
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, currentColor 7%, currentColor 93%, transparent);
+  }
+
+  .m-marquee-track {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    width: max-content;
+    align-items: center;
+  }
+
+  .m-marquee-track li {
+    flex: none;
+    padding: 0 calc(var(--h) * 0.9);
+  }
+
+  .m-marquee-track img {
+    display: block;
+    height: var(--h);
+    width: auto;
+    max-width: calc(var(--h) * 4);
+    object-fit: contain;
+  }
+
+  /* A company without a logo file: its name in the brand's display face. */
+  .m-marquee-name {
+    display: block;
+    font-family: var(--font-display);
+    font-weight: var(--display-weight);
+    letter-spacing: var(--display-tracking);
+    font-size: calc(var(--h) * 0.62);
+    line-height: var(--h);
+    white-space: nowrap;
+    color: color-mix(in oklab, currentColor 78%, transparent);
+  }
+
+  /* One full set's width per loop, at a pace the eye can read: linear, as
+     any constant drift is. It only runs while its slide is on screen. */
+  .m-marquee-track {
+    animation: m-marquee calc(var(--n) * var(--dwell, 1900ms) * 1.6) linear infinite;
+    animation-play-state: paused;
+  }
+
+  :global(.is-active) .m-marquee:not(.is-paused) .m-marquee-track { animation-play-state: running; }
+
+  @keyframes m-marquee {
+    from { transform: none; }
+    to { transform: translateX(-50%); }
+  }
+
+  .m-marquee-pause {
+    min-height: 32px;
+    padding: 0 14px;
+    border: 1px solid color-mix(in oklab, currentColor 30%, transparent);
+    border-radius: 999px;
+    background: transparent;
+    color: inherit;
+    font: 600 var(--t-fine) / 1 var(--font-mono);
+    letter-spacing: 0.06em;
+    text-transform: var(--label-case, uppercase);
+    cursor: pointer;
+  }
+
+  @media (max-width: 799px) {
+    .m-marquee { --h: 30px; }
+    /* A still phone screen holds eight logos; the rest are on the stage and in the PDF. */
+    :global(html.is-static) .m-marquee-track li:nth-child(n + 9) { display: none; }
+  }
+
+  @media (max-width: 799px) and (prefers-reduced-motion: reduce) {
+    .m-marquee-track li:nth-child(n + 9) { display: none; }
+  }
+
+  /* Still: every logo once in an even grid, no copies and no button. */
+  :global(html.is-static) .m-marquee-window { mask-image: none; }
+  :global(html.is-static) .m-marquee-track {
+    animation: none;
+    width: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(calc(var(--h) * 4.4), 1fr));
+    place-items: center;
+    row-gap: calc(var(--h) * 0.7);
+  }
+  :global(html.is-static) .m-marquee-copy,
+  :global(html.is-static) .m-marquee-pause { display: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .m-marquee-window { mask-image: none; }
+    .m-marquee-track { animation: none; width: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(calc(var(--h) * 4.4), 1fr)); place-items: center; row-gap: calc(var(--h) * 0.7); }
+    .m-marquee-copy,
+    .m-marquee-pause { display: none; }
+  }
+</style>

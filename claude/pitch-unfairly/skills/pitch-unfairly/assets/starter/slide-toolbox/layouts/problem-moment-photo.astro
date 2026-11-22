@@ -28,12 +28,13 @@ interface Props extends SlideBase {
   moment?: string;
   /** Which side the photo bleeds off. Default "right". */
   side?: 'left' | 'right';
-  /** The photo's focal point, as CSS object-position: "60% 40%". Default "50% 50%". */
-  focus?: string;
+  /** Required. The point of the photo to keep in frame when it's cropped, as CSS object-position ("60% 30%"): a person's face (their eyes), else the photo's own subject. Look at the photo at full size and at the slide's crop before you set it: the crop never cuts a head off at the eyes or leaves a torso without its face. */
+  focus: string;
 }
 
-const { id, label = 'Problem', tone = 'ink', notes, brand, headline, hl, caption, photo, alt, moment, side = 'right', focus = '50% 50%' } = Astro.props;
+const { id, label = 'Problem', tone = 'ink', notes, brand, headline, hl, caption, photo, alt, moment, side = 'right', focus } = Astro.props;
 const where = `problem-moment-photo "${id}"`;
+if (!focus || !/^\d{1,3}% \d{1,3}%$/.test(focus)) throw new Error(`${where}: focus is required, as "x% y%": the point of the photo to keep in frame, a person's face or the photo's own subject. Look at the photo at the slide's crop and set it; the centre crop cuts heads off.`);
 if (!photo) throw new Error(`${where}: photo is required; without a photo of the moment, use problem-artifact or statement.`);
 if (!alt) throw new Error(`${where}: alt is required; say what the photo shows.`);
 if (moment && moment.length > 32) throw new Error(`${where}: moment is ${moment.length} characters; a time and a place, 32 or fewer.`);

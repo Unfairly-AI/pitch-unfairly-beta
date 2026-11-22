@@ -27,9 +27,11 @@ interface Props extends SlideBase {
   meta?: { label: string; value: string }[];
   /** Show the brand's mark at the top. Default true. */
   mark?: boolean;
+  /** A key shared with the next slide's screenshot (product-browser, product-spotlight): the screen travels there. */
+  carry?: string;
 }
 
-const { id, label = 'Cover', tone = 'paper', notes, brand, headline, hl, shot, alt, url, meta = [], mark = true } = Astro.props;
+const { id, label = 'Cover', tone = 'paper', notes, brand, headline, hl, shot, alt, url, meta = [], mark = true, carry } = Astro.props;
 const where = `title-split-product "${id}"`;
 if (!shot) throw new Error(`${where}: shot is required. Without a product screenshot, use title-statement.`);
 if (meta.length > 2) throw new Error(`${where}: two meta facts at most beside the product (got ${meta.length}); the rest go in the notes.`);
@@ -57,7 +59,7 @@ const phone = fitType(headline.length, { width: 330, lines: 4, min: 28, max: 46 
       </dl>
     )}
     <div class="st-split-crop">
-      <figure class="st-split-shot rise" style="--d: 180ms" data-bleed>
+      <figure class="st-split-shot rise" style="--d: 180ms" data-bleed data-carry={carry}>
         {url && <figcaption class="st-split-bar">{url}</figcaption>}
         <img src={shot} alt={alt} />
       </figure>

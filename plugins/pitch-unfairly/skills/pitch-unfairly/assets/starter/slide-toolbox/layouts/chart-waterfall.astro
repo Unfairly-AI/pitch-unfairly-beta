@@ -75,7 +75,7 @@ const describe = `${caption ? `${caption}. ` : ''}${bars.map((b) => `${b.label}:
       <slot name="headline">{before}{phrase && <span class="hl">{phrase}</span>}{after}</slot>
     </h2>
     <figure class="st-fall-chart">
-      <div class="st-fall-plot" role="img" aria-label={describe}>
+      <div class="st-fall-plot" data-m="grow" role="img" aria-label={describe}>
         <div class="st-fall-area">
           <span class="st-fall-zero" style={`top: ${pct(y(0))}`}></span>
           {placed.slice(0, -1).map((b) => (
@@ -217,7 +217,7 @@ const describe = `${caption ? `${caption}. ` : ''}${bars.map((b) => `${b.label}:
   }
 
   /* Motion: each bar drops into place in order, then the connectors and values land. */
-  :global(.is-active) .st-fall-bar { animation: st-fall-in 560ms var(--ease) var(--d, 0ms) both; }
+  :global(.is-active) .st-fall-bar { animation: st-fall-in var(--dur-grow) var(--ease) var(--d, 0ms) both; }
 
   @keyframes st-fall-in {
     from { opacity: 0; transform: scaleY(0); }

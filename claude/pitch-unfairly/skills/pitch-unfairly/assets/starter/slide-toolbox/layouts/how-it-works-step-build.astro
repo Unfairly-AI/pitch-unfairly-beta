@@ -1,0 +1,70 @@
+---
+/**
+ * how-it-works-step-build: a process told one beat at a time.
+ *
+ * The headline names the outcome; under it, two to five steps in a row. As
+ * the slide arrives the first step lights, then each next one after the
+ * brand's dwell, the earlier ones staying lit, until the whole path is shown
+ * (the motion kit's Steps). A viewer can click any step to stop on it. The
+ * still slide, and the PDF, show every step with the last one current.
+ */
+import Slide from '../../src/components/Slide.astro';
+import Steps from '../../src/components/motion/Steps.astro';
+import { fitType, splitHl, type SlideBase } from '../lib';
+
+interface Props extends SlideBase {
+  /** The outcome the steps reach, as a whole sentence. 14 words or fewer. */
+  headline: string;
+  /** One phrase of the headline, word for word, in the accent. */
+  hl?: string;
+  /** Two to five steps: a short title (28 characters or fewer) and one optional line (110 or fewer). */
+  steps: { title: string; text?: string }[];
+}
+
+const { id, label = 'How it works', tone = 'paper', notes, brand, headline, hl, steps } = Astro.props;
+const where = `how-it-works-step-build "${id}"`;
+if (headline.split(/\s+/).length > 14) throw new Error(`${where}: the headline is ${headline.split(/\s+/).length} words; keep it to 14 or fewer.`);
+const [before, phrase, after] = splitHl(headline, hl, where);
+const head = fitType(headline.length, { width: 1500, lines: 2, min: 64, max: 112 });
+const phone = fitType(headline.length, { width: 330, lines: 3, min: 26, max: 40 });
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <div class="st-build" style={`--head: ${head}px; --head-phone: ${phone}px`}>
+    <h2 data-fit="2 4" class="display st-build-head rise">
+      <slot name="headline">{before}{phrase && <span class="hl">{phrase}</span>}{after}</slot>
+    </h2>
+    <div class="st-build-steps rise" style="--d: 160ms">
+      <Steps items={steps} />
+    </div>
+  </div>
+</Slide>
+
+<style>
+  .st-build {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    row-gap: calc(var(--gap) * 1.6);
+  }
+
+  .st-build-head {
+    max-width: 1500px;
+    font-size: calc(var(--head) * var(--display-scale));
+  }
+
+  .st-build-steps { align-self: end; }
+
+  @media (max-width: 799px) {
+    .st-build { row-gap: calc(var(--gap) * 1.2); grid-template-rows: auto auto; align-content: start; }
+    .st-build-head { font-size: calc(var(--head-phone) * var(--display-scale)); }
+    .st-build-steps { align-self: start; }
+  }
+
+  /* PDF and every static render: every step shown, the last one current (Steps's final state). */
+  :global(html.is-static) .st-build .rise {
+    opacity: 1;
+    transform: none;
+  }
+</style>

@@ -57,7 +57,7 @@ const pct = (px: number) => `${((px / S) * 100).toFixed(3)}%`;
       {caption && <p class="st-size-cap mobile-hide rise" style="--d: 160ms">{caption}</p>}
     </div>
     <figure class="st-size-fig" role="img" aria-label={levels.map((l) => `${l.label}: ${l.display}`).join('; ')}>
-      <div class="st-size-squares">
+      <div class="st-size-squares" data-m="grow">
         {levels.map((l, i) => (
           <span
             class:list={['st-size-sq', i === 0 ? 'is-outer' : `is-${Math.min(i, 2)}`, { 'is-focal': i === focal }]}
@@ -191,7 +191,7 @@ const pct = (px: number) => `${((px / S) * 100).toFixed(3)}%`;
   }
 
   /* Motion: the squares grow out of their shared corner, outermost first. */
-  :global(.is-active) .st-size-sq { animation: st-size-grow 700ms var(--ease) var(--d, 0ms) both; }
+  :global(.is-active) .st-size-sq { animation: st-size-grow var(--dur-grow) var(--ease) var(--d, 0ms) both; }
 
   @keyframes st-size-grow {
     from { opacity: 0; transform: scale(0.2); }

@@ -12,18 +12,19 @@ interface Props {
   decimals?: number;
   prefix?: string;
   suffix?: string;
-  /** Milliseconds. Keep it under ~1.4s: the point is the number, not the wait. */
+  /** Milliseconds. Defaults to the brand's entrance x 1.8 (1080ms calm, 720ms crisp). Keep it under ~1.4s: the point is the number, not the wait. */
   duration?: number;
   /** Delay after the slide enters, in milliseconds. */
   delay?: number;
 }
 
-const { to, from = 0, decimals = 0, prefix = '', suffix = '', duration = 1100, delay = 150 } = Astro.props;
+const { to, from = 0, decimals = 0, prefix = '', suffix = '', duration, delay = 150 } = Astro.props;
 const final = `${prefix}${to.toFixed(decimals)}${suffix}`;
 ---
 
 <span
   class="count-up"
+  data-m="count"
   data-to={to}
   data-from={from}
   data-decimals={decimals}
@@ -33,6 +34,7 @@ const final = `${prefix}${to.toFixed(decimals)}${suffix}`;
   data-delay={delay}>{final}</span>
 
 <script>
+  import { ms } from '../../scripts/motion.js';
   // ease-out-quart, matching --ease
   const ease = (t: number) => 1 - Math.pow(1 - t, 4);
 
@@ -50,7 +52,9 @@ const final = `${prefix}${to.toFixed(decimals)}${suffix}`;
       cancelAnimationFrame(frame);
       el.textContent = format(from);
       const start = performance.now() + Number(d.delay);
-      const duration = Number(d.duration);
+      // The brand's timing unless the slide set its own.
+      const enter = ms(el, '--dur-enter', 600);
+      const duration = d.duration ? Number(d.duration) : enter * 1.8;
       const tick = (now: number) => {
         const t = Math.min(1, Math.max(0, (now - start) / duration));
         el.textContent = format(from + (to - from) * ease(t));

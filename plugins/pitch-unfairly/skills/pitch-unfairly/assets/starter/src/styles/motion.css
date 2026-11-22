@@ -1,0 +1,157 @@
+/*
+  The motion kit: primitives a slide applies with data-m="<kind>", each timed
+  by the brand kit's motion tokens (src/brand/brand.css, from style.motion:
+  calm, crisp or playful). Guide: deck_guide topic craft, "Motion kit".
+
+  Every primitive's resting style is its finished state: the PDF (?pdf=1),
+  reduced motion and no-JS show the end, and a revisited slide shows it
+  finished. Motion only plays when its slide becomes active.
+
+    data-m="stagger"  a list or row of cards: children rise in order, six at most
+    data-m="words"    a headline's words rise in reading order (14 words or fewer)
+    data-m="grow"     a chart: its .m-grow (bars up) or .m-grow-x (bars across) grow from the baseline
+    data-m="draw"     a line or ring: its .draw strokes draw on (pathLength="1")
+    data-m="count"    a figure counts up (CountUp sets it)
+    data-m="focus"    zoom and spotlight a detail of a screenshot (Focus.astro)
+    data-m="steps"    a step build, a showpiece the viewer can drive (Steps.astro)
+    data-m="marquee"  a logo strip that drifts, with a pause button (Marquee.astro)
+    data-m="ambient"  a slow drift of brand light behind a section slide (Ambient.astro)
+    data-carry="<key>" an element that travels from the previous slide to its
+                       place on this one (src/scripts/motion.js)
+
+  One showpiece per slide: the audit (bin/motion-check.mjs) counts the kinds
+  above on each slide and fails a second one, motion that runs past the
+  slide's budget, a loop with no pause, words that move while being read, and
+  anything not at rest in the PDF or with reduced motion.
+*/
+
+:root,
+[data-brand] {
+  /* The ladder's fallbacks are calm's, for a brand.css written before 0.42. */
+  --dur-pop: calc(var(--dur-medium, 300ms) * 1.6);
+  --dur-draw: calc(var(--dur-large, 500ms) * 1.8);
+  --dur-wipe: calc(var(--dur-large, 500ms) * 1.4);
+  --dur-grow: calc(var(--dur-large, 500ms) * 1.3);
+  --dur-pan: calc(var(--dur-large, 500ms) * 3.2);
+  /* A word step: half the item stagger, so a 14-word headline lands inside a second. */
+  --stagger-word: calc(var(--stagger, 110ms) * 0.42);
+}
+
+/* ---------- Stagger: children rise in order ----------
+   The index comes from the child's position (no script), and everything past
+   the sixth arrives with the sixth: a long list doesn't make the viewer wait. */
+[data-m='stagger'] > :nth-child(2) { --i: 1; }
+[data-m='stagger'] > :nth-child(3) { --i: 2; }
+[data-m='stagger'] > :nth-child(4) { --i: 3; }
+[data-m='stagger'] > :nth-child(5) { --i: 4; }
+[data-m='stagger'] > :nth-child(n + 6) { --i: 5; }
+
+.is-active [data-m='stagger'] > * {
+  animation: rise var(--dur-enter) var(--ease) calc(var(--d, 0ms) + var(--i, 0) * var(--stagger)) both;
+}
+
+/* ---------- Words: a headline lands word by word ----------
+   src/scripts/motion.js wraps each word of a [data-m="words"] element in
+   .m-w with its --w index once, in the live deck only. The words travel a
+   third of an em, never more, and the line never reflows. */
+.m-w {
+  display: inline-block;
+}
+
+.is-active [data-m='words'] .m-w {
+  animation: m-word var(--dur-enter) var(--ease) calc(var(--d, 0ms) + var(--w, 0) * var(--stagger-word)) both;
+}
+
+@keyframes m-word {
+  from { opacity: 0; transform: translateY(0.32em); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ---------- Grow: bars rise from the baseline ----------
+   .m-grow grows upward from its foot, .m-grow-x rightward from its start.
+   Give each bar --i (its index; six at most are staggered). */
+.is-active .m-grow,
+.is-active .m-grow-x {
+  animation: m-grow-y var(--dur-grow) var(--ease) calc(var(--d, 0ms) + min(var(--i, 0), 5) * var(--stagger) * 0.6) both;
+}
+
+.m-grow { transform-origin: 50% 100%; }
+
+.is-active .m-grow-x {
+  animation-name: m-grow-x;
+  transform-origin: 0 50%;
+}
+
+@keyframes m-grow-y {
+  from { transform: scaleY(0); }
+  to { transform: none; }
+}
+
+@keyframes m-grow-x {
+  from { transform: scaleX(0); }
+  to { transform: none; }
+}
+
+/* ---------- Ambient: brand light, drifting once ----------
+   Ambient.astro draws the fields; one slow drift per entrance, then it rests
+   where it started, so nothing loops behind the words. */
+.m-ambient {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.m-ambient > i {
+  position: absolute;
+  width: var(--size, 60%);
+  aspect-ratio: 1;
+  left: var(--x, 0%);
+  top: var(--y, 0%);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--c), transparent);
+  opacity: var(--o, 0.55);
+  filter: blur(var(--blur, 40px));
+}
+
+.is-active .m-ambient > i {
+  animation: m-drift calc(var(--dwell, 1900ms) * 5) var(--ease-move, ease-in-out) both;
+}
+
+.is-active .m-ambient > i:nth-child(2) { animation-direction: reverse; }
+
+@keyframes m-drift {
+  0%, 100% { transform: none; }
+  50% { transform: translate(var(--dx, 6%), var(--dy, -4%)) scale(1.08); }
+}
+
+/* ---------- Static and still ----------
+   The PDF, reduced motion and a revisit show every primitive at rest. Words
+   are never split there, so the PDF's text layer reads whole words. */
+html.is-static .m-w,
+html.is-static .m-grow,
+html.is-static .m-grow-x,
+html.is-static .m-ambient > i {
+  animation: none !important;
+  opacity: 1;
+  transform: none;
+}
+
+html.is-static .m-ambient > i { opacity: var(--o, 0.55); }
+
+@media (prefers-reduced-motion: reduce) {
+  .m-w,
+  .m-grow,
+  .m-grow-x,
+  .m-ambient > i {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* A carried element arrives by travelling (motion.js), not by its entrance. */
+.m-carrying,
+.m-carrying * {
+  animation: none !important;
+}

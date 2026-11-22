@@ -3,6 +3,8 @@
 import '../brand/fonts';
 import '../brand/brand.css';
 import '../styles/deck.css';
+// The motion kit: data-m primitives timed by the brand's motion tokens.
+import '../styles/motion.css';
 // Wireframe mode (src/styles/wire.css): greys and the system font in place of the kit.
 import '../styles/wire.css';
 import { brandName } from '../brand/assets';
@@ -61,6 +63,7 @@ const wire = /^(1|true|yes|on)$/i.test(String(import.meta.env.DECK_WIRE ?? ''));
 
     <script>
       import { fitTextWhenReady } from '../scripts/fit-text.js';
+      import { prepareMotion, playCarry } from '../scripts/motion.js';
       /*
         The deck scrolls like a website: every slide fills one screen and the
         page snaps between them, so a mouse wheel, trackpad, or swipe moves a
@@ -95,13 +98,16 @@ const wire = /^(1|true|yes|on)$/i.test(String(import.meta.env.DECK_WIRE ?? ''));
 
       const setCurrent = (index: number) => {
         if (index === current) return;
+        const from = current;
         current = index;
         slides.forEach((slide, i) => slide.classList.toggle('is-active', i === index));
         const slide = slides[index];
         if (!played.has(index)) {
           played.add(index);
-          // Script-driven motion (CountUp) listens for this.
-          slide.dispatchEvent(new CustomEvent('deck:enter'));
+          // An element marked data-carry travels here from the slide we left.
+          if (from >= 0) playCarry(slides[from], slide);
+          // Script-driven motion (CountUp, Steps) listens for this.
+          slide.dispatchEvent(new CustomEvent('deck:enter', { detail: { from } }));
         } else {
           // Coming back: show the finished slide instead of replaying.
           slide.classList.add('is-replay');
@@ -133,6 +139,9 @@ const wire = /^(1|true|yes|on)$/i.test(String(import.meta.env.DECK_WIRE ?? ''));
         const n = parseInt(location.hash.slice(1), 10);
         return Number.isFinite(n) ? n - 1 : 0;
       };
+
+      // Split [data-m="words"] headlines into words before the first entrance.
+      if (!pdf) prepareMotion(document);
 
       if (!pdf) {
         const total = document.getElementById('deck-total');

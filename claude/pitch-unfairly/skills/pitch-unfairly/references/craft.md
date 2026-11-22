@@ -113,7 +113,7 @@ Starting points, not templates. Pick by the slide's job, then compose for its co
 | Land a number | Big number | The number at poster scale (500px+ on the stage) in the accent color, a short headline completing the sentence beside it, up to three one-line supports. |
 | Prove it with voices | Quote wall | Dark slide, three to five short real quotes set as large type with a small attribution; one of them bigger than the rest. Cards only if the brand uses them. On phones, show only the three shortest. |
 | Contrast old and new | Before and after | The old way grayscale and faded, the new way in color with the only focal shadow and a small tilted sticker. An arrow between them on wide screens only. |
-| Show the product | Mockup | A real screenshot, or a faithful HTML mockup, inside window chrome, rotated 1 to 2 degrees with the focal shadow (`--shadow-focal`). Steps or claims beside it, not on top of it. |
+| Show the product | Mockup | A real screenshot, or a faithful HTML mockup, inside window chrome, rotated 1 to 2 degrees with the focal shadow (`--shadow-focal`). Steps or claims beside it, not on top of it. When one region proves the point, spotlight it (toolbox `product-spotlight`, the motion kit's Focus). |
 | Show progression | You are here | One line with three points: past (faded), present (bold, with a "you are here" pin), next (in the accent). Labels sit on the line, not in boxes. |
 | Size a market | Venn or stack | Overlapping circles or stacked bars with one highlighted region and its figure; the math in quiet rows underneath. |
 | Introduce people | Team | Photos at equal size, names and one credential each. Personality comes from one playful element, not from more text. |
@@ -160,26 +160,39 @@ The brand kit decides the physical style; slides only apply it. Cards are rare (
 
 ## Motion
 
-Motion is part of why a hosted deck feels alive, so treat it as design, not decoration.
+Motion is part of why a hosted deck feels alive, so treat it as design, not decoration. Quality still comes from whitespace, type and copy: motion serves the slide's point or stays out.
 
-**One showpiece per slide, and it animates the point.** A number counting to its value, a bar growing to its length, a ring drawing around the thing that matters, a command typing and its checks landing. Everything else on the slide only enters: `.rise` (fade and lift) or `.pop` (scale in, for stickers and tiles), staggered by setting `--d` on each element in reading order.
+**One showpiece per slide, and it animates the point.** Pick it from the motion kit below. Everything else on the slide only enters: `.rise` (fade and lift) or `.pop` (scale in, for stickers and tiles), staggered by setting `--d` on each element in reading order. Many slides need no showpiece at all.
 
-| Tool | Use it for | How |
-|---|---|---|
-| `.rise`, `.pop` | Entrances, staggered | `class="rise" style="--d: 140ms"` |
-| `.draw` | Drawing an SVG stroke on: rings, underlines, connectors | On the path or shape, with `pathLength="1"` |
-| `.wipe` | A bar or row revealing left to right without scaling its text | On the element; set `--d` |
-| `.type` | Typing one monospace line | `style="--chars: 13; --d: 400ms"` with the line's exact length |
-| `<CountUp>` | A number counting to its value | `<CountUp to={18} suffix="%" />` from `src/components/motion/` |
-| `.breathe` | The deck's one ambient loop | On a wrapper, never on the element that enters |
+### The motion kit
 
-Timing comes from the tokens in `deck.css`: entrances 400ms ease-out-quart (`--ease`), stagger around 70ms, hovers 160ms (`--ease-hover`), ambient loops 3s or slower. A slide's whole entrance should settle within about 1.5 seconds; nobody waits for a slide.
+Every primitive is timed by the brand's motion tokens, so the same slide moves differently in a calm kit and a crisp one. `style.motion` in the kit picks the preset: calm (Material 3's emphasized curve, entrances 600ms, steps hold 1.9s), crisp (Carbon's productive curve, 400ms, 1.3s) or playful (Carbon's expressive curve with an overshoot pop, 450ms, 1.45s). The tokens: `--ease` to enter, `--ease-exit` to leave, `--ease-move` to travel, `--ease-pop` to land; `--dur-micro`, `--dur-small`, `--dur-medium`, `--dur-large` (longer for farther moves), `--dur-enter`, `--stagger`, `--dwell`. Never write a `cubic-bezier()` or a raw duration in a slide; the audit fails it.
 
-Rules:
-- Every animated element's resting style is its finished state. The PDF, reduced motion, and no-JavaScript all show the end, so a counter never prints 0 and nothing stays invisible.
-- In a slide's scoped `<style>`, write `:global(.is-active) .thing`. The `.is-active` class sits on the shared `Slide` section, which a plain `.is-active` selector in the slide file doesn't match.
-- No bounce on text, no looping wiggles, no motion on data marks beyond revealing them. At most one ambient loop in the whole deck.
-- Script-driven effects listen for the slide's `deck:enter` event and check `window.deckStill()` first, as `CountUp` does.
+| Primitive | Use it when | How | Still (PDF, reduced motion) |
+|---|---|---|---|
+| Words | A short headline is the slide: a cover, a statement, a section title | `data-m="words"` on the heading (14 words or fewer); title-statement, statement-* and section-color-field do it | the whole line |
+| Stagger | A list or a row of cards read in order | `data-m="stagger"` on the list; the sixth item and after arrive together | every item in place |
+| Grow | A bar chart, a waterfall, a size comparison | `data-m="grow"` on the chart, `.m-grow` (up) or `.m-grow-x` (across) on each bar with `--i`; chart-bar-highlight, chart-waterfall, problem-cost-waterfall, model-nested-size | full bars |
+| Draw | A line chart, a timeline, a ring around what matters | `data-m="draw"` on the chart, `.draw` on each path (`pathLength="1"`); chart-line-annotated, roadmap-* | drawn |
+| Count | The slide's one number | `<CountUp to={41} />` (it marks itself `data-m="count"`); big-number-*, stats-* | the final figure |
+| Focus | One region of a screenshot or photo proves the point | `<Focus src alt detail={{ x, y, w, h }} callout />` closes in, veils the rest and rings it (`veil="light"` on a dark screen); product-spotlight | closed in, ringed |
+| Steps | A process the presenter walks through, beat by beat | `<Steps items />`: a title and one line per step, no numbers (the rule over the current step carries the order); a showpiece the viewer can click; how-it-works-step-build | every step shown, the last current |
+| Carry | The same object on two neighbouring slides: a screen, then its detail | the same `data-carry="<key>"` on both (product-browser and title-split-product `carry`, Focus `carry`); it travels on `--ease-move` | each in its place |
+| Marquee | A customer list too long for one row | `<Marquee logos />` drifts while its slide is on screen, with a pause button; proof-logo-marquee | one wrapped row |
+| Ambient | A cover or section slide that wants the brand's light | `<Ambient colors={['--c-mint', '--c-cyan']} />` first in the slide, or the `ambient` prop on title-statement and section-color-field; it drifts once and rests | at rest |
+| Type | A command or prompt typing | `.type` with `--chars` | typed |
+
+Which one, by slide job: a cover or statement takes words; a list of reasons takes stagger; a chart grows or draws its marks (never both); a big number counts; a product screen with one region that matters takes focus, and a screen shown whole then in detail carries across the two slides; a process the presenter talks through takes steps; a long logo list takes the marquee; ambient light only on covers and section slides. Interactive mini-apps (calculators, toggles, compare sliders, step builds) are showpieces too: they declare the live-state contract (`data-showpiece`, `data-state`, `data-final`, `data-settle`, `data-drive` on each control) so the audit drives them.
+
+Rules, held by the audit (`bin/motion-check.mjs`, from the /steal motion playbook):
+- One kind of featured motion per slide: words, grow, draw, count, focus, steps or marquee. A count inside a growing chart is one.
+- Everything lands within five entrances of the brand's timing (3s calm, 2s crisp); showpieces that declare `data-settle` and the ambient drift are timed on their own.
+- Nothing loops forever unless it pauses: the marquee has its button, and `.breathe` is the deck's one quiet loop.
+- Words being read never move: `data-m="words"` only on a headline of 14 words or fewer, never on body copy.
+- At most one ambient field, never under a chart, a spotlight or steps.
+- Move with transform, appear with opacity: no keyframe or transition on width, height, top, left, margin or padding.
+- Every primitive rests on its finished state in the PDF and with reduced motion (checked on the stage and a phone), so a counter never prints 0 and nothing stays invisible. A `data-carry` has its partner on the slide before or after, and stepping in plays it.
+- In a slide's scoped `<style>`, write `:global(.is-active) .thing`. Script-driven effects listen for the slide's `deck:enter` event and check `window.deckStill()` first, as `CountUp` and `Steps` do.
 - Check motion like layout: `npm run motion` writes a filmstrip of every slide's entrance (`artifacts/motion-sheet.png`). Look for content that appears too late, two things moving at once, and frames where the slide is unreadable.
 
 ## On a phone

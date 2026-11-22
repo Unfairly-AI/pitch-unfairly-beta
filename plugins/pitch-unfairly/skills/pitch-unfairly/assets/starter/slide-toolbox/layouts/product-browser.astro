@@ -26,9 +26,11 @@ interface Props extends SlideBase {
   url?: string;
   /** A sticker on the window's corner. Use it to label an invented screen: "Example screen". */
   tag?: string;
+  /** A key shared with the next or previous slide's screenshot (product-spotlight): the screen travels between them. */
+  carry?: string;
 }
 
-const { id, label = 'Product', tone = 'paper', notes, brand, headline, hl, caption, src, alt, url, tag } = Astro.props;
+const { id, label = 'Product', tone = 'paper', notes, brand, headline, hl, caption, src, alt, url, tag, carry } = Astro.props;
 const where = `product-browser "${id}"`;
 if (headline.split(/\s+/).length > 14) throw new Error(`${where}: the headline is ${headline.split(/\s+/).length} words; the screen carries the detail. Cut it to 12 or fewer.`);
 if (caption && caption.length > 90) throw new Error(`${where}: the caption is ${caption.length} characters; one line of 90 or fewer. Move the rest to the notes.`);
@@ -48,7 +50,7 @@ const phone = fitType(headline.length, { width: 330, lines: 4, min: 28, max: 44 
       {caption && <p class="st-browser-cap rise" style="--d: 480ms">{caption}</p>}
     </div>
     <figure class="st-browser-shot rise" style="--d: 160ms">
-      <div class="st-browser-window">
+      <div class="st-browser-window" data-carry={carry}>
         <div class="st-browser-bar" aria-hidden="true">
           <i></i><i></i><i></i>
           {url && <span>{url}</span>}

@@ -1,0 +1,118 @@
+---
+/**
+ * product-spotlight: one detail of the product, found for the viewer.
+ *
+ * The headline holds a narrow column; the screenshot fills the rest. As the
+ * slide arrives the frame closes in on the one part of the screen the
+ * headline is about (the motion kit's Focus), dims the rest and rings it,
+ * with a short callout naming it. The still slide, and the PDF, rest on that
+ * end state, so the detail reads without the move.
+ */
+import Slide from '../../src/components/Slide.astro';
+import Focus from '../../src/components/motion/Focus.astro';
+import { fitType, splitHl, type SlideBase } from '../lib';
+
+interface Props extends SlideBase {
+  /** What the detail proves, as a whole sentence. 12 words or fewer. */
+  headline: string;
+  /** One phrase of the headline, word for word, in the accent. */
+  hl?: string;
+  /** One line of proof under the headline that the screen doesn't show. 90 characters or fewer. */
+  caption?: string;
+  /** The screenshot: a path under public/ or an imported URL. */
+  src: string;
+  /** What the screenshot shows, for assistive tech. */
+  alt: string;
+  /** The screenshot's aspect ratio as CSS ("16 / 10"). Default 16 / 10. */
+  ratio?: string;
+  /** The part of the screenshot to show, in percent of it: left, top, width, height. Default all of it. Crop away half-cut panels. */
+  crop?: { x: number; y: number; w: number; h: number };
+  /** The detail, in percent of the screenshot: left, top, width, height. */
+  detail: { x: number; y: number; w: number; h: number };
+  /** How far to close in, 1 to 2. Default: the detail about half the frame. */
+  zoom?: number;
+  /** A short label on the detail: what it is. 60 characters or fewer. */
+  callout?: string;
+  /** The veil over the rest of the screen: "dark" (default) for light screenshots, "light" for dark ones. */
+  veil?: 'dark' | 'light';
+  /** A key shared with the previous slide's screenshot (product-browser, title-split-product): the screen travels from there. */
+  carry?: string;
+}
+
+const { id, label = 'Product detail', tone = 'paper', notes, brand, headline, hl, caption, src, alt, ratio = '16 / 10', crop, detail, zoom, callout, veil, carry } = Astro.props;
+const where = `product-spotlight "${id}"`;
+if (headline.split(/\s+/).length > 14) throw new Error(`${where}: the headline is ${headline.split(/\s+/).length} words; the detail carries the rest. Cut it to 12 or fewer.`);
+if (caption && caption.length > 90) throw new Error(`${where}: the caption is ${caption.length} characters; one line of 90 or fewer. Move the rest to the notes.`);
+const [before, phrase, after] = splitHl(headline, hl, where);
+const head = fitType(headline.length, { width: 620, lines: 3, min: 56, max: 104 });
+const phone = fitType(headline.length, { width: 330, lines: 3, min: 26, max: 40 });
+---
+
+<Slide id={id} label={label} tone={tone} notes={notes} brand={brand}>
+  <div class="st-spot" style={`--head: ${head}px; --head-phone: ${phone}px`}>
+    <div class="st-spot-copy">
+      <h2 data-fit="3 4" class="display st-spot-head rise">
+        <slot name="headline">{before}{phrase && <span class="hl">{phrase}</span>}{after}</slot>
+      </h2>
+      {caption && <p class="st-spot-cap rise" style="--d: 360ms">{caption}</p>}
+    </div>
+    <div class="st-spot-shot rise" style="--d: 120ms">
+      <Focus src={src} alt={alt} ratio={ratio} crop={crop} detail={detail} zoom={zoom} callout={callout} veil={veil} carry={carry} />
+    </div>
+  </div>
+</Slide>
+
+<style>
+  .st-spot {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    grid-template-columns: 560px minmax(0, 1fr);
+    column-gap: calc(var(--gap) * 1.4);
+    align-items: center;
+  }
+
+  .st-spot-copy {
+    display: grid;
+    gap: calc(var(--gap) * 0.6);
+    align-content: center;
+  }
+
+  .st-spot-head { font-size: calc(var(--head) * var(--display-scale)); }
+
+  .st-spot-cap {
+    max-width: 30ch;
+    font-size: var(--t-lede);
+    line-height: 1.3;
+    color: color-mix(in oklab, currentColor 74%, transparent);
+    text-wrap: pretty;
+  }
+
+  /* The focal element: the screen, in the kit's frame. */
+  .st-spot-shot {
+    min-width: 0;
+    border: var(--border-w) solid var(--border-color);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-focal);
+    overflow: hidden;
+  }
+
+  .st-spot-shot :global(.m-focus) { border-radius: 0; }
+
+  @media (max-width: 799px) {
+    .st-spot {
+      grid-template-columns: minmax(0, 1fr);
+      align-content: start;
+      row-gap: calc(var(--gap) * 1.6);
+    }
+
+    .st-spot-head { font-size: calc(var(--head-phone) * var(--display-scale)); }
+    .st-spot-cap { max-width: none; font-size: var(--t-body); }
+  }
+
+  /* PDF and every static render: the screen rests closed in on its detail (Focus's end state). */
+  :global(html.is-static) .st-spot .rise {
+    opacity: 1;
+    transform: none;
+  }
+</style>

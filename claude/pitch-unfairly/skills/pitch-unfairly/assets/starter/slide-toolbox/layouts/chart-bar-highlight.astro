@@ -58,7 +58,7 @@ const heroSize = Math.max(64, Math.min(120, Math.floor(1000 / bars.length / Math
       {note && <p class="st-bar-note rise" style="--d: 140ms">{note}</p>}
     </div>
     <figure class="st-bar-chart">
-      <div class="st-bar-plot" role="img" aria-label={`${caption}. ${bars.map((b) => `${b.label}: ${formatNumber(b.value, { prefix, unit })}`).join('; ')}.`}>
+      <div class="st-bar-plot" data-m="grow" role="img" aria-label={`${caption}. ${bars.map((b) => `${b.label}: ${formatNumber(b.value, { prefix, unit })}`).join('; ')}.`}>
         {bars.map((b, i) => (
           <div class:list={['st-bar-col', { 'is-hero': i === hero }]} style={`--v: ${Math.max(b.value / max, 0.006)}`}>
             {i === hero && <span class:list={['st-bar-value', 'display', edge]}><span class="rise" style="--d: 620ms">{heroValue}</span></span>}
@@ -175,7 +175,7 @@ const heroSize = Math.max(64, Math.min(120, Math.floor(1000 / bars.length / Math
   }
 
   /* Motion: the bars grow from the baseline in order, then the hero's value lands. */
-  :global(.is-active) .st-bar-bar { animation: st-bar-grow 640ms var(--ease) var(--d, 0ms) both; }
+  :global(.is-active) .st-bar-bar { animation: st-bar-grow var(--dur-grow) var(--ease) var(--d, 0ms) both; }
 
   @keyframes st-bar-grow {
     from { transform: scaleY(0); }
