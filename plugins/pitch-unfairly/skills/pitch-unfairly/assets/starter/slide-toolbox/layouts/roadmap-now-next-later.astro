@@ -10,7 +10,7 @@
  * horizon sit on its segment in small caps. The segments draw in left to right.
  */
 import Slide from '../../src/components/Slide.astro';
-import { fitType, splitHl, type SlideBase } from '../lib';
+import { layoutRule, fitType, splitHl, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** What comes first and why, as a whole sentence. 12 words or fewer. */
@@ -28,12 +28,12 @@ const where = `roadmap-now-next-later "${id}"`;
 if (lanes.length < 2 || lanes.length > 3) throw new Error(`${where}: two or three horizons (got ${lanes.length}); a fourth is a detail for the notes.`);
 if (focus < 0 || focus >= lanes.length) throw new Error(`${where}: focus ${focus} isn't a horizon; use 0 to ${lanes.length - 1}.`);
 for (const l of lanes) {
-  if (l.label.length > 12) throw new Error(`${where}: horizon label "${l.label}" is over 12 characters ("Now", "Next", "Later").`);
+  if (l.label.length > 12) layoutRule(where, `${where}: horizon label "${l.label}" is over 12 characters ("Now", "Next", "Later").`);
   if (!l.items.length || l.items.length > 4) throw new Error(`${where}: horizon "${l.label}" has ${l.items.length} items; 1 to 4. The rest go in the notes.`);
-  for (const it of l.items) if (it.length > 48) throw new Error(`${where}: "${it}" is ${it.length} characters; an item is 48 or fewer.`);
+  for (const it of l.items) if (it.length > 48) layoutRule(where, `${where}: "${it}" is ${it.length} characters; an item is 48 or fewer.`);
 }
 const heroItems = lanes[focus]!.items;
-if (heroItems.length > 3) throw new Error(`${where}: the focal horizon "${lanes[focus]!.label}" has ${heroItems.length} items; it holds three at most, set large.`);
+if (heroItems.length > 3) layoutRule(where, `${where}: the focal horizon "${lanes[focus]!.label}" has ${heroItems.length} items; it holds three at most, set large.`);
 const [before, phrase, after] = splitHl(headline, hl, where);
 // The focal horizon is wider: its items are set in the display face.
 const cols = lanes.map((_, i) => (i === focus ? 'minmax(0, 7fr)' : 'minmax(0, 4fr)')).join(' ');

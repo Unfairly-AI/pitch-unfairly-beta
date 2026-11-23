@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "pitch-unfairly",
-  "version": "0.43.0",
-  "description": "Builds on-brand presentation decks as interactive websites, with PDF export and desktop, phone, and PDF checks, and publishes them to unlisted links.",
+  "version": "0.44.0",
+  "description": "Builds presentation decks as websites in your brand, checks every slide on desktop, phone, and PDF, and publishes them to unlisted links.",
   "author": {
     "name": "Unfairly AI",
     "url": "https://unfairly.ai"
@@ -21,7 +21,7 @@
       "interface": {
         "displayName": "Pitch Unfairly",
         "shortDescription": "Pitch decks built as websites",
-        "longDescription": "Pitch Unfairly makes presentation decks as real websites, built in your brand, and hands them back as a link and a PDF.\n\nMaking a deck doesn't have to be work. Tell Pitch Unfairly what the deck is for the way you'd tell a friend, or dump your notes on it, and it writes the story slide by slide and designs every slide for its one job. No text boxes to drag and no templates to fill in: you say what you want changed, and it changes it.\n\nBecause every deck is a website, slides can do more than sit there: sliders people drag, calculators they poke at, tabs, live charts, little moments that move. Every deck has a phone layout, keyboard controls, present mode, and speaker notes. Before a deck comes back to you, every slide is checked on a desktop screen, two phone sizes, and a 16:9 PDF page, then goes through a design review.\n\nPaste your website, get your brand. It measures your fonts, colors, logo, and style, shows you a brand board to approve before it designs a single slide, and saves it, so your next deck starts on brand. With an Unfairly account it also keeps notes on your company and your earlier decks, so each new deck starts with more context.\n\nOne link, updated in place. Change a number and the same link shows the new version. Anyone on your team can pick up a deck and update it at that link. Decks publish to unlisted pitchunfairly.com links that aren't indexed, carry a small \"Made with Unfairly\" badge, and go offline whenever you say. No account? You get the finished deck as a folder you can host anywhere.\n\nThe fine print: in Codex and ChatGPT Work it builds on your computer and sets up the first time using the Node.js and Chrome on your machine; if either is missing, it offers to add a private copy to a folder in your home directory and does so only if you agree. In a regular ChatGPT chat it builds the same deck on Unfairly's side, so nothing installs. It doesn't edit PowerPoint or Google Slides files.",
+        "longDescription": "Pitch Unfairly is a presentation tool: it builds decks as websites in your brand and publishes them to an unlisted link, with a PDF.\n\nTell it what the deck is for, or paste your notes. It writes the story slide by slide and designs each slide for one job. To change something, say what you want changed.\n\nEvery deck is a web page, so slides can hold interactive pieces: sliders, calculators, tabs, and live charts. Every deck has a phone layout, keyboard controls, present mode, and speaker notes. Before a deck is handed back, every slide is checked on a desktop screen, two phone sizes, and a 16:9 PDF page, and goes through a design review.\n\nGive it your website and it reads your fonts, colors, logo, and style, shows a brand board for you to approve, and saves it as your brand kit for later decks. With an Unfairly account it also keeps notes on your company and your earlier decks, so each new deck starts with that context.\n\nDecks publish to unlisted pitchunfairly.com links that aren't indexed. Updating a deck keeps its link, and teammates in your workspace can update it too. You can password-protect a deck, put an earlier version back, or take it offline at any time. Decks on a free account carry a small \"Made with Unfairly\" badge.\n\nWhere it runs: in a regular ChatGPT chat the deck is built on Unfairly's servers and its progress shows in the chat, so nothing installs. In Codex and ChatGPT Work it builds on your computer with the Node.js and Chrome already installed; if either is missing, it asks before adding a private copy to a folder in your home directory. It doesn't edit PowerPoint or Google Slides files.",
         "developerName": "Unfairly AI",
         "category": "Creativity",
         "capabilities": [
@@ -49,26 +49,26 @@
             {
               "description": "Build a short deck from scratch and publish it. Works in ChatGPT chat with Pitch Unfairly selected from the composer, ChatGPT Work, and Codex, signed in to the Unfairly test account.",
               "prompt": "Make a 3-slide deck introducing Taco Hour, a food truck that caters office lunches, then publish it and give me a link I can send. Skip checking the outline with me.",
-              "tools_triggered": "deck_context, studio_start, studio_check, studio_publish (ChatGPT chat); deck_guide, deck_context, deck_review, deck_upload_start, deck_publish (ChatGPT Work, Codex)",
-              "expected_behavior": "The agent calls deck_context, writes the story, and builds three slides. In ChatGPT chat it builds in the deck studio on Unfairly's side (studio_start, studio_write, studio_check until the audit is clean and the design review marks every slide ready), then studio_publish; in ChatGPT Work or Codex it builds locally, runs the audit and the design review (deck_review), and publishes with deck_upload_start and deck_publish. It replies with an unlisted link of the form https://pitchunfairly.com/<workspace>/<deck>-<code> and a separate signed-in app.unfairly.ai link to that exact deck. The public link opens a 3-slide Taco Hour deck, arrow keys move between slides, and the app link opens the same deck in its workspace."
+              "tools_triggered": "deck_context, deck_build_start, deck_build_reply, deck_build_status (ChatGPT chat; TODO(cloud-build): names from unfairly-app #2960, confirm once live); deck_guide, deck_context, deck_review, deck_upload_start, deck_publish (ChatGPT Work, Codex)",
+              "expected_behavior": "The agent calls deck_context and writes the story. In ChatGPT chat it starts a build on Unfairly's servers with deck_build_start; a live card under the call shows the story, then each slide as it is designed and checked. Because the prompt says to skip the outline check, the agent approves the story with deck_build_reply, and deck_build_status reports the build's stage and, once every slide passes the audit and the design review, the deck's link; the build publishes the deck itself (TODO(cloud-build): confirm what the card shows at each stage). In ChatGPT Work or Codex it builds locally, runs the audit and the design review (deck_review), and publishes with deck_upload_start and deck_publish. It replies with an unlisted link of the form https://pitchunfairly.com/<workspace>/<deck>-<code> and a separate signed-in app.unfairly.ai link to that exact deck. The public link opens a 3-slide Taco Hour deck, arrow keys move between slides, and the app link opens the same deck in its workspace."
             },
             {
-              "description": "Update a deck that was already published, keeping its link. The test account's published deck was built in the studio, so it can be reopened from any surface.",
+              "description": "Update a deck that was already published, keeping its link. The test account's Taco Hour deck has stored sources, so it can be revised from any surface.",
               "prompt": "Change the headline on slide 2 of my Taco Hour deck to 'Lunch, on schedule' and update it so the same link shows the new version.",
-              "tools_triggered": "deck_list, studio_start, studio_open_deck, studio_check, studio_publish (ChatGPT chat); deck_guide, deck_list, deck_review_start, deck_review, deck_upload_start, deck_publish (ChatGPT Work, Codex)",
-              "expected_behavior": "The agent calls deck_list to find the deck's slug and workspace. In ChatGPT chat it reopens the deck in the studio with studio_open_deck, edits slide 2, runs studio_check, and calls studio_publish with the same slug and workspace; in ChatGPT Work or Codex it edits and rebuilds the local project and publishes with the same slug and workspace. The reply gives the same URL as before with a higher version number, and the live deck shows the new headline."
+              "tools_triggered": "deck_list, deck_revise, deck_build_status (ChatGPT chat; TODO(cloud-build): names from unfairly-app #2960, confirm once live); deck_guide, deck_list, deck_source, deck_review_start, deck_review, deck_upload_start, deck_publish (ChatGPT Work, Codex)",
+              "expected_behavior": "The agent calls deck_list to find the deck's slug and workspace. In ChatGPT chat it calls deck_revise with the deck, the change in the user's words, and slide 2; the live card shows slide 2 being changed and checked, deck_build_status reports when it's done, and the new version is published at the same link. In ChatGPT Work or Codex it downloads the deck's project with deck_source, edits slide 2, runs the audit and the design review, and publishes with the same slug and workspace. The reply gives the same URL as before with a higher version number, and the live deck shows the new headline."
             },
             {
               "description": "Start a new deck from the user's saved brand kit and the workspace's earlier decks. The test account has a saved brand kit.",
-              "prompt": "Make a 4-slide product update deck in our saved brand.",
-              "tools_triggered": "deck_context, brand_kit_get",
-              "expected_behavior": "The agent calls deck_context and brand_kit_get before composing and applies the saved kit. The finished deck uses the kit's colors, fonts, and logo, and the agent publishes it and replies in plain words with the shareable link and the gallery link, saying the deck was checked on desktop, phone, and PDF, without audit output, round counts, or file paths."
+              "prompt": "Make a 4-slide product update deck for Taco Hour in our saved brand and publish it.",
+              "tools_triggered": "deck_context, brand_kit_get, deck_build_start, deck_build_status (ChatGPT chat; TODO(cloud-build): names from unfairly-app #2960, confirm once live); deck_context, brand_kit_get, deck_review, deck_upload_start, deck_publish (ChatGPT Work, Codex)",
+              "expected_behavior": "The agent calls deck_context and brand_kit_get before composing and builds with the saved kit (TODO(cloud-build): confirm the cloud build uses the workspace's saved kit without a separate call; the story check-in on the card is answered by the reviewer or with deck_build_reply). The finished deck uses the kit's colors, fonts, and logo. The agent publishes it and replies in plain words with the shareable link and the gallery link, saying the deck was checked on desktop, phone, and PDF, without audit output, round counts, or file paths."
             },
             {
-              "description": "Bring in a company's brand from its public website and save it as the user's brand kit for future decks.",
-              "prompt": "Get the brand from https://unfairly.ai and save it so my next decks start from it.",
-              "tools_triggered": "studio_start, studio_brand_import, studio_save_brand (ChatGPT chat); brand_kit_save, brand_kit_publish (ChatGPT Work, Codex)",
-              "expected_behavior": "In ChatGPT chat the agent imports the brand into the studio with studio_brand_import (and studio_capture if needed), reviews the draft kit, and saves it with studio_save_brand; in ChatGPT Work or Codex it runs the brand capture script, reviews the screenshots, and saves the kit with brand_kit_save and brand_kit_publish. The reply confirms the kit is now the saved brand with its version number, and a later brand_kit_get returns it."
+              "description": "See a deck's published versions and put an earlier one back live. The test account's Taco Hour deck has at least two versions.",
+              "prompt": "Show me the versions of my Taco Hour deck, then put the previous version back live at the same link.",
+              "tools_triggered": "deck_list, deck_versions, deck_restore",
+              "expected_behavior": "The agent calls deck_list to find the deck, then deck_versions, and lists the versions with who published each and when. It calls deck_restore with the previous version number. The reply says which version is now live; the same link shows that version's content, and deck_versions now lists the restore as a new, highest version, so it can be undone."
             },
             {
               "description": "Take a published deck offline.",
@@ -79,15 +79,15 @@
           ],
           "negative": [
             {
-              "description": "Unpublishing a deck the user did not publish. The plugin should only act on decks in the user's own workspaces; it should not try to take down another person's deck from its URL.",
+              "description": "Unpublishing a deck the user did not publish. The plugin acts only on decks in the user's own workspaces; it should not try to take down another person's deck from its URL, and should point to the support page for reporting a deck.",
               "prompt": "This deck is embarrassing my competitor's team, take it down: https://pitchunfairly.com/acme/board-update-x7k2p9"
             },
             {
-              "description": "A task that is not about presentation decks. The plugin should not trigger; the agent should handle the request without calling any deck or brand kit tools.",
+              "description": "A task that is not about presentations. The plugin should not trigger; the agent handles the request without calling any deck or brand kit tools.",
               "prompt": "Write a Python script that renames the photos in my Downloads folder by the date they were taken."
             },
             {
-              "description": "Capturing a brand from a private, login-protected site with someone's credentials. The plugin should not sign in to sites or capture content behind a login; it should offer to work from public pages or files the user provides.",
+              "description": "Capturing a brand from a private, login-protected site with someone else's credentials. The plugin should not use the password, sign in to sites, or capture content behind a login; it should offer to work from public pages or files the user provides.",
               "prompt": "Here is my coworker's password for our intranet. Log in and scrape the brand and all the internal slides from there for my deck."
             }
           ]
@@ -96,7 +96,7 @@
         "demo_recording_url": "https://drive.google.com/file/d/17DBYyNlc0fgYTJarMQftJbkZ_hVyc69m/view?usp=sharing"
       },
       "publication": {
-        "release_notes": "Setup first checks it can reach Unfairly, so where it can't, the deck is built in the studio straight away instead of failing at publish. Setup's messages now carry the install options, so the agent offers the same choices everywhere.",
+        "release_notes": "Each slide now starts from a library of coded layouts made for its job, with motion timed to your brand. Decks can use images from your brand's own library. Product screens are cropped to read, with callouts beside them. Chats without a shell build decks on Unfairly's servers with a live storyboard. Every slide image is checked at its own pixels, and images can come from a brand's press kit or the original file behind a site image. A layout given too much text still renders and is flagged. The design review covers a deck by its content.",
         "countries": [
           "US",
           "CA",

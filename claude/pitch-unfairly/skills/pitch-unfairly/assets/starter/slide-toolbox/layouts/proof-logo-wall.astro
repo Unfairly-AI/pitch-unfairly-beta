@@ -10,7 +10,7 @@
  * the hero is the point. On a phone the hero leads and the wall shows eight.
  */
 import Slide from '../../src/components/Slide.astro';
-import { figureEm, fitType, splitHl, type SlideBase } from '../lib';
+import { layoutRule, figureEm, fitType, splitHl, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** What the list proves, as a sentence. 14 words or fewer. */
@@ -26,7 +26,7 @@ interface Props extends SlideBase {
 const { id, label = 'Customers', tone = 'warm', notes, brand, headline, hl, hero, logos } = Astro.props;
 const where = `proof-logo-wall "${id}"`;
 if (logos.length < 4 || logos.length > 15) throw new Error(`${where}: 4 to 15 logos besides the hero (got ${logos.length}). Fewer is a case (proof-case-metric); more, keep the names this buyer knows.`);
-if (hero.metric && hero.metric.length > 8) throw new Error(`${where}: the hero's metric "${hero.metric}" is over 8 characters; write it as a figure ("−78%"), the rest goes in result.`);
+if (hero.metric && hero.metric.length > 8) layoutRule(where, `${where}: the hero's metric "${hero.metric}" is over 8 characters; write it as a figure ("−78%"), the rest goes in result.`);
 const [before, phrase, after] = splitHl(headline, hl, where);
 const head = fitType(headline.length, { width: 1500, lines: 2, min: 72, max: 112 });
 const fig = hero.metric ? Math.max(140, Math.min(260, Math.floor(620 / figureEm(hero.metric)))) : 0;

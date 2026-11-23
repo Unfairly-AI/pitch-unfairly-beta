@@ -9,7 +9,7 @@
  * phone the button becomes a full-width bar at the foot, under the thumb.
  */
 import Slide from '../../src/components/Slide.astro';
-import { fitType, splitHl, type SlideBase } from '../lib';
+import { layoutRule, fitType, splitHl, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** The ask: one whole sentence, 12 words or fewer, saying what you want them to do. */
@@ -24,10 +24,10 @@ interface Props extends SlideBase {
 
 const { id, label = 'Ask', tone = 'ink', notes, brand, headline, hl, detail, button } = Astro.props;
 const where = `ask-line-button "${id}"`;
-if (headline.split(/\s+/).length > 14) throw new Error(`${where}: the ask is ${headline.split(/\s+/).length} words; an ask is 12 or fewer. Cut it.`);
-if (detail && detail.length > 80) throw new Error(`${where}: detail is ${detail.length} characters; one line of terms is 80 or fewer. The rest goes in the notes.`);
+if (headline.split(/\s+/).length > 14) layoutRule(where, `${where}: the ask is ${headline.split(/\s+/).length} words; an ask is 12 or fewer. Cut it.`);
+if (detail && detail.length > 80) layoutRule(where, `${where}: detail is ${detail.length} characters; one line of terms is 80 or fewer. The rest goes in the notes.`);
 if (!button?.label) throw new Error(`${where}: button.label is required: the next step, as a verb ("Book the pilot call").`);
-if (button.label.length > 24) throw new Error(`${where}: the button label is ${button.label.length} characters; a button is 24 or fewer.`);
+if (button.label.length > 24) layoutRule(where, `${where}: the button label is ${button.label.length} characters; a button is 24 or fewer.`);
 const [before, phrase, after] = splitHl(headline, hl, where);
 const stage = fitType(headline.length, { width: 1000, lines: 3, min: 92, max: 148 });
 const phone = fitType(headline.length, { width: 330, lines: 4, min: 30, max: 50 });

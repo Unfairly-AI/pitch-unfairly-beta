@@ -97,6 +97,32 @@ export async function siteReviewContext({ now = new Date() } = {}) {
   };
 }
 
+// What a deck review covers: story.md, src/ (not src/brand, which brand:apply writes) and brand/ (not capture/).
+const DECK_SOURCE = ['src', 'brand', 'story.md'];
+const skipped = (path, name) => name === 'capture' || join(path, name) === join('src', 'brand');
+
+/**
+ * sha256 over the content of every file a deck review covers (path and bytes, in a fixed order). review-files
+ * records it in artifacts/review-context.json, and publishing compares it again: an edit after the review is
+ * caught by its content, so resetting a file's time changes nothing (Pirsch test build, Nov 23 2026: the agent
+ * edited story.md after its last review and put the old mtime back). The deck host holds a cloud build to the same
+ * rule on its side, by the built files' hashes.
+ */
+export async function deckSourceFingerprint() {
+  const h = createHash('sha256');
+  const walk = async (path) => {
+    const s = await stat(path).catch(() => null);
+    if (!s) return;
+    if (!s.isDirectory()) {
+      h.update(path.split('\\').join('/')).update('\0').update(await readFile(path)).update('\0');
+      return;
+    }
+    for (const name of (await readdir(path)).sort()) if (!skipped(path, name)) await walk(join(path, name));
+  };
+  for (const p of DECK_SOURCE) await walk(p);
+  return h.digest('hex');
+}
+
 async function newest(path) {
   const s = await stat(path).catch(() => null);
   if (!s) return 0;
@@ -115,7 +141,16 @@ export async function designReviewBlocker({ site = false } = {}) {
   if (review?.ready_to_publish !== true || !review.slides?.length || review.slides.some((s) => s.verdict !== 'ship' && s.severity !== 'polish')) return 'the last review has unresolved blocking findings or no verdicts';
   const reviewed = Date.parse(review.reviewed_at);
   if (!Number.isFinite(reviewed)) return 'the design review has no valid completion time';
-  const edits = await Promise.all((site ? ['site', 'brand', 'story.md'] : ['src', 'brand', 'story.md']).map(newest));
+  if (!site) {
+    // A deck: the source the review covered, by content, never by file times.
+    let context;
+    try { context = JSON.parse(await readFile('artifacts/review-context.json', 'utf8')); } catch {}
+    if (typeof context?.source_sha256 !== 'string') return 'the review evidence has no source fingerprint (artifacts/review-context.json is from an older review-files): run review-files and review again';
+    if (context.source_sha256 !== await deckSourceFingerprint()) return 'files changed after the last review (story.md, src/ or brand/ differ from what was reviewed; file times are not compared). Review the current deck again';
+    if (reviewed < Date.parse(context.created_at ?? '')) return 'the design review predates its evidence (reviewed_at is earlier than review-context.json)';
+    return null;
+  }
+  const edits = await Promise.all(['site', 'brand', 'story.md'].map(newest));
   if (reviewed < Math.max(...edits)) return 'files changed after the last review';
   if (site) {
     const names = await pngs('artifacts/site/laptop');

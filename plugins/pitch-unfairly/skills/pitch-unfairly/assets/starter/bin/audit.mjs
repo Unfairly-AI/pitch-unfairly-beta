@@ -5,9 +5,10 @@
 // src/slides/, it has no story.md and no brand of its own to judge, and a
 // clean gallery is not this deck's audit, so it never stamps or clears it.
 import puppeteer from 'puppeteer';
-import { readFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { countPdfPages, renderPdf, settle } from './render-pdf.mjs';
-import { READ_CONTRAST, dimmedByAnimation, headlineOrderProblem, keyframeCollisions, listOrderProblem, missingInPdf, pdfPagesText, readability, storyHeadlines, styleSources, visibleWords } from './deck-checks.mjs';
+import { READ_CONTRAST, dimmedByAnimation, headlineOrderProblem, keyframeCollisions, listOrderProblem, missingInPdf, pdfPagesText, readability, storyHeadlines, styleSources, syncStoryHeadlines, visibleWords } from './deck-checks.mjs';
+import { deckHeadlines } from './site/text.mjs';
 import { deckIndexText } from './deck-text.mjs';
 import { assertThisDeck } from './this-deck.mjs';
 import { clearStamp, stampPass } from './audit-stamp.mjs';
@@ -16,6 +17,7 @@ import { refuseInCodexSandbox } from './browser-guard.mjs';
 import { checkLiveStates } from './live-check.mjs';
 import { auditShowpieces } from './showpiece-live.mjs';
 import { auditMotion, motionSourceProblems } from './motion-check.mjs';
+import { auditImages } from './image-check.mjs';
 
 refuseInCodexSandbox('The audit');
 
@@ -52,8 +54,8 @@ const report = (mode, msg) => problems.push(`${mode}: ${msg}`);
 // Read by machines: the stage's words and lists, for the screen and PDF checks below.
 let stageWords = null;
 let stageLists = [];
-const story = GALLERY ? '' : await readFile('story.md', 'utf8').catch(() => '');
-const headlines = storyHeadlines(story);
+let story = GALLERY ? '' : await readFile('story.md', 'utf8').catch(() => '');
+let headlines = storyHeadlines(story);
 
 // On brand: slides take every color from the brand kit's tokens. A raw color
 // in a slide is a color the kit doesn't control.
@@ -370,6 +372,10 @@ try {
         [...slide.querySelectorAll('ul, ol')]
           .map((list) => [...list.children].filter((li) => li.tagName === 'LI' && li.getClientRects().length).map((li) => li.innerText.trim()).filter(Boolean))
           .filter((items) => items.length >= 3)));
+      // A fill over its layout's limit renders anyway (slide-toolbox/lib.ts layoutRule) and is fixed here, never shipped.
+      const broken = await page.evaluate(() => [...document.querySelectorAll('.slide[data-layout-rule]')]
+        .map((s) => (s.getAttribute('data-layout-rule') ?? '').split('\n').filter(Boolean)).flat());
+      for (const rule of broken) report('layout', `${rule} The slide still renders; cut the fill to the layout's limit (the rest goes in the speaker notes).`);
     }
 
     if (mode === 'stage' && result.boxed.length > Math.ceil(result.slides / 2)) {
@@ -410,6 +416,21 @@ try {
     dimmed.forEach((issue) => report('motion', issue));
     if (!dimmed.length) console.log('✓ motion: no running animation keeps an element dim');
     await page.close();
+  }
+
+  // Images at the pixels they have (image-check.mjs), on the 1920x1080 stage at 2x: an image shown above its own
+  // pixels looks soft on a laptop and a 4K screen alike, and a stretched one is wrong anywhere. The design review
+  // judges 1x screenshots, where soft reads as fine, so this is measured, not looked at. A cover crop that keeps
+  // under 60% of the picture is a note. review-files sends the result to the design review.
+  if (!GALLERY) {
+    const { images, findings } = await auditImages(browser, base);
+    for (const f of findings) {
+      if (f.blocking) report('stage', `${f.slide}: image ${f.problem}. ${f.fix}`);
+      else notes.push(`${f.slide}: image ${f.problem}. ${f.fix}`);
+    }
+    await mkdir('artifacts', { recursive: true });
+    await writeFile('artifacts/image-check.json', JSON.stringify({ checked: images.length, images, findings }, null, 2) + '\n');
+    if (!findings.some((f) => f.blocking)) console.log(`✓ images: ${images.length} measured, none shown above its pixels on a 2x screen or stretched`);
   }
 
   // Interactive slides as a viewer meets them: entered, settled, and after a
@@ -467,6 +488,15 @@ try {
   // index.txt (what an assistant handed the link reads) carries every story headline, in order.
   if (headlines.length) {
     const html = await fetch(`${base}/`).then((r) => r.text()).catch(() => '');
+    // A fix pass that rewords a slide's headline leaves story.md behind. The slides are what ships: story.md takes
+    // each drifted headline from its slide (matched by order, only when the counts agree), and the audit says so.
+    const synced = syncStoryHeadlines(story, deckHeadlines(html));
+    if (synced.changed.length) {
+      story = synced.story;
+      headlines = storyHeadlines(story);
+      await writeFile('story.md', story);
+      synced.changed.forEach((c) => console.log(`↻ story.md: "${c.slide}" headline now matches its slide ("${c.to}")`));
+    }
     const text = deckIndexText(html, story) ?? '';
     const miss = headlineOrderProblem(headlines, text);
     if (miss) report('text', `index.txt: story.md's headline for "${miss.slide}" is ${miss.why} ("${miss.headline}"); make the slide say it, or update story.md`);

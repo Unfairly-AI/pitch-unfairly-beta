@@ -11,7 +11,7 @@
  */
 import Slide from '../../src/components/Slide.astro';
 import Ambient from '../../src/components/motion/Ambient.astro';
-import { fitType, figureEm, type SlideBase } from '../lib';
+import { layoutRule, fitType, figureEm, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** The act's name: six words or fewer. */
@@ -26,9 +26,9 @@ interface Props extends SlideBase {
 
 const { id, label = 'Section', tone = 'accent', notes, brand, title, number, line, ambient = false } = Astro.props;
 const where = `section-color-field "${id}"`;
-if (title.split(/\s+/).length > 6) throw new Error(`${where}: the title is ${title.split(/\s+/).length} words; a section name is six or fewer. The rest goes in line.`);
+if (title.split(/\s+/).length > 6) layoutRule(where, `${where}: the title is ${title.split(/\s+/).length} words; a section name is six or fewer. The rest goes in line.`);
 if (number !== undefined && !/^\d{1,3}$/.test(number)) throw new Error(`${where}: number "${number}" should be one to three digits ("03").`);
-if (line && line.length > 90) throw new Error(`${where}: line is ${line.length} characters; keep it to 90 or fewer.`);
+if (line && line.length > 90) layoutRule(where, `${where}: line is ${line.length} characters; keep it to 90 or fewer.`);
 const stage = fitType(title.length, { width: 1300, lines: 2, min: 120, max: 260 });
 const phone = fitType(title.length, { width: 330, lines: 3, min: 40, max: 72 });
 const ghost = number ? Math.min(1100, Math.floor(1300 / figureEm(number))) : 0;

@@ -10,7 +10,7 @@
  * arrives. On a phone the portrait becomes a band across the top.
  */
 import Slide from '../../src/components/Slide.astro';
-import { fitType, initials, splitHl, type SlideBase } from '../lib';
+import { layoutRule, fitType, initials, splitHl, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** The quote, verbatim, without quotation marks. 120 characters or fewer; it is the slide's headline. */
@@ -32,7 +32,7 @@ interface Props extends SlideBase {
 const { id, label = 'Testimonial', tone = 'paper', notes, brand, quote, hl, name, role, company, photo, logo } = Astro.props;
 const where = `proof-testimonial-photo "${id}"`;
 if (/^["“'‘]|["”'’]$/.test(quote.trim())) throw new Error(`${where}: leave the quotation marks off; the layout sets them.`);
-if (quote.length > 120) throw new Error(`${where}: the quote is ${quote.length} characters; it is the slide's headline, so cut it to the excerpt that carries the point (120 or fewer).`);
+if (quote.length > 120) layoutRule(where, `${where}: the quote is ${quote.length} characters; it is the slide's headline, so cut it to the excerpt that carries the point (120 or fewer).`);
 const [before, phrase, after] = splitHl(quote, hl, where);
 const stage = fitType(quote.length + 2, { width: 1000, lines: 2.7, min: 48, max: 104 });
 const phone = fitType(quote.length + 2, { width: 330, lines: 3.6, min: 20, max: 40 });

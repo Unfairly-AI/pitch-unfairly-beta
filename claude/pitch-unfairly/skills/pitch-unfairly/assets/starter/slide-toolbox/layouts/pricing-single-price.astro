@@ -9,7 +9,7 @@
  * value, bottom-aligned with the card. The price is the only heavy thing.
  */
 import Slide from '../../src/components/Slide.astro';
-import { figureEm, fitType, splitHl, type SlideBase } from '../lib';
+import { layoutRule, figureEm, fitType, splitHl, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** What they get for the price, one whole sentence, 12 words or fewer. */
@@ -31,13 +31,13 @@ interface Props extends SlideBase {
 const { id, label = 'Pricing', tone = 'paper', notes, brand, headline, hl, price, currency = '', per, caption, terms = [] } = Astro.props;
 const where = `pricing-single-price "${id}"`;
 if (!/\d/.test(price)) throw new Error(`${where}: price "${price}" has no digits; a word ("Included") goes in the headline or a term.`);
-if (price.length > 9) throw new Error(`${where}: price "${price}" is ${price.length} characters; 9 or fewer ("12,400", "4.5k").`);
-if (per && per.length > 32) throw new Error(`${where}: per is ${per.length} characters; 32 or fewer.`);
-if (caption && caption.length > 48) throw new Error(`${where}: caption is ${caption.length} characters; 48 or fewer.`);
-if (terms.length > 5) throw new Error(`${where}: five terms at most (got ${terms.length}); the rest go in the notes.`);
+if (price.length > 9) layoutRule(where, `${where}: price "${price}" is ${price.length} characters; 9 or fewer ("12,400", "4.5k").`);
+if (per && per.length > 32) layoutRule(where, `${where}: per is ${per.length} characters; 32 or fewer.`);
+if (caption && caption.length > 48) layoutRule(where, `${where}: caption is ${caption.length} characters; 48 or fewer.`);
+if (terms.length > 5) layoutRule(where, `${where}: five terms at most (got ${terms.length}); the rest go in the notes.`);
 for (const t of terms) {
-  if (t.label.length > 24) throw new Error(`${where}: term label "${t.label}" is ${t.label.length} characters; 24 or fewer.`);
-  if (t.value.length > 64) throw new Error(`${where}: term "${t.label}" value is ${t.value.length} characters; 64 or fewer.`);
+  if (t.label.length > 24) layoutRule(where, `${where}: term label "${t.label}" is ${t.label.length} characters; 24 or fewer.`);
+  if (t.value.length > 64) layoutRule(where, `${where}: term "${t.label}" value is ${t.value.length} characters; 64 or fewer.`);
 }
 const [pre, phrase, post] = splitHl(headline, hl, where);
 const head = fitType(headline.length, { width: 1500, lines: 2, min: 76, max: 116 });

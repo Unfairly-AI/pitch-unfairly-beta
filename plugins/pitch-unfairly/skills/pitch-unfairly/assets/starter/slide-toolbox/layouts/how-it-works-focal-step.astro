@@ -9,7 +9,7 @@
  * does. Generic steps stay on the line; the one that matters gets the room.
  */
 import Slide from '../../src/components/Slide.astro';
-import { fitType, splitHl, type SlideBase } from '../lib';
+import { layoutRule, fitType, splitHl, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** What the process does, as a whole sentence. 12 words or fewer. */
@@ -27,11 +27,11 @@ const where = `how-it-works-focal-step "${id}"`;
 if (!steps || steps.length < 3 || steps.length > 6) throw new Error(`${where}: three to six steps (got ${steps?.length ?? 0}). Fewer is a statement; more needs grouping into phases.`);
 if (!(focus >= 1 && focus <= steps.length)) throw new Error(`${where}: focus ${focus} isn't a step; number them from 1 to ${steps.length}.`);
 steps.forEach((s, i) => {
-  if (s.name.split(/\s+/).length > 4) throw new Error(`${where}: step ${i + 1}'s name "${s.name}" is over four words. Shorten it; the focal step's detail carries the explanation.`);
+  if (s.name.split(/\s+/).length > 4) layoutRule(where, `${where}: step ${i + 1}'s name "${s.name}" is over four words. Shorten it; the focal step's detail carries the explanation.`);
 });
 const hero = steps[focus - 1]!;
 if (!hero.detail) throw new Error(`${where}: step ${focus} is the focus, so it needs a detail: one or two lines on what it does.`);
-if (hero.detail.length > 120) throw new Error(`${where}: step ${focus}'s detail is ${hero.detail.length} characters; 120 or fewer.`);
+if (hero.detail.length > 120) layoutRule(where, `${where}: step ${focus}'s detail is ${hero.detail.length} characters; 120 or fewer.`);
 const [before, phrase, after] = splitHl(headline, hl, where);
 const head = fitType(headline.length, { width: 1400, lines: 2, min: 72, max: 112 });
 const phone = fitType(headline.length, { width: 330, lines: 3, min: 26, max: 40 });

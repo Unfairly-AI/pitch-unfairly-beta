@@ -11,7 +11,7 @@
  * the photo, so it reads on any picture.
  */
 import Slide from '../../src/components/Slide.astro';
-import { fitType, splitHl, type SlideBase } from '../lib';
+import { layoutRule, fitType, splitHl, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** The point, in a whole sentence. 14 words or fewer. */
@@ -37,8 +37,8 @@ const where = `problem-moment-photo "${id}"`;
 if (!focus || !/^\d{1,3}% \d{1,3}%$/.test(focus)) throw new Error(`${where}: focus is required, as "x% y%": the point of the photo to keep in frame, a person's face or the photo's own subject. Look at the photo at the slide's crop and set it; the centre crop cuts heads off.`);
 if (!photo) throw new Error(`${where}: photo is required; without a photo of the moment, use problem-artifact or statement.`);
 if (!alt) throw new Error(`${where}: alt is required; say what the photo shows.`);
-if (moment && moment.length > 32) throw new Error(`${where}: moment is ${moment.length} characters; a time and a place, 32 or fewer.`);
-if (caption && caption.split(/\s+/).length > 20) throw new Error(`${where}: caption is ${caption.split(/\s+/).length} words; one line of 20 or fewer, the rest in the notes.`);
+if (moment && moment.length > 32) layoutRule(where, `${where}: moment is ${moment.length} characters; a time and a place, 32 or fewer.`);
+if (caption && caption.split(/\s+/).length > 20) layoutRule(where, `${where}: caption is ${caption.split(/\s+/).length} words; one line of 20 or fewer, the rest in the notes.`);
 const [before, phrase, after] = splitHl(headline, hl, where);
 // Half the slide, less its outer padding and the gutter to the photo.
 const stage = fitType(headline.length, { width: 720, lines: 3, min: 68, max: 116 });

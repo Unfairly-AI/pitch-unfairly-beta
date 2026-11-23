@@ -11,7 +11,7 @@
  * slide enters.
  */
 import Slide from '../../src/components/Slide.astro';
-import { fitType, splitHl, type SlideBase } from '../lib';
+import { layoutRule, fitType, splitHl, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** The plan's point as a whole sentence: what lands, and when. 12 words or fewer. */
@@ -29,12 +29,12 @@ interface Props extends SlideBase {
 const { id, label = 'Roadmap', tone = 'paper', notes, brand, headline, hl, periods, phases, focus = phases.length - 1 } = Astro.props;
 const where = `roadmap-timeline "${id}"`;
 if (periods.length < 2 || periods.length > 6) throw new Error(`${where}: 2 to 6 periods (got ${periods.length}); group a longer plan into quarters or months.`);
-for (const p of periods) if (p.length > 12) throw new Error(`${where}: period "${p}" is over 12 characters; shorten it ("Dec", "Week 2", "Q3").`);
+for (const p of periods) if (p.length > 12) layoutRule(where, `${where}: period "${p}" is over 12 characters; shorten it ("Dec", "Week 2", "Q3").`);
 if (phases.length < 2 || phases.length > 5) throw new Error(`${where}: 2 to 5 phases (got ${phases.length}); merge the small ones and put the detail in the notes.`);
 if (focus < 0 || focus >= phases.length) throw new Error(`${where}: focus ${focus} isn't a phase; use 0 to ${phases.length - 1}.`);
 const n = periods.length;
 const rows = phases.map((p, i) => {
-  if (p.name.length > 40) throw new Error(`${where}: phase "${p.name}" is ${p.name.length} characters; 40 or fewer.`);
+  if (p.name.length > 40) layoutRule(where, `${where}: phase "${p.name}" is ${p.name.length} characters; 40 or fewer.`);
   const a = periods.indexOf(p.from);
   const b = periods.indexOf(p.to ?? p.from);
   if (a < 0) throw new Error(`${where}: phase "${p.name}" starts in "${p.from}", which isn't one of the periods (${periods.join(', ')}).`);

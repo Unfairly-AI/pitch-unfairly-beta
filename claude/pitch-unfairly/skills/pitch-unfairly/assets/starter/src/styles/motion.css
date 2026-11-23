@@ -1,7 +1,7 @@
 /*
   The motion kit: primitives a slide applies with data-m="<kind>", each timed
   by the brand kit's motion tokens (src/brand/brand.css, from style.motion:
-  calm, crisp or playful). Guide: deck_guide topic craft, "Motion kit".
+  calm, crisp or playful). Guide: references/craft.md, "Motion kit".
 
   Every primitive's resting style is its finished state: the PDF (?pdf=1),
   reduced motion and no-JS show the end, and a revisited slide shows it

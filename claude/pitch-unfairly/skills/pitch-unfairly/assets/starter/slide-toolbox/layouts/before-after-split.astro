@@ -10,7 +10,7 @@
  * still reads line by line.
  */
 import Slide from '../../src/components/Slide.astro';
-import { fitType, splitHl, type SlideBase } from '../lib';
+import { layoutRule, fitType, splitHl, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** What changes, one whole sentence, 12 words or fewer. */
@@ -27,9 +27,9 @@ const { id, label = 'Before and after', tone = 'paper', notes, brand, headline, 
 const where = `before-after-split "${id}"`;
 for (const [side, s] of [['before', before], ['after', after]] as const) {
   if (!s?.label || !s.items?.length) throw new Error(`${where}: ${side} needs a label and its lines.`);
-  if (s.label.length > 24) throw new Error(`${where}: ${side}.label "${s.label}" is ${s.label.length} characters; a label is 24 or fewer ("Today", "With Northline").`);
+  if (s.label.length > 24) layoutRule(where, `${where}: ${side}.label "${s.label}" is ${s.label.length} characters; a label is 24 or fewer ("Today", "With Northline").`);
   if (s.items.length < 2 || s.items.length > 4) throw new Error(`${where}: ${side} has ${s.items.length} lines; two to four. Put the rest in the notes.`);
-  for (const line of s.items) if (line.length > 48) throw new Error(`${where}: ${side} line "${line}" is ${line.length} characters; 48 or fewer, so it holds one line. Cut it to the action.`);
+  for (const line of s.items) if (line.length > 48) layoutRule(where, `${where}: ${side} line "${line}" is ${line.length} characters; 48 or fewer, so it holds one line. Cut it to the action.`);
 }
 const [pre, phrase, post] = splitHl(headline, hl, where);
 const head = fitType(headline.length, { width: 1500, lines: 2, min: 76, max: 116 });

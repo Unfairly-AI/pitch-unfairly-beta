@@ -16,6 +16,11 @@ interface Props {
 import { subBrands } from '../brand/sub-brands';
 
 const { id, label, tone = 'paper', notes, bare = false, brand } = Astro.props;
+// Limits the slide's toolbox layout found broken while it rendered (slide-toolbox/lib.ts layoutRule), read off
+// globalThis so this file never depends on the toolbox: the audit reports them.
+const rules = (globalThis as { __deckLayoutRules?: Map<string, string[]> }).__deckLayoutRules;
+const broken = rules?.get(id) ?? [];
+rules?.delete(id);
 if (brand && !subBrands[brand]) {
   throw new Error(`Slide "${id}": brand "${brand}" isn't a sub-brand. Add brand/sub-brands/${brand}.json (brand_kit_get with sub_brand) and run npm run brand:apply.${Object.keys(subBrands).length ? ` Sub-brands: ${Object.keys(subBrands).join(', ')}.` : ''}`);
 }
@@ -23,7 +28,7 @@ if (brand && !subBrands[brand]) {
 
 <!-- The frame is one screen in the slide's color; the scaled slide sits inside it. -->
 <div class={`deck-frame tone-${tone}`} data-brand={brand}>
-  <section id={`slide-${id}`} class={`slide tone-${tone}`} aria-label={label} data-notes={notes}>
+  <section id={`slide-${id}`} class={`slide tone-${tone}`} aria-label={label} data-notes={notes} data-layout-rule={broken.length ? broken.join('\n') : undefined}>
     <slot />
     {!bare && <span class="slide-num" aria-hidden="true"></span>}
   </section>

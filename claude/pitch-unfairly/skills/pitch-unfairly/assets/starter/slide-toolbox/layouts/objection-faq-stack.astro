@@ -10,7 +10,7 @@
  * on the stage, the phone and the PDF.
  */
 import Slide from '../../src/components/Slide.astro';
-import { fitType, splitHl, type SlideBase } from '../lib';
+import { layoutRule, fitType, splitHl, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** What the stack says, one whole sentence, 12 words or fewer. */
@@ -27,8 +27,8 @@ const { id, label = 'Questions', tone = 'warm', notes, brand, headline, hl, item
 const where = `objection-faq-stack "${id}"`;
 if (items.length < 2 || items.length > 4) throw new Error(`${where}: two to four questions (got ${items.length}); one question is objection-question-answer.`);
 for (const it of items) {
-  if (it.q.length > 64) throw new Error(`${where}: question "${it.q}" is ${it.q.length} characters; 64 or fewer.`);
-  if (it.a.length > 120) throw new Error(`${where}: the answer to "${it.q}" is ${it.a.length} characters; 120 or fewer. The detail goes in the notes.`);
+  if (it.q.length > 64) layoutRule(where, `${where}: question "${it.q}" is ${it.q.length} characters; 64 or fewer.`);
+  if (it.a.length > 120) layoutRule(where, `${where}: the answer to "${it.q}" is ${it.a.length} characters; 120 or fewer. The detail goes in the notes.`);
 }
 if (focus < 0 || focus >= items.length) throw new Error(`${where}: focus ${focus} is outside the questions (0 to ${items.length - 1}).`);
 const [pre, phrase, post] = splitHl(headline, hl, where);

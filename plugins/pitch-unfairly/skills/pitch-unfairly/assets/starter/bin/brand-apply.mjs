@@ -8,10 +8,16 @@ import { execFileSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { assetModule, brandCss, fontFaceCss, fontImports, kitFaces, kitFilePaths, kitWarnings, SUB_BRAND_DIR, SUB_BRAND_ID, subBrandCss, subBrandModule, validateKit } from './brand-lib.mjs';
+import { assetModule, brandCss, fallbackFor, fontFaceCss, fontImports, kitFaces, kitFilePaths, kitWarnings, repairKitFonts, SUB_BRAND_DIR, SUB_BRAND_ID, subBrandCss, subBrandModule, validateKit } from './brand-lib.mjs';
 
 const kitPath = process.argv[2] ?? 'brand/brand.json';
 const kit = JSON.parse(await readFile(kitPath, 'utf8'));
+// A kit missing a font's source or @fontsource package is repaired, never refused: the repair is written back.
+const kitRepairs = repairKitFonts(kit);
+if (kitRepairs.length) {
+  await writeFile(kitPath, `${JSON.stringify(kit, null, 2)}\n`);
+  kitRepairs.forEach((r) => console.warn(`  ↻ ${kitPath}: ${r}`));
+}
 const errors = validateKit(kit);
 // Fonts, logos, imagery, lockups, textures, and element examples must all be in brand/.
 for (const { what, path } of kitFilePaths(kit)) {
@@ -26,6 +32,11 @@ for (const name of (await readdir(SUB_BRAND_DIR).catch(() => [])).filter((n) => 
   if (!SUB_BRAND_ID.test(id)) { errors.push(`${at}: the file name is the sub-brand's id and must be kebab-case`); continue; }
   let sub;
   try { sub = JSON.parse(await readFile(at, 'utf8')); } catch (e) { errors.push(`${at}: ${e.message}`); continue; }
+  const subRepairs = repairKitFonts(sub);
+  if (subRepairs.length) {
+    await writeFile(at, `${JSON.stringify(sub, null, 2)}\n`);
+    subRepairs.forEach((r) => console.warn(`  ↻ ${at}: ${r}`));
+  }
   errors.push(...validateKit(sub).map((e) => `${at}: ${e}`));
   for (const { what, path } of kitFilePaths(sub)) {
     if (typeof path === 'string' && path && !existsSync(join('brand', path))) errors.push(`${at}: missing ${what}: brand/${path}`);
@@ -38,31 +49,49 @@ if (errors.length) {
   process.exit(1);
 }
 
-const packages = [...new Set([kit, ...subs.map((s) => s.kit)].flatMap(kitFaces)
-  .filter((t) => t?.source === 'fontsource')
-  .map((t) => t.package))];
-const missing = packages.filter((p) => !existsSync(join('node_modules', p, 'package.json')));
-// Fontsource publishes some families only as static (@fontsource/x) or only
-// as variable (@fontsource-variable/x); try the other before giving up.
+const kits = [{ path: kitPath, kit }, ...subs.map((s) => ({ path: `${SUB_BRAND_DIR}/${s.id}.json`, kit: s.kit }))];
+const fontsourceFaces = () => kits.flatMap(({ path, kit: k }) => {
+  const t = k?.typography ?? {};
+  return [...['display', 'body', 'mono'].map((role) => [role, t[role]]), ...(Array.isArray(t.faces) ? t.faces.map((f) => [f.role, f]) : [])]
+    .filter(([, f]) => f?.source === 'fontsource').map(([role, font]) => ({ path, role, font }));
+});
+const install = (pkg) => {
+  try {
+    console.log(`Installing ${pkg}`);
+    execFileSync('npm', ['install', '--save', '--no-audit', '--no-fund', pkg], { stdio: ['ignore', 'ignore', 'inherit'] });
+    return true;
+  } catch {
+    return false;
+  }
+};
+const changedKits = new Set();
+const missing = [...new Set(fontsourceFaces().map((f) => f.font.package))].filter((p) => !existsSync(join('node_modules', p, 'package.json')));
+// Fontsource publishes some families only as static (@fontsource/x) or only as variable (@fontsource-variable/x):
+// the other one is used and written into the kit. A family it publishes neither way gets a matching open face (sans,
+// serif or mono), recorded as the stand-in for the original. The kit is repaired, never refused.
 for (const pkg of missing) {
   const other = pkg.startsWith('@fontsource-variable/') ? pkg.replace('@fontsource-variable/', '@fontsource/') : pkg.replace('@fontsource/', '@fontsource-variable/');
-  for (const candidate of [pkg, other]) {
-    try {
-      console.log(`Installing ${candidate}`);
-      execFileSync('npm', ['install', '--save', '--no-audit', '--no-fund', candidate], { stdio: ['ignore', 'ignore', 'inherit'] });
-      if (candidate !== pkg) {
-        console.error(`  ${pkg} isn't published; installed ${candidate}. Set "package": "${candidate}" in brand/brand.json and rerun.`);
-        process.exit(1);
-      }
-      break;
-    } catch {
-      if (candidate === other) {
-        console.error(`  Neither ${pkg} nor ${other} exists on npm. Pick a font that Fontsource publishes, or supply font files.`);
-        process.exit(1);
-      }
+  const users = fontsourceFaces().filter((f) => f.font.package === pkg);
+  if (install(pkg)) continue;
+  if (install(other)) {
+    users.forEach(({ path, role, font }) => { font.package = other; changedKits.add(path); console.warn(`  ↻ ${path}: ${role} uses ${other} (${pkg} isn't published)`); });
+    continue;
+  }
+  for (const { path, role, font } of users) {
+    const open = fallbackFor(font, role);
+    if (!existsSync(join('node_modules', open.package, 'package.json')) && !install(open.package)) {
+      console.error(`  Couldn't install ${pkg}, ${other} or the open stand-in ${open.package}. Check the network, then rerun npm run brand:apply.`);
+      process.exit(1);
     }
+    console.warn(`  ↻ ${path}: ${role} "${font.family}" isn't on Fontsource; using the open face ${open.family} in its place`);
+    font.stand_in_for = font.stand_in_for ?? font.family;
+    font.family = open.family;
+    font.package = open.package;
+    font.license = 'open';
+    changedKits.add(path);
   }
 }
+for (const { path, kit: k } of kits) if (changedKits.has(path)) await writeFile(path, `${JSON.stringify(k, null, 2)}\n`);
 
 await mkdir('src/brand', { recursive: true });
 // Every font file once, the main kit's and each sub-brand's: @font-face can't be scoped to a slide.

@@ -10,7 +10,7 @@
  * deck closes on the ask instead.
  */
 import Slide from '../../src/components/Slide.astro';
-import { fitType, splitHl, type SlideBase } from '../lib';
+import { layoutRule, fitType, splitHl, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** Where the steps lead, as a whole sentence, with its date. 12 words or fewer. */
@@ -28,8 +28,8 @@ const where = `next-steps-dated-steps "${id}"`;
 if (steps.length < 2 || steps.length > 5) throw new Error(`${where}: 2 to 5 steps (got ${steps.length}); fold the small ones together and put the detail in the notes.`);
 if (focus < 0 || focus >= steps.length) throw new Error(`${where}: focus ${focus} isn't a step; use 0 to ${steps.length - 1}.`);
 for (const s of steps) {
-  if (s.date.length > 12) throw new Error(`${where}: date "${s.date}" is over 12 characters ("Nov 24", "Week of Dec 7").`);
-  if (s.step.length > 56) throw new Error(`${where}: "${s.step}" is ${s.step.length} characters; a step is 56 or fewer.`);
+  if (s.date.length > 12) layoutRule(where, `${where}: date "${s.date}" is over 12 characters ("Nov 24", "Week of Dec 7").`);
+  if (s.step.length > 56) layoutRule(where, `${where}: "${s.step}" is ${s.step.length} characters; a step is 56 or fewer.`);
 }
 const [before, phrase, after] = splitHl(headline, hl, where);
 const head = fitType(headline.length, { width: 760, lines: 3, min: 72, max: 116 });

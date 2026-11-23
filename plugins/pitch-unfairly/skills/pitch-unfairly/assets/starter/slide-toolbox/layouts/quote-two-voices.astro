@@ -10,7 +10,7 @@
  * short tag ("Before", "After one season") above its words.
  */
 import Slide from '../../src/components/Slide.astro';
-import { fitType, splitHl, type SlideBase } from '../lib';
+import { layoutRule, fitType, splitHl, type SlideBase } from '../lib';
 
 interface Voice {
   /** The quote, verbatim, without quotation marks. 110 characters or fewer. */
@@ -37,8 +37,8 @@ const where = `quote-two-voices "${id}"`;
 if (voices?.length !== 2) throw new Error(`${where}: exactly two voices (got ${voices?.length ?? 0}); one voice is quote-hero-quote, three or more is a quote wall.`);
 voices.forEach((v, i) => {
   if (/^["“'‘]|["”'’]$/.test(v.quote.trim())) throw new Error(`${where}: voice ${i + 1}: leave the quotation marks off; the layout sets them.`);
-  if (v.quote.length > 110) throw new Error(`${where}: voice ${i + 1} is ${v.quote.length} characters; 110 or fewer, so both read at a glance.`);
-  if (v.tag && v.tag.length > 24) throw new Error(`${where}: voice ${i + 1}'s tag is ${v.tag.length} characters; 24 or fewer.`);
+  if (v.quote.length > 110) layoutRule(where, `${where}: voice ${i + 1} is ${v.quote.length} characters; 110 or fewer, so both read at a glance.`);
+  if (v.tag && v.tag.length > 24) layoutRule(where, `${where}: voice ${i + 1}'s tag is ${v.tag.length} characters; 24 or fewer.`);
   if (i !== hero && v.hl) throw new Error(`${where}: voice ${i + 1} isn't the hero; only the hero voice takes an hl.`);
 });
 const main = voices[hero]!;

@@ -10,7 +10,7 @@
  * headline at the top says where the room is, quietly.
  */
 import Slide from '../../src/components/Slide.astro';
-import { fitType, type SlideBase } from '../lib';
+import { layoutRule, fitType, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** The parts of the meeting, in order: two to six, each a name of four words or fewer and, optionally, where it starts (a slide number or a time: "07", "10:15"). */
@@ -24,9 +24,9 @@ interface Props extends SlideBase {
 const { id, label = 'Agenda', tone = 'ink', notes, brand, items, current, headline } = Astro.props;
 const where = `agenda-running-text "${id}"`;
 if (items.length < 2 || items.length > 6) throw new Error(`${where}: two to six parts (got ${items.length}). A longer agenda is a contents page: group it.`);
-for (const it of items) if (it.title.split(/\s+/).length > 4) throw new Error(`${where}: "${it.title}" is over four words; a part's name is short enough to say in a breath.`);
+for (const it of items) if (it.title.split(/\s+/).length > 4) layoutRule(where, `${where}: "${it.title}" is over four words; a part's name is short enough to say in a breath.`);
 if (current !== undefined && (current < 1 || current > items.length)) throw new Error(`${where}: current ${current} is outside 1 to ${items.length}.`);
-if (headline.split(/\s+/).length > 8) throw new Error(`${where}: the headline is ${headline.split(/\s+/).length} words; it is a quiet line of eight or fewer. The parts carry the slide.`);
+if (headline.split(/\s+/).length > 8) layoutRule(where, `${where}: the headline is ${headline.split(/\s+/).length} words; it is a quiet line of eight or fewer. The parts carry the slide.`);
 // Each "at" is set at half size, so it counts for half.
 const chars = items.reduce((n, it) => n + it.title.length + 1 + (it.at ? Math.ceil((it.at.length + 1) / 2) : 0), 0);
 // Each part is kept whole on its line, so the longest one must fit the width too.

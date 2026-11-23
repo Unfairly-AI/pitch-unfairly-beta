@@ -10,7 +10,7 @@
  * lands last. On a phone the equation runs down the screen, one term a line.
  */
 import Slide from '../../src/components/Slide.astro';
-import { fitType, splitHl, type SlideBase } from '../lib';
+import { layoutRule, fitType, splitHl, type SlideBase } from '../lib';
 
 type Op = '×' | '+' | '−' | '÷';
 
@@ -35,7 +35,7 @@ if (terms.length < 2 || terms.length > 4) throw new Error(`${where}: 2 to 4 term
 const signs: Op[] = ops ?? terms.slice(1).map(() => '×');
 if (signs.length !== terms.length - 1) throw new Error(`${where}: ${terms.length} terms need ${terms.length - 1} operators (got ${signs.length}).`);
 for (const o of signs) if (!['×', '+', '−', '÷'].includes(o)) throw new Error(`${where}: operator "${o}" isn't one of × + − ÷ (use the true minus sign, −).`);
-for (const t of [...terms, result]) if (t.value.length > 9) throw new Error(`${where}: "${t.value}" is ${t.value.length} characters; write it shorter ("1.2M", "$54").`);
+for (const t of [...terms, result]) if (t.value.length > 9) layoutRule(where, `${where}: "${t.value}" is ${t.value.length} characters; write it shorter ("1.2M", "$54").`);
 const [before, phrase, after] = splitHl(headline, hl, where);
 const head = fitType(headline.length, { width: 1400, lines: 2, min: 72, max: 112 });
 // One size for the whole row: terms at S, operators at half, the result at 1.5S.

@@ -8,7 +8,7 @@
  * remember. The space around the sentence is the emphasis.
  */
 import Slide from '../../src/components/Slide.astro';
-import { fitType, splitHl, type SlideBase } from '../lib';
+import { layoutRule, fitType, splitHl, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** The sentence: one whole sentence, 20 words or fewer. */
@@ -25,8 +25,8 @@ const { id, label = 'Statement', tone = 'warm', notes, brand, statement, hl, kic
 const where = `statement-centered "${id}"`;
 const words = statement.split(/\s+/).length;
 if (words > 20) throw new Error(`${where}: the statement is ${words} words; one big line is 20 or fewer. Cut it, or split it across two slides.`);
-if (kicker && kicker.split(/\s+/).length > 4) throw new Error(`${where}: kicker "${kicker}" is a label of four words or fewer.`);
-if (support && support.length > 100) throw new Error(`${where}: support is ${support.length} characters; one line is 100 or fewer. The rest goes in the notes.`);
+if (kicker && kicker.split(/\s+/).length > 4) layoutRule(where, `${where}: kicker "${kicker}" is a label of four words or fewer.`);
+if (support && support.length > 100) layoutRule(where, `${where}: support is ${support.length} characters; one line is 100 or fewer. The rest goes in the notes.`);
 const [before, phrase, after] = splitHl(statement, hl, where);
 // The sentence lands word by word (the motion kit's words) when it's 14 words or fewer.
 const moving = words <= 14;

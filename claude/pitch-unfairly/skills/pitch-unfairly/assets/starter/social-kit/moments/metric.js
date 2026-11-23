@@ -1,6 +1,6 @@
 /* An example product moment: one number counting up, with the bars behind it filling in.
    Replace it with a moment from the real product: a screen, a panel, a live calculator.
-   Rules (guide: deck_guide topic social): real product only, the moment tells its story in
+   Rules (guide: references/social.md): real product only, the moment tells its story in
    under 4 seconds, and it reads with the sound off. */
 SOCIAL.moment('metric', {
   w: 600, h: 440, end: 3.2,

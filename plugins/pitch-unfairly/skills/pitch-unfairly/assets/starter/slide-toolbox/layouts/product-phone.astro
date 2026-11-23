@@ -9,7 +9,7 @@
  * the screen is the focal element, not the device.
  */
 import Slide from '../../src/components/Slide.astro';
-import { fitType, splitHl, type SlideBase } from '../lib';
+import { layoutRule, fitType, splitHl, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** What the screen proves, as a whole sentence. 12 words or fewer. */
@@ -28,9 +28,9 @@ interface Props extends SlideBase {
 
 const { id, label = 'Product on a phone', tone = 'paper', notes, brand, headline, hl, caption, src, alt, tag } = Astro.props;
 const where = `product-phone "${id}"`;
-if (headline.split(/\s+/).length > 14) throw new Error(`${where}: the headline is ${headline.split(/\s+/).length} words; the screen carries the detail. Cut it to 12 or fewer.`);
-if (caption && caption.length > 90) throw new Error(`${where}: the caption is ${caption.length} characters; one line of 90 or fewer. Move the rest to the notes.`);
-if (tag && tag.length > 24) throw new Error(`${where}: the tag is ${tag.length} characters; a sticker is two or three words.`);
+if (headline.split(/\s+/).length > 14) layoutRule(where, `${where}: the headline is ${headline.split(/\s+/).length} words; the screen carries the detail. Cut it to 12 or fewer.`);
+if (caption && caption.length > 90) layoutRule(where, `${where}: the caption is ${caption.length} characters; one line of 90 or fewer. Move the rest to the notes.`);
+if (tag && tag.length > 24) layoutRule(where, `${where}: the tag is ${tag.length} characters; a sticker is two or three words.`);
 const [before, phrase, after] = splitHl(headline, hl, where);
 const head = fitType(headline.length, { width: 860, lines: 3, min: 84, max: 136 });
 const phone = fitType(headline.length, { width: 330, lines: 3, min: 26, max: 40 });

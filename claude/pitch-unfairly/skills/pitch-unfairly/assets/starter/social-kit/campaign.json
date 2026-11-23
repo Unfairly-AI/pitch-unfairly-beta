@@ -1,5 +1,5 @@
 {
-  "$comment": "An example campaign: replace every line with this brand's own. guide: deck_guide topic social.",
+  "$comment": "An example campaign: replace every line with this brand's own. guide: references/social.md.",
   "engine": "social@1.0",
   "name": "Example campaign",
   "url": "example.com",

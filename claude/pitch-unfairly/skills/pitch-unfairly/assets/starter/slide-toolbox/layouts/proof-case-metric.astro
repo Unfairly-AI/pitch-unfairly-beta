@@ -11,7 +11,7 @@
  * the top and the result keeps the largest size the width allows.
  */
 import Slide from '../../src/components/Slide.astro';
-import { figureEm, fitType, splitHl, type SlideBase } from '../lib';
+import { layoutRule, figureEm, fitType, splitHl, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** What changed for the customer, as a sentence. 14 words or fewer. */
@@ -32,8 +32,8 @@ interface Props extends SlideBase {
 
 const { id, label = 'Customer result', tone = 'paper', notes, brand, headline, hl, customer, logo, photo, metric, supports = [] } = Astro.props;
 const where = `proof-case-metric "${id}"`;
-if (supports.length > 2) throw new Error(`${where}: two supports at most (got ${supports.length}); the rest go in the notes.`);
-if (metric.value.length > 8) throw new Error(`${where}: metric "${metric.value}" is ${metric.value.length} characters; a result reads at a glance at 8 or fewer ("−78%", "3.2x").`);
+if (supports.length > 2) layoutRule(where, `${where}: two supports at most (got ${supports.length}); the rest go in the notes.`);
+if (metric.value.length > 8) layoutRule(where, `${where}: metric "${metric.value}" is ${metric.value.length} characters; a result reads at a glance at 8 or fewer ("−78%", "3.2x").`);
 const [before, phrase, after] = splitHl(headline, hl, where);
 const head = fitType(headline.length, { width: 900, lines: 3, min: 64, max: 96 });
 const em = figureEm(metric.value);

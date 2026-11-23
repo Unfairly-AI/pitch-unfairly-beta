@@ -10,7 +10,7 @@
  */
 import Slide from '../../src/components/Slide.astro';
 import BrandMark from '../../src/components/BrandMark.astro';
-import { fitType, splitHl, type SlideBase } from '../lib';
+import { layoutRule, fitType, splitHl, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** The point, one whole sentence, 10 words or fewer (four lines on a phone). */
@@ -33,7 +33,7 @@ const { id, label = 'Comparison', tone = 'paper', notes, brand, headline, hl, li
 const where = `comparison-one-of-many "${id}"`;
 if (many.length < 5 || many.length > 17) throw new Error(`${where}: 5 to 17 look-alikes (got ${many.length}); fewer is comparison-two-column, more stops reading as a field.`);
 for (const n of [...many, ours]) if (!n || n.length > 20) throw new Error(`${where}: tile name "${n}" is ${n?.length ?? 0} characters; 1 to 20.`);
-if (line && line.length > 90) throw new Error(`${where}: line is ${line.length} characters; 90 or fewer.`);
+if (line && line.length > 90) layoutRule(where, `${where}: line is ${line.length} characters; 90 or fewer.`);
 const total = many.length + 1;
 const pos = at ?? Math.floor(total * 0.66);
 if (pos < 0 || pos >= total) throw new Error(`${where}: at ${pos} is outside the field (0 to ${total - 1}).`);

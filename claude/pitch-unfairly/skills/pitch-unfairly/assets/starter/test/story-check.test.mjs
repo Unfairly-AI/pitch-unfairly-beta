@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { parseStory, checkStory } from '../bin/story-check.mjs';
 
-// The library lives in the plugin repo's guide/ (served by deck_guide); a deck
+// The library lives in the plugin repo's guide/ (bundled as references/templates.json); a deck
 // copied out of the repo doesn't carry it, so these tests only run inside the repo.
 const library = await readFile(new URL('../../../../../../../guide/templates.json', import.meta.url), 'utf8').then(JSON.parse, () => null);
 const test = library ? nodeTest : nodeTest.skip;

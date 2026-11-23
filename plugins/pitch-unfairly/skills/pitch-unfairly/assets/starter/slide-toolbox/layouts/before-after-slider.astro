@@ -17,7 +17,7 @@
  * split shows both whole. On a phone the two sides stack, with no divider.
  */
 import Slide from '../../src/components/Slide.astro';
-import { figureEm, fitType, splitHl, type SlideBase } from '../lib';
+import { layoutRule, figureEm, fitType, splitHl, type SlideBase } from '../lib';
 
 type Side = {
   /** A short label for the side ("Today", "With Northline"), 24 characters or fewer. */
@@ -50,12 +50,12 @@ const where = `before-after-slider "${id}"`;
 const sides = [['before', before], ['after', after]] as const;
 for (const [name, s] of sides) {
   if (!s?.label) throw new Error(`${where}: ${name} needs a label.`);
-  if (s.label.length > 24) throw new Error(`${where}: ${name}.label "${s.label}" is ${s.label.length} characters; 24 or fewer.`);
+  if (s.label.length > 24) layoutRule(where, `${where}: ${name}.label "${s.label}" is ${s.label.length} characters; 24 or fewer.`);
   if (!s.figure === !s.src) throw new Error(`${where}: ${name} takes a figure or an image (src), one of the two.`);
   if (s.src && s.caption) throw new Error(`${where}: ${name}.caption goes with a figure; an image says it in its alt and the label.`);
   if (s.src && !s.alt) throw new Error(`${where}: ${name}.src needs its alt text.`);
-  if (s.figure && s.figure.length > 8) throw new Error(`${where}: ${name}.figure "${s.figure}" is ${s.figure.length} characters; 8 or fewer, so it reads at poster size. Move the words to the caption.`);
-  if (s.caption && s.caption.length > 56) throw new Error(`${where}: ${name}.caption is ${s.caption.length} characters; 56 or fewer.`);
+  if (s.figure && s.figure.length > 8) layoutRule(where, `${where}: ${name}.figure "${s.figure}" is ${s.figure.length} characters; 8 or fewer, so it reads at poster size. Move the words to the caption.`);
+  if (s.caption && s.caption.length > 56) layoutRule(where, `${where}: ${name}.caption is ${s.caption.length} characters; 56 or fewer.`);
 }
 if (!before.src !== !after.src) throw new Error(`${where}: both sides are figures or both are images; a figure beside a photo doesn't compare.`);
 if (!(start >= 0 && start <= 100)) throw new Error(`${where}: start is a percent, 0 to 100 (got ${start}).`);

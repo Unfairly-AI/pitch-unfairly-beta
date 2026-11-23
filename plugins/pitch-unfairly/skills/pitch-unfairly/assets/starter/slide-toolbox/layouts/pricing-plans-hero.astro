@@ -10,7 +10,7 @@
  * the stack holds the one term that applies to every plan.
  */
 import Slide from '../../src/components/Slide.astro';
-import { fitType, splitHl, type SlideBase } from '../lib';
+import { layoutRule, fitType, splitHl, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** What the plans add up to, one whole sentence, 12 words or fewer. */
@@ -31,14 +31,14 @@ const { id, label = 'Plans', tone = 'paper', notes, brand, headline, hl, plans =
 const where = `pricing-plans-hero "${id}"`;
 if (plans.length < 2 || plans.length > 4) throw new Error(`${where}: two to four plans (got ${plans.length}); one plan is pricing-single-price.`);
 for (const p of plans) {
-  if (p.name.length > 20) throw new Error(`${where}: plan "${p.name}" is ${p.name.length} characters; 20 or fewer.`);
-  if (p.line.length > 64) throw new Error(`${where}: plan "${p.name}" line is ${p.line.length} characters; 64 or fewer.`);
-  if (p.price.length > 10) throw new Error(`${where}: plan "${p.name}" price "${p.price}" is ${p.price.length} characters; 10 or fewer.`);
-  if (p.per && p.per.length > 16) throw new Error(`${where}: plan "${p.name}" per is ${p.per.length} characters; 16 or fewer.`);
+  if (p.name.length > 20) layoutRule(where, `${where}: plan "${p.name}" is ${p.name.length} characters; 20 or fewer.`);
+  if (p.line.length > 64) layoutRule(where, `${where}: plan "${p.name}" line is ${p.line.length} characters; 64 or fewer.`);
+  if (p.price.length > 10) layoutRule(where, `${where}: plan "${p.name}" price "${p.price}" is ${p.price.length} characters; 10 or fewer.`);
+  if (p.per && p.per.length > 16) layoutRule(where, `${where}: plan "${p.name}" per is ${p.per.length} characters; 16 or fewer.`);
 }
 if (hero < 0 || hero >= plans.length) throw new Error(`${where}: hero ${hero} is outside the plans (0 to ${plans.length - 1}).`);
-if (badge && badge.length > 16) throw new Error(`${where}: badge "${badge}" is ${badge.length} characters; 16 or fewer.`);
-if (note && note.length > 90) throw new Error(`${where}: note is ${note.length} characters; 90 or fewer.`);
+if (badge && badge.length > 16) layoutRule(where, `${where}: badge "${badge}" is ${badge.length} characters; 16 or fewer.`);
+if (note && note.length > 90) layoutRule(where, `${where}: note is ${note.length} characters; 90 or fewer.`);
 const [pre, phrase, post] = splitHl(headline, hl, where);
 const head = fitType(headline.length, { width: 1500, lines: 2, min: 76, max: 112 });
 ---

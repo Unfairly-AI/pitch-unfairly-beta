@@ -12,7 +12,7 @@
  * reach in to their rings, and the labels list under the screen by number.
  */
 import Slide from '../../src/components/Slide.astro';
-import { fitType, splitHl, type SlideBase } from '../lib';
+import { layoutRule, fitType, splitHl, type SlideBase } from '../lib';
 
 interface Callout {
   /** What this part of the screen does, in the product's own words. 40 characters or fewer. */
@@ -45,7 +45,7 @@ const where = `product-annotated "${id}"`;
 if (!callouts?.length || callouts.length > 4) throw new Error(`${where}: one to four callouts (got ${callouts?.length ?? 0}); a screen with more needs a second slide.`);
 if (focus !== undefined && (focus < 1 || focus > callouts.length)) throw new Error(`${where}: focus ${focus} isn't a callout; number them from 1 to ${callouts.length}.`);
 const calls = callouts.map((c, i) => {
-  if (c.label.length > 40) throw new Error(`${where}: callout ${i + 1} is ${c.label.length} characters; a label is 40 or fewer. Move the explanation to the notes.`);
+  if (c.label.length > 40) layoutRule(where, `${where}: callout ${i + 1} is ${c.label.length} characters; a label is 40 or fewer. Move the explanation to the notes.`);
   for (const k of ['x', 'y'] as const) if (!(c[k] >= 0 && c[k] <= 1)) throw new Error(`${where}: callout ${i + 1} has ${k} ${c[k]}; give it as a fraction of the screenshot, 0 to 1.`);
   return { ...c, n: i + 1, side: c.side ?? (c.x < 0.5 ? 'left' : 'right') };
 });

@@ -10,7 +10,7 @@
  * On a phone the chart keeps its bars and only the hero keeps its label.
  */
 import Slide from '../../src/components/Slide.astro';
-import { fitType, formatNumber, splitHl, type SlideBase } from '../lib';
+import { layoutRule, fitType, formatNumber, splitHl, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** The point the hero bar proves, as a sentence. 14 words or fewer. */
@@ -37,7 +37,7 @@ const { id, label = 'Bar chart', tone = 'paper', notes, brand, headline, hl, not
 const where = `chart-bar-highlight "${id}"`;
 if (bars.length < 3 || bars.length > 12) throw new Error(`${where}: 3 to 12 bars (got ${bars.length}). Two bars are a comparison (comparison-two-column); more than 12 is a trend (chart-line-annotated).`);
 if (bars.some((b) => !(b.value >= 0))) throw new Error(`${where}: every bar needs a value of zero or more; a negative change is a waterfall (chart-waterfall).`);
-if (note && note.length > 110) throw new Error(`${where}: the note is ${note.length} characters; keep it to one line (110 or fewer), or move it to the notes.`);
+if (note && note.length > 110) layoutRule(where, `${where}: the note is ${note.length} characters; keep it to one line (110 or fewer), or move it to the notes.`);
 const max = Math.max(...bars.map((b) => b.value)) || 1;
 const hero = typeof highlight === 'number' ? highlight : typeof highlight === 'string' ? bars.findIndex((b) => b.label === highlight) : bars.findIndex((b) => b.value === max);
 if (hero < 0 || hero >= bars.length) throw new Error(`${where}: highlight ${JSON.stringify(highlight)} isn't one of the bars; give its index or its exact label.`);

@@ -10,7 +10,7 @@
  */
 import Slide from '../../src/components/Slide.astro';
 import CountUp from '../../src/components/motion/CountUp.astro';
-import { figureEm, fitType, splitHl, unitScale, type SlideBase } from '../lib';
+import { layoutRule, figureEm, fitType, splitHl, unitScale, type SlideBase } from '../lib';
 
 interface Stat {
   /** The figure as written, digits only: "94", "2.4", "1,186". */
@@ -40,7 +40,7 @@ if (stats.length < 2 || stats.length > 4) throw new Error(`${where}: 2 to 4 stat
 if (!stats[hero]) throw new Error(`${where}: hero ${hero} isn't one of the ${stats.length} stats (0 to ${stats.length - 1}).`);
 for (const s of stats) {
   if (!/\d/.test(s.number)) throw new Error(`${where}: "${s.number}" has no digits; a word goes in the label.`);
-  if (s.label.length > 40) throw new Error(`${where}: label "${s.label}" is ${s.label.length} characters; 40 or fewer.`);
+  if (s.label.length > 40) layoutRule(where, `${where}: label "${s.label}" is ${s.label.length} characters; 40 or fewer.`);
 }
 const [before, phrase, after] = splitHl(headline, hl, where);
 const gap = 72;

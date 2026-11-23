@@ -11,7 +11,7 @@
  * state is its outcome, not a button nobody can press.
  */
 import Slide from '../../src/components/Slide.astro';
-import { fitType, splitHl, type SlideBase } from '../lib';
+import { layoutRule, fitType, splitHl, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** What clearing the queue proves, as a whole sentence. 12 words or fewer. */
@@ -36,8 +36,8 @@ const { id, label = 'Demo', tone = 'warm', notes, brand, headline, hl, items, ap
 const where = `demo-click-queue "${id}"`;
 if (!items || items.length < 2 || items.length > 6) throw new Error(`${where}: two to six items (got ${items?.length ?? 0}); a queue of one isn't a queue, and more than six is a wait.`);
 items.forEach((it, i) => {
-  if (it.title.length > 60) throw new Error(`${where}: item ${i + 1}'s title is ${it.title.length} characters; 60 or fewer.`);
-  if (it.detail && it.detail.length > 80) throw new Error(`${where}: item ${i + 1}'s detail is ${it.detail.length} characters; one line of 80 or fewer.`);
+  if (it.title.length > 60) layoutRule(where, `${where}: item ${i + 1}'s title is ${it.title.length} characters; 60 or fewer.`);
+  if (it.detail && it.detail.length > 80) layoutRule(where, `${where}: item ${i + 1}'s detail is ${it.detail.length} characters; one line of 80 or fewer.`);
 });
 for (const [k, v] of Object.entries({ approve, skip, counter, done })) if (!v) throw new Error(`${where}: ${k} is required; the layout types no words of its own.`);
 const [before, phrase, after] = splitHl(headline, hl, where);

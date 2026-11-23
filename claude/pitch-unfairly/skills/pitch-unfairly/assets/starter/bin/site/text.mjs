@@ -221,6 +221,22 @@ export function deckSlides(html) {
   }));
 }
 
+/** The first heading on a slide (h1 to h3, in page order), as plain text, or ''. */
+function firstHeading(n) {
+  for (const k of n.kids ?? []) {
+    if (k.text !== undefined || hiddenNode(k)) continue;
+    if (/^h[1-3]$/.test(k.tag)) return clean(inline(k)).replace(/\n+/g, ' ');
+    const inner = firstHeading(k);
+    if (inner) return inner;
+  }
+  return '';
+}
+
+/** Each slide's headline (its first heading) and all its words, in order: what story.md is synced from. */
+export function deckHeadlines(html) {
+  return slides(parse(html)).map((slide) => ({ headline: firstHeading(slide), words: blocks(slide, [], 2).join('\n\n') }));
+}
+
 /**
  * index.html as the text an agent reads, exactly as the host's fallback makes
  * it: "# <title>", then each slide as "## N. <label>" and its words, or, for a

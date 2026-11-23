@@ -11,7 +11,7 @@
  * sentence: at this input, this result.
  */
 import Slide from '../../src/components/Slide.astro';
-import { figureEm, fitType, splitHl, unitScale, type SlideBase } from '../lib';
+import { layoutRule, figureEm, fitType, splitHl, unitScale, type SlideBase } from '../lib';
 
 interface Input {
   /** What the buyer sets, as a short label: "Crews on the road". */
@@ -58,7 +58,7 @@ const { min, max, step = 1, value } = input;
 if (!(min < max)) throw new Error(`${where}: input min ${min} must be below max ${max}.`);
 if (!(value >= min && value <= max)) throw new Error(`${where}: input value ${value} is outside ${min} to ${max}; start the slider on the buyer's real figure.`);
 if (!Number.isFinite(rate)) throw new Error(`${where}: rate is required: the result per unit of input.`);
-if (output.label.length > 64) throw new Error(`${where}: the output label is ${output.label.length} characters; one line of 64 or fewer. The full assumption goes in the notes.`);
+if (output.label.length > 64) layoutRule(where, `${where}: the output label is ${output.label.length} characters; one line of 64 or fewer. The full assumption goes in the notes.`);
 const decimals = output.decimals ?? 0;
 const fmt = (n: number, d = 0) => n.toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
 const result = (v: number) => v * rate + base;

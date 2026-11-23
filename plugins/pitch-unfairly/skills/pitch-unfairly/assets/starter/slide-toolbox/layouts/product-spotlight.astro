@@ -10,7 +10,7 @@
  */
 import Slide from '../../src/components/Slide.astro';
 import Focus from '../../src/components/motion/Focus.astro';
-import { fitType, splitHl, type SlideBase } from '../lib';
+import { layoutRule, fitType, splitHl, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** What the detail proves, as a whole sentence. 12 words or fewer. */
@@ -41,8 +41,8 @@ interface Props extends SlideBase {
 
 const { id, label = 'Product detail', tone = 'paper', notes, brand, headline, hl, caption, src, alt, ratio = '16 / 10', crop, detail, zoom, callout, veil, carry } = Astro.props;
 const where = `product-spotlight "${id}"`;
-if (headline.split(/\s+/).length > 14) throw new Error(`${where}: the headline is ${headline.split(/\s+/).length} words; the detail carries the rest. Cut it to 12 or fewer.`);
-if (caption && caption.length > 90) throw new Error(`${where}: the caption is ${caption.length} characters; one line of 90 or fewer. Move the rest to the notes.`);
+if (headline.split(/\s+/).length > 14) layoutRule(where, `${where}: the headline is ${headline.split(/\s+/).length} words; the detail carries the rest. Cut it to 12 or fewer.`);
+if (caption && caption.length > 90) layoutRule(where, `${where}: the caption is ${caption.length} characters; one line of 90 or fewer. Move the rest to the notes.`);
 const [before, phrase, after] = splitHl(headline, hl, where);
 const head = fitType(headline.length, { width: 620, lines: 3, min: 56, max: 104 });
 const phone = fitType(headline.length, { width: 330, lines: 3, min: 26, max: 40 });

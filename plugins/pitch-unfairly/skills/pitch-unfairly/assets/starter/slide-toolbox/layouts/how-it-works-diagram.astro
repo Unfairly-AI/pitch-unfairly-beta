@@ -10,7 +10,7 @@
  * the diagram actually connects.
  */
 import Slide from '../../src/components/Slide.astro';
-import { fitType, splitHl, type SlideBase } from '../lib';
+import { layoutRule, fitType, splitHl, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** What the mechanism does, as a whole sentence. 12 words or fewer. */
@@ -33,8 +33,8 @@ const { id, label = 'How it works', tone = 'ink', notes, brand, headline, hl, ca
 const where = `how-it-works-diagram "${id}"`;
 if (!paths || paths.length < 2 || paths.length > 5) throw new Error(`${where}: two to five paths (got ${paths?.length ?? 0}). One path is a statement; more than five reads as noise, so group them.`);
 if (focus !== undefined && !(focus >= 1 && focus <= paths.length)) throw new Error(`${where}: focus ${focus} isn't a path; number them from 1 to ${paths.length}.`);
-for (const p of [...paths, node]) if (p.split(/\s+/).length > 3) throw new Error(`${where}: "${p}" is over three words; a diagram label is a name, not a sentence.`);
-if (caption && caption.length > 90) throw new Error(`${where}: the caption is ${caption.length} characters; one line of 90 or fewer.`);
+for (const p of [...paths, node]) if (p.split(/\s+/).length > 3) layoutRule(where, `${where}: "${p}" is over three words; a diagram label is a name, not a sentence.`);
+if (caption && caption.length > 90) layoutRule(where, `${where}: the caption is ${caption.length} characters; one line of 90 or fewer.`);
 const [before, phrase, after] = splitHl(headline, hl, where);
 // Display type sets narrower than the estimate's average, and balanced lines leave room: the width is the column's plus a tenth.
 const head = fitType(headline.length, { width: 760, lines: 3, min: 60, max: 128 });

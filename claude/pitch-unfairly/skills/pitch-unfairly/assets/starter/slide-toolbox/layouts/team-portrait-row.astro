@@ -9,7 +9,7 @@
  * brand that shows its people.
  */
 import Slide from '../../src/components/Slide.astro';
-import { fitType, initials, splitHl, type SlideBase } from '../lib';
+import { layoutRule, fitType, initials, splitHl, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** Why this team, as a whole sentence. 12 words or fewer. */
@@ -27,8 +27,8 @@ const where = `team-portrait-row "${id}"`;
 if (people.length < 2 || people.length > 4) throw new Error(`${where}: 2 to 4 people (got ${people.length}); a bigger team is team-lead-list.`);
 if (lead < 0 || lead >= people.length) throw new Error(`${where}: lead ${lead} isn't a person; use 0 to ${people.length - 1}.`);
 for (const p of people) {
-  if (p.role.length > 32) throw new Error(`${where}: ${p.name}'s role is ${p.role.length} characters; 32 or fewer.`);
-  if (p.owns && p.owns.length > 48) throw new Error(`${where}: ${p.name}'s owns line is ${p.owns.length} characters; 48 or fewer.`);
+  if (p.role.length > 32) layoutRule(where, `${where}: ${p.name}'s role is ${p.role.length} characters; 32 or fewer.`);
+  if (p.owns && p.owns.length > 48) layoutRule(where, `${where}: ${p.name}'s owns line is ${p.owns.length} characters; 48 or fewer.`);
 }
 // The lead stands first.
 const row = [people[lead]!, ...people.filter((_, i) => i !== lead)];

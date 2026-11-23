@@ -10,7 +10,7 @@
  * gridlines; a hairline baseline and a few quiet x labels.
  */
 import Slide from '../../src/components/Slide.astro';
-import { fitType, splitHl, type SlideBase } from '../lib';
+import { layoutRule, fitType, splitHl, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** What the trend proves, as a sentence. 14 words or fewer. */
@@ -35,10 +35,10 @@ const { id, label = 'Line chart', tone = 'paper', notes, brand, headline, hl, x,
 const where = `chart-line-annotated "${id}"`;
 const n = x.length;
 if (n < 3 || n > 24) throw new Error(`${where}: 3 to 24 points on the x axis (got ${n}). Fewer is a bar chart (chart-bar-highlight).`);
-if (x.filter(Boolean).length > 8) throw new Error(`${where}: label 8 x points at most (got ${x.filter(Boolean).length}); leave the rest as "".`);
+if (x.filter(Boolean).length > 8) layoutRule(where, `${where}: label 8 x points at most (got ${x.filter(Boolean).length}); leave the rest as "".`);
 if (series.length < 1 || series.length > 3) throw new Error(`${where}: one to three series (got ${series.length}); more lines than that is a tangle, so cut to the ones the headline is about.`);
 for (const s of series) if (s.values.length !== n) throw new Error(`${where}: series "${s.name}" has ${s.values.length} values for ${n} x labels; give one value per label.`);
-if (callout && callout.text.length > 48) throw new Error(`${where}: the callout is ${callout.text.length} characters; 48 or fewer, or it covers the chart.`);
+if (callout && callout.text.length > 48) layoutRule(where, `${where}: the callout is ${callout.text.length} characters; 48 or fewer, or it covers the chart.`);
 for (const [k, v] of [['callout', callout], ['event', event]] as const) if (v && !(v.at >= 0 && v.at < n)) throw new Error(`${where}: ${k}.at ${v.at} isn't a point; use an index from 0 to ${n - 1}.`);
 const focalAt = Math.max(0, series.findIndex((s) => s.focal));
 const all = series.flatMap((s) => s.values);

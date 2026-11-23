@@ -10,7 +10,7 @@
  * column is evidence; the right is the point.
  */
 import Slide from '../../src/components/Slide.astro';
-import { fitType, splitHl, type SlideBase } from '../lib';
+import { layoutRule, fitType, splitHl, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** The verdict, one whole sentence, 12 words or fewer. */
@@ -29,14 +29,14 @@ const { id, label = 'Comparison', tone = 'paper', notes, brand, headline, hl, op
 const where = `comparison-two-column "${id}"`;
 if (options.length < 1 || options.length > 3) throw new Error(`${where}: one to three options beside the choice (got ${options.length}); a longer field is comparison-one-of-many.`);
 for (const o of options) {
-  if (o.name.length > 32) throw new Error(`${where}: option "${o.name}" is ${o.name.length} characters; a name is 32 or fewer.`);
-  if ((o.line ?? '').length > 64) throw new Error(`${where}: option "${o.name}" line is ${o.line!.length} characters; 64 or fewer.`);
+  if (o.name.length > 32) layoutRule(where, `${where}: option "${o.name}" is ${o.name.length} characters; a name is 32 or fewer.`);
+  if ((o.line ?? '').length > 64) layoutRule(where, `${where}: option "${o.name}" line is ${o.line!.length} characters; 64 or fewer.`);
   if (!o.reason || o.reason.length > 40) throw new Error(`${where}: option "${o.name}" needs its reason, 40 characters or fewer ("Out of budget").`);
 }
 if (!choice?.name || !choice.line) throw new Error(`${where}: choice needs a name and its line.`);
-if (choice.name.length > 40) throw new Error(`${where}: choice.name is ${choice.name.length} characters; 40 or fewer.`);
-if (choice.line.length > 90) throw new Error(`${where}: choice.line is ${choice.line.length} characters; 90 or fewer. The rest goes in the notes.`);
-if (stamp && stamp.length > 16) throw new Error(`${where}: stamp "${stamp}" is ${stamp.length} characters; 16 or fewer.`);
+if (choice.name.length > 40) layoutRule(where, `${where}: choice.name is ${choice.name.length} characters; 40 or fewer.`);
+if (choice.line.length > 90) layoutRule(where, `${where}: choice.line is ${choice.line.length} characters; 90 or fewer. The rest goes in the notes.`);
+if (stamp && stamp.length > 16) layoutRule(where, `${where}: stamp "${stamp}" is ${stamp.length} characters; 16 or fewer.`);
 const [pre, phrase, post] = splitHl(headline, hl, where);
 const head = fitType(headline.length, { width: 1500, lines: 2, min: 76, max: 116 });
 const pick = fitType(choice.name.length, { width: 740, lines: 2, min: 64, max: 96 });

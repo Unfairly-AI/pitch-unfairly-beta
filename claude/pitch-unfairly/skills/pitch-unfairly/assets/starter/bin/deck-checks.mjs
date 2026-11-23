@@ -323,6 +323,45 @@ export function storyHeadlines(story) {
   return out;
 }
 
+/**
+ * story.md brought back in line with the slides. A fix pass that rewords a
+ * headline on its slide (to fit, or after review) used to leave story.md with
+ * the old words, and the audit then failed on drift. The slides are what
+ * ships, so each slide block whose Headline no longer appears on its slide
+ * takes the slide's own headline. Blocks are matched to slides by order, and
+ * only when story.md has exactly one block per slide; otherwise nothing
+ * changes and the audit reports the drift as before. Blocks inside comments
+ * (the template's instructions) are skipped. `slides`: [{ headline, words }]
+ * per slide in order (site/text.mjs deckHeadlines).
+ */
+export function syncStoryHeadlines(story, slides) {
+  const lines = story.split('\n');
+  const blocks = [];
+  let inComment = false;
+  lines.forEach((line, i) => {
+    const t = line.trim();
+    if (inComment) { if (t.includes('-->')) inComment = false; return; }
+    if (t.startsWith('<!--')) { if (!t.includes('-->')) inComment = true; return; }
+    const head = /^##\s+(.+)$/.exec(t);
+    if (head) { blocks.push({ slide: head[1].trim(), line: null }); return; }
+    if (blocks.length && blocks.at(-1).line === null && /^-?\s*Headline:/i.test(t)) blocks.at(-1).line = i;
+  });
+  const changed = [];
+  if (!blocks.length || blocks.length !== slides.length) return { story, changed };
+  const flat = (x) => norm(x).replace(/\s+/g, ' ').trim();
+  blocks.forEach((b, i) => {
+    if (b.line === null) return;
+    const m = /^(\s*-?\s*Headline:\s*)(.+)$/i.exec(lines[b.line]);
+    const want = String(slides[i]?.headline ?? '').replace(/\s+/g, ' ').trim();
+    if (!m || !want) return;
+    const have = m[2].replace(/\s*\([^()]*\)\s*$/, '').trim();
+    if (flat(slides[i].words ?? want).includes(flat(have))) return;
+    lines[b.line] = `${m[1]}${want}`;
+    changed.push({ slide: b.slide, from: have, to: want });
+  });
+  return { story: changed.length ? lines.join('\n') : story, changed };
+}
+
 /** The first story headline missing from `text` or found out of order, or null when they all read in order. */
 export function headlineOrderProblem(headlines, text) {
   const hay = norm(text).replace(/\s+/g, ' ');

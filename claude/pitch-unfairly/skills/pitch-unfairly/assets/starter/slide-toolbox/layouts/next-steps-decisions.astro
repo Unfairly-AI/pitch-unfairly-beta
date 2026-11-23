@@ -10,7 +10,7 @@
  * proposals and meeting decks; a sales deck closes on the ask instead.
  */
 import Slide from '../../src/components/Slide.astro';
-import { fitType, splitHl, type SlideBase } from '../lib';
+import { layoutRule, fitType, splitHl, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** What the decisions unlock, as a whole sentence. 12 words or fewer. */
@@ -29,8 +29,8 @@ if (!decisions.length || decisions.length > 4) throw new Error(`${where}: 1 to 4
 if (focus < 0 || focus >= decisions.length) throw new Error(`${where}: focus ${focus} isn't a decision; use 0 to ${decisions.length - 1}.`);
 for (const d of decisions) {
   if (d.verb.length > 12 || /\s/.test(d.verb.trim())) throw new Error(`${where}: verb "${d.verb}" is one word of 12 characters or fewer ("Approve", "Choose", "Name").`);
-  if (d.what.length > 56) throw new Error(`${where}: "${d.what}" is ${d.what.length} characters; 56 or fewer.`);
-  if (d.by.length > 12) throw new Error(`${where}: by "${d.by}" is over 12 characters ("Today", "Nov 28").`);
+  if (d.what.length > 56) layoutRule(where, `${where}: "${d.what}" is ${d.what.length} characters; 56 or fewer.`);
+  if (d.by.length > 12) layoutRule(where, `${where}: by "${d.by}" is over 12 characters ("Today", "Nov 28").`);
 }
 // The focal row first; the rest keep their order beneath it.
 const rows = [decisions[focus]!, ...decisions.filter((_, i) => i !== focus)];

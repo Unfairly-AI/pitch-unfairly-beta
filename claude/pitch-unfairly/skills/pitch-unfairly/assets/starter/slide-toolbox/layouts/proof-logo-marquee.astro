@@ -9,7 +9,7 @@
  */
 import Slide from '../../src/components/Slide.astro';
 import Marquee from '../../src/components/motion/Marquee.astro';
-import { fitType, splitHl, type SlideBase } from '../lib';
+import { layoutRule, fitType, splitHl, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** What the list proves, as a sentence. 14 words or fewer. */
@@ -24,8 +24,8 @@ interface Props extends SlideBase {
 
 const { id, label = 'Customers', tone = 'paper', notes, brand, headline, hl, line, logos } = Astro.props;
 const where = `proof-logo-marquee "${id}"`;
-if (headline.split(/\s+/).length > 14) throw new Error(`${where}: the headline is ${headline.split(/\s+/).length} words; keep it to 14 or fewer.`);
-if (line && line.length > 90) throw new Error(`${where}: the line is ${line.length} characters; keep it to 90 or fewer.`);
+if (headline.split(/\s+/).length > 14) layoutRule(where, `${where}: the headline is ${headline.split(/\s+/).length} words; keep it to 14 or fewer.`);
+if (line && line.length > 90) layoutRule(where, `${where}: the line is ${line.length} characters; keep it to 90 or fewer.`);
 if (logos.length < 6 || logos.length > 24) throw new Error(`${where}: six to twenty-four logos (got ${logos.length}). Fewer fit a still wall (proof-logo-wall).`);
 const [before, phrase, after] = splitHl(headline, hl, where);
 const head = fitType(headline.length, { width: 1500, lines: 2, min: 72, max: 124 });

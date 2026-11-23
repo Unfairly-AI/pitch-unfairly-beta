@@ -11,7 +11,7 @@
  */
 import Slide from '../../src/components/Slide.astro';
 import BrandMark from '../../src/components/BrandMark.astro';
-import { fitType, markOn, splitHl, type SlideBase } from '../lib';
+import { layoutRule, fitType, markOn, splitHl, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** The promise: one whole sentence, 12 words or fewer. */
@@ -35,8 +35,8 @@ const where = `title-photo-bleed "${id}"`;
 if (!focus || !/^\d{1,3}% \d{1,3}%$/.test(focus)) throw new Error(`${where}: focus is required, as "x% y%": the point of the photo to keep in frame, a person's face or the photo's own subject. Look at the photo at the slide's crop and set it; the centre crop cuts heads off.`);
 if (!['ink', 'paper', 'warm', 'accent'].includes(tone)) throw new Error(`${where}: tone "${tone}" has no scrim; use ink (light type on the photo), paper or warm (dark type), or accent.`);
 if (!photo) throw new Error(`${where}: photo is required. Without a photograph, use title-statement.`);
-if (meta.length > 3) throw new Error(`${where}: three meta facts at most (got ${meta.length}); the rest go in the notes.`);
-if (headline.split(/\s+/).length > 14) throw new Error(`${where}: the promise is ${headline.split(/\s+/).length} words; a cover on a photo holds 12 or fewer. Cut it.`);
+if (meta.length > 3) layoutRule(where, `${where}: three meta facts at most (got ${meta.length}); the rest go in the notes.`);
+if (headline.split(/\s+/).length > 14) layoutRule(where, `${where}: the promise is ${headline.split(/\s+/).length} words; a cover on a photo holds 12 or fewer. Cut it.`);
 const [before, phrase, after] = splitHl(headline, hl, where);
 // Three lines across the left 1180px of the stage, four across a 330px phone.
 const stage = fitType(headline.length, { width: 1180, lines: 3, min: 96, max: 156 });

@@ -9,7 +9,7 @@
  * word; the shortest excerpt that carries the point.
  */
 import Slide from '../../src/components/Slide.astro';
-import { fitType, initials, splitHl, type SlideBase } from '../lib';
+import { layoutRule, fitType, initials, splitHl, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** The quote, verbatim, without quotation marks. 110 characters or fewer. */
@@ -29,7 +29,7 @@ interface Props extends SlideBase {
 const { id, label = 'Quote', tone = 'ink', notes, brand, quote, hl, name, role, company, photo } = Astro.props;
 const where = `quote-hero-quote "${id}"`;
 if (/^["“'‘]|["”'’]$/.test(quote.trim())) throw new Error(`${where}: leave the quotation marks off; the layout sets them.`);
-if (quote.length > 140) throw new Error(`${where}: the quote is ${quote.length} characters; a hero quote is the shortest excerpt that carries the point (110 or fewer). Cut it, or use a layout for longer quotes.`);
+if (quote.length > 140) layoutRule(where, `${where}: the quote is ${quote.length} characters; a hero quote is the shortest excerpt that carries the point (110 or fewer). Cut it, or use a layout for longer quotes.`);
 if (quote.length > 110) console.warn(`! ${where}: ${quote.length} characters; a hero quote reads best at 110 or fewer.`);
 const [before, phrase, after] = splitHl(quote, hl, where);
 const stage = fitType(quote.length + 1, { width: 1480, lines: 3, min: 76, max: 124 });

@@ -11,7 +11,7 @@
  * default: answering a doubt is a change of register.
  */
 import Slide from '../../src/components/Slide.astro';
-import { fitType, splitHl, type SlideBase } from '../lib';
+import { layoutRule, fitType, splitHl, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** The objection as the buyer would say it, without quotation marks, 120 characters or fewer. */
@@ -29,10 +29,10 @@ interface Props extends SlideBase {
 const { id, label = 'Objection', tone = 'ink', notes, brand, question, asker, answer, hl, proof } = Astro.props;
 const where = `objection-question-answer "${id}"`;
 if (/^["“'‘]|["”'’]$/.test(question.trim())) throw new Error(`${where}: leave the quotation marks off the question; the layout sets them.`);
-if (question.length > 120) throw new Error(`${where}: the question is ${question.length} characters; 120 or fewer. Say it the way they would, short.`);
-if (answer.length > 90) throw new Error(`${where}: the answer is ${answer.length} characters; 90 or fewer, so it reads at poster size. The detail goes in proof or the notes.`);
-if (asker && asker.length > 40) throw new Error(`${where}: asker is ${asker.length} characters; 40 or fewer.`);
-if (proof && proof.length > 110) throw new Error(`${where}: proof is ${proof.length} characters; 110 or fewer.`);
+if (question.length > 120) layoutRule(where, `${where}: the question is ${question.length} characters; 120 or fewer. Say it the way they would, short.`);
+if (answer.length > 90) layoutRule(where, `${where}: the answer is ${answer.length} characters; 90 or fewer, so it reads at poster size. The detail goes in proof or the notes.`);
+if (asker && asker.length > 40) layoutRule(where, `${where}: asker is ${asker.length} characters; 40 or fewer.`);
+if (proof && proof.length > 110) layoutRule(where, `${where}: proof is ${proof.length} characters; 110 or fewer.`);
 const [pre, phrase, post] = splitHl(answer, hl, where);
 const stage = fitType(answer.length, { width: 1560, lines: 3, min: 88, max: 150 });
 const phone = fitType(answer.length, { width: 330, lines: 4, min: 30, max: 50 });

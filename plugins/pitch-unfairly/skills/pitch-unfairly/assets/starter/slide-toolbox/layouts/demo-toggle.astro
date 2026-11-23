@@ -10,7 +10,7 @@
  * and faded behind, the new one in front, each named on its corner.
  */
 import Slide from '../../src/components/Slide.astro';
-import { fitType, splitHl, type SlideBase } from '../lib';
+import { layoutRule, fitType, splitHl, type SlideBase } from '../lib';
 
 interface State {
   /** The switch's label for this state, two words or fewer: "Spreadsheet", "Northline". */
@@ -38,8 +38,8 @@ const { id, label = 'Demo', tone = 'paper', notes, brand, headline, hl, states, 
 const where = `demo-toggle "${id}"`;
 if (states?.length !== 2) throw new Error(`${where}: exactly two states (got ${states?.length ?? 0}). Three or more is a set of slides, not a switch.`);
 states.forEach((s, i) => {
-  if (s.label.split(/\s+/).length > 2) throw new Error(`${where}: state ${i + 1}'s label "${s.label}" is over two words; a switch label is a name.`);
-  if (s.note && s.note.length > 80) throw new Error(`${where}: state ${i + 1}'s note is ${s.note.length} characters; one line of 80 or fewer.`);
+  if (s.label.split(/\s+/).length > 2) layoutRule(where, `${where}: state ${i + 1}'s label "${s.label}" is over two words; a switch label is a name.`);
+  if (s.note && s.note.length > 80) layoutRule(where, `${where}: state ${i + 1}'s note is ${s.note.length} characters; one line of 80 or fewer.`);
 });
 const [before, phrase, after] = splitHl(headline, hl, where);
 // Display type sets narrower than the estimate's average, and balanced lines leave room: the width is the column's plus a tenth.

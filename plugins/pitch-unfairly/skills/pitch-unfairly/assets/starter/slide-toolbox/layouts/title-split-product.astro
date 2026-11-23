@@ -10,7 +10,7 @@
  */
 import Slide from '../../src/components/Slide.astro';
 import BrandMark from '../../src/components/BrandMark.astro';
-import { fitType, markOn, splitHl, type SlideBase } from '../lib';
+import { layoutRule, fitType, markOn, splitHl, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** The promise: one whole sentence, 12 words or fewer. */
@@ -34,8 +34,8 @@ interface Props extends SlideBase {
 const { id, label = 'Cover', tone = 'paper', notes, brand, headline, hl, shot, alt, url, meta = [], mark = true, carry } = Astro.props;
 const where = `title-split-product "${id}"`;
 if (!shot) throw new Error(`${where}: shot is required. Without a product screenshot, use title-statement.`);
-if (meta.length > 2) throw new Error(`${where}: two meta facts at most beside the product (got ${meta.length}); the rest go in the notes.`);
-if (headline.split(/\s+/).length > 14) throw new Error(`${where}: the promise is ${headline.split(/\s+/).length} words; beside a product it holds 12 or fewer. Cut it.`);
+if (meta.length > 2) layoutRule(where, `${where}: two meta facts at most beside the product (got ${meta.length}); the rest go in the notes.`);
+if (headline.split(/\s+/).length > 14) layoutRule(where, `${where}: the promise is ${headline.split(/\s+/).length} words; beside a product it holds 12 or fewer. Cut it.`);
 const [before, phrase, after] = splitHl(headline, hl, where);
 // Three lines in the 680px left column on the stage, four across a 330px phone.
 const stage = fitType(headline.length, { width: 680, lines: 3, min: 64, max: 116, em: 0.52 });

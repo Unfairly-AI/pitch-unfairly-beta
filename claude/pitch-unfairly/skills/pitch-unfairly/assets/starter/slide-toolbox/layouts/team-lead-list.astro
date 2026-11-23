@@ -9,7 +9,7 @@
  * phone, or a team too big for a row of portraits.
  */
 import Slide from '../../src/components/Slide.astro';
-import { fitType, initials, splitHl, type SlideBase } from '../lib';
+import { layoutRule, fitType, initials, splitHl, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** Who the client deals with, as a whole sentence. 12 words or fewer. */
@@ -25,9 +25,9 @@ interface Props extends SlideBase {
 const { id, label = 'Team', tone = 'warm', notes, brand, headline, hl, lead, people } = Astro.props;
 const where = `team-lead-list "${id}"`;
 if (people.length < 2 || people.length > 6) throw new Error(`${where}: 2 to 6 more people (got ${people.length}); the rest go in the notes, or name the group ("Six dispatch trainers").`);
-if (lead.role.length > 32) throw new Error(`${where}: the lead's role is ${lead.role.length} characters; 32 or fewer.`);
-if (lead.line && lead.line.length > 64) throw new Error(`${where}: the lead's line is ${lead.line.length} characters; 64 or fewer.`);
-for (const p of people) if (p.role.length > 48) throw new Error(`${where}: ${p.name}'s role is ${p.role.length} characters; 48 or fewer.`);
+if (lead.role.length > 32) layoutRule(where, `${where}: the lead's role is ${lead.role.length} characters; 32 or fewer.`);
+if (lead.line && lead.line.length > 64) layoutRule(where, `${where}: the lead's line is ${lead.line.length} characters; 64 or fewer.`);
+for (const p of people) if (p.role.length > 48) layoutRule(where, `${where}: ${p.name}'s role is ${p.role.length} characters; 48 or fewer.`);
 const [before, phrase, after] = splitHl(headline, hl, where);
 const head = fitType(headline.length, { width: 860, lines: 3, min: 72, max: 112 });
 const phone = fitType(headline.length, { width: 330, lines: 4, min: 28, max: 44 });

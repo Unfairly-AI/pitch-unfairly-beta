@@ -10,7 +10,7 @@
  */
 import Slide from '../../src/components/Slide.astro';
 import CountUp from '../../src/components/motion/CountUp.astro';
-import { figureEm, fitType, splitHl, unitScale, type SlideBase } from '../lib';
+import { layoutRule, figureEm, fitType, splitHl, unitScale, type SlideBase } from '../lib';
 
 interface Row {
   /** The figure as written, digits only: "1,186", "62", "9". */
@@ -40,7 +40,7 @@ if (rows.length < 2 || rows.length > 4) throw new Error(`${where}: 2 to 4 rows (
 if (!rows[hero]) throw new Error(`${where}: hero ${hero} isn't one of the ${rows.length} rows (0 to ${rows.length - 1}).`);
 for (const r of rows) {
   if (!/\d/.test(r.number)) throw new Error(`${where}: "${r.number}" has no digits; a word goes in the label.`);
-  if (r.label.length > 48) throw new Error(`${where}: label "${r.label}" is ${r.label.length} characters; 48 or fewer.`);
+  if (r.label.length > 48) layoutRule(where, `${where}: label "${r.label}" is ${r.label.length} characters; 48 or fewer.`);
 }
 const [before, phrase, after] = splitHl(headline, hl, where);
 const col = 640;

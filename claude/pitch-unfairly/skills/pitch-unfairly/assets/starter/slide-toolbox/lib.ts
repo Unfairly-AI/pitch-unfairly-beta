@@ -20,14 +20,47 @@ export interface SlideBase {
 }
 
 /**
+ * A fill that breaks a layout's limit (a 30-character button label where the
+ * layout holds 24, a fourth support where it holds three). It used to throw
+ * while the page rendered, and a throw renders the whole deck blank. Now the
+ * slide renders with the text as written (it wraps or shrinks to fit), and the
+ * rule rides on the slide as data-layout-rule, which the audit reports as a
+ * problem to fix before publishing. Keyed by the slide id in `where`
+ * (`ask-line-button "close"`); Slide.astro takes them as it renders. The
+ * list lives on globalThis (__deckLayoutRules), so Slide.astro reads it
+ * without importing this file: a deck's own src/ (a revision of an older
+ * deck) and the starter's toolbox may come from different versions.
+ */
+const store = globalThis as typeof globalThis & { __deckLayoutRules?: Map<string, string[]> };
+const flagged = (store.__deckLayoutRules ??= new Map<string, string[]>());
+export function layoutRule(where: string, message: string): void {
+  const id = /"([^"]+)"/.exec(where)?.[1] ?? where;
+  console.warn(`  ! ${message}`);
+  const list = flagged.get(id) ?? [];
+  if (!list.includes(message)) list.push(message);
+  flagged.set(id, list);
+}
+
+/** The layout rules a slide's fill broke, once: Slide.astro puts them on the slide. */
+export function takeLayoutRules(id: string): string[] {
+  const list = flagged.get(id) ?? [];
+  flagged.delete(id);
+  return list;
+}
+
+/**
  * Split a sentence around its one accent phrase: [before, phrase, after].
- * The phrase must appear in the sentence word for word; a typo would silently
- * drop the emphasis, so it throws instead.
+ * The phrase must appear in the sentence word for word. One that doesn't
+ * (a headline rewritten after its hl was set) renders without the emphasis
+ * and is flagged for the audit, rather than blanking the page.
  */
 export function splitHl(text: string, hl: string | undefined, where: string): [string, string, string] {
   if (!hl) return [text, '', ''];
   const at = text.indexOf(hl);
-  if (at < 0) throw new Error(`${where}: hl "${hl}" isn't in "${text}". Copy the phrase from the sentence exactly.`);
+  if (at < 0) {
+    layoutRule(where, `${where}: hl "${hl}" isn't in "${text}". Copy the phrase from the sentence exactly.`);
+    return [text, '', ''];
+  }
   return [text.slice(0, at), hl, text.slice(at + hl.length)];
 }
 

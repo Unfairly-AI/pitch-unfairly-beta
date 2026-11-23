@@ -5,11 +5,12 @@
 import { copyFile, mkdir, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import { SUB_BRAND_DIR, SUB_BRAND_ID } from './brand-lib.mjs';
 import { join } from 'node:path';
-import { auditStamp, shotsProblem, siteReviewContext } from './design-review.mjs';
+import { auditStamp, deckSourceFingerprint, shotsProblem, siteReviewContext } from './design-review.mjs';
 
 const files = [];
 const site = process.argv.includes('--site');
-let context = { format: 'deck' };
+// A deck review covers one source state, by content (design-review.mjs): publishing compares it again.
+let context = site ? { format: 'deck' } : { format: 'deck', source_sha256: await deckSourceFingerprint(), created_at: new Date().toISOString() };
 if (site) {
   // One review covers one revision: the screenshots must come from a clean
   // audit of the source as it is now, never a mix of revisions.
@@ -53,6 +54,12 @@ if (site) {
 const slideBrands = site ? {} : JSON.parse(await readFile('artifacts/slide-brands.json', 'utf8').catch(() => '{}'));
 const used = [...new Set(Object.values(slideBrands))].filter((id) => SUB_BRAND_ID.test(id)).sort();
 if (used.length) context = { ...context, slide_brands: slideBrands };
+// A deck: the audit's image check (artifacts/image-check.json), so the review counts an image shown above its
+// pixels or stretched as a defect on its slide.
+if (!site) {
+  const checked = JSON.parse(await readFile('artifacts/image-check.json', 'utf8').catch(() => 'null'));
+  if (Array.isArray(checked?.findings)) context = { ...context, images: checked.findings.map((f) => ({ shot: f.shot, problem: f.problem, fix: f.fix, blocking: f.blocking })) };
+}
 // For a site: the fingerprint, story hash, engine, time and section list this review covers (design-review.mjs).
 await writeFile('artifacts/review-context.json', JSON.stringify(context));
 files.push({ path: 'review-context.json', size: (await stat('artifacts/review-context.json')).size });

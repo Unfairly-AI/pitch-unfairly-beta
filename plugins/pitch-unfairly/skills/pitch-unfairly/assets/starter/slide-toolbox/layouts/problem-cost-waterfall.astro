@@ -13,7 +13,7 @@
  * result as the last row.
  */
 import Slide from '../../src/components/Slide.astro';
-import { fitType, splitHl, type SlideBase } from '../lib';
+import { layoutRule, fitType, splitHl, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** The point, in a whole sentence: what's left or what's lost. 12 words or fewer. */
@@ -40,7 +40,7 @@ if (steps.length < 2 || steps.length > 5) throw new Error(`${where}: 2 to 5 step
 for (const s of steps) if (!(s.value > 0)) throw new Error(`${where}: step "${s.label}" is ${s.value}; every step is a positive amount lost.`);
 const lost = steps.reduce((n, s) => n + s.value, 0);
 if (start && lost > start.value) throw new Error(`${where}: the steps lose ${lost}, more than the start's ${start.value}. Check the figures.`);
-for (const l of [start?.label, ...steps.map((s) => s.label), end.label]) if (l && l.length > 28) throw new Error(`${where}: label "${l}" is ${l.length} characters; a bar's label is 28 or fewer.`);
+for (const l of [start?.label, ...steps.map((s) => s.label), end.label]) if (l && l.length > 28) layoutRule(where, `${where}: label "${l}" is ${l.length} characters; a bar's label is 28 or fewer.`);
 const [before, phrase, after] = splitHl(headline, hl, where);
 
 const top = start ? start.value : lost;

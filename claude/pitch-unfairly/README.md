@@ -13,7 +13,7 @@ Ask for a deck in plain words, for example "turn my notes into a 10-slide seed p
   ```
 
   It builds the deck in a folder on your computer, previews it locally, and checks it with your installed Chrome before publishing.
-- **Claude on the web, desktop, and mobile:** builds the deck in Unfairly's deck studio, so nothing installs on your device. Turn on code execution in Claude's settings for the plugin's skill to run. On Team and Enterprise plans, an Owner adds the Pitch Unfairly connector for the organization first.
+- **Claude on the web, desktop, and mobile:** Unfairly builds the deck in the cloud while you watch it come together in the conversation, so nothing installs on your device. You approve the story on the live storyboard, and ask for changes in the chat. Turn on code execution in Claude's settings for the plugin's skill to run. On Team and Enterprise plans, an Owner adds the Pitch Unfairly connector for the organization first.
 
 It doesn't edit PowerPoint or Google Slides files.
 
@@ -21,7 +21,7 @@ It doesn't edit PowerPoint or Google Slides files.
 
 **On your computer (Claude Code):** the skill's `setup.sh` checks that app.unfairly.ai can be reached, then installs the starter's npm packages from its lockfile (`npm ci`, from the npm registry) into `~/.pitch-unfairly`, or into the deck folder when the home folder isn't writable. It uses the Node.js and Chrome, Chromium, Edge, or Brave already installed and never downloads a program itself; if one is missing, it asks you to install it or builds in the deck studio instead. It never uses `sudo` or changes system settings. The deck's own scripts run a local preview server, the audit, screenshots, and the PDF.
 
-**To Unfairly** (app.unfairly.ai and pitchunfairly.com): the deck's source and built files when you publish, slide screenshots for the design review, your brand kit when you save one, and what you tell Claude about the deck at publish time, so later decks start with your preferences. In the deck studio, the deck is written and built on Unfairly's side.
+**To Unfairly** (app.unfairly.ai and pitchunfairly.com): the deck's source and built files when you publish, slide screenshots for the design review, your brand kit when you save one, and what you tell Claude about the deck at publish time, so later decks start with your preferences. In a cloud build, the deck is written and built on Unfairly's side, from what you give Claude for it.
 
 **From the web:** your company's website, when you ask Claude to capture your brand from it, and, through Unfairly's server, your logos and colors from Brandfetch.
 

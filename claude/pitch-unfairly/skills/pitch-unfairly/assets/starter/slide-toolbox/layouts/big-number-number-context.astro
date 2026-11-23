@@ -11,7 +11,7 @@
  */
 import Slide from '../../src/components/Slide.astro';
 import CountUp from '../../src/components/motion/CountUp.astro';
-import { figureEm, fitType, splitHl, unitScale, type SlideBase } from '../lib';
+import { layoutRule, figureEm, fitType, splitHl, unitScale, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** The point, in a whole sentence that sets the two figures against each other. 14 words or fewer. */
@@ -42,8 +42,8 @@ const b = value(context?.number ?? '');
 if (!Number.isFinite(a) || a <= 0) throw new Error(`${where}: number "${number}" isn't a positive figure; write digits only, the unit goes in unit.`);
 if (!Number.isFinite(b) || b < 0) throw new Error(`${where}: context.number "${context?.number}" isn't a figure; digits only, in the same unit as number.`);
 if (b > a) throw new Error(`${where}: the context (${context.number}) is bigger than the figure (${number}); this layout draws the figure as the bigger square. Swap them, or use stats-hero-row.`);
-if (measures.length > 32) throw new Error(`${where}: measures is ${measures.length} characters; 32 or fewer fit the square's foot.`);
-if (context.label.length > 40) throw new Error(`${where}: context.label is ${context.label.length} characters; 40 or fewer.`);
+if (measures.length > 32) layoutRule(where, `${where}: measures is ${measures.length} characters; 32 or fewer fit the square's foot.`);
+if (context.label.length > 40) layoutRule(where, `${where}: context.label is ${context.label.length} characters; 40 or fewer.`);
 const [before, phrase, after] = splitHl(headline, hl, where);
 const plain = /^\d+(\.\d+)?$/.test(number);
 const counts = (count ?? true) && plain;

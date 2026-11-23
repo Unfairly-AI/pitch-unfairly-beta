@@ -17,7 +17,7 @@
  * - note:    body (what's written on it), title (who wrote it, when).
  */
 import Slide from '../../src/components/Slide.astro';
-import { fitType, splitHl, type SlideBase } from '../lib';
+import { layoutRule, fitType, splitHl, type SlideBase } from '../lib';
 
 type Kind = 'receipt' | 'email' | 'ticket' | 'note';
 
@@ -57,8 +57,8 @@ if (kind === 'note' && !body) throw new Error(`${where}: a note needs body, the 
 if ((kind === 'email' || kind === 'ticket') && !title) throw new Error(`${where}: an ${kind} needs title (its ${kind === 'email' ? 'subject' : 'title'}).`);
 const bodyMax = kind === 'note' ? 120 : 280;
 if (body && body.length > bodyMax) throw new Error(`${where}: body is ${body.length} characters; a ${kind} on a slide reads at ${bodyMax} or fewer. Cut it to the lines that show the problem.`);
-if (title && title.length > 60) throw new Error(`${where}: title is ${title.length} characters; 60 or fewer.`);
-if (stamp && stamp.length > 18) throw new Error(`${where}: stamp "${stamp}" is ${stamp.length} characters; a stamp is a few words (18 or fewer).`);
+if (title && title.length > 60) layoutRule(where, `${where}: title is ${title.length} characters; 60 or fewer.`);
+if (stamp && stamp.length > 18) layoutRule(where, `${where}: stamp "${stamp}" is ${stamp.length} characters; a stamp is a few words (18 or fewer).`);
 const [before, phrase, after] = splitHl(headline, hl, where);
 // The headline column is about 5/11 of the content width; three lines there, four on a phone.
 const stage = fitType(headline.length, { width: 700, lines: 3, min: 64, max: 112 });

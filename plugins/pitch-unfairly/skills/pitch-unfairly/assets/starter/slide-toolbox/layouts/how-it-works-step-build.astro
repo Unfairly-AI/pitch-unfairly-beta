@@ -10,7 +10,7 @@
  */
 import Slide from '../../src/components/Slide.astro';
 import Steps from '../../src/components/motion/Steps.astro';
-import { fitType, splitHl, type SlideBase } from '../lib';
+import { layoutRule, fitType, splitHl, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** The outcome the steps reach, as a whole sentence. 14 words or fewer. */
@@ -23,7 +23,7 @@ interface Props extends SlideBase {
 
 const { id, label = 'How it works', tone = 'paper', notes, brand, headline, hl, steps } = Astro.props;
 const where = `how-it-works-step-build "${id}"`;
-if (headline.split(/\s+/).length > 14) throw new Error(`${where}: the headline is ${headline.split(/\s+/).length} words; keep it to 14 or fewer.`);
+if (headline.split(/\s+/).length > 14) layoutRule(where, `${where}: the headline is ${headline.split(/\s+/).length} words; keep it to 14 or fewer.`);
 const [before, phrase, after] = splitHl(headline, hl, where);
 const head = fitType(headline.length, { width: 1500, lines: 2, min: 64, max: 112 });
 const phone = fitType(headline.length, { width: 330, lines: 3, min: 26, max: 40 });

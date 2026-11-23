@@ -11,7 +11,7 @@
  * from more rows.
  */
 import Slide from '../../src/components/Slide.astro';
-import { fitType, splitHl, type SlideBase } from '../lib';
+import { layoutRule, fitType, splitHl, type SlideBase } from '../lib';
 
 type Cell = boolean | 'partial' | string;
 
@@ -33,16 +33,16 @@ interface Props extends SlideBase {
 const { id, label = 'Comparison', tone = 'paper', notes, brand, headline, hl, line, options = [], ours, rows = [] } = Astro.props;
 const where = `comparison-check-matrix "${id}"`;
 if (options.length < 2 || options.length > 4) throw new Error(`${where}: two to four options (got ${options.length}).`);
-for (const o of options) if (o.length > 16) throw new Error(`${where}: option "${o}" is ${o.length} characters; a column head is 16 or fewer.`);
+for (const o of options) if (o.length > 16) layoutRule(where, `${where}: option "${o}" is ${o.length} characters; a column head is 16 or fewer.`);
 const mine = options.indexOf(ours);
 if (mine < 0) throw new Error(`${where}: ours "${ours}" isn't one of the options (${options.join(', ')}). Copy it exactly.`);
 if (rows.length < 3 || rows.length > 6) throw new Error(`${where}: three to six rows (got ${rows.length}); the rest go in the notes.`);
 for (const r of rows) {
-  if (r.label.length > 36) throw new Error(`${where}: row "${r.label}" is ${r.label.length} characters; 36 or fewer.`);
+  if (r.label.length > 36) layoutRule(where, `${where}: row "${r.label}" is ${r.label.length} characters; 36 or fewer.`);
   if (r.values.length !== options.length) throw new Error(`${where}: row "${r.label}" has ${r.values.length} values for ${options.length} options; one each.`);
-  for (const v of r.values) if (typeof v === 'string' && v !== 'partial' && v.length > 16) throw new Error(`${where}: row "${r.label}" value "${v}" is ${v.length} characters; a cell holds 16 or fewer, or a mark.`);
+  for (const v of r.values) if (typeof v === 'string' && v !== 'partial' && v.length > 16) layoutRule(where, `${where}: row "${r.label}" value "${v}" is ${v.length} characters; a cell holds 16 or fewer, or a mark.`);
 }
-if (line && line.length > 90) throw new Error(`${where}: line is ${line.length} characters; 90 or fewer, or put it in the notes.`);
+if (line && line.length > 90) layoutRule(where, `${where}: line is ${line.length} characters; 90 or fewer, or put it in the notes.`);
 const [pre, phrase, post] = splitHl(headline, hl, where);
 const head = fitType(headline.length, { width: 640, lines: 3, min: 72, max: 112, em: 0.5 });
 // Spoken names for the marks, for screen readers.

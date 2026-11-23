@@ -569,6 +569,55 @@ export function kitFaces(kit) {
   return [...['display', 'body', 'mono'].map((role) => t[role]), ...(Array.isArray(t.faces) ? t.faces : [])].filter(Boolean);
 }
 
+/** The Fontsource package a family is published under: "Source Serif 4" → "@fontsource/source-serif-4". */
+export function fontsourcePackage(family) {
+  const slug = String(family ?? '').toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60);
+  return slug ? `@fontsource/${slug}` : null;
+}
+
+const SYSTEM_FAMILY = /^(?:system-ui|-apple-system|blinkmacsystemfont|helvetica(?: neue)?|arial|georgia|times(?: new roman)?|courier(?: new)?|verdana|tahoma|segoe ui|sf pro(?: display| text)?|menlo|monaco|consolas|ui-(?:sans-serif|serif|monospace)|sans-serif|serif|monospace)$/i;
+
+/** The open face to fall back to when Fontsource publishes neither package for a family, by its fallback class. */
+export const OPEN_FALLBACK = {
+  sans: { family: 'Inter', package: '@fontsource/inter' },
+  serif: { family: 'Source Serif 4', package: '@fontsource/source-serif-4' },
+  mono: { family: 'JetBrains Mono', package: '@fontsource/jetbrains-mono' },
+};
+export const fallbackFor = (font, role) => OPEN_FALLBACK[font?.fallback] ?? (role === 'mono' ? OPEN_FALLBACK.mono : /serif/i.test(font?.family ?? '') && !/sans/i.test(font?.family ?? '') ? OPEN_FALLBACK.serif : OPEN_FALLBACK.sans);
+
+/**
+ * Repairs a kit's fonts in place so the starter can apply it, and returns what
+ * it changed. Kits written by a brand book, a capture or by hand sometimes say
+ * "fontsource" without the package (Kosli's did, and brand:apply refused it),
+ * or name no source: the package is the family's Fontsource name, a face every
+ * machine has is a system face, and files stay files. Never refuses.
+ */
+export function repairKitFonts(kit) {
+  const repairs = [];
+  const t = kit?.typography;
+  if (!t || typeof t !== 'object') return repairs;
+  const fonts = [...TYPE_FONTS.map((role) => [`typography.${role}`, t[role]]), ...(Array.isArray(t.faces) ? t.faces.map((f, i) => [`typography.faces[${i}]`, f]) : [])];
+  for (const [where, f] of fonts) {
+    if (!f || typeof f !== 'object' || typeof f.family !== 'string' || !f.family.trim()) continue;
+    if (!['fontsource', 'files', 'system'].includes(f.source)) {
+      f.source = Array.isArray(f.files) && f.files.length ? 'files' : SYSTEM_FAMILY.test(f.family.trim()) ? 'system' : 'fontsource';
+      repairs.push(`${where}.source set to "${f.source}"`);
+    }
+    if (f.source === 'fontsource' && !/^@fontsource(-variable)?\/[a-z0-9-]+$/.test(f.package ?? '')) {
+      const pkg = fontsourcePackage(f.family);
+      if (pkg) {
+        f.package = pkg;
+        repairs.push(`${where}.package set to "${pkg}"`);
+      } else {
+        f.source = 'system';
+        delete f.package;
+        repairs.push(`${where} is a system face`);
+      }
+    }
+  }
+  return repairs;
+}
+
 /** @font-face rules for fonts shipped as files in brand/fonts/, for every face the kit names, each file once. */
 export function fontFaceCss(kit, relPrefix) {
   const out = [];

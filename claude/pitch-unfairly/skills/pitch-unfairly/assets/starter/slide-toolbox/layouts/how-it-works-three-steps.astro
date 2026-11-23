@@ -10,7 +10,7 @@
  * other two stay quiet. On a phone the steps stack in order.
  */
 import Slide from '../../src/components/Slide.astro';
-import { fitType, splitHl, type SlideBase } from '../lib';
+import { layoutRule, fitType, splitHl, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** What the three steps add up to, as a whole sentence. 12 words or fewer. */
@@ -28,8 +28,8 @@ const where = `how-it-works-three-steps "${id}"`;
 if (steps?.length !== 3) throw new Error(`${where}: exactly three steps (got ${steps?.length ?? 0}). Two is a before-and-after; four or more is how-it-works-focal-step.`);
 if (![1, 2, 3].includes(focus)) throw new Error(`${where}: focus ${focus} isn't a step; use 1, 2 or 3.`);
 steps.forEach((s, i) => {
-  if (s.name.split(/\s+/).length > 4) throw new Error(`${where}: step ${i + 1}'s name "${s.name}" is over four words; the line under it carries the rest.`);
-  if (s.detail && s.detail.length > 80) throw new Error(`${where}: step ${i + 1}'s detail is ${s.detail.length} characters; one line of 80 or fewer.`);
+  if (s.name.split(/\s+/).length > 4) layoutRule(where, `${where}: step ${i + 1}'s name "${s.name}" is over four words; the line under it carries the rest.`);
+  if (s.detail && s.detail.length > 80) layoutRule(where, `${where}: step ${i + 1}'s detail is ${s.detail.length} characters; one line of 80 or fewer.`);
 });
 const [before, phrase, after] = splitHl(headline, hl, where);
 const head = fitType(headline.length, { width: 1060, lines: 2, min: 72, max: 112 });

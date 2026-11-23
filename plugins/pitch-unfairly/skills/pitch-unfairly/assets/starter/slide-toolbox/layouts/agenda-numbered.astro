@@ -9,7 +9,7 @@
  * are a quiet list. Shown again before each part with the next one lit.
  */
 import Slide from '../../src/components/Slide.astro';
-import { fitType, type SlideBase } from '../lib';
+import { layoutRule, fitType, type SlideBase } from '../lib';
 
 interface Props extends SlideBase {
   /** What the meeting is for, as one sentence: 10 words or fewer. */
@@ -24,8 +24,8 @@ const { id, label = 'Agenda', tone = 'paper', notes, brand, headline, items, cur
 const where = `agenda-numbered "${id}"`;
 if (items.length < 2 || items.length > 5) throw new Error(`${where}: two to five parts (got ${items.length}). A longer agenda is two meetings, or group it.`);
 for (const it of items) {
-  if (it.title.split(/\s+/).length > 5) throw new Error(`${where}: "${it.title}" is over five words; the detail goes in detail.`);
-  if (it.detail && it.detail.length > 80) throw new Error(`${where}: the detail for "${it.title}" is ${it.detail.length} characters; one line is 80 or fewer.`);
+  if (it.title.split(/\s+/).length > 5) layoutRule(where, `${where}: "${it.title}" is over five words; the detail goes in detail.`);
+  if (it.detail && it.detail.length > 80) layoutRule(where, `${where}: the detail for "${it.title}" is ${it.detail.length} characters; one line is 80 or fewer.`);
 }
 if (current < 1 || current > items.length) throw new Error(`${where}: current ${current} is outside 1 to ${items.length}.`);
 const head = fitType(headline.length, { width: 760, lines: 3, min: 64, max: 112, em: 0.52 });
