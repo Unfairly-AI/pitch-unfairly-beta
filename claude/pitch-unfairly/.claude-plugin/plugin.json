@@ -1,7 +1,7 @@
 {
   "name": "pitch-unfairly",
   "displayName": "Pitch Unfairly",
-  "version": "0.44.0",
+  "version": "0.45.0",
   "description": "Builds presentation decks as websites in your brand, checks every slide on desktop, phone, and PDF, and publishes them to unlisted links.",
   "author": {
     "name": "Unfairly AI",

@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "pitch-unfairly",
-  "version": "0.44.0",
+  "version": "0.45.0",
   "description": "Builds presentation decks as websites in your brand, checks every slide on desktop, phone, and PDF, and publishes them to unlisted links.",
   "author": {
     "name": "Unfairly AI",
@@ -96,7 +96,7 @@
         "demo_recording_url": "https://drive.google.com/file/d/17DBYyNlc0fgYTJarMQftJbkZ_hVyc69m/view?usp=sharing"
       },
       "publication": {
-        "release_notes": "Each slide now starts from a library of coded layouts made for its job, with motion timed to your brand. Decks can use images from your brand's own library. Product screens are cropped to read, with callouts beside them. Chats without a shell build decks on Unfairly's servers with a live storyboard. Every slide image is checked at its own pixels, and images can come from a brand's press kit or the original file behind a site image. A layout given too much text still renders and is flagged. The design review covers a deck by its content.",
+        "release_notes": "A person's first deck in a workspace starts with their brand shown as a cover to confirm, what the deck is for, and their context, then the story as a numbered outline with only the gaps to fill in, before any slide is built.",
         "countries": [
           "US",
           "CA",
