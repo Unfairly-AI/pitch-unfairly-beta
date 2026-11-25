@@ -1,9 +1,9 @@
 {
   "mcpServers": {
-    "unfairly-decks": {
+    "unfairly": {
       "type": "http",
-      "url": "https://app.unfairly.ai/api/decks/mcp",
-      "oauth_resource": "https://app.unfairly.ai/api/decks/mcp"
+      "url": "https://app.unfairly.ai/api/unfairly/mcp",
+      "oauth_resource": "https://app.unfairly.ai/api/unfairly/mcp"
     }
   }
 }

@@ -1,8 +1,8 @@
 {
   "mcpServers": {
-    "unfairly-decks": {
+    "unfairly": {
       "type": "http",
-      "url": "https://app.unfairly.ai/api/decks/mcp"
+      "url": "https://app.unfairly.ai/api/unfairly/mcp"
     }
   }
 }

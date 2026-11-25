@@ -1,9 +1,9 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
   "mcpServers": {
-    "unfairly-decks": {
+    "unfairly": {
       "type": "streamable-http",
-      "url": "https://app.unfairly.ai/api/decks/mcp"
+      "url": "https://app.unfairly.ai/api/unfairly/mcp"
     }
   }
 }

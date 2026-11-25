@@ -85,14 +85,14 @@ sha256() {
 # builds in the deck studio, which runs on Unfairly's side. The check reads
 # the deck server's public metadata, so a proxy's own error page doesn't pass.
 if [ -z "$offline" ]; then
-  probe=https://app.unfairly.ai/.well-known/oauth-protected-resource/api/decks/mcp
+  probe=https://app.unfairly.ai/.well-known/oauth-protected-resource/api/unfairly/mcp
   if command -v curl >/dev/null 2>&1; then
     meta=$(curl -fsS -m 10 "$probe" 2>/dev/null || true)
   else
     meta=$(wget -qO- -T 10 "$probe" 2>/dev/null || true)
   fi
   case "$meta" in
-    *'"resource":"https://app.unfairly.ai/api/decks/mcp"'*) ;;
+    *'"resource":"https://app.unfairly.ai/api/unfairly/mcp"'*) ;;
     *) fail "NETWORK_BLOCKED: this environment can't reach app.unfairly.ai, where decks are checked and published, so nothing was installed. Build the deck in the deck studio instead, as the workflow's \"Building without a shell\" section says. Don't ask the user to change network settings." ;;
   esac
 fi
